@@ -1,5 +1,6 @@
 import React from 'react';
 import { BsHouse, BsBasket, BsPersonBadge, BsPatchCheck, BsCompass, BsPersonRolodex, BsCodeSlash } from 'react-icons/bs';
+import Auth from "../auth/auth";
 import navbarStyles from './navbar.module.css';
 
 const Navbar = () => {
@@ -31,6 +32,7 @@ const Navbar = () => {
                     ))}
                 </ul>
             </nav>
+            <Auth />
         </div>
     );
 };

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { signIn, signOut, useSession } from "next-auth/react";
 import contactStyles from './contact.module.css';
 import { BsInfoCircle } from 'react-icons/bs';
 
 const ContactForm = () => {
+  const { data: session } = useSession();
+
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    imageUrl: '',
+    name: session?.user?.name || '',
+    email: session?.user?.email || '',
+    imageUrl: session?.user?.image || '',
     message: 'Hi Upayan, I wanted to say...',
     loading: false,
     successMessage: null,
@@ -55,6 +58,17 @@ const ContactForm = () => {
     }
   };
 
+  if (!session) {
+    return (
+      <div className={contactStyles.container}>
+        <p>Please sign in to send a message.</p>
+        <button onClick={() => signIn("google", { callbackUrl: "/#contact" })} className={contactStyles.button}>
+          Sign In
+        </button>
+      </div>
+    );
+  }
+
   return (
     <details className={contactStyles.container}>
       <summary>Send me a message</summary>
@@ -69,26 +83,6 @@ const ContactForm = () => {
           {form.successMessage}
         </p>
       )}
-      <div className={contactStyles.formGroup}>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          required
-        />
-      </div>
-      <div className={contactStyles.formGroup}>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          required
-        />
-      </div>
       <div className={contactStyles.formGroup}>
         <label htmlFor="message">Message:</label>
         <textarea

@@ -21,12 +21,11 @@
 
 .auth a {
     color: #ffffff;
-    text-decoration: none;
     vertical-align: middle;
     height: 30px;
 }
 
-.auth a img {
+.auth button img {
     border-radius: 50%;
 }
 

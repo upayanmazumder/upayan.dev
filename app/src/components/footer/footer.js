@@ -1,15 +1,16 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link';
 import packageJson from '../../../../package.json';
 import footerStyles from './footer.module.css';
 
 const Footer = () => {
   return (
     <div className={footerStyles.footer}>
-      <a href="/p/terms-of-service">Terms of Service</a>
+      <Link href="/p/terms-of-service">Terms of Service</Link>
       <span>  |  </span>
-      <a href="/p/privacy-policy">Privacy Policy</a>
+      <Link href="/p/privacy-policy">Privacy Policy</Link>
       <div>&copy; 2024 Upayan v{packageJson.version}</div>
     </div>
   );

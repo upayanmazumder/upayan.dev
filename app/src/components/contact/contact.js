@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import contactStyles from './contact.module.css';
 import { BsInfoCircle } from 'react-icons/bs';
 
@@ -49,6 +49,7 @@ const ContactForm = () => {
       setForm((prevForm) => ({
         ...prevForm,
         successMessage: 'Message sent successfully!',
+        message: 'Hi Upayan, I wanted to say...',
       }));
     } catch (error) {
       console.error(`API request failed: ${error}`);

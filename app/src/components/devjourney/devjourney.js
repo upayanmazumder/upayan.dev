@@ -6,7 +6,7 @@ import djStyles from "./devjourney.module.css";
 import { BsFileEarmark, BsFolder, BsGithub } from "react-icons/bs";
 import { marked } from "marked";
 import hljs from "highlight.js";
-import "highlight.js/styles/github-dark.css"; // Import your preferred style
+import "./styles/kimbie-dark.css";
 
 const Repository = () => {
   const [data, setData] = useState([]);

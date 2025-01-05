@@ -1,5 +1,16 @@
 [
   {
+    "name": "Boardly",
+    "icon": "https://boardly.in/favicon.ico",
+    "description": "A one stop solution for board exams!",
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://boardly.in"
+      }
+    ]
+  },
+  {
     "name": "Collaborative Article Sharing",
     "icon": "https://cas.upayan.dev/favicon.ico",
     "description": "A collaborative article-sharing system designed for seamless content exchange and engagement.",
@@ -9,7 +20,7 @@
         "url": "https://github.com/upayanmazumder/Collaborative-Article-Sharing"
       },
       {
-        "name": "Deployed Application",
+        "name": "Website",
         "url": "https://cas.upayan.dev"
       },
       {
@@ -38,7 +49,7 @@
         "url": "https://github.com/upayanmazumder/DevJourney"
       },
       {
-        "name": "Deployed Application",
+        "name": "Website",
         "url": "https://upayan.dev/devjourney"
       }
     ],

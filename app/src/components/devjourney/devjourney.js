@@ -110,20 +110,14 @@ const Repository = () => {
   const renderDirMap = () => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
+    if (data.length === 0) return null; // Hide if empty
 
     return (
       <ul className={djStyles.dirMapContainer}>
         {data.map((item) => (
           <li key={item.sha}>
-            <button
-
-              onClick={() => handleItemClick(item)}
-            >
-              {item.type === "dir" ? (
-                <BsFolder />
-              ) : (
-                <BsFileEarmark />
-              )}
+            <button onClick={() => handleItemClick(item)}>
+              {item.type === "dir" ? <BsFolder /> : <BsFileEarmark />}
               {item.name}
             </button>
           </li>
@@ -131,6 +125,7 @@ const Repository = () => {
       </ul>
     );
   };
+
 
   const renderContent = () => {
     if (!fileContent) return null;

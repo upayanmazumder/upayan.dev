@@ -1,17 +1,13 @@
 import React from 'react';
-import { BsHouse, BsBasket, BsPersonBadge, BsPatchCheck, BsCompass, BsPersonRolodex, BsCodeSlash } from 'react-icons/bs';
+import { BsHouse, BsPatchCheck, BsCodeSlash } from 'react-icons/bs';
 import Auth from "../auth/auth";
 import navbarStyles from './navbar.module.css';
 
 const Navbar = () => {
     const navItems = [
         { name: 'Home', href: '/', icon: BsHouse },
-        { name: 'Services', href: '/#services', icon: BsBasket },
-        { name: 'About', href: '/#about', icon: BsPersonBadge },
         { name: 'Certificates', href: '/certificates', icon: BsPatchCheck },
-        { name: 'Interests', href: '/#interests', icon: BsCompass },
         { name: 'DevJourney', href: '/devjourney', icon: BsCodeSlash },
-        { name: 'Contact', href: '/#contact', icon: BsPersonRolodex }
     ];
 
     const handleNavigation = (href) => {
@@ -26,14 +22,16 @@ const Navbar = () => {
                         <li key={name}>
                             <button onClick={() => handleNavigation(href)}>
                                 <Icon />{' '}
-                                {name}
+                                <span className={navbarStyles.buttonText}>{name}</span>
                             </button>
                         </li>
                     ))}
                 </ul>
             </nav>
-            <Auth />
-        </div>
+            <div className={navbarStyles.auth}>
+                <Auth />
+            </div>
+        </div >
     );
 };
 

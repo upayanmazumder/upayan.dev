@@ -5,6 +5,8 @@ import { usePathname, useRouter } from "next/navigation";
 import djStyles from "./devjourney.module.css";
 import { BsFileEarmark, BsFolder, BsGithub } from "react-icons/bs";
 import { marked } from "marked";
+import hljs from "highlight.js";
+import "highlight.js/styles/github-dark.css"; // Import your preferred style
 
 const Repository = () => {
   const [data, setData] = useState([]);
@@ -102,6 +104,12 @@ const Repository = () => {
     if (pathname) fetchData();
   }, [pathname]);
 
+  useEffect(() => {
+    if (fileContent?.content) {
+      hljs.highlightAll(); // Apply syntax highlighting to code blocks
+    }
+  }, [fileContent]);
+
   const handleItemClick = (item) => {
     const newPath = `/devjourney/${item.path}`;
     router.push(newPath);
@@ -110,7 +118,7 @@ const Repository = () => {
   const renderDirMap = () => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
-    if (data.length === 0) return null; // Hide if empty
+    if (data.length === 0) return null;
 
     return (
       <ul className={djStyles.dirMapContainer}>
@@ -126,7 +134,6 @@ const Repository = () => {
     );
   };
 
-
   const renderContent = () => {
     if (!fileContent) return null;
 
@@ -134,17 +141,18 @@ const Repository = () => {
       <div className={djStyles.contentContainer}>
         <h2 className={djStyles.fileName}>{fileContent.name}</h2>
         {fileContent.name.endsWith(".md") ? (
-          // Render markdown content
-          <div className={djStyles.markdownContent}
+          <div
+            className={djStyles.markdownContent}
             dangerouslySetInnerHTML={{ __html: marked(fileContent.content) }}
           />
         ) : (
-          // Render plain text content
-          <pre className={djStyles.fileContent}>
-            {fileContent.content}
+          < pre className="hljs">
+            {/* Removed djStyles.fileContent */}
+            <code>{fileContent.content}</code>
           </pre>
-        )}
-      </div>
+        )
+        }
+      </div >
     );
   };
 
@@ -160,25 +168,15 @@ const Repository = () => {
 
       return (
         <div key={path} className={djStyles.breadcrumbHome}>
-          <button
-
-            onClick={() => router.push(path)}
-          >
-            {decodedSegment}
-          </button>
+          <button onClick={() => router.push(path)}>{decodedSegment}</button>
           {index < pathSegments.length - 1 && " / "}
         </div>
       );
     });
 
     return (
-      <div className={djStyles.breadcrumbContainer} id='breadcrumb'>
-        <button
-
-          onClick={() => router.push("/devjourney")}
-        >
-          Home
-        </button>
+      <div className={djStyles.breadcrumbContainer} id="breadcrumb">
+        <button onClick={() => router.push("/devjourney")}>Home</button>
         {breadcrumbItems.length > 0 && " / "}
         {breadcrumbItems}
       </div>
@@ -200,12 +198,11 @@ const Repository = () => {
   };
 
   return (
-    <div className={djStyles.devjourneyContainer} id='main'>
+    <div className={djStyles.devjourneyContainer} id="main">
       {renderBreadcrumb()}
       {renderGitHubButton()}
       {renderContent()}
       {renderDirMap()}
-
     </div>
   );
 };

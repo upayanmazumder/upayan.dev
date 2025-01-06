@@ -10,9 +10,9 @@
 /* Adjust font size and spacing for smaller screens */
 @media (max-width: 768px) {
     .devjourneyContainer {
-        margin: 0;
+        margin: auto;
         padding: var(--padding-small);
-        font-size: 0.7em;
+        min-width: 90vw;
         max-width: 97vw;
     }
 }
@@ -25,6 +25,10 @@
     align-items: center;
     color: rgba(128, 128, 128, 0.462);
     gap: 0.5em;
+    flex-wrap: wrap;
+    max-width: 100%;
+    text-wrap: wrap;
+    height: max-content;
 }
 
 /* Adjust breadcrumb alignment on smaller screens */
@@ -38,6 +42,7 @@
 
 .breadcrumbContainer button {
     background-color: transparent;
+    box-shadow: none;
     color: gray;
     border: none;
     padding: 0 var(--padding-tiny);
@@ -46,7 +51,7 @@
 
 @media (max-width: 768px) {
     .breadcrumbContainer button {
-        font-size: 1em;
+        font-size: 0.7rem;
         padding: 0;
     }
 }
@@ -124,7 +129,6 @@
 
 @media (max-width: 768px) {
     .contentContainer .fileContent {
-        font-size: 0.6em;
         text-wrap: wrap;
     }
 }

@@ -7,6 +7,7 @@ import { BsFileEarmark, BsFolder, BsGithub } from "react-icons/bs";
 import { marked } from "marked";
 import hljs from "highlight.js";
 import "./styles/github-dark.css";
+import Loader from "../loader/loader";
 
 const Repository = () => {
   const [data, setData] = useState([]);
@@ -116,7 +117,7 @@ const Repository = () => {
   };
 
   const renderDirMap = () => {
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Loader />;
     if (error) return <p>Error: {error}</p>;
     if (data.length === 0) return null;
 

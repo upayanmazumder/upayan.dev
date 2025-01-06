@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signIn, useSession } from "next-auth/react";
 import contactStyles from './contact.module.css';
 import { BsInfoCircle } from 'react-icons/bs';
@@ -7,14 +7,25 @@ const ContactForm = () => {
   const { data: session } = useSession();
 
   const [form, setForm] = useState({
-    name: session?.user?.name || '',
-    email: session?.user?.email || '',
-    imageUrl: session?.user?.image || '',
+    name: '',
+    email: '',
+    imageUrl: '',
     message: 'Hi Upayan, I wanted to say...',
     loading: false,
     successMessage: null,
     error: null,
   });
+
+  useEffect(() => {
+    if (session) {
+      setForm((prevForm) => ({
+        ...prevForm,
+        name: session.user.name || '',
+        email: session.user.email || '',
+        imageUrl: session.user.image || '',
+      }));
+    }
+  }, [session]);
 
   const submitForm = async () => {
     setForm((prevForm) => ({ ...prevForm, error: null, successMessage: null }));

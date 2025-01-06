@@ -37,6 +37,7 @@ const formatElapsedTime = (startTimestamp) => {
 
 const Activity = () => {
   const [guildStatistics, setGuildStatistics] = useState(null);
+  const activityWhitelist = ['Spotify', 'Visual Studio Code'];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,35 +59,35 @@ const Activity = () => {
   }
 
   return (
-    <div class={activityStyles.activities}>
+    <div className={activityStyles.activities}>
       {guildStatistics.map((guild, guildIndex) => (
         <div key={guildIndex}>
-          <div class={activityStyles.status}>
+          <div className={activityStyles.status}>
             {getStatusIcon(guild.discordstatus)} <span>{guild.discordstatus}</span>
           </div>
           <ul>
-            {guild.activities.map((activity, activityIndex) => (
-              <div key={activityIndex} class={activityStyles.activity}>
-                {activity.largeImageURL && (
-                  <img
-                    src={activity.largeImageURL}
-                    alt={activity.largeText}
-
-                  />
-                )}
-                <h3>{activity.name}</h3>
-                <p>{activity.details}</p>
-                <p>{activity.state}</p>
-                <p>
-                  {formatElapsedTime(activity.startTimestamp)}
-                </p>
-              </div>
-            ))}
+            {guild.activities
+              .filter(activity => activityWhitelist.includes(activity.name))
+              .map((activity, activityIndex) => (
+                <div key={activityIndex} className={activityStyles.activity}>
+                  {activity.largeImageURL && (
+                    <img
+                      src={activity.largeImageURL}
+                      alt={activity.largeText}
+                    />
+                  )}
+                  <h3>{activity.name}</h3>
+                  <p>{activity.details}</p>
+                  <p>{activity.state}</p>
+                  <p>
+                    {formatElapsedTime(activity.startTimestamp)}
+                  </p>
+                </div>
+              ))}
           </ul>
         </div>
-      ))
-      }
-    </div >
+      ))}
+    </div>
   );
 };
 

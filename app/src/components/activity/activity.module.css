@@ -61,6 +61,15 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     align-self: center;
     margin: auto;
+    height: 220px;
+}
+
+@media screen and (max-width: 480px) {
+    .activity {
+        width: min-content;
+        height: max-content;
+    }
+
 }
 
 .activity:hover {

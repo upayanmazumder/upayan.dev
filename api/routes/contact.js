@@ -8,23 +8,12 @@ const CONTACT_WEBHOOK_URL = process.env.CONTACT_WEBHOOK_URL;
 
 const router = express.Router();
 
-const cooldowns = new Map();
-const COOLDOWN_PERIOD = 5 * 60 * 1000;
-
 router.post('/', async (req, res) => {
     try {
         const { name, email, longtext, imageUrl } = req.body;
 
         if (!name || !longtext) {
             return res.status(400).json({ error: 'Name and longtext are required' });
-        }
-
-        const now = Date.now();
-        if (email && cooldowns.has(email)) {
-            const lastSubmissionTime = cooldowns.get(email);
-            if (now - lastSubmissionTime < COOLDOWN_PERIOD) {
-                return res.status(429).json({ error: 'Please wait before submitting again' });
-            }
         }
 
         logger.info(`Contact form submitted: Name: ${name}, Email: ${email || 'N/A'}, Message: ${longtext}, Image URL: ${imageUrl || 'N/A'}`);
@@ -47,10 +36,6 @@ router.post('/', async (req, res) => {
                     },
                 ],
             });
-
-            if (email) {
-                cooldowns.set(email, now);
-            }
 
             res.status(200).json({ message: 'Contact information received' });
         } catch (err) {

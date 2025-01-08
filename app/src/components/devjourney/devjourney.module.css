@@ -153,6 +153,8 @@
     width: 100%;
     text-align: left;
     background-color: rgb(57, 55, 55);
+    text-transform: inherit;
+    font-weight: inherit;
 }
 
 .dirMapContainer li button svg {

@@ -22,13 +22,6 @@
     backdrop-filter: blur(20px);
 }
 
-@media (max-width: 768px) {
-    .navbar nav {
-        padding: 0;
-        backdrop-filter: blur(1px);
-    }
-}
-
 .navbar nav ul {
     display: flex;
     flex-direction: row;
@@ -58,16 +51,44 @@
 @media (max-width: 768px) {
     .navbar {
         position: fixed;
-        bottom: 0;
-        top: auto;
+        top: 60vh;
         font-size: 0.6em;
-        background-color: var(--header-background-color);
         padding: 0;
         z-index: 1000;
+        width: fit-content;
+        border-top: 2px solid rgb(87, 87, 87);
+        border-right: 2px solid rgb(87, 87, 87);
+        border-bottom: 2px solid rgb(87, 87, 87);
+        border-radius: 0 12px 12px 0;
+        height: 160px;
+        padding-left: 5px;
+        transition: all 0.5s ease-in-out;
+        background-color: rgb(87, 87, 87);
+    }
+
+    .navbar:hover {
+        padding: 0;
+        background-color: var(--header-background-color);
+    }
+
+    .navbar nav {
+        padding: 0;
+        backdrop-filter: blur(1px);
+        display: none;
+        border-radius: 0 12px 12px 0;
+    }
+
+    .navbar:hover nav {
+        display: block;
+        width: fit-content;
+    }
+
+    .navbar .auth {
+        display: none;
     }
 
     .navbar nav ul {
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-around;
         flex-wrap: nowrap;
     }
@@ -102,12 +123,5 @@
     .navbar li button svg {
         margin-right: 0;
         font-size: 1.2em;
-    }
-}
-
-@media (max-width: 768px) {
-    .navbar .auth {
-        display: none;
-        background-color: red;
     }
 }

@@ -6,15 +6,15 @@
 
 :root {
   --body-background-color: black;
-  --header-background-color: #333;
-  --footer-background-color: #333;
+  --header-background-color: var(--body-background-color);
+  --footer-background-color: #1f1f1f34;
   --sidebar-background-color: #333;
 
   --screen-horizontal-margin: 200px;
   --screen-vertical-margin: calc(var(--screen-horizontal-margin)/4);
 
-  --primary-color: #00BFFF;
-  --secondary-color: #9b59b6;
+  --primary-color: #0f73f5;
+  --secondary-color: #4278ff;
   --tertiary-color: #34495e;
 
   --text-color: #d3d3d3;
@@ -106,6 +106,7 @@ h6 {
 
 a {
   color: var(--text-link-color);
+  text-decoration: none;
 }
 
 a:hover {
@@ -114,4 +115,47 @@ a:hover {
 
 ul {
   list-style: none;
+}
+
+button {
+  border-radius: 50dvh;
+  background-color: rgb(36, 36, 36);
+  color: white;
+  border: none;
+  padding: var(--padding-small) var(--padding-medium);
+  display: flex;
+}
+
+button:hover {
+  background-color: rgb(22, 22, 22);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.24);
+}
+
+button svg {
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444444;
+  border-radius: 4px;
+  border: 2px solid #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666666;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #888888;
 }

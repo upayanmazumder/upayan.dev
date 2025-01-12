@@ -56,7 +56,6 @@
   --transition-huge: 1.6s;
 }
 
-
 @media (max-width: 1024px) {
   :root {
     --screen-horizontal-margin: 150px;
@@ -79,6 +78,13 @@
   transition: all var(--transition-small) ease-in-out;
 }
 
+html {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 body {
   background: var(--body-background-color);
   color: var(--text-color);
@@ -93,6 +99,8 @@ body {
 main {
   margin: var(--screen-vertical-margin) var(--screen-horizontal-margin);
   min-height: 50vh;
+  display: flex;
+  flex-direction: column;
 }
 
 h1,

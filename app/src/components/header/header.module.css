@@ -1,6 +1,0 @@
-.header {
-    background-color: var(--header-background-color);
-    padding: var(--padding-small) var(--screen-horizontal-margin);
-    top: 0;
-    width: 100%;
-}

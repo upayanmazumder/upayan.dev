@@ -20,6 +20,11 @@
         "textColor": "#FFFFFF"
     },
     {
+        "name": "C",
+        "backgroundColor": "#00599c",
+        "textColor": "#FFFFFF"
+    },
+    {
         "name": "C++",
         "backgroundColor": "#00599C",
         "textColor": "#FFFFFF"

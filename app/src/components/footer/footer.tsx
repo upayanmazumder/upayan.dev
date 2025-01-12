@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
                 <div id="footer-resources" className={footerStyles.column}>
                     <Link href="#footer-resources"><h3>Resources</h3></Link>
                     <ul>
-                        <li><a href="https://github.com/upayanmazumder/upayan.dev">Source Code</a></li>
+                        <li><a href="https://github.com/upayanmazumder/upayan.dev" target="_blank">Source Code</a></li>
                         <li><a href="/p/privacy-policy">Privacy Policy</a></li>
                         <li><a href="/p/terms-of-service">Terms of Service</a></li>
                     </ul>
@@ -33,17 +33,17 @@ const Footer: React.FC = () => {
                 <div id="footer-companies" className={footerStyles.column}>
                     <Link href="#footer-companies"><h3>Companies</h3></Link>
                     <ul>
-                        <li><a href="https://bbn.one">BBN</a></li>
-                        <li><a href="https://eranodes.com">EraNodes</a></li>
-                        <li><a href="https://purbyte.com">Purbyte</a></li>
+                        <li><a href="https://bbn.one" target="_blank">BBN</a></li>
+                        <li><a href="https://eranodes.com" target="_blank">EraNodes</a></li>
+                        <li><a href="https://purbyte.com" target="_blank">Purbyte</a></li>
                     </ul>
                 </div>
                 <div id="footer-projects" className={footerStyles.column}>
                     <Link href="#footer-projects"><h3>Projects</h3></Link>
                     <ul>
-                        <li><a href="https://www.boardly.in/">Boardly</a></li>
-                        <li><a href="https://github.com/upayanmazumder/Collaborative-Article-Sharing">Collaborative Article Sharing</a></li>
-                        <li><a href="https://github.com/upayanmazumder/Status-Page">Status Page</a></li>
+                        <li><a href="https://www.boardly.in/" target="_blank">Boardly</a></li>
+                        <li><a href="https://github.com/upayanmazumder/Collaborative-Article-Sharing" target="_blank">Collaborative Article Sharing</a></li>
+                        <li><a href="https://github.com/upayanmazumder/Status-Page" target="_blank">Status Page</a></li>
                     </ul>
                 </div>
             </div>

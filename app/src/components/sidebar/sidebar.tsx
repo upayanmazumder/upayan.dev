@@ -1,13 +1,13 @@
 import React from 'react';
 import sidebarStyles from "./sidebar.module.css";
 import Link from 'next/link';
-import { BsHouse, BsLayers, BsPersonVcard, BsPatchCheck, BsCodeSlash } from "react-icons/bs"
+import { BsHouse, BsLayers, BsPersonVcard, BsPatchCheck, BsCodeSlash, BsList } from "react-icons/bs"
 
 const Sidebar: React.FC = () => {
     return (
         <aside className={sidebarStyles.sidebar}>
             <button aria-label="Toggle Sidebar" className={sidebarStyles.hamburger}>
-                To
+                <BsList />
             </button>
             <nav>
                 <ul>

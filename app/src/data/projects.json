@@ -1,0 +1,63 @@
+[
+  {
+    "name": "Boardly",
+    "icon": "https://boardly.in/favicon.ico",
+    "description": "A one stop solution for board exams!",
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://boardly.in"
+      }
+    ]
+  },
+  {
+    "name": "Collaborative Article Sharing",
+    "icon": "https://cas.upayan.dev/favicon.ico",
+    "description": "A collaborative article-sharing system designed for seamless content exchange and engagement.",
+    "links": [
+      {
+        "name": "GitHub Repository",
+        "url": "https://github.com/upayanmazumder/Collaborative-Article-Sharing"
+      },
+      {
+        "name": "Website",
+        "url": "https://cas.upayan.dev"
+      },
+      {
+        "name": "API Documentation",
+        "url": "https://api.cas.upayan.dev"
+      }
+    ],
+    "packageLinks": [
+      {
+        "name": "PyPI Package",
+        "url": "https://pypi.org/project/collaborative-article-sharing/"
+      },
+      {
+        "name": "Docker Image",
+        "url": "https://github.com/upayanmazumder/Collaborative-Article-Sharing/pkgs/container/cas-api"
+      }
+    ]
+  },
+  {
+    "name": "DevJourney",
+    "icon": "https://upayan.dev/upayan.svg",
+    "description": "My coding journey!",
+    "links": [
+      {
+        "name": "GitHub Repository",
+        "url": "https://github.com/upayanmazumder/DevJourney"
+      },
+      {
+        "name": "Website",
+        "url": "https://upayan.dev/devjourney"
+      }
+    ],
+    "packageLinks": [
+      {
+        "name": "Docker Image",
+        "url": "https://github.com/upayanmazumder/DevJourney/pkgs/container/devjourney"
+      }
+    ]
+  }
+]

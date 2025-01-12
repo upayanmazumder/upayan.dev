@@ -1,7 +1,12 @@
+"use client"
+
 import React from 'react';
 import heroStyles from "./hero.module.css";
 import Image from "next/image";
 import technologies from "../../data/technologies.json";
+import officialLinks from "../../data/links.json";
+
+const whitelist = ["IIT-Madras", "Devfolio", "Leetcode", "Microsoft Learn", "Gravatar"];
 
 const Hero: React.FC = () => {
     return (
@@ -15,6 +20,15 @@ const Hero: React.FC = () => {
                         </li>
                     ))}
                 </ul>
+            </ul>
+            <ul className={heroStyles.officialLinks}>
+                {officialLinks
+                    .filter(link => whitelist.includes(link.name))
+                    .map((link, index) => (
+                        <button key={index} onClick={() => window.open(link.url, "_blank", "noopener")} style={{ color: link.textColor, backgroundColor: link.backgroundColor }} className={heroStyles.officialLink}>
+                            {link.name}
+                        </button>
+                    ))}
             </ul>
         </div>
     );

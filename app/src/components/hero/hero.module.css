@@ -1,6 +1,7 @@
 .hero {
     display: flex;
     flex-direction: column;
+    height: 100vh;
 }
 
 .hero img {
@@ -13,6 +14,7 @@
     justify-content: center;
     align-items: center;
     padding: 1rem;
+    vertical-align: middle;
 }
 
 .technologies {
@@ -28,4 +30,11 @@
     padding: var(--padding-tiny) var(--padding-small);
     margin: var(--margin-tiny);
     border-radius: var(--border-radius-tiny);
+}
+
+.officialLinks {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--margin-medium);
 }

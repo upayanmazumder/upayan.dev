@@ -6,11 +6,26 @@
     align-items: center;
     height: 100vh;
     position: fixed;
+    z-index: 1000;
 }
 
 .hamburger {
     width: fit-content;
     display: none;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        background-color: var(--sidebar-background-color);
+        justify-content: space-around;
+        width: 55px;
+        padding: var(--padding-small);
+        backdrop-filter: blur(4px);
+    }
+
+    .hamburger {
+        display: block;
+    }
 }
 
 .sidebar nav a {
@@ -38,11 +53,23 @@
     border-radius: 10dvh 0 0 10dvh;
 }
 
+@media (max-width: 768px) {
+    .sidebar nav ul li:hover svg {
+        border-radius: 50%;
+    }
+}
+
 .sidebar nav ul li span {
     color: transparent;
     margin-left: 5px;
     padding: var(--padding-tiny) var(--padding-small) var(--padding-tiny) var(--padding-tiny);
     border-radius: 0 10dvh 10dvh 0;
+}
+
+@media (max-width: 768px) {
+    .sidebar nav ul li span {
+        display: none;
+    }
 }
 
 .sidebar nav ul li:hover span {

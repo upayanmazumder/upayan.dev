@@ -55,4 +55,5 @@
     flex-direction: row;
     justify-content: center;
     gap: var(--margin-medium);
+    flex-wrap: wrap;
 }

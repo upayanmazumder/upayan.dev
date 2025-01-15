@@ -132,6 +132,7 @@ button {
   border: none;
   padding: var(--padding-small) var(--padding-medium);
   display: flex;
+  align-items: center;
 }
 
 button:hover {

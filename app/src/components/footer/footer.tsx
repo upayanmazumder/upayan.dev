@@ -26,8 +26,8 @@ const Footer: React.FC = () => {
                     <Link href="#footer-resources"><h3>Resources</h3></Link>
                     <ul>
                         <li><a href="https://github.com/upayanmazumder/upayan.dev" target="_blank">Source Code</a></li>
-                        <li><a href="/p/privacy-policy">Privacy Policy</a></li>
-                        <li><a href="/p/terms-of-service">Terms of Service</a></li>
+                        <li><Link href="/p/privacy-policy">Privacy Policy</Link></li>
+                        <li><Link href="/p/terms-of-service">Terms of Service</Link></li>
                     </ul>
                 </div>
                 <div id="footer-companies" className={footerStyles.column}>

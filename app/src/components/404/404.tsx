@@ -6,7 +6,7 @@ export default function Home() {
         <main>
             <h1>404</h1>
             <p>The page you are looking for does not exist!</p>
-            <Image src={img404} style={{ width: '100%', height: 'auto' }} />
+            <Image src={img404} style={{ width: '100%', height: 'auto' }} alt="Not Found Image" />
         </main>
     );
 }

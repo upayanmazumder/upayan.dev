@@ -11,12 +11,12 @@
 .hero {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     animation: fadeIn 2s ease-in-out;
 }
 
 .hero img {
-    width: 100%;
+    width: 50%;
     height: auto;
 }
 
@@ -26,6 +26,13 @@
     align-items: center;
     padding: 1rem;
     vertical-align: middle;
+}
+
+
+@media (max-width: 1024px) {
+    .branding {
+        flex-direction: column;
+    }
 }
 
 .technologies {

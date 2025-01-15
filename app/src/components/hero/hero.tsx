@@ -12,7 +12,7 @@ const Hero: React.FC = () => {
     return (
         <div className={heroStyles.hero}>
             <ul className={heroStyles.branding}>
-                <Image src="/upayan-transparent.svg" alt="logo" width={200} height={200} />
+                <Image src="/upayan-transparent.svg" alt="logo" width={100} height={100} />
                 <ul className={heroStyles.technologies}>
                     {technologies.map((technology, index) => (
                         <li key={index} style={{ color: technology.textColor, backgroundColor: technology.backgroundColor }} className={heroStyles.technology}>

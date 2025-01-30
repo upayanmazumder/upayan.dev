@@ -1,4 +1,4 @@
-const CACHE_NAME = "UPAYAN-V3.1.4";
+const CACHE_NAME = "UPAYAN-V4.0.0";
 
 async function dynamicCaching(request) {
     const cache = await caches.open(CACHE_NAME);

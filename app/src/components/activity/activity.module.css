@@ -1,0 +1,125 @@
+.wrapper {
+    max-width: 800px;
+    margin: 1rem auto;
+    font-family: 'Segoe UI', system-ui;
+}
+
+.activity {
+    background: linear-gradient(145deg, #0a192f, #020c1b);
+    border: 1px solid rgba(33, 150, 243, 0.3);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(2, 12, 27, 0.3);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    min-width: 20vw;
+}
+
+.activity::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, #2196f3, transparent);
+    animation: shimmer 4s infinite linear;
+    opacity: 0.1;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.status {
+    color: #64ffda;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 8px rgba(100, 255, 218, 0.3);
+}
+
+.activity h3 {
+    color: #ccd6f6;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.activity p {
+    color: #8892b0;
+    margin: 0.3rem 0;
+    font-size: 0.9rem;
+}
+
+.activity img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin: 0.5rem;
+    border: 2px solid #2196f3;
+    box-shadow: 0 0 12px rgba(33, 150, 243, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.activity:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(2, 12, 27, 0.5);
+}
+
+/* Pulsing animation for active elements */
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(33, 150, 243, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(33, 150, 243, 0);
+    }
+}
+
+.activity:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 15px;
+    animation: pulse-glow 2s infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .wrapper {
+        width: 90%;
+        margin: 1rem auto;
+    }
+
+    .activity {
+        padding: 1rem;
+    }
+
+    .activity h3 {
+        font-size: 1rem;
+    }
+
+    .activity p {
+        font-size: 0.8rem;
+    }
+
+    .activity img {
+        width: 40px;
+        height: 40px;
+    }
+}

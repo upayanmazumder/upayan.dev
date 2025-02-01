@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import React, { useEffect, useState } from 'react';
@@ -80,7 +81,7 @@ const ActivityComponent: React.FC = () => {
                             <p>{formatElapsedTime(elapsedTimes[activity.name] || 0)}</p>
                             {activity.endTimestamp && <p>End: {new Date(activity.endTimestamp).toLocaleString()}</p>}
                             {activity.largeImageURL && <img src={activity.largeImageURL} alt={activity.largeText} title={activity.largeText} />}
-                            {activity.smallImageURL && <img src={activity.smallImageURL} alt={activity.smallText} title={activity.smallText} />}
+                            {activity.smallImageURL && <img src={activity.smallImageURL} alt={activity.smallText || undefined} title={activity.smallText || undefined} />}
                         </div>
                     ))}
                 </div>

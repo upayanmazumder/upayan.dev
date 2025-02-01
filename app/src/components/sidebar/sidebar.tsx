@@ -20,7 +20,7 @@ const Sidebar: React.FC = () => {
                     {sidebarData.map((item, index) => (
                         <li key={index}>
                             <Link href={item.href}>
-                                {iconMap[item.icon]}
+                                {iconMap[item.icon as keyof typeof iconMap]}
                                 <span>{item.label}</span>
                             </Link>
                         </li>

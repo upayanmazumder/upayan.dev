@@ -65,7 +65,11 @@ const ActivityComponent: React.FC = () => {
         const hrs = Math.floor(seconds / 3600);
         const mins = Math.floor((seconds % 3600) / 60);
         const secs = seconds % 60;
-        return `${hrs}h ${mins}m ${secs}s`;
+        const formattedTime = [];
+        if (hrs > 0) formattedTime.push(`${hrs}h`);
+        if (mins > 0) formattedTime.push(`${mins}m`);
+        if (secs > 0) formattedTime.push(`${secs}s`);
+        return formattedTime.join(' ');
     };
 
     return (

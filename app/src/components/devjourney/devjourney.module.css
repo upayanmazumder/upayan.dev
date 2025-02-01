@@ -66,6 +66,12 @@
 
 .githubButtonContainer button {
     background-color: black;
+    gap: 10px;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.435);
+}
+
+.githubButtonContainer button:hover {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.735);
 }
 
 @media (max-width: 768px) {

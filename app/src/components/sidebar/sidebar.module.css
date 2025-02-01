@@ -9,23 +9,11 @@
     z-index: 1000;
 }
 
-.hamburger {
-    width: fit-content;
-    display: none;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 961px) {
     .sidebar {
-        background-color: var(--sidebar-background-color);
-        justify-content: space-around;
-        width: 55px;
-        padding: var(--padding-small);
-        backdrop-filter: blur(4px);
+        display: none;
     }
-
-    .hamburger {
-        display: block;
-    }
+    
 }
 
 .sidebar nav a {

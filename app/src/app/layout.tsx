@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "../components/sidebar/sidebar";
+import Nav from "../components/nav/nav";
 import Footer from "../components/footer/footer";
 
 const geistSans = Geist({
@@ -28,6 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Sidebar />
+        <Nav />
         {children}
         <Footer />
       </body>

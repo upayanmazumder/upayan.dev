@@ -1,12 +1,12 @@
 .container {
     --bg-black: #000000;
-    --bg-navy: #0a192f;
-    --primary-blue: #3697cf;
+    --bg-navy: #1f2b3d42;
+    --primary-blue: #1e90ff;
     --accent-blue: #112240;
-    --text-primary: #ccd6f6;
-    --text-secondary: #8892b0;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
     --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-  
+    
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;

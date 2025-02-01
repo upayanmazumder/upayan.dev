@@ -15,7 +15,6 @@
     transition: all 0.3s ease-in-out;
     position: relative;
     overflow: hidden;
-    min-width: 20vw;
 }
 
 .activity::before {

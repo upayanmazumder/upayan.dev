@@ -1,8 +1,7 @@
 .devjourneyContainer {
-    background-color: var(--card-background-color);
     backdrop-filter: blur(15px);
-    margin: var(--margin-medium) var(--margin-large);
-    padding: calc(2 * var(--padding-medium)) calc(2 * var(--padding-large));
+    margin: var(--margin-medium) var(--margin-medium);
+    padding: calc(2 * var(--padding-medium)) var(--padding-medium);
     border-radius: var(--border-radius-large);
     font-size: 0.8em;
 }
@@ -67,6 +66,12 @@
 
 .githubButtonContainer button {
     background-color: black;
+    gap: 10px;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.435);
+}
+
+.githubButtonContainer button:hover {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.735);
 }
 
 @media (max-width: 768px) {
@@ -136,6 +141,9 @@
 .dirMapContainer {
     width: 100%;
     padding: var(--padding-small) var(--padding-medium);
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Adjust directory map spacing on smaller screens */
@@ -152,9 +160,14 @@
 .dirMapContainer li button {
     width: 100%;
     text-align: left;
-    background-color: rgb(57, 55, 55);
+    background-color: 9c9c9c38;
     text-transform: inherit;
     font-weight: inherit;
+}
+
+.dirMapContainer li button:hover {
+    box-shadow: none;
+    background-color: #c9c8c838;
 }
 
 .dirMapContainer li button svg {

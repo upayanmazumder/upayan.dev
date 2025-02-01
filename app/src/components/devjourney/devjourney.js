@@ -14,7 +14,7 @@ const Repository = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [fileContent, setFileContent] = useState(null);
-  const [readmeContent, setReadmeContent] = useState(null);
+  const [setReadmeContent] = useState(null);
   const pathname = usePathname();
   const router = useRouter();
   const repoOwner = "upayanmazumder";

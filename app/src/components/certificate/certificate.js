@@ -1,6 +1,6 @@
 import React from "react";
 import certificateStyles from "./certificate.module.css";
-import { createSlug, certificates } from "../../shared/certificatesData";
+import { createSlug, certificates } from "../../data/certificates";
 import Four04 from "../../components/404/404";
 
 const CertificateDetail = ({ slug }) => {

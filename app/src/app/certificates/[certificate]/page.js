@@ -4,17 +4,13 @@ import React from "react";
 import Certificate from "@/components/certificate/certificate";
 import { useParams } from "next/navigation";
 
-import styles from "../../page.module.css";
-
 const CertificatePage = () => {
     const { certificate: slug } = useParams();
 
     return (
-        <div className={styles.page} id="image">
-            <main className={styles.main}>
-                <Certificate slug={slug} />
-            </main>
-        </div>
+        <main id="image">
+            <Certificate slug={slug} />
+        </main>
     );
 };
 

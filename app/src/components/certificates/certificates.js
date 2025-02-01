@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import certificateStyles from "./certificates.module.css";
-import { createSlug, certificates } from "../../shared/certificatesData";
+import { createSlug, certificates } from "../../data/certificates";
 import { BsFunnel, BsFunnelFill } from "react-icons/bs";
 
 const Certificates = () => {

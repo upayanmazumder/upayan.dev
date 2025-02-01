@@ -1,0 +1,27 @@
+[
+    {
+        "href": "/",
+        "icon": "BsHouse",
+        "label": "Home"
+    },
+    {
+        "href": "/#projects",
+        "icon": "BsLayers",
+        "label": "Projects"
+    },
+    {
+        "href": "/#about-me",
+        "icon": "BsPersonVcard",
+        "label": "About me"
+    },
+    {
+        "href": "/certificates",
+        "icon": "BsPatchCheck",
+        "label": "Certificates"
+    },
+    {
+        "href": "/devjourney",
+        "icon": "BsCodeSlash",
+        "label": "DevJourney"
+    }
+]

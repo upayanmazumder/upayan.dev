@@ -1,259 +1,170 @@
 @font-face {
   font-family: 'RedHatDisplay';
-  src: url('./fonts/RedHatDisplay-VariableFont_wght.ttf') format('truetype');
-  font-weight: 100 900;
-  font-style: normal;
+  src: url('../../public/fonts/RedHatDisplay-VariableFont_wght.ttf') format(' truetype');
+
 }
 
 :root {
-  --background: url('/background/bg8.svg') no-repeat center center fixed;
+  --body-background-color: black;
+  --header-background-color: var(--body-background-color);
+  --footer-background-color: #1f1f1f34;
+  --sidebar-background-color: #29292980;
 
-  --header-background-color: rgba(0, 0, 0, 0.164);
-  --header-color: white;
-  --footer-background-color: transparent;
-  --footer-color: gray;
+  --screen-horizontal-margin: 200px;
+  --screen-vertical-margin: calc(var(--screen-horizontal-margin)/4);
 
-  --card-background-color: rgba(104, 104, 104, 0.202);
+  --primary-color: #0f73f5;
+  --secondary-color: #4278ff;
+  --tertiary-color: #34495e;
 
-  --primary-color: #1356ad;
-  --primary-hover-color: #17a2e0;
-  --secondary-color: #f85959;
-
-  --link-text-color: var(--theme-color);
-  --link-text-hover-color: #2665b8;
-
-  --border-radius-tiny: 5px;
-  --border-radius-small: 15px;
-  --border-radius-medium: 25px;
-  --border-radius-large: 30px;
+  --text-color: #d3d3d3;
+  --text-link-color: #1E90FF;
+  --text-link-hover-color: #1C86EE;
 
   --padding-tiny: 5px;
-  --padding-small: 15px;
+  --padding-small: 10px;
   --padding-medium: 20px;
-  --padding-large: 30px;
+  --padding-large: 40px;
+  --padding-huge: 80px;
 
-  --margin-small: 15px;
-  --margin-medium: 25px;
+  --margin-tiny: 5px;
+  --margin-small: 10px;
+  --margin-medium: 20px;
   --margin-large: 40px;
+  --margin-huge: 80px;
+
+  --border-radius-tiny: 5px;
+  --border-radius-small: 10px;
+  --border-radius-medium: 20px;
+  --border-radius-large: 40px;
+  --border-radius-huge: 80px;
+
+  --font-size-tiny: 10px;
+  --font-size-small: 12px;
+  --font-size-medium: 16px;
+  --font-size-large: 20px;
+  --font-size-huge: 24px;
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+
+  --transition-tiny: 0.1s;
+  --transition-small: 0.2s;
+  --transition-medium: 0.4s;
+  --transition-large: 0.8s;
+  --transition-huge: 1.6s;
 }
 
-html,
-body {
-  max-width: 100vw;
-  font-size: 24px;
-  scroll-behavior: smooth;
-}
-
-body {
-  padding: 0;
-  margin: 0;
-  line-height: inherit;
-  background-size: cover;
-  background-attachment: fixed;
-  position: relative;
-  z-index: 0;
-  background-position: center center;
-  font-family: 'RedHatDisplay', sans-serif;
-}
-
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--background);
-  z-index: -1;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+@media (max-width: 1024px) {
+  :root {
+    --screen-horizontal-margin: 150px;
   }
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-/* HEADINGS ------------------------------------- */
-h1,
-h2,
-h3 {
-  color: white;
-  margin: 0;
-}
-
-h1 {
-  font-size: 3.2rem;
-  text-align: center;
-}
-
-h1 .highlight,
-h3 .highlight {
-  color: var(--qwik-light-blue);
-}
-
-h2 {
-  font-weight: 400;
-  font-size: 2.4rem;
-}
-
-h2 .highlight {
-  font-weight: 700;
-}
-
-h3 {
-  font-size: 2rem;
-}
-
-@media screen and (max-width: 768px) {
-  h1 {
-    font-size: 30px;
-  }
-
-  h2 {
-    font-size: 3.4rem;
-  }
-
-  h3 {
-    font-size: 3rem;
-  }
-}
-
-/* TAGS ----------------------------------------- */
-a {
-  color: var(--link-text-color) !important;
-  transition: color 0.2s ease-in-out;
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--link-text-hover-color) !important;
-}
-
-code {
-  background: rgba(230, 230, 230, 0.3);
-  border-radius: 4px;
-  padding: 2px 6px;
-}
-
-ul {
-  margin: 0;
-  padding-left: 20px;
-  list-style: none;
-}
-
-/* CONTAINER ------------------------------------ */
-.container {
-  margin: 0 auto;
-  padding: 30px 40px;
-}
-
-.container.container-purple {
-  background: var(--qwik-light-purple);
-}
-
-.container.container-dark {
-  background: var(--qwik-dark-background);
-  color: var(--qwik-dark-text);
-}
-
-.container.container-center {
-  text-align: center;
-}
-
-.container.container-spacing-xl {
-  padding: 50px 40px;
-}
-
-@media screen and (min-width: 768px) {
-  .container {
-    padding: 60px 80px;
-  }
-
-  .container.container-spacing-xl {
-    padding: 100px 60px;
-  }
-
-  .container.container-flex {
-    display: flex;
-    justify-content: center;
-    gap: 60px;
-  }
-}
-
-button {
-  display: inline-block;
-  width: max-content;
-  height: min-content;
-  padding: 8px 16px;
-  font-size: 1.1em;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: #ffffff;
-  background-color: #171717a2;
-  border: none;
-  border-radius: var(--border-radius-tiny);
-  cursor: pointer;
-  transition: all 0.4s;
-  outline: none;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  margin: 5px;
-  text-align: center;
-  vertical-align: middle;
-  align-items: center;
-  align-content: center;
-}
-
-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 1px 0 -2px var(--secondary-color),
-    0 5px 0 -4px #39a2db,
-    0 6px 10px -3px #39a2db;
-}
-
-button:focus {
-  box-shadow: 0 0 0 3px rgba(136, 136, 136, 0.233),
-    0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-button:active {
-  transition: all 0.2s;
-  transform: translateY(-5px);
-  box-shadow: 0 2px 0 -2px var(--secondary-color),
-    0 8px 0 -4px #39a2db,
-    0 12px 10px -3px #39a2db;
-  background-color: #1c1c2a;
 }
 
 @media (max-width: 768px) {
-  button {
-    width: auto;
-    padding: 10px 20px;
-    font-size: 0.9rem;
+  :root {
+    --screen-horizontal-margin: 50px;
   }
 }
 
 @media (max-width: 480px) {
-  button {
-    width: auto;
-    padding: 8px 16px;
-    font-size: 0.8rem;
+  :root {
+    --screen-horizontal-margin: 15px;
   }
 }
 
-button:focus-visible {
-  outline: 2px solid #1e90ff;
-  outline-offset: 2px;
+* {
+  transition: all var(--transition-small) ease-in-out;
 }
 
-/* SCROLLBAR STYLES ----------------------------- */
+html {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--body-background-color);
+  color: var(--text-color);
+  font-size: var(--font-size-medium);
+  font-weight: var(--font-weight-normal);
+  transition: var(--body-background-color);
+  padding: 0;
+  margin: 0;
+  font-family: "Red Hat Display", "din alternate", system-ui, optima, avenir;
+}
+
+main {
+  margin: var(--screen-vertical-margin) var(--screen-horizontal-margin);
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--font-weight-bold);
+}
+
+a {
+  color: var(--text-link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--text-link-hover-color);
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  border-radius: 50dvh;
+  background-color: rgb(36, 36, 36);
+  color: white;
+  border: none;
+  padding: var(--padding-small) var(--padding-medium);
+  display: flex;
+  align-items: center;
+}
+
+button:hover {
+  background-color: rgb(22, 22, 22);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.24);
+}
+
+button svg {
+  margin: 0;
+  padding: 0;
+}
+
 ::-webkit-scrollbar {
-  display: none;
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444444;
+  border-radius: 4px;
+  border: 2px solid #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666666;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #888888;
 }

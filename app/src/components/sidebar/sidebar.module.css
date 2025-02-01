@@ -1,0 +1,67 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    max-width: var(--screen-horizontal-margin);
+    align-items: center;
+    height: 100vh;
+    position: fixed;
+    z-index: 1000;
+}
+
+@media (max-width: 961px) {
+    .sidebar {
+        display: none;
+    }
+    
+}
+
+.sidebar nav a {
+    color: var(--text-color);
+    display: flex;
+}
+
+.sidebar nav ul {
+    padding: var(--padding-tiny) var(--padding-small);
+}
+
+.sidebar nav ul li {
+    margin-bottom: var(--margin-small);
+    display: flex;
+}
+
+.sidebar nav ul li svg {
+    padding: var(--padding-small);
+    background-color: rgba(31, 31, 31, 0.342);
+    border-radius: 10dvh;
+}
+
+.sidebar nav ul li:hover svg {
+    background-color: var(--sidebar-background-color);
+    border-radius: 10dvh 0 0 10dvh;
+}
+
+@media (max-width: 768px) {
+    .sidebar nav ul li:hover svg {
+        border-radius: 50%;
+    }
+}
+
+.sidebar nav ul li span {
+    color: transparent;
+    margin-left: 5px;
+    padding: var(--padding-tiny) var(--padding-small) var(--padding-tiny) var(--padding-tiny);
+    border-radius: 0 10dvh 10dvh 0;
+}
+
+@media (max-width: 768px) {
+    .sidebar nav ul li span {
+        display: none;
+    }
+}
+
+.sidebar nav ul li:hover span {
+    color: inherit;
+    background-color: rgba(156, 156, 156, 0.428);
+    transition: all var(--transition-medium) ease-in-out;
+}

@@ -1,111 +1,117 @@
 .container {
-    padding: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: var(--card-background-color);
-    border-radius: var(--border-radius-medium);
-}
-
-.heading {
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: 600;
-    margin-bottom: 40px;
-    color: #f5f5f5;
-}
-
-.projectsWrapper {
+    --bg-black: #000000;
+    --bg-navy: #1f2b3d42;
+    --primary-blue: #1e90ff;
+    --accent-blue: #112240;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    background-color: var(--bg-black);
+  }
+  
+  .project {
+    background: var(--bg-navy);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: var(--transition);
+    animation: fadeInUp 0.8s ease-out;
+    box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+  }
+  
+  .project:hover {
+    transform: translateY(-7px);
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .project img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+    object-fit: contain;
+    filter: grayscale(20%);
+    transition: var(--transition);
+  }
+  
+  .project:hover img {
+    filter: grayscale(0%);
+    transform: rotate(3deg);
+  }
+  
+  .project h2 {
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  .project p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  
+  .links {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.projectCard {
-    background-color: rgba(50, 50, 50, 0.8);
-    border-radius: var(--border-radius-small);
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-}
-
-.projectCard:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-}
-
-.iconWrapper {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.icon {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
-.projectName {
-    font-size: 1.2em;
-    font-weight: 600;
-    margin: 10px 0;
-    text-align: center;
-    color: #f5f5f5;
-}
-
-.description {
-    font-size: 0.9em;
-    color: #c0c0c0;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.linksSection,
-.packagesSection {
-    display: flex;
+    gap: 1rem;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
-    font-size: 0.8em;
-}
-
-.container button {
-    font-size: 0.8em;
-    position: relative;
-    overflow: hidden;
-    height: 3em;
-    padding: 0 2em;
-    border-radius: 1.5em;
-    background: var(--primary-color);
-    background-size: 400%;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-}
-
-.container button:hover::before {
-    transform: scaleX(1);
-}
-
-.container button-content {
-    position: relative;
-    z-index: 1;
-}
-
-.container button::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: scaleX(0);
-    transform-origin: 0 50%;
-    width: 100%;
-    height: inherit;
-    border-radius: inherit;
-    background: linear-gradient(82.3deg,
-            transparent 10.8%,
-            rgba(255, 255, 255, 0.113) 94.3%);
-    transition: all 0.475s;
-}
+  }
+  
+  .link {
+    color: var(--primary-blue);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--primary-blue);
+    border-radius: 4px;
+    transition: var(--transition);
+  }
+  
+  .link:hover {
+    background: rgba(100, 255, 218, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .packageLinks {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(100, 255, 218, 0.1);
+    display: flex;
+    gap: 15px;
+  }
+  
+  .packageLink {
+    display: inline-block;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: var(--transition);
+  }
+  
+  .packageLink:hover {
+    color: var(--primary-blue);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      grid-template-columns: 1fr;
+      padding: 1rem;
+    }
+    
+    .project {
+      margin-bottom: 1rem;
+    }
+  }

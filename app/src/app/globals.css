@@ -98,7 +98,7 @@ body {
 
 main {
   margin: var(--screen-vertical-margin) var(--screen-horizontal-margin);
-  min-height: 50vh;
+  min-height: 70vh;
   display: flex;
   flex-direction: column;
 }

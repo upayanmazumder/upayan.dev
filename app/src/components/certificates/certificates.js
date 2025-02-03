@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import certificateStyles from "./certificates.module.css";
 import { createSlug, certificates } from "../../data/certificates";
 import { BsFunnel, BsFunnelFill } from "react-icons/bs";
@@ -14,7 +15,7 @@ const Certificates = () => {
         .reduce((acc, tag) => {
             acc[tag] = (acc[tag] || 0) + 1;
             return acc;
-        }, {}); // Removed TypeScript type annotation
+        }, {});
 
     // Filter tags to include only those that occur at least twice
     const validTags = Object.keys(tagOccurrences).filter((tag) => tagOccurrences[tag] >= 2);
@@ -52,10 +53,12 @@ const Certificates = () => {
                 {filteredCertificates.map((certificate, index) => (
                     <div key={index} className={certificateStyles.certificateCard}>
                         <a href={`/certificates/${createSlug(certificate.title)}#image`}>
-                            <img
+                            <Image
                                 src={certificate.path}
                                 alt={`${certificate.title} certificate`}
                                 className={certificateStyles.certificateImage}
+                                width={500}
+                                height={300}
                             />
                         </a>
                         <div className={certificateStyles.cardContent}>

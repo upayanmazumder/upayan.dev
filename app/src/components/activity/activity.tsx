@@ -72,6 +72,18 @@ const ActivityComponent: React.FC = () => {
         return formattedTime.join(' ');
     };
 
+    const calculateProgress = (startTimestamp: string, endTimestamp: string | null) => {
+        const start = new Date(startTimestamp).getTime();
+        const end = endTimestamp ? new Date(endTimestamp).getTime() : null;
+        const now = Date.now();
+
+        if (!end) return 0; // If there's no end time, return 0 progress
+
+        const total = end - start;
+        const elapsed = now - start;
+        return Math.min(100, Math.max(0, (elapsed / total) * 100));
+    };
+
     return (
         <div className={activityStyles.wrapper}>
             {activities.map((guildActivity, guildIndex) => (
@@ -83,7 +95,14 @@ const ActivityComponent: React.FC = () => {
                             <p>{activity.details}</p>
                             <p>{activity.state}</p>
                             <p>{formatElapsedTime(elapsedTimes[activity.name] || 0)}</p>
-                            {activity.endTimestamp && <p>End: {new Date(activity.endTimestamp).toLocaleString()}</p>}
+                            {activity.endTimestamp && (
+                                <div className={activityStyles.progressBar}>
+                                    <div 
+                                        className={activityStyles.progressFill}
+                                        style={{width: `${calculateProgress(activity.startTimestamp, activity.endTimestamp)}%`}}
+                                    ></div>
+                                </div>
+                            )}
                             {activity.largeImageURL && <img src={activity.largeImageURL} alt={activity.largeText} title={activity.largeText} />}
                             {activity.smallImageURL && <img src={activity.smallImageURL} alt={activity.smallText || undefined} title={activity.smallText || undefined} />}
                         </div>

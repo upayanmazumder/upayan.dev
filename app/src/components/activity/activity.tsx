@@ -87,10 +87,10 @@ const ActivityComponent: React.FC = () => {
     return (
         <div className={activityStyles.wrapper}>
             {activities.map((guildActivity, guildIndex) => (
-                <div key={guildIndex} className={activityStyles.activity}>
+                <div key={guildIndex} className={activityStyles.activities}>
                     <p className={activityStyles.status}>{guildActivity.discordstatus}</p>
                     {guildActivity.activities.map((activity, activityIndex) => (
-                        <div key={activityIndex}>
+                        <div key={activityIndex} className={activityStyles.activity}>
                             <h3>{activity.name}</h3>
                             <p>{activity.details}</p>
                             <p>{activity.state}</p>

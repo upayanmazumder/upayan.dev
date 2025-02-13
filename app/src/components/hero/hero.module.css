@@ -33,6 +33,7 @@
 @media (max-width: 1024px) {
     .branding {
         flex-direction: column;
+        padding: 0;
     }
 }
 
@@ -49,6 +50,7 @@
 @media (max-width: 1024px) {
     .technologies {
         justify-content: center;
+        padding: 0;
     }
 }
 

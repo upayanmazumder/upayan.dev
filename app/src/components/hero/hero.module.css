@@ -24,7 +24,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
     vertical-align: middle;
 }
 
@@ -39,7 +38,6 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 1rem;
     flex-wrap: wrap;
     cursor: default;
     font-family: monospace;
@@ -73,4 +71,8 @@
 
 .officialLinks button {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.officialLinks button:hover {
+   box-shadow: 0 0 9px 8px #4647e438;
 }

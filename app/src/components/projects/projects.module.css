@@ -1,5 +1,4 @@
 .container {
-    --bg-black: #000000;
     --bg-navy: #1f2b3d42;
     --primary-blue: #1e90ff;
     --accent-blue: #112240;
@@ -11,7 +10,6 @@
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     padding: 2rem;
-    background-color: var(--bg-black);
   }
   
   .project {

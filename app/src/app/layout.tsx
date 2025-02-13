@@ -4,6 +4,7 @@ import Sidebar from "../components/sidebar/sidebar";
 import Nav from "../components/nav/nav";
 import Footer from "../components/footer/footer";
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import Bg from "../components/background/background";
 
 export const metadata: Metadata = {
   title: "Upayan",
@@ -23,11 +24,13 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body>
-        <Sidebar />
-        <Nav />
-        {children}
-        <Footer />
-        <SpeedInsights />
+        <Bg>
+          <Sidebar />
+          <Nav />
+          {children}
+          <Footer />
+          <SpeedInsights />
+        </Bg>
       </body>
     </html>
   );

@@ -5,6 +5,7 @@ import heroStyles from "./hero.module.css";
 import Image from "next/image";
 import technologies from "../../data/technologies.json";
 import officialLinks from "../../data/links.json";
+import Activity from "../activity/activity";
 
 const whitelist = ["IIT-Madras", "Devfolio", "Leetcode", "Microsoft Learn", "Gravatar"];
 
@@ -28,8 +29,9 @@ const Hero: React.FC = () => {
                         <button key={index} onClick={() => window.open(link.url, "_blank", "noopener")} style={{ color: link.textColor, backgroundColor: link.backgroundColor }} className={heroStyles.officialLink}>
                             {link.name}
                         </button>
-                    ))}
+                ))}
             </ul>
+            <Activity/>
         </div>
     );
 };

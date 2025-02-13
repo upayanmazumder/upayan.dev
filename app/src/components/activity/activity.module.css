@@ -17,6 +17,14 @@
     overflow: hidden;
 }
 
+.activities ul {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    gap: var(--margin-huge);
+    margin: 0;
+}
+
 .activities::before {
     content: '';
     position: absolute;

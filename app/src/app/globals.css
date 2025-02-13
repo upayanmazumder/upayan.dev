@@ -11,7 +11,7 @@
   --sidebar-background-color: #29292980;
 
   --screen-horizontal-margin: 200px;
-  --screen-vertical-margin: calc(var(--screen-horizontal-margin)/4);
+  --screen-vertical-margin: 0;
 
   --primary-color: #0f73f5;
   --secondary-color: #4278ff;

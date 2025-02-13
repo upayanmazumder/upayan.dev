@@ -89,24 +89,26 @@ const ActivityComponent: React.FC = () => {
             {activities.map((guildActivity, guildIndex) => (
                 <div key={guildIndex} className={activityStyles.activities}>
                     <p className={activityStyles.status}>{guildActivity.discordstatus}</p>
-                    {guildActivity.activities.map((activity, activityIndex) => (
-                        <div key={activityIndex} className={activityStyles.activity}>
-                            <h3>{activity.name}</h3>
-                            <p>{activity.details}</p>
-                            <p>{activity.state}</p>
-                            <p>{formatElapsedTime(elapsedTimes[activity.name] || 0)}</p>
-                            {activity.endTimestamp && (
-                                <div className={activityStyles.progressBar}>
-                                    <div 
-                                        className={activityStyles.progressFill}
-                                        style={{width: `${calculateProgress(activity.startTimestamp, activity.endTimestamp)}%`}}
-                                    ></div>
-                                </div>
-                            )}
-                            {activity.largeImageURL && <img src={activity.largeImageURL} alt={activity.largeText} title={activity.largeText} />}
-                            {activity.smallImageURL && <img src={activity.smallImageURL} alt={activity.smallText || undefined} title={activity.smallText || undefined} />}
-                        </div>
-                    ))}
+                    <ul>
+                        {guildActivity.activities.map((activity, activityIndex) => (
+                            <div key={activityIndex} className={activityStyles.activity}>
+                                <h3>{activity.name}</h3>
+                                <p>{activity.details}</p>
+                                <p>{activity.state}</p>
+                                <p>{formatElapsedTime(elapsedTimes[activity.name] || 0)}</p>
+                                {activity.endTimestamp && (
+                                    <div className={activityStyles.progressBar}>
+                                        <div 
+                                            className={activityStyles.progressFill}
+                                            style={{width: `${calculateProgress(activity.startTimestamp, activity.endTimestamp)}%`}}
+                                        ></div>
+                                    </div>
+                                )}
+                                {activity.largeImageURL && <img src={activity.largeImageURL} alt={activity.largeText} title={activity.largeText} />}
+                                {activity.smallImageURL && <img src={activity.smallImageURL} alt={activity.smallText || undefined} title={activity.smallText || undefined} />}
+                            </div>
+                        ))}
+                    </ul>
                 </div>
             ))}
         </div>

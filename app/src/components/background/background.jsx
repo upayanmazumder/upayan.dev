@@ -4,7 +4,6 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 const DarkBackground = styled.div`
-  background-color: black;
   min-height: 100vh;
   width: 100%;
   position: relative;
@@ -17,6 +16,7 @@ const StarCanvas = styled.canvas`
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: -1;
 `;
 
 const DarkBackgroundComponent = ({ children }) => {

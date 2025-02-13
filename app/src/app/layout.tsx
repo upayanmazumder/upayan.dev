@@ -3,6 +3,7 @@ import "./globals.css";
 import Sidebar from "../components/sidebar/sidebar";
 import Nav from "../components/nav/nav";
 import Footer from "../components/footer/footer";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: "Upayan",
@@ -26,6 +27,7 @@ export default function RootLayout({
         <Nav />
         {children}
         <Footer />
+        <SpeedInsights />
       </body>
     </html>
   );

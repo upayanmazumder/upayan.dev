@@ -7,6 +7,7 @@
     height: 100vh;
     position: fixed;
     z-index: 1000;
+    justify-content: center;
 }
 
 @media (max-width: 961px) {
@@ -27,7 +28,12 @@
 
 .sidebar nav ul li {
     margin-bottom: var(--margin-small);
-    display: flex;
+    display: flex;    
+}
+
+.sidebar nav ul li:hover {
+    background-color: rgba(129, 129, 129, 0.209);
+    border-radius: 10dvh;
 }
 
 .sidebar nav ul li svg {
@@ -52,6 +58,9 @@
     margin-left: 5px;
     padding: var(--padding-tiny) var(--padding-small) var(--padding-tiny) var(--padding-tiny);
     border-radius: 0 10dvh 10dvh 0;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    align-self: center;
 }
 
 @media (max-width: 768px) {
@@ -62,6 +71,4 @@
 
 .sidebar nav ul li:hover span {
     color: inherit;
-    background-color: rgba(156, 156, 156, 0.428);
-    transition: all var(--transition-medium) ease-in-out;
 }

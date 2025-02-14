@@ -139,7 +139,6 @@
 }
 
 .dirMapContainer {
-    width: 100%;
     padding: var(--padding-small) var(--padding-medium);
     gap: 10px;
     display: flex;

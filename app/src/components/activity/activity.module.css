@@ -50,7 +50,7 @@
     color: #64ffda;
     font-size: 0.9rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 6px !important;
     margin-bottom: 1rem;
     text-shadow: 0 0 8px rgba(100, 255, 218, 0.3);
 }
@@ -59,12 +59,15 @@
     color: #ccd6f6;
     margin-bottom: 0.5rem;
     font-size: 1.2rem;
+    letter-spacing: 4px;
 }
 
 .activities p {
     color: #8892b0;
     margin: 0.3rem 0;
     font-size: 0.9rem;
+    letter-spacing: 1px;
+    word-spacing: 2px;
 }
 
 .activities img {
@@ -115,10 +118,16 @@
 
     .activities {
         padding: 1rem;
+        justify-content: center;
+    }
+
+    .activities ul {
+        justify-content: center;
     }
 
     .activities h3 {
         font-size: 1rem;
+        letter-spacing: 2px;
     }
 
     .activities p {

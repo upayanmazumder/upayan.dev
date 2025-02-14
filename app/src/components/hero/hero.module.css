@@ -75,8 +75,10 @@
 
 .officialLinks button {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    letter-spacing: 1px;
 }
 
 .officialLinks button:hover {
    box-shadow: 0 0 9px 8px #4647e438;
+   cursor: pointer;
 }

@@ -5,12 +5,12 @@
 }
 
 .activities {
-    background: linear-gradient(145deg, #0a192f, #020c1b);
+    background: linear-gradient(145deg, #0a192f6d, #020c1b6a);
     border: 1px solid rgba(33, 150, 243, 0.3);
     border-radius: 15px;
     padding: 1.5rem;
     margin: 1rem 0;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(2px);
     box-shadow: 0 8px 32px rgba(2, 12, 27, 0.3);
     transition: all 0.3s ease-in-out;
     position: relative;
@@ -32,7 +32,7 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: linear-gradient(45deg, transparent, #2196f3, transparent);
+    background: linear-gradient(45deg, transparent, #2195f384, transparent);
     animation: shimmer 4s infinite linear;
     opacity: 0.1;
 }
@@ -50,7 +50,7 @@
     color: #64ffda;
     font-size: 0.9rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 6px !important;
     margin-bottom: 1rem;
     text-shadow: 0 0 8px rgba(100, 255, 218, 0.3);
 }
@@ -59,12 +59,15 @@
     color: #ccd6f6;
     margin-bottom: 0.5rem;
     font-size: 1.2rem;
+    letter-spacing: 4px;
 }
 
 .activities p {
     color: #8892b0;
     margin: 0.3rem 0;
     font-size: 0.9rem;
+    letter-spacing: 1px;
+    word-spacing: 2px;
 }
 
 .activities img {
@@ -115,10 +118,16 @@
 
     .activities {
         padding: 1rem;
+        justify-content: center;
+    }
+
+    .activities ul {
+        justify-content: center;
     }
 
     .activities h3 {
         font-size: 1rem;
+        letter-spacing: 2px;
     }
 
     .activities p {

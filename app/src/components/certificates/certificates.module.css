@@ -75,7 +75,8 @@
 
 /* Certificate Card */
 .certificateCard {
-    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+    backdrop-filter: blur(2px);
+    background: linear-gradient(145deg, #1a1a1a8e, #2a2a2a78);
     border: 1px solid #444;
     border-radius: 12px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);

@@ -19,6 +19,7 @@
     transition: var(--transition);
     animation: fadeInUp 0.8s ease-out;
     box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+    backdrop-filter: blur(2px);
   }
   
   .project:hover {

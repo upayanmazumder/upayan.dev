@@ -21,6 +21,7 @@ const StarCanvas = styled.canvas`
 
 const DarkBackgroundComponent = ({ children }) => {
   const canvasRef = useRef(null);
+  let mouseX = 0, mouseY = 0;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -32,40 +33,6 @@ const DarkBackgroundComponent = ({ children }) => {
       canvas.height = window.innerHeight;
     };
 
-    const starTypes = [
-      {
-        draw: (ctx, x, y, radius, color) => {
-          ctx.beginPath();
-          ctx.arc(x, y, radius, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      },
-      {
-        draw: (ctx, x, y, radius, color) => {
-          ctx.beginPath();
-          ctx.globalAlpha = 0.7 + Math.random() * 0.3;
-          ctx.arc(x, y, radius, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1;
-        }
-      },
-      {
-        draw: (ctx, x, y, radius, color) => {
-          ctx.beginPath();
-          for (let i = 0; i < 5; i++) {
-            const angle = (i * 4 * Math.PI) / 5;
-            const pointRadius = radius * (i % 2 === 0 ? 1 : 0.5);
-            ctx.lineTo(
-              x + Math.cos(angle) * pointRadius,
-              y + Math.sin(angle) * pointRadius
-            );
-          }
-          ctx.closePath();
-          ctx.fill();
-        }
-      }
-    ];
-
     const starColors = [
       'rgba(255, 255, 255, 0.8)',
       'rgba(255, 255, 200, 0.7)',
@@ -74,55 +41,61 @@ const DarkBackgroundComponent = ({ children }) => {
       'rgba(240, 248, 255, 0.5)'
     ];
 
-    const createStarLayers = (layerCount, starsPerLayer) => {
-      const layers = [];
-      for (let l = 0; l < layerCount; l++) {
-        const stars = [];
-        for (let i = 0; i < starsPerLayer; i++) {
-          stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            radius: Math.random() * 2.5 * (l + 1) / layerCount,
-            vx: (Math.random() * 0.1 - 0.05) * (l + 1) / layerCount,
-            vy: (Math.random() * 0.1 - 0.05) * (l + 1) / layerCount,
-            type: starTypes[Math.floor(Math.random() * starTypes.length)],
-            color: starColors[Math.floor(Math.random() * starColors.length)]
-          });
-        }
-        layers.push(stars);
+    const createStars = (count) => {
+      const stars = [];
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 2.5,
+          vx: Math.random() * 0.05 - 0.025,
+          vy: Math.random() * 0.05 - 0.025,
+          depth: Math.random() * 1.5 + 0.5, // Slower parallax effect
+          color: starColors[Math.floor(Math.random() * starColors.length)]
+        });
       }
-      return layers;
+      return stars;
     };
 
-    const drawStars = (stars, speedMultiplier) => {
+    const drawStars = (stars) => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       stars.forEach((star) => {
         ctx.fillStyle = star.color;
-        star.type.draw(ctx, star.x, star.y, star.radius, star.color);
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
 
-        star.x += star.vx * speedMultiplier;
-        star.y += star.vy * speedMultiplier;
+        star.x += star.vx + (mouseX / 150) * star.depth;
+        star.y += star.vy + (mouseY / 150) * star.depth;
 
-        star.x = (star.x + canvas.width) % canvas.width;
-        star.y = (star.y + canvas.height) % canvas.height;
+        // Wrap around screen edges
+        if (star.x < 0) star.x = canvas.width;
+        if (star.x > canvas.width) star.x = 0;
+        if (star.y < 0) star.y = canvas.height;
+        if (star.y > canvas.height) star.y = 0;
       });
     };
 
-    const animate = (starLayers) => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      starLayers.forEach((layer, index) => {
-        drawStars(layer, (index + 1) / starLayers.length);
-      });
-      animationFrameId = requestAnimationFrame(() => animate(starLayers));
+    const animate = (stars) => {
+      drawStars(stars);
+      animationFrameId = requestAnimationFrame(() => animate(stars));
+    };
+
+    const handleMouseMove = (e) => {
+      mouseX = (e.clientX - window.innerWidth / 2) / 20;
+      mouseY = (e.clientY - window.innerHeight / 2) / 20;
     };
 
     resizeCanvas();
-    const starLayers = createStarLayers(3, 30);
-    animate(starLayers);
+    const stars = createStars(70);
+    animate(stars);
 
     window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

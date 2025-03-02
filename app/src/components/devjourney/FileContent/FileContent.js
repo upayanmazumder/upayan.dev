@@ -3,6 +3,7 @@ import { marked } from "marked";
 import hljs from "highlight.js";
 import { useEffect } from "react";
 import fileContentStyles from "./FileContent.module.css";
+import "./code.css"; // hljs devibeans
 
 const FileContent = ({ fileContent }) => {
   useEffect(() => {

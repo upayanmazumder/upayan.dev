@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import breadcrumbStyles from "./Breadcrumb.module.css";
 
 const Breadcrumb = ({ pathname }) => {
@@ -8,13 +9,28 @@ const Breadcrumb = ({ pathname }) => {
 
   return (
     <div className={breadcrumbStyles.breadcrumbContainer} id="breadcrumb">
-      <button onClick={() => router.push("/devjourney")}>Home</button>
+      <motion.button 
+        onClick={() => router.push("/devjourney")}
+        initial={{ opacity: 0, y: -5 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        Home
+      </motion.button>
       {pathSegments.length > 0 && " / "}
       {pathSegments.map((segment, index) => {
         const path = `/devjourney/${pathSegments.slice(0, index + 1).join("/")}`;
         return (
           <>
-            <button key={path} onClick={() => router.push(path)}>{decodeURIComponent(segment)}</button>
+            <motion.button
+              onClick={() => router.push(path)}
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.2 }} // Delayed animation
+              key={path}
+            >
+              {decodeURIComponent(segment)}
+            </motion.button>
             {index < pathSegments.length - 1 && " / "}
           </>
         );

@@ -4,7 +4,6 @@
     padding: var(--padding-medium);
     border-radius: var(--border-radius-medium);
     background-color: rgb(0 0 0 / 70%);
-    backdrop-filter: blur(15px);
     font-size: 18px;
 }
 

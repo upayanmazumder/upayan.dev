@@ -14,7 +14,7 @@ code.hljs {
     Inspired by vim's jellybeans theme (https://github.com/nanotech/jellybeans.vim)
 */
 .hljs {
-  background: #000000;
+
   color: #a39e9b
 }
 .hljs-attr,

@@ -1,0 +1,42 @@
+
+.dirMapContainer {
+    padding: var(--padding-small) var(--padding-medium);
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Adjust directory map spacing on smaller screens */
+@media (max-width: 768px) {
+    .dirMapContainer {
+        padding: var(--padding-small);
+    }
+}
+
+.dirMapContainer li {
+    width: 100%;
+}
+
+.dirMapContainer li button {
+    width: 100%;
+    text-align: left;
+    background-color: 9c9c9c38;
+    text-transform: inherit;
+    font-weight: inherit;
+}
+
+.dirMapContainer li button:hover {
+    box-shadow: none;
+    background-color: #c9c8c838;
+}
+
+.dirMapContainer li button svg {
+    margin-right: 15px;
+}
+
+/* Adjust button styles for smaller screens */
+@media (max-width: 768px) {
+    .dirMapContainer li button {
+        font-size: 0.85em;
+    }
+}

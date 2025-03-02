@@ -19,7 +19,8 @@
 .dirMapContainer li button {
     width: 100%;
     text-align: left;
-    background-color: #9c9c9c38;
+    border: 0.5px rgba(255, 255, 255, 0.26) solid;
+    background-color: #9c9c9c24;
     text-transform: inherit;
     font-weight: inherit;
     border-radius: var(--border-radius-small);

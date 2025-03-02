@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+
 import Breadcrumb from "./Breadcrumb/Breadcrumb";
 import GitHubButton from "./GithubButton/GithubButton";
 import FileContent from "./FileContent/FileContent";
 import DirectoryMap from "./DirectoryMap/DirectoryMap";
+
 import djStyles from "./devjourney.module.css";
 
 const Repository = () => {

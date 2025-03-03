@@ -182,7 +182,7 @@
     {
         "name": "ESP32",
         "backgroundColor": "#E7352C",
-        "textColor": "#E7352C"
+        "textColor": "#FFFFFF"
     },    
     {
         "name": "Raspberry Pi",

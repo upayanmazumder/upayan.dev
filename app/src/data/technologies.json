@@ -95,18 +95,8 @@
         "textColor": "#FFFFFF"
     },
     {
-        "name": "Tailwind CSS",
-        "backgroundColor": "#38B2AC",
-        "textColor": "#FFFFFF"
-    },
-    {
         "name": "Vite",
         "backgroundColor": "#646CFF",
-        "textColor": "#FFFFFF"
-    },
-    {
-        "name": "Vue",
-        "backgroundColor": "#4FC08D",
         "textColor": "#FFFFFF"
     },
     {
@@ -189,6 +179,11 @@
         "backgroundColor": "#FF6C37",
         "textColor": "#FFFFFF"
     },
+    {
+        "name": "ESP32",
+        "backgroundColor": "#E7352C",
+        "textColor": "#E7352C"
+    },    
     {
         "name": "Raspberry Pi",
         "backgroundColor": "#C51A4A",

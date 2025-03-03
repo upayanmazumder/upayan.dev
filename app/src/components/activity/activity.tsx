@@ -3,6 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 import activityStyles from "./activity.module.css";
 
 interface Activity {
@@ -77,7 +78,7 @@ const ActivityComponent: React.FC = () => {
         const end = endTimestamp ? new Date(endTimestamp).getTime() : null;
         const now = Date.now();
 
-        if (!end) return 0; // If there's no end time, return 0 progress
+        if (!end) return 0;
 
         const total = end - start;
         const elapsed = now - start;
@@ -91,7 +92,13 @@ const ActivityComponent: React.FC = () => {
                     <p className={activityStyles.status}>{guildActivity.discordstatus}</p>
                     <ul>
                         {guildActivity.activities.map((activity, activityIndex) => (
-                            <div key={activityIndex} className={activityStyles.activity}>
+                            <motion.div 
+                                key={activityIndex} 
+                                className={activityStyles.activity}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5 }}
+                            >
                                 <h3>{activity.name}</h3>
                                 <p>{activity.details}</p>
                                 <p>{activity.state}</p>
@@ -104,9 +111,27 @@ const ActivityComponent: React.FC = () => {
                                         ></div>
                                     </div>
                                 )}
-                                {activity.largeImageURL && <img src={activity.largeImageURL} alt={activity.largeText} title={activity.largeText} />}
-                                {activity.smallImageURL && <img src={activity.smallImageURL} alt={activity.smallText || undefined} title={activity.smallText || undefined} />}
-                            </div>
+                                {activity.largeImageURL && (
+                                    <motion.img 
+                                        src={activity.largeImageURL} 
+                                        alt={activity.largeText} 
+                                        title={activity.largeText}
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                    />
+                                )}
+                                {activity.smallImageURL && (
+                                    <motion.img 
+                                        src={activity.smallImageURL} 
+                                        alt={activity.smallText || undefined} 
+                                        title={activity.smallText || undefined}
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                    />
+                                )}
+                            </motion.div>
                         ))}
                     </ul>
                 </div>

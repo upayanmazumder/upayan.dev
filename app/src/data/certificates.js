@@ -27,7 +27,7 @@ export const certificates = [
         ]
     },
     {
-        title: "Yantra Central Hackathon",
+        title: "Yantra Central Hackathon'25",
         path: "/certificates/YANTRACENTRALHACKATHON_SWVIT_12-03-2025.webp",
         tags: [
             "swvit",

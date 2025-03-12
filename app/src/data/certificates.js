@@ -28,7 +28,7 @@ export const certificates = [
     },
     {
         title: "Yantra Central Hackathon",
-        path: "/certificates/YANTRACENTRALHACKATHON_SWVIT_12-03-2024.webp",
+        path: "/certificates/YANTRACENTRALHACKATHON_SWVIT_12-03-2025.webp",
         tags: [
             "swvit",
             "iot",

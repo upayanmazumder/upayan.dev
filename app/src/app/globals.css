@@ -1,7 +1,11 @@
 @font-face {
   font-family: 'RedHatDisplay';
-  src: url('../../public/fonts/RedHatDisplay-VariableFont_wght.ttf') format(' truetype');
+  src: url('../../public/fonts/RedHatDisplay-VariableFont_wght.ttf') format('truetype');
+}
 
+@font-face {
+  font-family: 'RedHatMono';
+  src: url('../../public/fonts/RedHatMono-VariableFont_wght.ttf') format('truetype');
 }
 
 :root {

@@ -2,6 +2,7 @@
 import { marked } from "marked";
 import hljs from "highlight.js";
 import { useEffect } from "react";
+import CopyButton from "../CopyButton/CopyButton";
 import fileContentStyles from "./FileContent.module.css";
 import "./code.css"; // using hljs devibeans
 
@@ -21,9 +22,12 @@ const FileContent = ({ fileContent }) => {
           dangerouslySetInnerHTML={{ __html: marked(fileContent.content) }}
         />
       ) : (
-        <pre className="hljs">
-          <code>{fileContent.content}</code>
-        </pre>
+        <div className={fileContentStyles.codeBlock}>
+          <CopyButton text={fileContent.content} />
+          <pre className="hljs">
+            <code>{fileContent.content}</code>
+          </pre>
+        </div>
       )}
     </div>
   );

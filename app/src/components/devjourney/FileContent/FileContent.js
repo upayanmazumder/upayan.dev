@@ -24,7 +24,7 @@ const FileContent = ({ fileContent }) => {
       ) : (
         <div className={fileContentStyles.codeBlock}>
           <CopyButton text={fileContent.content} />
-          <pre className="hljs">
+          <pre className={`${fileContentStyles.code} hljs`}>
             <code>{fileContent.content}</code>
           </pre>
         </div>

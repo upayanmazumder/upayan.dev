@@ -46,3 +46,8 @@
         text-wrap: wrap;
     }
 }
+
+.code {
+    max-height: 65dvh;
+    overflow-y: scroll;
+}

@@ -1,69 +1,53 @@
-/* From Uiverse.io by JkHuger */
-@keyframes loader_5191 {
-    from {
-        opacity: 0;
-    }
+.loaderContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-    to {
+.loaderText {
+    color: #6b7280;
+    font-size: 1rem;
+    animation: pulse 1.5s infinite;
+}
+
+.dotsContainer {
+    display: flex;
+    gap: 4px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background-color: #6b7280;
+    border-radius: 50%;
+    animation: bounce 1.5s infinite ease-in-out;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
         opacity: 1;
     }
 }
 
-.square {
-    background: #ddd;
-    width: 10px;
-    height: 10px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -5px;
-    margin-left: -5px;
-}
-
-.loader #sq1 {
-    margin-top: -25px;
-    margin-left: -25px;
-    animation: loader_5191 675ms ease-in-out 0s infinite alternate;
-}
-
-.loader #sq2 {
-    margin-top: -25px;
-    animation: loader_5191 675ms ease-in-out 75ms infinite alternate;
-}
-
-.loader #sq3 {
-    margin-top: -25px;
-    margin-left: 15px;
-    animation: loader_5191 675ms ease-in-out 150ms infinite;
-}
-
-.loader #sq4 {
-    margin-left: -25px;
-    animation: loader_5191 675ms ease-in-out 225ms infinite;
-}
-
-.loader #sq5 {
-    animation: loader_5191 675ms ease-in-out 300ms infinite;
-}
-
-.loader #sq6 {
-    margin-left: 15px;
-    animation: loader_5191 675ms ease-in-out 375ms infinite;
-}
-
-.loader #sq7 {
-    margin-top: 15px;
-    margin-left: -25px;
-    animation: loader_5191 675ms ease-in-out 450ms infinite;
-}
-
-.loader #sq8 {
-    margin-top: 15px;
-    animation: loader_5191 675ms ease-in-out 525ms infinite;
-}
-
-.loader #sq9 {
-    margin-top: 15px;
-    margin-left: 15px;
-    animation: loader_5191 675ms ease-in-out 600ms infinite;
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-6px);
+    }
 }

@@ -48,7 +48,33 @@
 }
 
 .code {
-    max-height: 65dvh;
+    max-height: 60dvh;
     overflow-y: scroll;
     background: #70707014;
+    font-size: 1rem;
+}
+
+/* Webkit (Chrome, Edge, Safari) */
+.code::-webkit-scrollbar {
+    width: 8px;
+}
+
+.code::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-radius: 4px;
+}
+
+.code::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+}
+
+.code::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+/* Firefox */
+.code {
+    scrollbar-width: thin;
+    scrollbar-color: #555 #2a2a2a;
 }

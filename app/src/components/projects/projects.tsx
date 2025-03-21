@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import styles from './projects.module.css';
 import projectsData from '../../data/projects.json';

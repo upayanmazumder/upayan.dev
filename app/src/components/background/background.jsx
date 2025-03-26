@@ -21,7 +21,6 @@ const StarCanvas = styled.canvas`
 
 const DarkBackgroundComponent = ({ children }) => {
   const canvasRef = useRef(null);
-  let mouseX = 0, mouseY = 0;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -48,9 +47,8 @@ const DarkBackgroundComponent = ({ children }) => {
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
           radius: Math.random() * 2.5,
-          vx: Math.random() * 0.05 - 0.025,
-          vy: Math.random() * 0.05 - 0.025,
-          depth: Math.random() * 1.5 + 0.5, // Slower parallax effect
+          vx: (Math.random() - 0.5) * 0.1,
+          vy: (Math.random() - 0.5) * 0.1,
           color: starColors[Math.floor(Math.random() * starColors.length)]
         });
       }
@@ -65,10 +63,9 @@ const DarkBackgroundComponent = ({ children }) => {
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
         ctx.fill();
 
-        star.x += star.vx + (mouseX / 150) * star.depth;
-        star.y += star.vy + (mouseY / 150) * star.depth;
+        star.x += star.vx;
+        star.y += star.vy;
 
-        // Wrap around screen edges
         if (star.x < 0) star.x = canvas.width;
         if (star.x > canvas.width) star.x = 0;
         if (star.y < 0) star.y = canvas.height;
@@ -81,21 +78,14 @@ const DarkBackgroundComponent = ({ children }) => {
       animationFrameId = requestAnimationFrame(() => animate(stars));
     };
 
-    const handleMouseMove = (e) => {
-      mouseX = (e.clientX - window.innerWidth / 2) / 20;
-      mouseY = (e.clientY - window.innerHeight / 2) / 20;
-    };
-
     resizeCanvas();
     const stars = createStars(70);
     animate(stars);
 
     window.addEventListener('resize', resizeCanvas);
-    window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
-      window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

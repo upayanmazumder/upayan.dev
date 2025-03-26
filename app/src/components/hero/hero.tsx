@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 import heroStyles from "./hero.module.css";
 import Image from "next/image";
 import technologies from "../../data/technologies.json";
@@ -10,34 +10,46 @@ import Activity from "../activity/activity";
 
 const whitelist = ["IIT-Madras", "Devfolio", "Leetcode", "Microsoft Learn", "Gravatar"];
 
+const techVariants = {
+    hidden: { opacity: 0, color: "transparent" },
+    visible: (index: number) => ({
+        opacity: 1,
+        color: technologies[index].textColor,
+        backgroundColor: technologies[index].backgroundColor,
+        transition: { delay: index * 0.1, duration: 0.2 },
+    }),
+};
+
 const Hero: React.FC = () => {
     return (
         <div className={heroStyles.hero}>
-            <motion.ul 
+            <motion.div 
                 className={heroStyles.branding}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1 }}
             >
-                <Image src="/upayan-transparent.svg" alt="logo" width={100} height={100} />
-                <motion.ul 
+                <Image src="/upayan-transparent.svg" alt="Upayan's personal branding logo" width={100} height={100} />
+                
+                <motion.div 
                     className={heroStyles.technologies}
-                    initial={{ x: -100 }}
-                    animate={{ x: 0 }}
-                    transition={{ duration: 0.5 }}
+                    initial="hidden"
+                    animate="visible"
                 >
-                    {technologies.map((technology, index) => (
-                        <li 
-                            key={index} 
-                            style={{ color: technology.textColor, backgroundColor: technology.backgroundColor }} 
+                    {technologies.map((tech, index) => (
+                        <motion.span 
+                            key={index}
+                            custom={index}
+                            variants={techVariants}
                             className={heroStyles.technology}
                         >
-                            {technology.name}
-                        </li>
+                            {tech.name}
+                        </motion.span>
                     ))}
-                </motion.ul>
-            </motion.ul>
-            <motion.ul 
+                </motion.div>
+            </motion.div>
+
+            <motion.div 
                 className={heroStyles.officialLinks}
                 initial={{ y: 100 }}
                 animate={{ y: 0 }}
@@ -57,8 +69,8 @@ const Hero: React.FC = () => {
                             {link.name}
                         </motion.button>
                 ))}
-            </motion.ul>
-            <Activity/>
+            </motion.div>
+            <Activity />
         </div>
     );
 };

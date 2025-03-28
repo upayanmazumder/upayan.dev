@@ -25,17 +25,12 @@
   },
   "homepage": "https://github.com/upayanmazumder/upayan.dev#readme",
   "dependencies": {
-    "@vercel/analytics": "^1.4.1",
     "axios": "^1.7.7",
     "cors": "^2.8.5",
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
-    "highlight.js": "^11.11.1",
     "morgan": "^1.10.0",
-    "next-auth": "^4.24.11",
-    "querystring": "^0.2.1",
-    "react-icons": "^5.4.0",
     "winston": "^3.16.0"
   }
 }

@@ -6,6 +6,7 @@
     "display": "fullscreen",
     "background_color": "#000000",
     "theme_color": "#000000",
+    "categories": ["portfolio", "developer", "technology"],
     "icons": [
         {
             "src": "/icons/icon-16x16.webp",
@@ -101,6 +102,47 @@
             "src": "/icons/icon-512x512.webp",
             "sizes": "512x512",
             "type": "image/webp"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "DevJourney",
+            "short_name": "DevJourney",
+            "description": "View my development journey",
+            "url": "/devjourney",
+            "icons": [
+                {
+                    "src": "/icons/icon-96x96.webp",
+                    "sizes": "96x96",
+                    "type": "image/webp"
+                }
+            ]
+        },
+        {
+            "name": "Certifications",
+            "short_name": "Certifications",
+            "description": "View My Certifications",
+            "url": "/certifactes",
+            "icons": [
+                {
+                    "src": "/icons/icon-96x96.webp",
+                    "sizes": "96x96",
+                    "type": "image/webp"
+                }
+            ]
+        },
+        {
+            "name": "Projects",
+            "short_name": "Projects",
+            "description": "View My Projects",
+            "url": "#projects",
+            "icons": [
+                {
+                    "src": "/icons/icon-96x96.webp",
+                    "sizes": "96x96",
+                    "type": "image/webp"
+                }
+            ]
         }
     ],
     "screenshots": [

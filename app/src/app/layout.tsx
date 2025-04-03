@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import GitHubSponsor from "../components/github-sponsor/github-sponsor";
 import Sidebar from "../components/sidebar/sidebar";
 import Nav from "../components/nav/nav";
 import Footer from "../components/footer/footer";
@@ -27,6 +28,7 @@ export default function RootLayout({
         <Bg>
           <Sidebar />
           <Nav />
+          <GitHubSponsor />
           {children}
           <Footer />
           <SpeedInsights />

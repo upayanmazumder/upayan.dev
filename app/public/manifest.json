@@ -6,7 +6,11 @@
     "display": "fullscreen",
     "background_color": "#000000",
     "theme_color": "#000000",
-    "categories": ["portfolio", "developer", "technology"],
+    "categories": [
+        "portfolio",
+        "developer",
+        "technology"
+    ],
     "icons": [
         {
             "src": "/icons/icon-16x16.webp",
@@ -135,7 +139,7 @@
             "name": "Projects",
             "short_name": "Projects",
             "description": "View My Projects",
-            "url": "#projects",
+            "url": "/#projects",
             "icons": [
                 {
                     "src": "/icons/icon-96x96.webp",

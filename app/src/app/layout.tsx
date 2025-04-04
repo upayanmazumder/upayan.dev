@@ -28,8 +28,8 @@ export default function RootLayout({
         <Bg>
           <Sidebar />
           <Nav />
-          <GitHubSponsor />
           {children}
+          <GitHubSponsor />
           <Footer />
           <SpeedInsights />
         </Bg>

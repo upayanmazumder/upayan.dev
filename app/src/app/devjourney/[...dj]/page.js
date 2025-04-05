@@ -1,6 +1,5 @@
-import React from 'react';
-
-import DevJourney from '../../../components/devjourney/devjourney';
+import React from "react";
+import DevJourney from "../../../components/devjourney/devjourney";
 
 const DevJourneyPage = () => {
   return (
@@ -11,7 +10,6 @@ const DevJourneyPage = () => {
 };
 
 export default DevJourneyPage;
-
 
 export const metadata = {
   title: "Upayan - Devjourney",

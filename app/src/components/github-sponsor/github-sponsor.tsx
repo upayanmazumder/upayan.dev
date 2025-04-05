@@ -1,16 +1,18 @@
-import React from 'react';
+import React from "react";
 import githubSponsorStyles from "./github-sponsor.module.css";
 
 const GitHubSponsor: React.FC = () => {
-    return (
-        <iframe
-            src="https://github.com/sponsors/upayanmazumder/button"
-            title="Sponsor upayanmazumder"
-            height="32"
-            width="114"
-            className={githubSponsorStyles.githubSponsor}
-        ></iframe>
-    );
+  return (
+    <div>
+      <iframe
+        src="https://github.com/sponsors/upayanmazumder/button"
+        title="Sponsor upayanmazumder"
+        height="32"
+        width="114"
+        className={githubSponsorStyles.githubSponsor}
+      ></iframe>
+    </div>
+  );
 };
 
 export default GitHubSponsor;

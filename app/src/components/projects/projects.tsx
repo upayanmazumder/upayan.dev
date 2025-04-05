@@ -2,16 +2,19 @@
 import React from 'react';
 import styles from './projects.module.css';
 import projectsData from '../../data/projects.json';
+import defaultImage from "../../media/icon.png"
 
 const Projects = () => {
   return (
     <div id='projects' className={styles.container}>
       {projectsData.map((project, index) => (
         <div key={index} className={styles.project}>
+          {
           <div>
-            <img src={project.icon} alt={`${project.name} icon`} />
+            <img src={`${project.icon} || ${defaultImage}`} alt={`${project.name} icon`} />
             <h2>{project.name}</h2>
           </div>
+          }
           <p>{project.description}</p>
           <div className={styles.links}>
             {project.links.map((link, linkIndex) => (

@@ -10,7 +10,7 @@ const GitHubSponsor: React.FC = () => {
         height="32"
         width="114"
         className={githubSponsorStyles.githubSponsor}
-      ></iframe>
+      />
     </div>
   );
 };

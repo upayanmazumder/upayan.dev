@@ -19,6 +19,7 @@
 
 .projectCard {
   background: rgba(20, 30, 48, 0.195);
+  -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   border: 1px solid rgba(59, 130, 246, 0.2);
   border-radius: 16px;

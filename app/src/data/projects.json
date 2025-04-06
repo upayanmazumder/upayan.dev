@@ -1,5 +1,51 @@
 [
   {
+    "name": "kodesphere",
+    "icon": "https://ks.upayan.dev/icons/icon-256x256.webp",
+    "description": "Deploy Smarter, Not Harder",
+    "links": [
+      {
+        "name": "GitHub Repository",
+        "url": "https://github.com/upayanmazumder/kodesphere"
+      },
+      {
+        "name": "Website",
+        "url": "https://ks.upayan.dev"
+      }
+    ],
+    "packageLinks": [
+      {
+        "name": "Main Docker Image",
+        "url": "https://github.com/users/upayanmazumder/packages/container/package/kodesphere"
+      },
+      {
+        "name": "Kubernetes Docker Image",
+        "url": "https://github.com/users/upayanmazumder/packages/container/package/kodesphere%2Fk8s"
+      }
+    ]
+  },
+  {
+    "name": "Advanced Traffic Control System for Urban Road Network",
+    "icon": "https://ibreakstuff.upayan.dev/icons/icon-256x256.png",
+    "description": "Smarter signals, smoother streets",
+    "links": [
+      {
+        "name": "GitHub Repository",
+        "url": "https://github.com/upayanmazumder/Advanced-Traffic-Control-System-for-Urban-Road-Network"
+      },
+      {
+        "name": "Website",
+        "url": "https://ibreakstuff.upayan.dev"
+      }
+    ],
+    "packageLinks": [
+      {
+        "name": "Docker Image",
+        "url": "https://github.com/users/upayanmazumder/packages/container/package/advanced-traffic-control-system-for-urban-road-network%2Fapi"
+      }
+    ]
+  },
+  {
     "name": "Boardly",
     "icon": "https://boardly.in/favicon.ico",
     "description": "A one stop solution for board exams!",

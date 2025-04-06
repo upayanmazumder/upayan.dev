@@ -6,47 +6,54 @@ import defaultImage from "../../media/icon.png";
 
 const Projects = () => {
   return (
-    <div id="projects" className={styles.container}>
-      {projectsData.map((project, index) => (
-        <div key={index} className={styles.project}>
-          {
-            <div>
-              <img src={project.icon} alt={`${project.name} icon`} />
-              <h2>{project.name}</h2>
+    <section id="projects" className={styles.projectsSection}>
+      <h1 className={styles.heading}>My Projects</h1>
+      <div className={styles.projectsGrid}>
+        {projectsData.map((project, index) => (
+          <div key={index} className={styles.projectCard}>
+            <img
+              src={project.icon || defaultImage.src}
+              alt={`${project.name} icon`}
+              className={styles.projectIcon}
+            />
+            <div className={styles.projectContent}>
+              <h2 className={styles.projectTitle}>{project.name}</h2>
+              <p className={styles.projectDescription}>{project.description}</p>
+
+              <div className={styles.linkGroup}>
+                {project.links.map((link, i) => (
+                  <a
+                    key={i}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.linkButton}
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </div>
+
+              {project.packageLinks && (
+                <div className={styles.packageGroup}>
+                  {project.packageLinks.map((pkg, i) => (
+                    <a
+                      key={i}
+                      href={pkg.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.packageButton}
+                    >
+                      {pkg.name}
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
-          }
-          <p>{project.description}</p>
-          <div className={styles.links}>
-            {project.links.map((link, linkIndex) => (
-              <a
-                key={linkIndex}
-                href={link.url}
-                className={styles.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {link.name}
-              </a>
-            ))}
           </div>
-          {project.packageLinks && (
-            <div className={styles.packageLinks}>
-              {project.packageLinks.map((packageLink, packageLinkIndex) => (
-                <a
-                  key={packageLinkIndex}
-                  href={packageLink.url}
-                  className={styles.packageLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {packageLink.name}
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </section>
   );
 };
 

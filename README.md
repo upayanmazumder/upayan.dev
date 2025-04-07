@@ -6,8 +6,6 @@
 
 Welcome to the source code repository for my personal website. This project showcases my portfolio, skills, and various projects.
 
-<a href="https://freetools.seobility.net/en/seocheck/upayan.dev"><img src="https://freetools.seobility.net/widget/widget.png?url=upayan.dev" alt="Seobility Score für upayan.dev"></a>
-
 ## Table of Contents
 
 - [Technologies Used](#technologies-used)

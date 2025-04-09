@@ -12,7 +12,7 @@
 }
 
 .activities {
-    background: linear-gradient(145deg, rgba(10, 25, 47, 0.7), rgba(2, 12, 27, 0.7));
+    background: var(--card-background);
     border: 1px solid rgba(33, 150, 243, 0.3);
     border-radius: 16px;
     padding: 1.5rem;

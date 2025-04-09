@@ -12,6 +12,7 @@
   --header-background-color: var(--background-color);
   --footer-background-color: #36363647;
   --sidebar-background-color: #29292980;
+  --card-background: linear-gradient(145deg, rgba(10, 25, 47, 0.7), rgba(2, 12, 27, 0.7));
 
   --screen-horizontal-margin: 200px;
   --screen-vertical-margin: 0;

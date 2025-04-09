@@ -9,8 +9,9 @@
 }
 
 .certificateCard {
+    -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);
-    background: linear-gradient(145deg, #1a1a1a7d, #2a2a2a7c);
+    background: var(--card-background);
     border: 1px solid #444;
     border-radius: var(--border-radius-medium);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);

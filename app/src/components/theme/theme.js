@@ -5,10 +5,18 @@ import { FaPalette } from 'react-icons/fa';
 import styles from './theme.module.css';
 
 const themes = {
-  light: { '--background-color': 'lightgray', '--color': 'black' },
-  dark: { '--background-color': 'black', '--color': 'white' },
-  monochrome: { '--background-color': 'linear-gradient(160deg, #555, #888)', '--color': '#eee' },
-  pastel: { '--background-color': 'linear-gradient(135deg, #ffebcd, #f5c7c7)', '--color': '#5d5d5d' },
+  light: {
+    '--background-color': 'lightgray',
+    '--color': 'black'
+  },
+  dark: {
+    '--background-color': 'black',
+    '--color': 'white'
+  },
+  monochrome: {
+    '--background-color': 'linear-gradient(160deg, #555, #888)',
+    '--color': '#eee'
+  },
   ocean: {
     '--background-color': `
       radial-gradient(at top left, #0a344a 40%, transparent 60%),
@@ -18,28 +26,29 @@ const themes = {
     `,
     '--color': '#caf0f8',
   },
-  sunset: { '--background-color': 'linear-gradient(120deg, #ff6f61, #ff9a8b)', '--color': '#2d3436' },
-  amethyst: { '--background-color': 'linear-gradient(45deg, #9966cc, #f0e6f6)', '--color': '#f0e6f6' },
-  neon: { '--background-color': 'linear-gradient(90deg, #0ff, #f0f)', '--color': '#000' },
+  neon: {
+    '--background-color': 'linear-gradient(90deg, #0ff, #f0f)',
+    '--color': '#000'
+  },
   cyberpunk: {
     '--background-color': 'linear-gradient(120deg, #0f0c29, #302b63, #24243e)',
     '--color': '#ffffff'
   },
-  excited: { '--background-color': 'linear-gradient(135deg, #f72585, #7209b7)', '--color': '#ffffff' },
+  excited: {
+    '--background-color': 'linear-gradient(135deg, #f72585, #7209b7)',
+    '--color': '#ffffff'
+  },
 };
 
 const moodToThemes = {
   Dark: ['dark'],
   Light: ['light'],
-  Happy: ['sunset', 'pastel'],
-  Calm: ['ocean', 'amethyst'],
-  Romantic: ['sunset', 'amethyst'],
+  Calm: ['ocean'],
   Adventurous: ['cyberpunk', 'ocean'],
   Cozy: ['monochrome', 'light'],
   Excited: ['neon', 'excited'],
   Mysterious: ['cyberpunk', 'dark'],
   Focused: ['monochrome', 'ocean'],
-  Dreamy: ['pastel', 'amethyst'],
 };
 
 

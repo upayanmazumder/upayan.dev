@@ -9,6 +9,10 @@
     box-sizing: border-box;
 }
 
+.wrapper:hover {
+    cursor: default;
+}
+
 .activities {
     background: var(--card-background);
     border: 1px solid rgba(33, 150, 243, 0.3);

@@ -67,7 +67,7 @@
     padding: var(--padding-tiny) var(--padding-small) var(--padding-tiny) var(--padding-tiny);
     border-radius: 0 10dvh 10dvh 0;
     letter-spacing: 1px;
-    font-size: 0.9rem;
+    font-size: 1em;
     align-self: center;
 }
 

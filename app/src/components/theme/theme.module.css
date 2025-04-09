@@ -1,7 +1,7 @@
 .moodWidget {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 30px;
+  right: 30px;
   border-radius: 50px;
   padding: 0;
   display: flex;

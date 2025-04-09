@@ -19,11 +19,12 @@
     width: 100%;
     text-align: left;
     border: 0.5px rgba(255, 255, 255, 0.26) solid;
-    background-color: #9c9c9c24;
+    background-color: #52525245;
     text-transform: inherit;
     font-weight: inherit;
     border-radius: var(--border-radius-small);
     padding-left: 1em;
+    color: color-mix(in srgb, var(--color), gray);
 }
 
 .dirMapContainer li button:hover {

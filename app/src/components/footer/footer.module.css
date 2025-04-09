@@ -36,7 +36,6 @@
     .column {
         padding: 0;
     }
-
 }
 
 .column h3 {
@@ -85,4 +84,13 @@
 
 .footerLinks a:hover {
     background-color: rgba(255, 255, 255, 0.2);
+}
+
+.toTop button {
+    background-color: transparent;
+    color: var(--color);
+}
+
+.toTop button:hover {
+    box-shadow: none;
 }

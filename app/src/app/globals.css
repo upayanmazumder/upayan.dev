@@ -9,8 +9,7 @@
 }
 
 :root {
-  --body-background-color: black;
-  --header-background-color: var(--body-background-color);
+  --header-background-color: var(--background-color);
   --footer-background-color: #1f1f1f34;
   --sidebar-background-color: #29292980;
 
@@ -21,7 +20,6 @@
   --secondary-color: #4278ff;
   --tertiary-color: #34495e;
 
-  --text-color: #d3d3d3;
   --text-link-color: #1E90FF;
   --text-link-hover-color: #1C86EE;
 
@@ -90,11 +88,13 @@ html {
 }
 
 body {
-  background: var(--body-background-color);
+  background: var(--background-color);
   color: var(--text-color);
   font-size: var(--font-size-medium);
   font-weight: var(--font-weight-normal);
-  transition: var(--body-background-color);
+  transition: background 0.8s ease-in-out, color 0.4s ease-in-out;
+  background-attachment: fixed;
+  background-size: cover;
   padding: 0;
   margin: 0;
   font-family: "Red Hat Display", "din alternate", system-ui, optima, avenir;
@@ -117,13 +117,9 @@ h6 {
 }
 
 a {
-  color: var(--text-link-color);
   text-decoration: none;
 }
 
-a:hover {
-  color: var(--text-link-hover-color);
-}
 
 ul {
   list-style: none;
@@ -132,7 +128,6 @@ ul {
 button {
   border-radius: 50dvh;
   background-color: rgb(36, 36, 36);
-  color: white;
   border: none;
   padding: var(--padding-small) var(--padding-medium);
   display: flex;

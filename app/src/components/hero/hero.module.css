@@ -20,6 +20,8 @@
 .hero img {
     width: 30%;
     height: auto;
+    filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(1) contrast(1);
+    color: var(--text-color);
 }
 
 .branding {
@@ -79,6 +81,6 @@
 }
 
 .officialLinks button:hover {
-   box-shadow: 0 0 9px 8px #4647e438;
-   cursor: pointer;
+    box-shadow: 0 0 9px 8px #4647e438;
+    cursor: pointer;
 }

@@ -6,7 +6,7 @@ import Nav from "../components/nav/nav";
 import Footer from "../components/footer/footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Bg from "../components/background/background";
-import { ThemeManager, MoodSelector } from "../components/theme/ThemeManager";
+import { ThemeManager, MoodSelector } from "../components/theme/theme";
 
 export const metadata: Metadata = {
   title: "Upayan",

@@ -10,14 +10,14 @@
 
 :root {
   --header-background-color: var(--background-color);
-  --footer-background-color: #1f1f1f9d;
+  --footer-background-color: #36363647;
   --sidebar-background-color: #29292980;
 
   --screen-horizontal-margin: 200px;
   --screen-vertical-margin: 0;
 
-  --text-link-color: #1E90FF;
-  --text-link-hover-color: #1C86EE;
+  --text-link-color: color-mix(in srgb, var(--color) 40%, #1E90FF 60%);
+  --text-link-hover-color: color-mix(in srgb, var(--color) 40%, #1C86EE 60%);
 
   --padding-tiny: 5px;
   --padding-small: 10px;
@@ -114,8 +114,13 @@ h6 {
 
 a {
   text-decoration: none;
+  color: var(--text-link-color);
 }
 
+a:hover {
+  color: var(--text-link-hover-color);
+  text-decoration: none;
+}
 
 ul {
   list-style: none;

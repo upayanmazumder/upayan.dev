@@ -7,7 +7,6 @@ import Four04 from "../../components/404/404";
 const CertificateDetail = ({ slug }) => {
   const certificate = certificates.find((cert) => createSlug(cert.title) === slug);
 
-  // Unavailable certificate
   if (!certificate) {
     return <Four04 />;
   }

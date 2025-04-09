@@ -1,22 +1,24 @@
 .wrapper {
     max-width: 1000px;
     width: 100%;
-    margin: 1.5rem auto;
-    padding: 0 1rem;
+    margin: 1.5em auto;
+    padding: 0 1em;
     font-family: 'Segoe UI', system-ui, sans-serif;
     color: var(--color);
+    font-size: var(--font-size-medium);
 
     @supports (color: color-mix(in srgb, black, white)) {
         color: color-mix(in srgb, var(--color), cyan 20%);
     }
+
 }
 
 .activities {
     background: var(--card-background);
     border: 1px solid rgba(33, 150, 243, 0.3);
     border-radius: 16px;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
+    padding: 1.5em;
+    margin: 1.5em 0;
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     box-shadow: 0 10px 40px rgba(2, 12, 27, 0.4);
@@ -28,7 +30,7 @@
 .activities ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 1.5em;
     padding: 0;
     margin: 0;
     list-style: none;
@@ -49,26 +51,26 @@
 }
 
 .status {
-    font-size: 0.9rem;
+    font-size: 0.9em;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 5px;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.25em;
     color: #64ffda;
     text-shadow: 0 0 8px rgba(100, 255, 218, 0.4);
 }
 
 .activities h3 {
-    font-size: 1.2rem;
-    margin-bottom: 0.6rem;
+    font-size: 1.2em;
+    margin-bottom: 0.6em;
     letter-spacing: 2px;
     font-weight: 600;
     color: #90caf9;
 }
 
 .activities p {
-    font-size: 0.95rem;
-    margin: 0.4rem 0;
+    font-size: 0.95em;
+    margin: 0.4em 0;
     letter-spacing: 0.8px;
     word-spacing: 1.5px;
     color: #cfd8dc;
@@ -78,7 +80,7 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    margin: 0.5rem 0.2rem;
+    margin: 0.5em 0.2em;
     border: 2px solid #2196f3;
     box-shadow: 0 0 12px rgba(33, 150, 243, 0.35);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -111,7 +113,7 @@
     background-color: rgba(224, 224, 224, 0.2);
     border-radius: 4px;
     overflow: hidden;
-    margin-top: 0.8rem;
+    margin-top: 0.8em;
 }
 
 .progressFill {
@@ -131,19 +133,19 @@
 
 @media (max-width: 768px) {
     .wrapper {
-        padding: 0 0.75rem;
+        padding: 0 0.75em;
     }
 
     .activities {
-        padding: 1rem;
+        padding: 1em;
     }
 
     .activities h3 {
-        font-size: 1rem;
+        font-size: 1em;
     }
 
     .activities p {
-        font-size: 0.85rem;
+        font-size: 0.85em;
     }
 
     .activities img {
@@ -163,7 +165,7 @@
     }
 
     .status {
-        font-size: 0.75rem;
+        font-size: 0.75em;
         letter-spacing: 3px;
     }
 }

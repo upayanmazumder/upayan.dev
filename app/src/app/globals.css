@@ -38,11 +38,11 @@
   --border-radius-large: 40px;
   --border-radius-huge: 80px;
 
-  --font-size-tiny: 10px;
-  --font-size-small: 12px;
-  --font-size-medium: 16px;
-  --font-size-large: 20px;
-  --font-size-huge: 24px;
+  --font-size-tiny: 12px;
+  --font-size-small: 14px;
+  --font-size-medium: 18px;
+  --font-size-large: 22px;
+  --font-size-huge: 28px;
 
   --font-weight-light: 300;
   --font-weight-normal: 400;
@@ -134,11 +134,13 @@ button {
   padding: var(--padding-small) var(--padding-medium);
   display: flex;
   align-items: center;
+  font-size: var(--font-size-medium);
 }
 
 button:hover {
   background-color: rgb(22, 22, 22);
   box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.24);
+  cursor: pointer;
 }
 
 button svg {

@@ -26,6 +26,14 @@ export default function RootLayout({
           name="apple-mobile-web-app-status-bar-style"
           content="black-translucent"
         />
+        <meta property="og:title" content="Upayan" />
+        <meta
+          property="og:description"
+          content="Welcome to my portfolio website!"
+        />
+        <meta property="og:image" content="/icons/icon-512x512.webp" />
+        <meta property="og:url" content="https://upayan.dev" />
+        <meta property="og:type" content="website" />
       </head>
       <body>
         <Bg>

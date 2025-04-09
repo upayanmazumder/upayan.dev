@@ -1,8 +1,8 @@
 .githubSponsor {
     border: 0;
-    border-radius: 6px;
+    border-radius: 1dvh;
     position: fixed;
-    bottom: 15px;
-    right: 15px;
+    bottom: 20px;
+    right: 70px;
     z-index: 2000;
 }

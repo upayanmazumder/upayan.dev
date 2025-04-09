@@ -10,15 +10,11 @@
 
 :root {
   --header-background-color: var(--background-color);
-  --footer-background-color: #1f1f1f34;
+  --footer-background-color: #1f1f1f9d;
   --sidebar-background-color: #29292980;
 
   --screen-horizontal-margin: 200px;
   --screen-vertical-margin: 0;
-
-  --primary-color: #0f73f5;
-  --secondary-color: #4278ff;
-  --tertiary-color: #34495e;
 
   --text-link-color: #1E90FF;
   --text-link-hover-color: #1C86EE;
@@ -89,7 +85,7 @@ html {
 
 body {
   background: var(--background-color);
-  color: var(--text-color);
+  color: var(--color);
   font-size: var(--font-size-medium);
   font-weight: var(--font-weight-normal);
   transition: background 0.8s ease-in-out, color 0.4s ease-in-out;
@@ -146,12 +142,10 @@ button svg {
 
 ::-webkit-scrollbar {
   width: 8px;
-  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
   background: #1e1e1e;
-  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {

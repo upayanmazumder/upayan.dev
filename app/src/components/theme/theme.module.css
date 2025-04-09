@@ -13,9 +13,9 @@
 }
 
 .moodButton {
-  background: transparent;
+  background-color: transparent;
   border: none;
-  color: white;
+  color: var(--color);
   cursor: pointer;
   font-size: 20px;
   transition: transform 0.3s ease;

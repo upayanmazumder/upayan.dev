@@ -5,10 +5,10 @@ import { FaPalette } from 'react-icons/fa';
 import styles from './theme.module.css';
 
 const themes = {
-  light: { '--background-color': 'white', '--text-color': 'black' },
-  dark: { '--background-color': 'black', '--text-color': 'white' },
-  pastel: { '--background-color': 'linear-gradient(135deg, #ffebcd, #f5c7c7)', '--text-color': '#5d5d5d' },
-  nature: { '--background-color': 'url("https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg") center/cover no-repeat', '--text-color': '#1d3557' },
+  light: { '--background-color': 'white', '--color': 'black' },
+  dark: { '--background-color': 'black', '--color': 'white' },
+  pastel: { '--background-color': 'linear-gradient(135deg, #ffebcd, #f5c7c7)', '--color': '#5d5d5d' },
+  nature: { '--background-color': 'url("https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg") center/cover no-repeat', '--color': '#1d3557' },
   ocean: {
     '--background-color': `
       radial-gradient(at top left, #0a344a 40%, transparent 60%),
@@ -16,14 +16,14 @@ const themes = {
       radial-gradient(at bottom left, #2e4d5b 40%, transparent 60%),
       radial-gradient(at bottom right, #114256 40%, transparent 60%)
     `,
-    '--text-color': '#caf0f8',
+    '--color': '#caf0f8',
   },
-  sunset: { '--background-color': 'linear-gradient(120deg, #ff6f61, #ff9a8b)', '--text-color': '#2d3436' },
-  neon: { '--background-color': 'linear-gradient(90deg, #0ff, #f0f)', '--text-color': '#000' },
-  cyberpunk: { '--background-color': 'url("https://images4.alphacoders.com/856/thumb-1920-856858.jpg") center/cover no-repeat', '--text-color': '#ffffff' },
-  monochrome: { '--background-color': 'linear-gradient(160deg, #555, #888)', '--text-color': '#eee' },
-  amethyst: { '--background-color': 'linear-gradient(45deg, #9966cc, #f0e6f6)', '--text-color': '#f0e6f6' },
-  excited: { '--background-color': 'linear-gradient(135deg, #f72585, #7209b7)', '--text-color': '#ffffff' },
+  sunset: { '--background-color': 'linear-gradient(120deg, #ff6f61, #ff9a8b)', '--color': '#2d3436' },
+  neon: { '--background-color': 'linear-gradient(90deg, #0ff, #f0f)', '--color': '#000' },
+  cyberpunk: { '--background-color': 'url("https://images4.alphacoders.com/856/thumb-1920-856858.jpg") center/cover no-repeat', '--color': '#ffffff' },
+  monochrome: { '--background-color': 'linear-gradient(160deg, #555, #888)', '--color': '#eee' },
+  amethyst: { '--background-color': 'linear-gradient(45deg, #9966cc, #f0e6f6)', '--color': '#f0e6f6' },
+  excited: { '--background-color': 'linear-gradient(135deg, #f72585, #7209b7)', '--color': '#ffffff' },
 };
 
 const moodToThemes = {

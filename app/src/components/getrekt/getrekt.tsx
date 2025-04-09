@@ -7,7 +7,6 @@ export default function GetRekt() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        color: "rgb(229 229 229 / 79%)",
         textAlign: "center",
       }}
     >

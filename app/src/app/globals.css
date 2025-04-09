@@ -9,21 +9,16 @@
 }
 
 :root {
-  --body-background-color: black;
-  --header-background-color: var(--body-background-color);
-  --footer-background-color: #1f1f1f34;
+  --header-background-color: var(--background-color);
+  --footer-background-color: #12121247;
   --sidebar-background-color: #29292980;
+  --card-background: linear-gradient(145deg, rgba(10, 25, 47, 0.7), rgba(2, 12, 27, 0.7));
 
   --screen-horizontal-margin: 200px;
   --screen-vertical-margin: 0;
 
-  --primary-color: #0f73f5;
-  --secondary-color: #4278ff;
-  --tertiary-color: #34495e;
-
-  --text-color: #d3d3d3;
-  --text-link-color: #1E90FF;
-  --text-link-hover-color: #1C86EE;
+  --text-link-color: color-mix(in srgb, var(--color) 40%, #1E90FF 60%);
+  --text-link-hover-color: color-mix(in srgb, var(--color) 40%, #1C86EE 60%);
 
   --padding-tiny: 5px;
   --padding-small: 10px;
@@ -43,11 +38,11 @@
   --border-radius-large: 40px;
   --border-radius-huge: 80px;
 
-  --font-size-tiny: 10px;
-  --font-size-small: 12px;
-  --font-size-medium: 16px;
-  --font-size-large: 20px;
-  --font-size-huge: 24px;
+  --font-size-tiny: 12px;
+  --font-size-small: 14px;
+  --font-size-medium: 18px;
+  --font-size-large: 22px;
+  --font-size-huge: 28px;
 
   --font-weight-light: 300;
   --font-weight-normal: 400;
@@ -90,11 +85,13 @@ html {
 }
 
 body {
-  background: var(--body-background-color);
-  color: var(--text-color);
+  background: var(--background-color);
+  color: var(--color);
   font-size: var(--font-size-medium);
   font-weight: var(--font-weight-normal);
-  transition: var(--body-background-color);
+  transition: background 0.8s ease-in-out, color 0.4s ease-in-out;
+  background-attachment: fixed;
+  background-size: cover;
   padding: 0;
   margin: 0;
   font-family: "Red Hat Display", "din alternate", system-ui, optima, avenir;
@@ -117,12 +114,13 @@ h6 {
 }
 
 a {
-  color: var(--text-link-color);
   text-decoration: none;
+  color: var(--text-link-color);
 }
 
 a:hover {
   color: var(--text-link-hover-color);
+  text-decoration: none;
 }
 
 ul {
@@ -132,16 +130,17 @@ ul {
 button {
   border-radius: 50dvh;
   background-color: rgb(36, 36, 36);
-  color: white;
   border: none;
   padding: var(--padding-small) var(--padding-medium);
   display: flex;
   align-items: center;
+  font-size: var(--font-size-medium);
 }
 
 button:hover {
   background-color: rgb(22, 22, 22);
   box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.24);
+  cursor: pointer;
 }
 
 button svg {
@@ -150,25 +149,5 @@ button svg {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1e1e1e;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #444444;
-  border-radius: 4px;
-  border: 2px solid #1e1e1e;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #666666;
-}
-
-::-webkit-scrollbar-thumb:active {
-  background: #888888;
+  display: none;
 }

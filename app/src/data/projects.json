@@ -5,7 +5,7 @@
     "description": "Deploy Smarter, Not Harder",
     "links": [
       {
-        "name": "GitHub Repository",
+        "name": "Github Repository",
         "url": "https://github.com/upayanmazumder/kodesphere"
       },
       {
@@ -25,12 +25,12 @@
     ]
   },
   {
-    "name": "Advanced Traffic Control System for Urban Road Network",
+    "name": "Traffic Control System",
     "icon": "https://ibreakstuff.upayan.dev/icons/icon-256x256.png",
     "description": "Smarter signals, smoother streets",
     "links": [
       {
-        "name": "GitHub Repository",
+        "name": "Github Repository",
         "url": "https://github.com/upayanmazumder/Advanced-Traffic-Control-System-for-Urban-Road-Network"
       },
       {
@@ -63,10 +63,10 @@
   {
     "name": "Collaborative Article Sharing",
     "icon": "https://cas.upayan.dev/favicon.ico",
-    "description": "A collaborative article-sharing system designed for seamless content exchange and engagement.",
+    "description": "Designed for seamless content exchange and engagement.",
     "links": [
       {
-        "name": "GitHub Repository",
+        "name": "Github Repository",
         "url": "https://github.com/upayanmazumder/Collaborative-Article-Sharing"
       },
       {
@@ -95,7 +95,7 @@
     "description": "My coding journey!",
     "links": [
       {
-        "name": "GitHub Repository",
+        "name": "Github Repository",
         "url": "https://github.com/upayanmazumder/DevJourney"
       },
       {

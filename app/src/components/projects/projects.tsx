@@ -7,7 +7,7 @@ import defaultImage from "../../media/icon.png";
 const Projects = () => {
   return (
     <section id="projects" className={styles.projectsSection}>
-      <h1 className={styles.heading}>My Projects</h1>
+      <h1 className={styles.heading}>Projects</h1>
       <div className={styles.projectsGrid}>
         {projectsData.map((project, index) => (
           <div key={index} className={styles.projectCard}>

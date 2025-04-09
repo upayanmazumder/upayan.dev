@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import GitHubSponsor from "../components/github-sponsor/github-sponsor";
 import Sidebar from "../components/sidebar/sidebar";
 import Nav from "../components/nav/nav";
 import Footer from "../components/footer/footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Bg from "../components/background/background";
+import { ThemeManager, MoodSelector } from "../components/theme/theme";
 
 export const metadata: Metadata = {
   title: "Upayan",
@@ -37,12 +37,14 @@ export default function RootLayout({
       </head>
       <body>
         <Bg>
-          <Sidebar />
-          <Nav />
-          {children}
-          <GitHubSponsor />
-          <Footer />
-          <SpeedInsights />
+          <ThemeManager>
+            <MoodSelector />
+            <Sidebar />
+            <Nav />
+            {children}
+            <Footer />
+            <SpeedInsights />
+          </ThemeManager>
         </Bg>
       </body>
     </html>

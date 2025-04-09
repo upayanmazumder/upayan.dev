@@ -1,134 +1,115 @@
 .wrapper {
-    max-width: 800px;
-    margin: 1rem auto;
-    font-family: 'Segoe UI', system-ui;
+    max-width: 1000px;
+    width: 100%;
+    margin: 1.5em auto;
+    padding: 0 1em;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: var(--color);
+    font-size: var(--font-size-medium);
+    box-sizing: border-box;
+}
+
+.wrapper:hover {
+    cursor: default;
 }
 
 .activities {
-    background: linear-gradient(145deg, #0a192f6d, #020c1b6a);
+    background: var(--card-background);
     border: 1px solid rgba(33, 150, 243, 0.3);
-    border-radius: 15px;
+    border-radius: 1rem;
     padding: 1.5rem;
-    margin: 1rem 0;
-    -webkit-backdrop-filter: blur(2px);
-    backdrop-filter: blur(2px);
-    box-shadow: 0 8px 32px rgba(2, 12, 27, 0.3);
-    transition: all 0.3s ease-in-out;
+    margin: 1.5rem 0;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 10px 40px rgba(2, 12, 27, 0.4);
+    transition: all 0.4s ease-in-out;
     position: relative;
     overflow: hidden;
 }
 
 .activities ul {
-    padding: 0;
     display: flex;
-    flex-direction: row;
-    gap: var(--margin-huge);
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 0;
     margin: 0;
-}
-
-.activities::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, #2195f384, transparent);
-    animation: shimmer 4s infinite linear;
-    opacity: 0.1;
-}
-
-@keyframes shimmer {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.status {
-    color: #64ffda;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 6px !important;
-    margin-bottom: 1rem;
-    text-shadow: 0 0 8px rgba(100, 255, 218, 0.3);
+    list-style: none;
+    justify-content: space-evenly;
 }
 
 .activities h3 {
-    color: #ccd6f6;
-    margin-bottom: 0.5rem;
     font-size: 1.2rem;
-    letter-spacing: 4px;
+    margin-bottom: 0.6rem;
+    letter-spacing: 1px;
+    font-weight: 600;
+    color: #90caf9;
 }
 
 .activities p {
-    color: #8892b0;
-    margin: 0.3rem 0;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    word-spacing: 2px;
+    font-size: 0.95rem;
+    margin: 0.4rem 0;
+    color: #cfd8dc;
 }
 
 .activities img {
-    width: 48px;
-    height: 48px;
+    width: 3rem;
+    height: 3rem;
     border-radius: 50%;
-    margin: 0.5rem;
+    margin: 0.5em 0.2em;
     border: 2px solid #2196f3;
-    box-shadow: 0 0 12px rgba(33, 150, 243, 0.3);
-    transition: transform 0.3s ease;
+    box-shadow: 0 0 12px rgba(33, 150, 243, 0.35);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.activities:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(2, 12, 27, 0.5);
+.status {
+    text-transform: capitalize;
 }
 
-/* Pulsing animation for active elements */
-@keyframes pulse-glow {
-    0% {
-        box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4);
+@media (max-width: 1024px) {
+    .activities ul {
+        flex-direction: column;
+        align-items: stretch;
     }
-    70% {
-        box-shadow: 0 0 0 10px rgba(33, 150, 243, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(33, 150, 243, 0);
+
+    .activities {
+        padding: 1.25rem;
     }
 }
 
-.activities:hover::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 15px;
-    animation: pulse-glow 2s infinite;
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
     .wrapper {
-        width: 90%;
-        margin: 1rem auto;
+        padding: 0 0.75rem;
     }
 
     .activities {
         padding: 1rem;
-        justify-content: center;
-    }
-
-    .activities ul {
-        justify-content: center;
     }
 
     .activities h3 {
         font-size: 1rem;
-        letter-spacing: 2px;
+    }
+
+    .activities p {
+        font-size: 0.9rem;
+    }
+
+    .activities img {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .progressBar {
+        height: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .activities {
+        padding: 0.9rem;
+    }
+
+    .activities h3 {
+        font-size: 0.95rem;
     }
 
     .activities p {
@@ -136,22 +117,16 @@
     }
 
     .activities img {
-        width: 40px;
-        height: 40px;
+        width: 2.25rem;
+        height: 2.25rem;
     }
-}
 
-.progressBar {
-    width: 100%;
-    height: 2px;
-    background-color: #e0e0e0;
-    border-radius: 5px;
-    overflow: hidden;
-    margin: 10px 0;
-}
+    .status {
+        font-size: 0.75rem;
+        letter-spacing: 3px;
+    }
 
-.progressFill {
-    height: 100%;
-    background-color: #447596;
-    transition: width 0.5s ease-in-out;
+    .progressBar {
+        height: 3px;
+    }
 }

@@ -1,13 +1,13 @@
 .projectsSection {
   padding: 5rem 2rem;
-  color: #e6f1ff;
   text-align: center;
+  font-size: 1rem;
 }
 
 .heading {
-
-  margin-bottom: 3rem;
+  margin-bottom: var(--margin-medium);
   font-weight: 700;
+  font-size: 1.5rem;
 }
 
 .projectsGrid {
@@ -18,7 +18,7 @@
 }
 
 .projectCard {
-  background: rgba(20, 30, 48, 0.195);
+  background: var(--card-background);
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   border: 1px solid rgba(59, 130, 246, 0.2);
@@ -31,7 +31,6 @@
 
 .projectCard:hover {
   transform: translateY(-3px);
-  box-shadow: 0 3px 12px rgba(59, 130, 246, 0.25);
 }
 
 .projectIcon {
@@ -43,14 +42,14 @@
 }
 
 .projectTitle {
-  font-size: 1.6rem;
-  font-weight: 600;
+  font-size: var(--font-size-large);
+  font-weight: var(--font-weight-bold);
   margin-bottom: 0.75rem;
   color: #60a5fa;
 }
 
 .projectDescription {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #cbd5e1;
   margin-bottom: 1.25rem;
   line-height: 1.6;
@@ -67,18 +66,16 @@
 
 .linkButton,
 .packageButton {
-  background-color: #1e293b;
   color: #3b82f6;
   border: 1px solid #3b82f6;
   padding: 0.4rem 0.9rem;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   text-decoration: none;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .linkButton:hover,
 .packageButton:hover {
-  background-color: #3b82f6;
-  color: #ffffff;
+  background-color: #5f5f5f3a;
 }

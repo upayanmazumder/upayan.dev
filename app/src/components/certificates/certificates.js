@@ -9,7 +9,6 @@ import { BsFunnel, BsFunnelFill } from "react-icons/bs";
 const Certificates = () => {
     const [selectedTag, setSelectedTag] = useState("");
 
-    // Count the occurrence of each tag
     const tagOccurrences = certificates
         .flatMap((certificate) => certificate.tags)
         .reduce((acc, tag) => {
@@ -17,17 +16,14 @@ const Certificates = () => {
             return acc;
         }, {});
 
-    // Filter tags to include only those that occur at least twice
     const validTags = Object.keys(tagOccurrences).filter((tag) => tagOccurrences[tag] >= 2);
 
-    // Filter certificates based on the selected tag
     const filteredCertificates = selectedTag
         ? certificates.filter((certificate) => certificate.tags.includes(selectedTag))
         : certificates;
 
     return (
         <section className={certificateStyles.pageContainer}>
-            {/* Filter Section */}
             <div className={certificateStyles.filterContainer}>
                 <summary className={certificateStyles.filterSummary}>
                     {selectedTag ? <BsFunnelFill /> : <BsFunnel />}
@@ -48,7 +44,6 @@ const Certificates = () => {
                 </div>
             </div>
 
-            {/* Certificates Grid */}
             <div className={certificateStyles.gridContainer}>
                 {filteredCertificates.map((certificate, index) => (
                     <div key={index} className={certificateStyles.certificateCard}>

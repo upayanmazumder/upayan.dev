@@ -1,4 +1,5 @@
 .devjourneyContainer {
+    -webkit-backdrop-filter: blur(1px);
     backdrop-filter: blur(1px);
     margin: var(--margin-medium) var(--margin-medium);
     padding: calc(2 * var(--padding-medium)) var(--padding-medium);

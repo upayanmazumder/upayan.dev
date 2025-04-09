@@ -1,4 +1,3 @@
-
 .githubButtonContainer {
     display: flex;
     justify-content: flex-end;
@@ -6,12 +5,9 @@
 
 .githubButtonContainer button {
     background-color: black;
+    color: white;
     gap: 10px;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.435);
-}
-
-.githubButtonContainer button:hover {
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.735);
+    border: 1px rgba(255, 255, 255, 0.435) solid;
 }
 
 @media (max-width: 768px) {

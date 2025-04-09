@@ -17,7 +17,7 @@
     justify-content: center;
 }
 
-.hero img {
+.upayanIcon {
     width: 30%;
     height: auto;
     filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(1) contrast(1);

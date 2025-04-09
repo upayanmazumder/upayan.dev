@@ -1,29 +1,38 @@
 .wrapper {
-    max-width: 800px;
-    margin: 1rem auto;
-    font-family: 'Segoe UI', system-ui;
+    max-width: 1000px;
+    width: 100%;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: var(--color);
+
+    @supports (color: color-mix(in srgb, black, white)) {
+        color: color-mix(in srgb, var(--color), cyan 20%);
+    }
 }
 
 .activities {
-    background: linear-gradient(145deg, #0a192f6d, #020c1b6a);
+    background: linear-gradient(145deg, rgba(10, 25, 47, 0.7), rgba(2, 12, 27, 0.7));
     border: 1px solid rgba(33, 150, 243, 0.3);
-    border-radius: 15px;
+    border-radius: 16px;
     padding: 1.5rem;
-    margin: 1rem 0;
-    -webkit-backdrop-filter: blur(2px);
-    backdrop-filter: blur(2px);
-    box-shadow: 0 8px 32px rgba(2, 12, 27, 0.3);
-    transition: all 0.3s ease-in-out;
+    margin: 1.5rem 0;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 10px 40px rgba(2, 12, 27, 0.4);
+    transition: all 0.4s ease-in-out;
     position: relative;
     overflow: hidden;
 }
 
 .activities ul {
-    padding: 0;
     display: flex;
-    flex-direction: row;
-    gap: var(--margin-huge);
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 0;
     margin: 0;
+    list-style: none;
+    justify-content: space-evenly;
 }
 
 .activities::before {
@@ -34,69 +43,55 @@
     width: 200%;
     height: 200%;
     background: linear-gradient(45deg, transparent, #2195f384, transparent);
-    animation: shimmer 4s infinite linear;
+    animation: shimmer 6s infinite linear;
     opacity: 0.1;
-}
-
-@keyframes shimmer {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+    z-index: 0;
 }
 
 .status {
-    color: #64ffda;
     font-size: 0.9rem;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 6px !important;
-    margin-bottom: 1rem;
-    text-shadow: 0 0 8px rgba(100, 255, 218, 0.3);
+    letter-spacing: 5px;
+    margin-bottom: 1.25rem;
+    color: #64ffda;
+    text-shadow: 0 0 8px rgba(100, 255, 218, 0.4);
 }
 
 .activities h3 {
-    color: #ccd6f6;
-    margin-bottom: 0.5rem;
     font-size: 1.2rem;
-    letter-spacing: 4px;
+    margin-bottom: 0.6rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+    color: #90caf9;
 }
 
 .activities p {
-    color: #8892b0;
-    margin: 0.3rem 0;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    word-spacing: 2px;
+    font-size: 0.95rem;
+    margin: 0.4rem 0;
+    letter-spacing: 0.8px;
+    word-spacing: 1.5px;
+    color: #cfd8dc;
 }
 
 .activities img {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    margin: 0.5rem;
+    margin: 0.5rem 0.2rem;
     border: 2px solid #2196f3;
-    box-shadow: 0 0 12px rgba(33, 150, 243, 0.3);
-    transition: transform 0.3s ease;
+    box-shadow: 0 0 12px rgba(33, 150, 243, 0.35);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .activities:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(2, 12, 27, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 44px rgba(2, 12, 27, 0.6);
 }
 
-/* Pulsing animation for active elements */
-@keyframes pulse-glow {
-    0% {
-        box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4);
-    }
-    70% {
-        box-shadow: 0 0 0 10px rgba(33, 150, 243, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(33, 150, 243, 0);
-    }
+.activities:hover img {
+    transform: scale(1.04);
+    box-shadow: 0 0 18px rgba(33, 150, 243, 0.55);
 }
 
 .activities:hover::after {
@@ -106,52 +101,69 @@
     left: 0;
     right: 0;
     bottom: 0;
-    border-radius: 15px;
-    animation: pulse-glow 2s infinite;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .wrapper {
-        width: 90%;
-        margin: 1rem auto;
-    }
-
-    .activities {
-        padding: 1rem;
-        justify-content: center;
-    }
-
-    .activities ul {
-        justify-content: center;
-    }
-
-    .activities h3 {
-        font-size: 1rem;
-        letter-spacing: 2px;
-    }
-
-    .activities p {
-        font-size: 0.8rem;
-    }
-
-    .activities img {
-        width: 40px;
-        height: 40px;
-    }
+    border-radius: 16px;
+    animation: pulse-glow 2.5s infinite;
 }
 
 .progressBar {
     width: 100%;
-    height: 2px;
-    background-color: #e0e0e0;
-    border-radius: 5px;
+    height: 5px;
+    background-color: rgba(224, 224, 224, 0.2);
+    border-radius: 4px;
     overflow: hidden;
-    margin: 10px 0;
+    margin-top: 0.8rem;
 }
 
 .progressFill {
     height: 100%;
-    background-color: #447596;
-    transition: width 0.5s ease-in-out;
+    background: linear-gradient(90deg, #64b5f6, #2196f3);
+    transition: width 0.6s ease-in-out;
+    border-radius: 4px;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 1024px) {
+    .activities ul {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        padding: 0 0.75rem;
+    }
+
+    .activities {
+        padding: 1rem;
+    }
+
+    .activities h3 {
+        font-size: 1rem;
+    }
+
+    .activities p {
+        font-size: 0.85rem;
+    }
+
+    .activities img {
+        width: 42px;
+        height: 42px;
+    }
+
+    .progressBar {
+        height: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .activities img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .status {
+        font-size: 0.75rem;
+        letter-spacing: 3px;
+    }
 }

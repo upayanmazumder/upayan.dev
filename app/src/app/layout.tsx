@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import GitHubSponsor from "../components/githubsponsor/githubsponsor";
 import Sidebar from "../components/sidebar/sidebar";
 import Nav from "../components/nav/nav";
 import Footer from "../components/footer/footer";
@@ -43,7 +42,6 @@ export default function RootLayout({
             <Sidebar />
             <Nav />
             {children}
-            <GitHubSponsor />
             <Footer />
             <SpeedInsights />
           </ThemeManager>

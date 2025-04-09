@@ -14,21 +14,24 @@
     .sidebar {
         display: none;
     }
-    
+
 }
 
-.sidebar nav a {
-    color: var(--text-color);
-    display: flex;
+.sidebar nav {
+    height: 50%;
 }
 
 .sidebar nav ul {
     padding: var(--padding-tiny) var(--padding-small);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .sidebar nav ul li {
     margin-bottom: var(--margin-small);
-    display: flex;    
+    display: flex;
 }
 
 .sidebar nav ul li:hover {
@@ -38,13 +41,18 @@
 
 .sidebar nav ul li svg {
     padding: var(--padding-small);
-    background-color: rgba(31, 31, 31, 0.342);
+    background-color: rgba(66, 66, 66, 0.342);
     border-radius: 10dvh;
 }
 
 .sidebar nav ul li:hover svg {
     background-color: var(--sidebar-background-color);
     border-radius: 10dvh 0 0 10dvh;
+}
+
+.sidebar nav a {
+    color: var(--color);
+    display: flex;
 }
 
 @media (max-width: 768px) {

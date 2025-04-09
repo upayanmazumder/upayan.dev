@@ -35,13 +35,15 @@ const Hero: React.FC = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <Image
-          src="/upayan-transparent.svg"
-          alt="Upayan's personal branding logo"
-          width={100}
-          height={100}
-          className={heroStyles.upayanIcon}
-        />
+        <div className="imageWrapper">
+          <Image
+            src="/upayan-transparent.webp"
+            alt="Upayan's personal branding logo"
+            width={300}
+            height={300}
+            className={heroStyles.upayanIcon}
+          />
+        </div>
 
         <motion.div
           className={heroStyles.technologies}

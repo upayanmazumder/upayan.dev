@@ -18,9 +18,15 @@
     font-size: 1rem;
 }
 
+.imageWrapper {
+    background-color: #543210;
+    display: inline-block;
+}
+
 .upayanIcon {
-    width: 30%;
-    height: auto;
+    width: 300px;
+    height: 300px;
+    mix-blend-mode: difference;
 }
 
 .branding {

@@ -32,7 +32,6 @@
     padding: var(--padding-small);
 }
 
-
 @media (max-width: 961px) {
     .column {
         padding: 0;
@@ -42,6 +41,7 @@
 
 .column h3 {
     margin-bottom: var(--margin-tiny);
+    color: var(--color);
 }
 
 .column ul {
@@ -55,7 +55,6 @@
     justify-content: space-between;
     align-items: center;
 }
-
 
 @media (max-width: 961px) {
     .footerBottom {
@@ -76,7 +75,6 @@
     border-radius: 50%;
     display: flex;
 }
-
 
 @media (max-width: 961px) {
     .footerLinks a {

@@ -18,11 +18,12 @@
     padding: 8px 12px;
     font-size: 0.9em;
     color: #f0f0f0;
-    background: #222;
+    background: #2222228d;
     border: 1px solid #444;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-transform: uppercase;
 }
 
 .filterSummary {
@@ -116,10 +117,8 @@
 
 .certificateTag {
     display: inline-block;
-    background: #333;
     color: #f0f0f0;
     padding: 4px 8px;
-    border: 1px solid #444;
     border-radius: 6px;
     font-size: 0.75em;
     text-transform: uppercase;

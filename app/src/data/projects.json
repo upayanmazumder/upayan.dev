@@ -25,7 +25,7 @@
     ]
   },
   {
-    "name": "Advanced Traffic Control System for Urban Road Network",
+    "name": "Traffic Control System",
     "icon": "https://ibreakstuff.upayan.dev/icons/icon-256x256.png",
     "description": "Smarter signals, smoother streets",
     "links": [
@@ -63,7 +63,7 @@
   {
     "name": "Collaborative Article Sharing",
     "icon": "https://cas.upayan.dev/favicon.ico",
-    "description": "A collaborative article-sharing system designed for seamless content exchange and engagement.",
+    "description": "Designed for seamless content exchange and engagement.",
     "links": [
       {
         "name": "GitHub Repository",

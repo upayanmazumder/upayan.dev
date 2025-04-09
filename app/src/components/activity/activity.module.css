@@ -6,19 +6,15 @@
     font-family: 'Segoe UI', system-ui, sans-serif;
     color: var(--color);
     font-size: var(--font-size-medium);
-
-    @supports (color: color-mix(in srgb, black, white)) {
-        color: color-mix(in srgb, var(--color), cyan 20%);
-    }
-
+    box-sizing: border-box;
 }
 
 .activities {
     background: var(--card-background);
     border: 1px solid rgba(33, 150, 243, 0.3);
-    border-radius: 16px;
-    padding: 1.5em;
-    margin: 1.5em 0;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     box-shadow: 0 10px 40px rgba(2, 12, 27, 0.4);
@@ -30,55 +26,30 @@
 .activities ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5em;
+    gap: 1.5rem;
     padding: 0;
     margin: 0;
     list-style: none;
     justify-content: space-evenly;
 }
 
-.activities::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, #2195f384, transparent);
-    animation: shimmer 6s infinite linear;
-    opacity: 0.1;
-    z-index: 0;
-}
-
-.status {
-    font-size: 0.9em;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 5px;
-    margin-bottom: 1.25em;
-    color: #64ffda;
-    text-shadow: 0 0 8px rgba(100, 255, 218, 0.4);
-}
-
 .activities h3 {
-    font-size: 1.2em;
-    margin-bottom: 0.6em;
-    letter-spacing: 2px;
+    font-size: 1.2rem;
+    margin-bottom: 0.6rem;
+    letter-spacing: 1px;
     font-weight: 600;
     color: #90caf9;
 }
 
 .activities p {
-    font-size: 0.95em;
-    margin: 0.4em 0;
-    letter-spacing: 0.8px;
-    word-spacing: 1.5px;
+    font-size: 0.95rem;
+    margin: 0.4rem 0;
     color: #cfd8dc;
 }
 
 .activities img {
-    width: 48px;
-    height: 48px;
+    width: 3rem;
+    height: 3rem;
     border-radius: 50%;
     margin: 0.5em 0.2em;
     border: 2px solid #2196f3;
@@ -86,71 +57,41 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.activities:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 44px rgba(2, 12, 27, 0.6);
+.status {
+    text-transform: capitalize;
 }
 
-.activities:hover img {
-    transform: scale(1.04);
-    box-shadow: 0 0 18px rgba(33, 150, 243, 0.55);
-}
-
-.activities:hover::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 16px;
-    animation: pulse-glow 2.5s infinite;
-}
-
-.progressBar {
-    width: 100%;
-    height: 5px;
-    background-color: rgba(224, 224, 224, 0.2);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-top: 0.8em;
-}
-
-.progressFill {
-    height: 100%;
-    background: linear-gradient(90deg, #64b5f6, #2196f3);
-    transition: width 0.6s ease-in-out;
-    border-radius: 4px;
-}
-
-/* Responsive Tweaks */
 @media (max-width: 1024px) {
     .activities ul {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+    }
+
+    .activities {
+        padding: 1.25rem;
     }
 }
 
 @media (max-width: 768px) {
     .wrapper {
-        padding: 0 0.75em;
+        padding: 0 0.75rem;
     }
 
     .activities {
-        padding: 1em;
+        padding: 1rem;
     }
 
     .activities h3 {
-        font-size: 1em;
+        font-size: 1rem;
     }
 
     .activities p {
-        font-size: 0.85em;
+        font-size: 0.9rem;
     }
 
     .activities img {
-        width: 42px;
-        height: 42px;
+        width: 2.5rem;
+        height: 2.5rem;
     }
 
     .progressBar {
@@ -159,13 +100,29 @@
 }
 
 @media (max-width: 480px) {
+    .activities {
+        padding: 0.9rem;
+    }
+
+    .activities h3 {
+        font-size: 0.95rem;
+    }
+
+    .activities p {
+        font-size: 0.8rem;
+    }
+
     .activities img {
-        width: 36px;
-        height: 36px;
+        width: 2.25rem;
+        height: 2.25rem;
     }
 
     .status {
-        font-size: 0.75em;
+        font-size: 0.75rem;
         letter-spacing: 3px;
+    }
+
+    .progressBar {
+        height: 3px;
     }
 }

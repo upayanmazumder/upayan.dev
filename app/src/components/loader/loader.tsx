@@ -3,7 +3,14 @@ import styled from "styled-components";
 
 const Loader = () => {
   return (
-    <StyledWrapper>
+    <StyledWrapper
+      style={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <div className="pl">
         <div className="pl__dot" />
         <div className="pl__dot" />

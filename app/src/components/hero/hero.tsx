@@ -22,7 +22,7 @@ const techVariants = {
     opacity: 1,
     color: technologies[index].textColor,
     backgroundColor: technologies[index].backgroundColor,
-    transition: { delay: index * 0.1, duration: 0.2 },
+    transition: { delay: index * 0.05, duration: 0.05 },
   }),
 };
 
@@ -67,7 +67,7 @@ const Hero: React.FC = () => {
         className={heroStyles.officialLinks}
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.2 }}
       >
         {officialLinks
           .filter((link) => whitelist.includes(link.name))

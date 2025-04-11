@@ -81,11 +81,11 @@
 
 .officialLinks button {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    letter-spacing: 1px;
+    letter-spacing: 0.2em;
     font-size: 0.9em;
 }
 
 .officialLinks button:hover {
-    box-shadow: 0 0 9px 8px #4647e438;
+    box-shadow: 0 0 8px 4px #c5c5c538;
     cursor: pointer;
 }

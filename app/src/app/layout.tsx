@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Sidebar from "../components/sidebar/sidebar";
-import Nav from "../components/nav/nav";
 import Footer from "../components/footer/footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Bg from "../components/background/background";
@@ -40,7 +39,6 @@ export default function RootLayout({
           <ThemeManager>
             <MoodSelector />
             <Sidebar />
-            <Nav />
             {children}
             <Footer />
             <SpeedInsights />

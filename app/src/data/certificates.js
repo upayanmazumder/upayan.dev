@@ -14,6 +14,14 @@ export const certificates = [
     ],
   },
   {
+    title: "Github Foundations",
+    path: "/certificates/GITHUBFOUNDATIONS_GITHUB_11-04-2025.avif",
+    tags: [
+      "foundations",
+      "github"
+    ],
+  },
+  {
     title: "Sensored 9",
     path: "/certificates/SENSORED9_TEC_15-12-2024.webp",
     tags: [

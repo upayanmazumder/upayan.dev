@@ -1,6 +1,6 @@
 "use client";
 import { BsGithub } from "react-icons/bs";
-import githubButtonStyles from "./GithubButton.module.css"
+import githubButtonStyles from "./githubbutton.module.css"
 
 const GitHubButton = ({ pathname, repoOwner, repoName }) => {
   const repoPath = pathname.replace("/devjourney", "").replace(/^\//, "");

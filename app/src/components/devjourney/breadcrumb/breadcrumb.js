@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import breadcrumbStyles from "./Breadcrumb.module.css";
+import breadcrumbStyles from "./breadcrumb.module.css";
 
 const Breadcrumb = ({ pathname }) => {
   const router = useRouter();
@@ -9,7 +9,7 @@ const Breadcrumb = ({ pathname }) => {
 
   return (
     <div className={breadcrumbStyles.breadcrumbContainer} id="breadcrumb">
-      <motion.button 
+      <motion.button
         onClick={() => router.push("/devjourney")}
         initial={{ opacity: 0, y: -5 }}
         animate={{ opacity: 1, y: 0 }}

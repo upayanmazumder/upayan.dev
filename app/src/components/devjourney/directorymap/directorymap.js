@@ -1,6 +1,6 @@
 "use client";
 import { BsFileEarmark, BsFolderFill } from "react-icons/bs";
-import directoryMapStyles from "./DirectoryMap.module.css";
+import directoryMapStyles from "./directorymap.module.css";
 import Loader from "../../loader/loader";
 
 const DirectoryMap = ({ data, loading, error, handleItemClick }) => {

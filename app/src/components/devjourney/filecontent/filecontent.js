@@ -2,8 +2,8 @@
 import { marked } from "marked";
 import hljs from "highlight.js";
 import { useEffect } from "react";
-import CopyButton from "../CopyButton/CopyButton";
-import fileContentStyles from "./FileContent.module.css";
+import CopyButton from "../copybutton/copybutton";
+import fileContentStyles from "./filecontent.module.css";
 import "./code.css"; // using hljs devibeans
 
 const FileContent = ({ fileContent }) => {

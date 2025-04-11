@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
-import copyButtonStyles from "./CopyButton.module.css";
+import copyButtonStyles from "./copybutton.module.css";
 
 const CopyButton = ({ text }) => {
   const [copied, setCopied] = useState(false);

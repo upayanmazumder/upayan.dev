@@ -1,71 +1,69 @@
-.moodWidget {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  border-radius: 50px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease-in-out;
+.widget {
   z-index: 3000;
-  width: 50px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
-.moodButton {
-  background-color: transparent;
+.widget button:hover {
+  box-shadow: none;
+}
+
+.toggleButton {
+  background: transparent;
   border: none;
   color: var(--color);
   cursor: pointer;
   font-size: 20px;
-  transition: transform 0.3s ease;
-  padding: var(--padding-small);
-  border-radius: 50%;
-}
-
-.moodButton:hover {
-  transform: scale(1.1);
-  background-color: rgba(0, 0, 0, 0.164);
-  box-shadow: none;
-}
-
-.moodContainer {
-  position: absolute;
-  bottom: 60px;
-  right: 0;
-  background: #222;
-  border-radius: 8px;
   padding: 10px;
-  width: 180px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  transform: translateY(10px);
-  visibility: hidden;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
 }
 
-.open .moodContainer {
-  opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
+.toggleButton:hover {
+  transform: scale(1.1);
+  background-color: transparent;
 }
 
-.moodLabel {
+.selector {
+  position: absolute;
+  bottom: 150%;
+  left: 0;
+  margin-top: 8px;
+  background: #222;
+  padding: 10px;
+  border-radius: 8px;
+  width: 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.label {
   color: white;
   font-size: 14px;
   margin-bottom: 5px;
   display: block;
 }
 
-.moodSelect {
-  width: 100%;
-  padding: 5px;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.moodSelect:focus {
-  outline: none;
+.option {
+  padding: 8px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: all 0.2s ease;
+}
+
+.option:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
 }

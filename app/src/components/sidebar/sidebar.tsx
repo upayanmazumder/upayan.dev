@@ -6,6 +6,8 @@ import { BsList } from "react-icons/bs";
 import * as Icons from "react-icons/bs";
 import sidebarData from "../../data/navigation.json";
 import styles from "./sidebar.module.css";
+import { ThemeSelector } from "../theme/theme";
+import GitHubSponsor from "../githubsponsor/githubsponsor";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
@@ -34,8 +36,12 @@ const Sidebar = () => {
             );
           })}
         </nav>
-      </aside>
 
+        <ul className={styles.bottom}>
+          <GitHubSponsor />
+          <ThemeSelector />
+        </ul>
+      </aside>
       {open && <div className={styles.overlay} onClick={toggle} />}
     </>
   );

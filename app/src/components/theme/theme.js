@@ -6,18 +6,17 @@ import styles from './theme.module.css';
 
 const themes = {
   light: {
+    name: 'Light',
     '--background-color': 'lightgray',
-    '--color': 'black'
+    '--color': 'black',
   },
   dark: {
+    name: 'Dark',
     '--background-color': 'black',
-    '--color': 'white'
-  },
-  monochrome: {
-    '--background-color': 'linear-gradient(160deg, #555, #888)',
-    '--color': '#eee'
+    '--color': 'white',
   },
   ocean: {
+    name: 'Ocean',
     '--background-color': `
       radial-gradient(at top left, #0a344a 40%, transparent 60%),
       radial-gradient(at top right, #08283d 40%, transparent 60%),
@@ -26,98 +25,105 @@ const themes = {
     `,
     '--color': '#caf0f8',
   },
-  neon: {
-    '--background-color': 'linear-gradient(90deg, #0ff, #f0f)',
-    '--color': '#000'
-  },
   cyberpunk: {
+    name: 'Cyberpunk',
     '--background-color': 'linear-gradient(120deg, #0f0c29, #302b63, #24243e)',
-    '--color': '#ffffff'
-  },
-  excited: {
-    '--background-color': 'linear-gradient(135deg, #f72585, #7209b7)',
-    '--color': '#ffffff'
+    '--color': '#fff',
   },
 };
-
-const moodToThemes = {
-  Dark: ['dark'],
-  Light: ['light'],
-  Calm: ['ocean'],
-  Adventurous: ['cyberpunk', 'ocean'],
-  Cozy: ['monochrome', 'light'],
-  Excited: ['neon', 'excited'],
-  Mysterious: ['cyberpunk', 'dark'],
-  Focused: ['monochrome', 'ocean'],
-};
-
 
 const ThemeContext = createContext();
 
 const ThemeManager = ({ children }) => {
-  const [selectedMood, setSelectedMood] = useState(() => {
+  const [selectedTheme, setSelectedTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('mood') || 'Dark';
+      return localStorage.getItem('theme') || 'dark';
     }
-    return 'Dark';
+    return 'dark';
   });
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('mood', selectedMood);
-    }
-  }, [selectedMood]);
-
   const theme = useMemo(() => {
-    const themesForMood = moodToThemes[selectedMood] || moodToThemes['Dark'];
-    const chosen = themesForMood[Math.floor(Math.random() * themesForMood.length)];
-    return themes[chosen];
-  }, [selectedMood]);
+    return themes[selectedTheme] || themes.dark;
+  }, [selectedTheme]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      localStorage.setItem('theme', selectedTheme);
       const root = document.documentElement;
       Object.entries(theme).forEach(([key, value]) => {
-        root.style.setProperty(key, value);
+        if (key.startsWith('--')) {
+          root.style.setProperty(key, value);
+        }
       });
     }
-  }, [theme]);
+  }, [theme, selectedTheme]);
 
   return (
-    <ThemeContext.Provider value={{ selectedMood, setSelectedMood }}>
+    <ThemeContext.Provider value={{ selectedTheme, setSelectedTheme }}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
-const MoodSelector = () => {
-  const { selectedMood, setSelectedMood } = useContext(ThemeContext);
+const ThemeSelector = () => {
+  const { selectedTheme, setSelectedTheme } = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={`${styles.moodWidget} ${isOpen ? styles.open : ''}`}>
-      <button className={styles.moodButton} onClick={() => setIsOpen(!isOpen)} aria-label="Select Mood">
+    <div className={styles.widget}>
+      <button
+        className={styles.toggleButton}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Select Theme"
+        aria-expanded={isOpen}
+      >
         <FaPalette size={15} />
       </button>
-      <div className={styles.moodContainer}>
-        <label htmlFor="mood-selector" className={styles.moodLabel}>
-          Select your mood:
-        </label>
-        <select
-          id="mood-selector"
-          value={selectedMood}
-          onChange={(e) => setSelectedMood(e.target.value)}
-          className={styles.moodSelect}
-        >
-          {Object.keys(moodToThemes).map((mood) => (
-            <option key={mood} value={mood}>
-              {mood}
-            </option>
-          ))}
-        </select>
-      </div>
+
+      {isOpen && (
+        <div className={styles.selector}>
+          <label htmlFor="theme-select" className={styles.label}>Select theme:</label>
+          <div className={styles.options}>
+            {Object.entries(themes).map(([key, theme]) => (
+              <button
+                key={key}
+                className={styles.option}
+                onClick={() => {
+                  setSelectedTheme(key);
+                  setIsOpen(false);
+                }}
+                onMouseEnter={() => {
+                  const root = document.documentElement;
+                  Object.entries(theme).forEach(([cssVar, value]) => {
+                    if (cssVar.startsWith('--')) {
+                      root.style.setProperty(cssVar, value);
+                    }
+                  });
+                }}
+                onMouseLeave={() => {
+                  const root = document.documentElement;
+                  const currentTheme = themes[selectedTheme];
+                  Object.entries(currentTheme).forEach(([cssVar, value]) => {
+                    if (cssVar.startsWith('--')) {
+                      root.style.setProperty(cssVar, value);
+                    }
+                  });
+                }}
+                style={{
+                  background: theme['--background-color'],
+                  color: theme['--color'],
+                  border: selectedTheme === key ? '2px solid white' : '1px solid #aaa',
+                }}
+              >
+                {theme.name}
+              </button>
+            ))}
+
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export { ThemeManager, MoodSelector };
+export { ThemeManager, ThemeSelector };

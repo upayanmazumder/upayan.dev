@@ -4,7 +4,7 @@ import Sidebar from "../components/sidebar/sidebar";
 import Footer from "../components/footer/footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Bg from "../components/background/background";
-import { ThemeManager, MoodSelector } from "../components/theme/theme";
+import { ThemeManager } from "../components/theme/theme";
 
 export const metadata: Metadata = {
   title: "Upayan",
@@ -37,7 +37,6 @@ export default function RootLayout({
       <body>
         <Bg>
           <ThemeManager>
-            <MoodSelector />
             <Sidebar />
             {children}
             <Footer />

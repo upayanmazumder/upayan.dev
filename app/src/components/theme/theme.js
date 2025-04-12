@@ -30,6 +30,26 @@ const themes = {
     '--background-color': 'linear-gradient(120deg, #0f0c29, #302b63, #24243e)',
     '--color': '#fff',
   },
+  forest: {
+    name: 'Forest',
+    '--background-color': 'linear-gradient(120deg, #2b580c, #639a67, #a3c4bc)',
+    '--color': '#f4f4f9',
+  },
+  sunset: {
+    name: 'Sunset',
+    '--background-color': 'linear-gradient(120deg, #ff7e5f, #feb47b)',
+    '--color': '#2c3e50',
+  },
+  pastel: {
+    name: 'Pastel',
+    '--background-color': 'linear-gradient(120deg, #ff9a9e, #fad0c4)',
+    '--color': '#6a0572',
+  },
+  midnight: {
+    name: 'Midnight',
+    '--background-color': 'linear-gradient(120deg, #232526, #414345)',
+    '--color': '#dcdcdc',
+  },
 };
 
 const ThemeContext = createContext();
@@ -37,13 +57,13 @@ const ThemeContext = createContext();
 const ThemeManager = ({ children }) => {
   const [selectedTheme, setSelectedTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') || 'dark';
+      return localStorage.getItem('theme') || 'ocean';
     }
-    return 'dark';
+    return 'ocean';
   });
 
   const theme = useMemo(() => {
-    return themes[selectedTheme] || themes.dark;
+    return themes[selectedTheme] || themes.ocean;
   }, [selectedTheme]);
 
   useEffect(() => {

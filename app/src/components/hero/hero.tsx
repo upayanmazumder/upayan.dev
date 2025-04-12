@@ -37,10 +37,10 @@ const Hero: React.FC = () => {
       >
         <div className="imageWrapper">
           <Image
-            src="/upayan-transparent.webp"
+            src="/upayan-transparent-cropped.avif"
             alt="Upayan's personal branding logo"
-            width={300}
-            height={300}
+            width={200}
+            height={100}
             className={heroStyles.upayanIcon}
           />
         </div>

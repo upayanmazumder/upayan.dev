@@ -24,9 +24,18 @@
 }
 
 .upayanIcon {
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: auto;
     mix-blend-mode: difference;
+    margin: 0 50px;
+}
+
+@media (max-width: 1024px) {
+    .upayanIcon {
+        width: 150px;
+        height: auto;
+        margin: 50px 0 20px;
+    }
 }
 
 .branding {

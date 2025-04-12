@@ -50,6 +50,25 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  max-height: 50vh;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #222;
+  overflow-x: hidden;
+  padding: 2px;
+}
+
+.options::-webkit-scrollbar {
+  width: 8px;
+}
+
+.options::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.options::-webkit-scrollbar-track {
+  background: #222;
 }
 
 .option {

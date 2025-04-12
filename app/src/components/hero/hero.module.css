@@ -97,6 +97,6 @@
 }
 
 .officialLinks button:hover {
-    box-shadow: 0 0 8px 4px #c5c5c538;
+    box-shadow: none;
     cursor: pointer;
 }

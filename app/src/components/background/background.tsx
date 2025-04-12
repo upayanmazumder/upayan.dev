@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import React, { useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useRef, ReactNode } from "react";
+import styled from "styled-components";
 
-const DarkBackground = styled.div`
+const BG = styled.div`
   min-height: 100vh;
   width: 100%;
   position: relative;
@@ -19,13 +19,21 @@ const StarCanvas = styled.canvas`
   z-index: -1;
 `;
 
-const DarkBackgroundComponent = ({ children }) => {
-  const canvasRef = useRef(null);
+interface BackgroundProps {
+  children: ReactNode;
+}
+
+const Background: React.FC<BackgroundProps> = ({ children }) => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    let animationFrameId;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationFrameId: number;
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
@@ -33,14 +41,14 @@ const DarkBackgroundComponent = ({ children }) => {
     };
 
     const starColors = [
-      'rgba(255, 255, 255, 0.8)',
-      'rgba(255, 255, 200, 0.7)',
-      'rgba(230, 230, 250, 0.6)',
-      'rgba(255, 250, 205, 0.7)',
-      'rgba(240, 248, 255, 0.5)'
+      "rgba(255, 255, 255, 0.8)",
+      "rgba(255, 255, 200, 0.7)",
+      "rgba(230, 230, 250, 0.6)",
+      "rgba(255, 250, 205, 0.7)",
+      "rgba(240, 248, 255, 0.5)",
     ];
 
-    const createStars = (count) => {
+    const createStars = (count: number) => {
       const stars = [];
       for (let i = 0; i < count; i++) {
         stars.push({
@@ -49,13 +57,22 @@ const DarkBackgroundComponent = ({ children }) => {
           radius: Math.random() * 2.5,
           vx: (Math.random() - 0.5) * 0.1,
           vy: (Math.random() - 0.5) * 0.1,
-          color: starColors[Math.floor(Math.random() * starColors.length)]
+          color: starColors[Math.floor(Math.random() * starColors.length)],
         });
       }
       return stars;
     };
 
-    const drawStars = (stars) => {
+    const drawStars = (
+      stars: Array<{
+        x: number;
+        y: number;
+        radius: number;
+        vx: number;
+        vy: number;
+        color: string;
+      }>
+    ) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       stars.forEach((star) => {
         ctx.fillStyle = star.color;
@@ -73,7 +90,16 @@ const DarkBackgroundComponent = ({ children }) => {
       });
     };
 
-    const animate = (stars) => {
+    const animate = (
+      stars: Array<{
+        x: number;
+        y: number;
+        radius: number;
+        vx: number;
+        vy: number;
+        color: string;
+      }>
+    ) => {
       drawStars(stars);
       animationFrameId = requestAnimationFrame(() => animate(stars));
     };
@@ -82,20 +108,20 @@ const DarkBackgroundComponent = ({ children }) => {
     const stars = createStars(70);
     animate(stars);
 
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("resize", resizeCanvas);
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener("resize", resizeCanvas);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
   return (
-    <DarkBackground>
+    <BG>
       <StarCanvas ref={canvasRef} />
       {children}
-    </DarkBackground>
+    </BG>
   );
 };
 
-export default DarkBackgroundComponent;
+export default Background;

@@ -88,9 +88,23 @@ const ThemeManager = ({ children }) => {
 const ThemeSelector = () => {
   const { selectedTheme, setSelectedTheme } = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
+  const selectorRef = React.useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (selectorRef.current && !selectorRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className={styles.widget}>
+    <div className={styles.widget} ref={selectorRef}>
       <button
         className={styles.toggleButton}
         onClick={() => setIsOpen(!isOpen)}
@@ -138,12 +152,12 @@ const ThemeSelector = () => {
                 {theme.name}
               </button>
             ))}
-
           </div>
         </div>
       )}
     </div>
   );
 };
+
 
 export { ThemeManager, ThemeSelector };

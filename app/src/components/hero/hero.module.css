@@ -60,6 +60,7 @@
     cursor: default;
     font-family: monospace;
     height: 100%;
+    margin: var(--margin-medium) 0;
 }
 
 @media (max-width: 1024px) {
@@ -86,6 +87,7 @@
     gap: var(--margin-medium);
     flex-wrap: wrap;
     padding: var(--padding-tiny);
+    margin: var(--margin-medium) 0;
 }
 
 .officialLinks button {

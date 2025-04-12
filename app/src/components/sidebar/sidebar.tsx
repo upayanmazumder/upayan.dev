@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { BsList } from "react-icons/bs";
 import * as Icons from "react-icons/bs";
@@ -11,7 +11,29 @@ import GitHubSponsor from "../githubsponsor/githubsponsor";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
   const toggle = () => setOpen(!open);
+
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      if (sidebarRef.current) {
+        const sidebarWidth = sidebarRef.current.offsetWidth;
+        setCollapsed(sidebarWidth < 160); // adjust this value as needed
+      }
+    });
+
+    if (sidebarRef.current) {
+      observer.observe(sidebarRef.current);
+    }
+
+    return () => {
+      if (sidebarRef.current) {
+        observer.unobserve(sidebarRef.current);
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -19,7 +41,12 @@ const Sidebar = () => {
         <BsList />
       </div>
 
-      <aside className={`${styles.sidebar} ${open ? styles.open : ""}`}>
+      <aside
+        ref={sidebarRef}
+        className={`${styles.sidebar} ${open ? styles.open : ""} ${
+          collapsed ? styles.collapsed : ""
+        }`}
+      >
         <nav className={styles.nav}>
           {sidebarData.map((item, index) => {
             const Icon = Icons[item.icon as keyof typeof Icons];

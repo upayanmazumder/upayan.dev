@@ -18,7 +18,7 @@
   --screen-vertical-margin: 0;
 
   --text-link-color: color-mix(in srgb, var(--color) 40%, #1E90FF 60%);
-  --text-link-hover-color: color-mix(in srgb, var(--color) 40%, #1C86EE 60%);
+  --text-link-hover-color: color-mix(in srgb, var(--color) 20%, #1C86EE 80%);
 
   --padding-tiny: 5px;
   --padding-small: 10px;

@@ -4,7 +4,7 @@ export const certificates = [
   {
     title: "Internal Hackathon 2025",
     path: "/certificates/INTERNALHACK_CODECHEFVIT_14-04-2025.webp",
-    tags: ["codechef", "devops", "kubernetes", "docker", "ci/cd pipelines", "electronics", "hackathon", "vit"],
+    tags: ["codechef", "devops", "kubernetes", "docker", "ci/cd pipelines", "hackathon", "vit"],
   },
   {
     title: "Cookoff 9",

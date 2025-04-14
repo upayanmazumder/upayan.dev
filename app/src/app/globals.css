@@ -107,6 +107,13 @@ main {
   flex-direction: column;
 }
 
+@media (max-width: 600px) {
+  main {
+    min-height: 78vh;
+    justify-content: center;
+  }
+}
+
 h1,
 h2,
 h3,

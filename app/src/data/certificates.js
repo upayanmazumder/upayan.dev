@@ -2,6 +2,11 @@ export const createSlug = (title) => title.toLowerCase().replace(/\s+/g, "-");
 
 export const certificates = [
   {
+    title: "Internal Hackathon 2025",
+    path: "/certificates/INTERNALHACK_CODECHEFVIT_14-04-2025.webp",
+    tags: ["codechef", "devops", "kubernetes", "docker", "ci/cd pipelines", "electronics", "hackathon", "vit"],
+  },
+  {
     title: "Cookoff 9",
     path: "/certificates/COOKOFF9_CODECHEF_22-11-2024.webp",
     tags: [

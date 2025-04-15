@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import activityStyles from "./activity.module.css";
+import Loader from "../loader/loader";
 
 interface Activity {
   name: string;
@@ -28,14 +29,17 @@ const ActivityComponent: React.FC = () => {
   const [elapsedTimes, setElapsedTimes] = useState<{ [key: string]: number }>(
     {}
   );
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchActivities = async () => {
       try {
         const response = await axios.get("https://api.upayan.dev/");
         setActivities(response.data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching activities:", error);
+        setLoading(false);
       }
     };
 
@@ -93,60 +97,66 @@ const ActivityComponent: React.FC = () => {
 
   return (
     <div className={activityStyles.wrapper}>
-      {activities.map((guildActivity, guildIndex) => (
-        <div key={guildIndex} className={activityStyles.activities}>
-          <p className={activityStyles.status}>{guildActivity.discordstatus}</p>
-          <ul>
-            {guildActivity.activities.map((activity, activityIndex) => (
-              <motion.div
-                key={activityIndex}
-                className={activityStyles.activity}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <h3>{activity.name}</h3>
-                <p>{activity.details}</p>
-                <p>{activity.state}</p>
-                <p>{formatElapsedTime(elapsedTimes[activity.name] || 0)}</p>
-                {activity.endTimestamp && (
-                  <div className={activityStyles.progressBar}>
-                    <div
-                      className={activityStyles.progressFill}
-                      style={{
-                        width: `${calculateProgress(
-                          activity.startTimestamp,
-                          activity.endTimestamp
-                        )}%`,
-                      }}
-                    ></div>
-                  </div>
-                )}
-                {activity.largeImageURL && (
-                  <motion.img
-                    src={activity.largeImageURL}
-                    alt={activity.largeText}
-                    title={activity.largeText}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                  />
-                )}
-                {activity.smallImageURL && (
-                  <motion.img
-                    src={activity.smallImageURL}
-                    alt={activity.smallText || undefined}
-                    title={activity.smallText || undefined}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                  />
-                )}
-              </motion.div>
-            ))}
-          </ul>
-        </div>
-      ))}
+      {loading ? (
+        <Loader />
+      ) : (
+        activities.map((guildActivity, guildIndex) => (
+          <div key={guildIndex} className={activityStyles.activities}>
+            <p className={activityStyles.status}>
+              {guildActivity.discordstatus}
+            </p>
+            <ul>
+              {guildActivity.activities.map((activity, activityIndex) => (
+                <motion.div
+                  key={activityIndex}
+                  className={activityStyles.activity}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <h3>{activity.name}</h3>
+                  <p>{activity.details}</p>
+                  <p>{activity.state}</p>
+                  <p>{formatElapsedTime(elapsedTimes[activity.name] || 0)}</p>
+                  {activity.endTimestamp && (
+                    <div className={activityStyles.progressBar}>
+                      <div
+                        className={activityStyles.progressFill}
+                        style={{
+                          width: `${calculateProgress(
+                            activity.startTimestamp,
+                            activity.endTimestamp
+                          )}%`,
+                        }}
+                      ></div>
+                    </div>
+                  )}
+                  {activity.largeImageURL && (
+                    <motion.img
+                      src={activity.largeImageURL}
+                      alt={activity.largeText}
+                      title={activity.largeText}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  )}
+                  {activity.smallImageURL && (
+                    <motion.img
+                      src={activity.smallImageURL}
+                      alt={activity.smallText || undefined}
+                      title={activity.smallText || undefined}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  )}
+                </motion.div>
+              ))}
+            </ul>
+          </div>
+        ))
+      )}
     </div>
   );
 };

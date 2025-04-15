@@ -14,22 +14,6 @@
     cursor: default;
 }
 
-.contentContainer {
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.loaderWrapper {
-    width: 100%;
-    min-height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .activities {
     background: var(--card-background);
     border: 1px solid rgba(33, 150, 243, 0.3);
@@ -42,28 +26,16 @@
     transition: all 0.4s ease-in-out;
     position: relative;
     overflow: hidden;
-    width: 100%;
 }
 
 .activities ul {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     gap: 1.5rem;
     padding: 0;
     margin: 0;
     list-style: none;
     justify-content: space-evenly;
-}
-
-.activity {
-    padding: 1rem;
-    background-color: rgba(255, 255, 255, 0.02);
-    border-radius: 12px;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-    transition: transform 0.3s ease;
-    flex: 1 1 250px;
-    max-width: 300px;
 }
 
 .activities h3 {

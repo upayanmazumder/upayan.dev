@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import activityStyles from "./activity.module.css";
 import Loader from "../loader/loader";
 
@@ -45,7 +45,6 @@ const ActivityComponent: React.FC = () => {
 
     fetchActivities();
     const interval = setInterval(fetchActivities, 5000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -65,7 +64,6 @@ const ActivityComponent: React.FC = () => {
         return newElapsedTimes;
       });
     }, 1000);
-
     return () => clearInterval(interval);
   }, [activities]);
 
@@ -87,9 +85,7 @@ const ActivityComponent: React.FC = () => {
     const start = new Date(startTimestamp).getTime();
     const end = endTimestamp ? new Date(endTimestamp).getTime() : null;
     const now = Date.now();
-
     if (!end) return 0;
-
     const total = end - start;
     const elapsed = now - start;
     return Math.min(100, Math.max(0, (elapsed / total) * 100));
@@ -97,66 +93,80 @@ const ActivityComponent: React.FC = () => {
 
   return (
     <div className={activityStyles.wrapper}>
-      {loading ? (
-        <Loader />
-      ) : (
-        activities.map((guildActivity, guildIndex) => (
-          <div key={guildIndex} className={activityStyles.activities}>
-            <p className={activityStyles.status}>
-              {guildActivity.discordstatus}
-            </p>
-            <ul>
-              {guildActivity.activities.map((activity, activityIndex) => (
-                <motion.div
-                  key={activityIndex}
-                  className={activityStyles.activity}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <h3>{activity.name}</h3>
-                  <p>{activity.details}</p>
-                  <p>{activity.state}</p>
-                  <p>{formatElapsedTime(elapsedTimes[activity.name] || 0)}</p>
-                  {activity.endTimestamp && (
-                    <div className={activityStyles.progressBar}>
-                      <div
-                        className={activityStyles.progressFill}
-                        style={{
-                          width: `${calculateProgress(
-                            activity.startTimestamp,
-                            activity.endTimestamp
-                          )}%`,
-                        }}
-                      ></div>
-                    </div>
-                  )}
-                  {activity.largeImageURL && (
-                    <motion.img
-                      src={activity.largeImageURL}
-                      alt={activity.largeText}
-                      title={activity.largeText}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
+      <div className={activityStyles.contentContainer}>
+        <AnimatePresence>
+          {loading ? (
+            <motion.div
+              key="loader"
+              className={activityStyles.loaderWrapper}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <Loader />
+            </motion.div>
+          ) : (
+            activities.map((guildActivity, guildIndex) => (
+              <div key={guildIndex} className={activityStyles.activities}>
+                <p className={activityStyles.status}>
+                  {guildActivity.discordstatus}
+                </p>
+                <ul>
+                  {guildActivity.activities.map((activity, activityIndex) => (
+                    <motion.div
+                      key={activityIndex}
+                      className={activityStyles.activity}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5 }}
-                    />
-                  )}
-                  {activity.smallImageURL && (
-                    <motion.img
-                      src={activity.smallImageURL}
-                      alt={activity.smallText || undefined}
-                      title={activity.smallText || undefined}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5 }}
-                    />
-                  )}
-                </motion.div>
-              ))}
-            </ul>
-          </div>
-        ))
-      )}
+                    >
+                      <h3>{activity.name}</h3>
+                      <p>{activity.details}</p>
+                      <p>{activity.state}</p>
+                      <p>
+                        {formatElapsedTime(elapsedTimes[activity.name] || 0)}
+                      </p>
+                      {activity.endTimestamp && (
+                        <div className={activityStyles.progressBar}>
+                          <div
+                            className={activityStyles.progressFill}
+                            style={{
+                              width: `${calculateProgress(
+                                activity.startTimestamp,
+                                activity.endTimestamp
+                              )}%`,
+                            }}
+                          ></div>
+                        </div>
+                      )}
+                      {activity.largeImageURL && (
+                        <motion.img
+                          src={activity.largeImageURL}
+                          alt={activity.largeText}
+                          title={activity.largeText}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.5 }}
+                        />
+                      )}
+                      {activity.smallImageURL && (
+                        <motion.img
+                          src={activity.smallImageURL}
+                          alt={activity.smallText || undefined}
+                          title={activity.smallText || undefined}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.5 }}
+                        />
+                      )}
+                    </motion.div>
+                  ))}
+                </ul>
+              </div>
+            ))
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

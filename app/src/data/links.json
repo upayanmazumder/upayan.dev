@@ -26,6 +26,12 @@
     "textColor": "#000000"
   },
   {
+    "name": "Kaggle",
+    "url": "https://www.kaggle.com/upayanmazumder",
+    "backgroundColor": "#20beff",
+    "textColor": "#ffffff"
+  },
+  {
     "name": "Discord",
     "url": "https://discord.com/users/@upayanmazumder"
   },

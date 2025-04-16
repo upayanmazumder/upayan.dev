@@ -14,6 +14,7 @@ const whitelist = [
   "Leetcode",
   "Microsoft Learn",
   "Gravatar",
+  "Kaggle",
 ];
 
 const techVariants = {

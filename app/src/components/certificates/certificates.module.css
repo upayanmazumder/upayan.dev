@@ -2,9 +2,14 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
-    padding: 20px;
-    color: #f0f0f0;
+    padding: 0;
+    color: var(--color);
     border-radius: var(--border-radius-large);
+    margin-bottom: var(--margin-huge);
+}
+
+.filterLabel {
+    margin-right: var(--margin-small);
 }
 
 .filterContainer {

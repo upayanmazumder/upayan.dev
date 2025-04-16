@@ -161,3 +161,16 @@ button svg {
 ::-webkit-scrollbar {
   display: none;
 }
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: var(--margin-medium) 0;
+  font-family: system-ui;
+}
+
+.page-header * {
+  margin: 0;
+  padding: 0;
+}

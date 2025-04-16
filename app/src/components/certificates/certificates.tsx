@@ -40,7 +40,7 @@ const Certificates: React.FC = () => {
         </summary>
         <div className={certificateStyles.filterDropdown}>
           <label htmlFor="tagFilter" className={certificateStyles.filterLabel}>
-            Filter by tag:
+            Filter by tag
           </label>
           <select
             id="tagFilter"

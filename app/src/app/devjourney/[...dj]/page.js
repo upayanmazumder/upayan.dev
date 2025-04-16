@@ -4,6 +4,10 @@ import DevJourney from "../../../components/devjourney/devjourney";
 const DevJourneyPage = () => {
   return (
     <main>
+      <div className="page-header">
+        <h1>DevJourney</h1>
+        <p>My development journey</p>
+      </div>
       <DevJourney />
     </main>
   );

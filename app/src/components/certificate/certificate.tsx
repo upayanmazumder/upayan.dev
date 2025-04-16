@@ -62,3 +62,4 @@ const CertificateDetail: React.FC<CertificateDetailProps> = ({ slug }) => {
 };
 
 export default CertificateDetail;
+export { certificates };

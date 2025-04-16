@@ -5,10 +5,12 @@ export const certificates = [
     title: "Internal Hackathon 2025",
     path: "/certificates/INTERNALHACK_CODECHEFVIT_14-04-2025.webp",
     tags: ["codechef", "devops", "kubernetes", "docker", "ci/cd pipelines", "hackathon", "vit"],
+    issuer: "CodeChef VIT",
+    date: "14-04-2025",
   },
   {
     title: "Cookoff 9",
-    path: "/certificates/COOKOFF9_CODECHEF_22-11-2024.webp",
+    path: "/certificates/COOKOFF9_CODECHEFVIT_22-11-2024.webp",
     tags: [
       "codechef",
       "cookoff 9",
@@ -17,6 +19,8 @@ export const certificates = [
       "gravitas",
       "vit",
     ],
+    issuer: "CodeChef VIT",
+    date: "22-11-2024",
   },
   {
     title: "Github Foundations",
@@ -25,6 +29,8 @@ export const certificates = [
       "foundations",
       "github"
     ],
+    issuer: "GitHub",
+    date: "11-04-2025",
   },
   {
     title: "Sensored 9",
@@ -38,21 +44,29 @@ export const certificates = [
       "gravitas",
       "vit",
     ],
+    issuer: "The Electronics Club VIT",
+    date: "15-12-2024",
   },
   {
     title: "Yantra Central Hackathon'25",
     path: "/certificates/YANTRACENTRALHACKATHON_SWVIT_12-03-2025.webp",
     tags: ["swvit", "iot", "electronics", "hackathon", "yantra", "vit"],
+    issuer: "Students Welfare VIT",
+    date: "12-03-2025",
   },
   {
     title: "Fundamentals",
     path: "/certificates/FUNDAMENTALS_PROGRAMMINGHUB_05-08-2024.webp",
     tags: ["fundamentals", "programminghub", "basics"],
+    issuer: "ProgrammingHub",
+    date: "05-08-2024",
   },
   {
     title: "C and PLT",
     path: "/certificates/C&PROGRAMMINGINLOGICTECHNIC_SOFTECH_20-06-2024.webp",
     tags: ["softech", "c", "logic techniques", "programming basics"],
+    issuer: "SofTech",
+    date: "20-06-2024",
   },
   {
     title: "NodeJS",
@@ -63,6 +77,8 @@ export const certificates = [
       "programminghub",
       "server-side development",
     ],
+    issuer: "ProgrammingHub",
+    date: "05-08-2024",
   },
   {
     title: "Python 3",
@@ -73,6 +89,8 @@ export const certificates = [
       "python programming",
       "general-purpose language",
     ],
+    issuer: "ProgrammingHub",
+    date: "25-10-2024",
   },
   {
     title: "Docker",
@@ -84,6 +102,8 @@ export const certificates = [
       "devops tools",
       "programminghub",
     ],
+    issuer: "ProgrammingHub",
+    date: "25-10-2024",
   },
   {
     title: "IT Basics",
@@ -94,5 +114,7 @@ export const certificates = [
       "programminghub",
       "basics",
     ],
+    issuer: "ProgrammingHub",
+    date: "27-10-2024",
   },
 ];

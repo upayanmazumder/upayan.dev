@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: calc(2*var(--padding-large)) var(--padding-medium);
+    padding: var(--padding-large) var(--padding-medium);
     min-height: max-content;
     color: #f0f0f0;
     border-radius: var(--border-radius-medium);

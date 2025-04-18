@@ -170,6 +170,12 @@ button svg {
   font-family: system-ui;
 }
 
+@media (max-width: 768px) {
+  .page-header {
+    text-align: center;
+  }
+}
+
 .page-header * {
   margin: 0;
   padding: 0;

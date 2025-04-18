@@ -10,11 +10,6 @@
     "label": "Projects"
   },
   {
-    "href": "/#about-me",
-    "icon": "BsPersonVcard",
-    "label": "About me"
-  },
-  {
     "href": "/certificates",
     "icon": "BsPatchCheck",
     "label": "Certificates"

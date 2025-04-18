@@ -5,15 +5,14 @@
     padding: calc(2 * var(--padding-medium)) var(--padding-medium);
     border-radius: var(--border-radius-large);
     font-size: 0.8em;
-    border: 2px solid gray;
-    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {
     .devjourneyContainer {
         margin: auto;
         padding: var(--padding-small);
-        min-width: 90vw;
+        min-width: 75vw;
         max-width: 97vw;
+        width: fill-available;
     }
 }

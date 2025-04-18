@@ -65,6 +65,7 @@
 .status {
     text-transform: capitalize;
     font-family: monospace;
+    text-align: center;
 }
 
 .progressBar {

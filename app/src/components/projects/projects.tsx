@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 // filepath: d:\upayanmazumder\upayan.dev\app\src\components\projects\projects.tsx
 import React from "react";
-import Image from "next/image";
 import styles from "./projects.module.css";
 import projectsData from "../../data/projects.json";
 import defaultImage from "../../media/icon.png";
@@ -17,7 +17,7 @@ const Projects = () => {
             title={project.name}
             content={
               <>
-                <Image
+                <img
                   src={project.icon || defaultImage.src}
                   alt={`${project.name} icon`}
                   className={styles.projectIcon}

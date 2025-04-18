@@ -1,12 +1,13 @@
+// filepath: d:\upayanmazumder\upayan.dev\app\src\components\hero\hero.tsx
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import heroStyles from "./hero.module.css";
 import Image from "next/image";
 import technologies from "../../data/technologies.json";
 import officialLinks from "../../data/links.json";
-import Activity from "../activity/activity";
+import Activity from "./activity/activity";
 
 const whitelist = [
   "IIT-Madras",
@@ -28,6 +29,12 @@ const techVariants = {
 };
 
 const Hero: React.FC = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true); // Ensure client-specific logic runs only on the client
+  }, []);
+
   return (
     <div className={heroStyles.hero}>
       <motion.div
@@ -42,6 +49,7 @@ const Hero: React.FC = () => {
             alt="Upayan's personal branding logo"
             width={200}
             height={100}
+            priority
             className={heroStyles.upayanIcon}
           />
         </div>
@@ -64,30 +72,32 @@ const Hero: React.FC = () => {
         </motion.div>
       </motion.div>
 
-      <motion.div
-        className={heroStyles.officialLinks}
-        initial={{ y: 100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.2 }}
-      >
-        {officialLinks
-          .filter((link) => whitelist.includes(link.name))
-          .map((link, index) => (
-            <motion.button
-              key={index}
-              onClick={() => window.open(link.url, "_blank", "noopener")}
-              style={{
-                color: link.textColor,
-                backgroundColor: link.backgroundColor,
-              }}
-              className={heroStyles.officialLink}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              {link.name}
-            </motion.button>
-          ))}
-      </motion.div>
+      {isClient && (
+        <motion.div
+          className={heroStyles.officialLinks}
+          initial={{ y: 100 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          {officialLinks
+            .filter((link) => whitelist.includes(link.name))
+            .map((link, index) => (
+              <motion.button
+                key={index}
+                onClick={() => window.open(link.url, "_blank", "noopener")}
+                style={{
+                  color: link.textColor,
+                  backgroundColor: link.backgroundColor,
+                }}
+                className={heroStyles.officialLink}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                {link.name}
+              </motion.button>
+            ))}
+        </motion.div>
+      )}
       <Activity />
     </div>
   );

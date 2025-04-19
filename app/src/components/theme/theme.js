@@ -60,11 +60,6 @@ const themes = {
     '--background-color': 'radial-gradient(circle at 30% 30%, #1a1a2e, #16213e, #0f3460)',
     '--color': '#e0e0e0',
   },
-  sakura: {
-    name: 'Sakura',
-    '--background-color': 'linear-gradient(135deg, #ffe3e3, #ffc1cc)',
-    '--color': '#5c3c3c',
-  },
   desert: {
     name: 'Desert',
     '--background-color': 'linear-gradient(120deg, #edc9af, #d2b48c, #c19a6b)',
@@ -102,13 +97,13 @@ const ThemeContext = createContext();
 const ThemeManager = ({ children }) => {
   const [selectedTheme, setSelectedTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') || 'ocean';
+      return localStorage.getItem('theme') || 'space';
     }
-    return 'ocean';
+    return 'space';
   });
 
   const theme = useMemo(() => {
-    return themes[selectedTheme] || themes.ocean;
+    return themes[selectedTheme] || themes.space;
   }, [selectedTheme]);
 
   useEffect(() => {

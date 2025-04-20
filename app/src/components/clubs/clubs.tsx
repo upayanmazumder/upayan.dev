@@ -11,9 +11,12 @@ const ClubShowcase: React.FC = () => {
   const isLinkedIn = (url: string) => {
     try {
       const parsedUrl = new URL(url);
-      return parsedUrl.host === "linkedin.com" || parsedUrl.host.endsWith(".linkedin.com");
-    } catch (e) {
-      return false; // Return false if the URL is invalid
+      return (
+        parsedUrl.host === "linkedin.com" ||
+        parsedUrl.host.endsWith(".linkedin.com")
+      );
+    } catch {
+      return false;
     }
   };
 

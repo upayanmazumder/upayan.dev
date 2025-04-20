@@ -1,4 +1,4 @@
-export const createSlug = (title) => title.toLowerCase().replace(/\s+/g, "-");
+export const createSlug = (title: string) => title.toLowerCase().replace(/\s+/g, "-");
 
 export const certificates = [
   {

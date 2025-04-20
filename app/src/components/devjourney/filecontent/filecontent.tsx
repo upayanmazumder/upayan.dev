@@ -6,7 +6,14 @@ import CopyButton from "../copybutton/copybutton";
 import fileContentStyles from "./filecontent.module.css";
 import "./code.css"; // using hljs devibeans
 
-const FileContent = ({ fileContent }) => {
+interface FileContentProps {
+  fileContent: {
+    name: string;
+    content: string;
+  } | null;
+}
+
+const FileContent: React.FC<FileContentProps> = ({ fileContent }) => {
   useEffect(() => {
     if (fileContent?.content) hljs.highlightAll();
   }, [fileContent]);

@@ -7,7 +7,7 @@
 .heading {
   margin-bottom: var(--margin-medium);
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 2em;
 }
 
 .projectsGrid {

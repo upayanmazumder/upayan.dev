@@ -8,6 +8,7 @@
     width: 100%;
     max-width: 420px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    align-self: center;
 }
 
 .card:hover {
@@ -16,4 +17,5 @@
 
 .title {
     margin-bottom: 8px;
+    text-align: center;
 }

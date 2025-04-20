@@ -20,7 +20,7 @@ const Sidebar = () => {
     const observer = new ResizeObserver(() => {
       if (sidebarRef.current) {
         const sidebarWidth = sidebarRef.current.offsetWidth;
-        setCollapsed(sidebarWidth < 160); // adjust this value as needed
+        setCollapsed(sidebarWidth < 160);
       }
     });
 

@@ -8,7 +8,14 @@ import styles from "./clubs.module.css";
 import Card from "../ui/card/card";
 
 const ClubShowcase: React.FC = () => {
-  const isLinkedIn = (url: string) => url.includes("linkedin.com");
+  const isLinkedIn = (url: string) => {
+    try {
+      const parsedUrl = new URL(url);
+      return parsedUrl.host === "linkedin.com" || parsedUrl.host.endsWith(".linkedin.com");
+    } catch (e) {
+      return false; // Return false if the URL is invalid
+    }
+  };
 
   return (
     <div className={styles.container} id="clubs">

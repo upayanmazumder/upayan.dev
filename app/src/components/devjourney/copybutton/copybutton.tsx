@@ -3,8 +3,12 @@ import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 import copyButtonStyles from "./copybutton.module.css";
 
-const CopyButton = ({ text }) => {
-  const [copied, setCopied] = useState(false);
+interface CopyButtonProps {
+  text: string;
+}
+
+const CopyButton: React.FC<CopyButtonProps> = ({ text }) => {
+  const [copied, setCopied] = useState<boolean>(false);
 
   const handleCopy = async () => {
     try {

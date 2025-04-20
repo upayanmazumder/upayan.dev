@@ -3,7 +3,25 @@ import { BsFileEarmark, BsFolderFill } from "react-icons/bs";
 import directoryMapStyles from "./directorymap.module.css";
 import Loader from "../../loader/loader";
 
-const DirectoryMap = ({ data, loading, error, handleItemClick }) => {
+interface RepoContent {
+  name: string;
+  path: string;
+  type: "file" | "dir";
+  sha: string;
+}
+interface DirectoryMapProps {
+  data: RepoContent[];
+  loading: boolean;
+  error: string | null;
+  handleItemClick: (item: RepoContent) => void;
+}
+
+const DirectoryMap: React.FC<DirectoryMapProps> = ({
+  data,
+  loading,
+  error,
+  handleItemClick,
+}) => {
   if (loading) return <Loader />;
   if (error) return <p>Error: {error}</p>;
   if (data.length === 0) return null;

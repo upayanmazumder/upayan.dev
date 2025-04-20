@@ -5,7 +5,6 @@ import Image from "next/image";
 import certificateStyles from "./certificates.module.css";
 import { createSlug, certificates } from "../../data/certificates";
 import { BsFunnel, BsFunnelFill } from "react-icons/bs";
-import Loader from "../loader/loader";
 
 interface Certificate {
   title: string;
@@ -15,7 +14,6 @@ interface Certificate {
 
 const Certificates: React.FC = () => {
   const [selectedTag, setSelectedTag] = useState<string>("");
-  const [currentVisibleIndex, setCurrentVisibleIndex] = useState<number>(0);
 
   const tagOccurrences = certificates
     .flatMap((certificate: Certificate) => certificate.tags)
@@ -29,7 +27,7 @@ const Certificates: React.FC = () => {
   );
 
   const filteredCertificates = selectedTag
-    ? certificates.filter((certificate: Certificate) =>
+    ? certificates.filter((certificate) =>
         certificate.tags.includes(selectedTag)
       )
     : certificates;
@@ -37,9 +35,13 @@ const Certificates: React.FC = () => {
   return (
     <section className={certificateStyles.pageContainer}>
       <div className={certificateStyles.filterContainer}>
-        <summary className={certificateStyles.filterSummary}>
+        <button
+          aria-label="Toggle tag filter"
+          className={certificateStyles.filterSummary}
+          onClick={() => document.getElementById("tagFilter")?.focus()}
+        >
           {selectedTag ? <BsFunnelFill /> : <BsFunnel />}
-        </summary>
+        </button>
         <div className={certificateStyles.filterDropdown}>
           <label htmlFor="tagFilter" className={certificateStyles.filterLabel}>
             Filter by tag
@@ -47,10 +49,7 @@ const Certificates: React.FC = () => {
           <select
             id="tagFilter"
             value={selectedTag}
-            onChange={(e) => {
-              setSelectedTag(e.target.value);
-              setCurrentVisibleIndex(0);
-            }}
+            onChange={(e) => setSelectedTag(e.target.value)}
             className={certificateStyles.filterSelect}
           >
             <option value="">All</option>
@@ -64,50 +63,40 @@ const Certificates: React.FC = () => {
       </div>
 
       <div className={certificateStyles.gridContainer}>
-        {filteredCertificates.map((certificate: Certificate, index: number) => (
-          <div key={index} className={certificateStyles.certificateCard}>
-            {index > currentVisibleIndex ? (
-              <div className={certificateStyles.loaderWrapper}>
-                <Loader />
-              </div>
-            ) : (
-              <>
-                <a
-                  href={`/certificates/${createSlug(certificate.title)}`}
-                  title={`View certificate: ${certificate.title}`}
-                >
-                  <Image
-                    src={certificate.path}
-                    alt={`${certificate.title} certificate`}
-                    className={certificateStyles.certificateImage}
-                    width={500}
-                    height={300}
-                    onLoad={() =>
-                      setCurrentVisibleIndex((prev) =>
-                        prev < filteredCertificates.length - 1 ? prev + 1 : prev
-                      )
-                    }
-                  />
-                </a>
-                <div className={certificateStyles.cardContent}>
-                  <h2 className={certificateStyles.cardTitle}>
-                    {certificate.title}
-                  </h2>
-                  <div className={certificateStyles.tagsContainer}>
-                    {certificate.tags.map((tag, tagIndex) => (
-                      <span
-                        key={tagIndex}
-                        className={certificateStyles.certificateTag}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+        {filteredCertificates.map((certificate: Certificate, index: number) => {
+          const slug = createSlug(certificate.title);
+          return (
+            <div key={index} className={certificateStyles.certificateCard}>
+              <a
+                href={`/certificates/${slug}`}
+                title={`View certificate: ${certificate.title}`}
+              >
+                <Image
+                  src={certificate.path}
+                  alt={`${certificate.title} certificate`}
+                  className={certificateStyles.certificateImage}
+                  width={500}
+                  height={300}
+                />
+              </a>
+              <div className={certificateStyles.cardContent}>
+                <h2 className={certificateStyles.cardTitle}>
+                  {certificate.title}
+                </h2>
+                <div className={certificateStyles.tagsContainer}>
+                  {certificate.tags.map((tag, tagIndex) => (
+                    <span
+                      key={tagIndex}
+                      className={certificateStyles.certificateTag}
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-              </>
-            )}
-          </div>
-        ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

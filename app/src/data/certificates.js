@@ -62,6 +62,37 @@ export const certificates = [
     date: "05-08-2024",
   },
   {
+    title: "Github Copilot",
+    path: "/certificates/GITHUBCOPILOT_MICROSOFTLEARN_19-03-2025.avif",
+    tags: [
+      "copilot",
+      "github",
+      "microsoft learn"
+    ],
+    issuer: "Microsoft Learn",
+    date: "19-03-2025",
+  },
+  {
+    title: "Introduction to Git",
+    path: "/certificates/INTRODUCTIONTOGIT_MICROSOFTLEARN_18-03-2025.avif",
+    tags: [
+      "github",
+      "microsoft learn"
+    ],
+    issuer: "Microsoft Learn",
+    date: "18-03-2025",
+  },
+  {
+    title: "Introduction to Github",
+    path: "/certificates/INTRODUCTIONTOGITHUB_MICROSOFTLEARN_19-03-2025.avif",
+    tags: [
+      "github",
+      "microsoft learn"
+    ],
+    issuer: "Microsoft Learn",
+    date: "19-03-2025",
+  },
+  {
     title: "C and PLT",
     path: "/certificates/C&PROGRAMMINGINLOGICTECHNIC_SOFTECH_20-06-2024.webp",
     tags: ["softech", "c", "logic techniques", "programming basics"],

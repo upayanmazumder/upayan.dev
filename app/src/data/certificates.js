@@ -3,14 +3,14 @@ export const createSlug = (title) => title.toLowerCase().replace(/\s+/g, "-");
 export const certificates = [
   {
     title: "Internal Hackathon 2025",
-    path: "/certificates/INTERNALHACK_CODECHEFVIT_14-04-2025.webp",
+    path: "/certificates/INTERNALHACK_CODECHEFVIT_14-04-2025.avif",
     tags: ["codechef", "devops", "kubernetes", "docker", "ci/cd pipelines", "hackathon", "vit"],
     issuer: "CodeChef VIT",
     date: "14-04-2025",
   },
   {
     title: "Cookoff 9",
-    path: "/certificates/COOKOFF9_CODECHEFVIT_22-11-2024.webp",
+    path: "/certificates/COOKOFF9_CODECHEFVIT_22-11-2024.avif",
     tags: [
       "codechef",
       "cookoff 9",
@@ -34,7 +34,7 @@ export const certificates = [
   },
   {
     title: "Sensored 9",
-    path: "/certificates/SENSORED9_TEC_15-12-2024.webp",
+    path: "/certificates/SENSORED9_TEC_15-12-2024.avif",
     tags: [
       "tec",
       "sensored 9",
@@ -49,14 +49,14 @@ export const certificates = [
   },
   {
     title: "Yantra Central Hackathon'25",
-    path: "/certificates/YANTRACENTRALHACKATHON_SWVIT_12-03-2025.webp",
+    path: "/certificates/YANTRACENTRALHACKATHON_SWVIT_12-03-2025.avif",
     tags: ["swvit", "iot", "electronics", "hackathon", "yantra", "vit"],
     issuer: "Students Welfare VIT",
     date: "12-03-2025",
   },
   {
     title: "Fundamentals",
-    path: "/certificates/FUNDAMENTALS_PROGRAMMINGHUB_05-08-2024.webp",
+    path: "/certificates/FUNDAMENTALS_PROGRAMMINGHUB_05-08-2024.avif",
     tags: ["fundamentals", "programminghub", "basics"],
     issuer: "Programming Hub",
     date: "05-08-2024",
@@ -94,14 +94,14 @@ export const certificates = [
   },
   {
     title: "C and PLT",
-    path: "/certificates/C&PROGRAMMINGINLOGICTECHNIC_SOFTECH_20-06-2024.webp",
+    path: "/certificates/C&PROGRAMMINGINLOGICTECHNIC_SOFTECH_20-06-2024.avif",
     tags: ["softech", "c", "logic techniques", "programming basics"],
     issuer: "Softech",
     date: "20-06-2024",
   },
   {
     title: "NodeJS",
-    path: "/certificates/NODEJS_PROGRAMMINGHUB_05-08-2024.webp",
+    path: "/certificates/NODEJS_PROGRAMMINGHUB_05-08-2024.avif",
     tags: [
       "node.js",
       "javascript backend",
@@ -113,7 +113,7 @@ export const certificates = [
   },
   {
     title: "Python 3",
-    path: "/certificates/PYTHON3_25-10-2024.webp",
+    path: "/certificates/PYTHON3_25-10-2024.avif",
     tags: [
       "python 3",
       "programminghub",
@@ -125,7 +125,7 @@ export const certificates = [
   },
   {
     title: "Docker",
-    path: "/certificates/DOCKER_PROGRAMMINGHUB_25-10-2024.webp",
+    path: "/certificates/DOCKER_PROGRAMMINGHUB_25-10-2024.avif",
     tags: [
       "docker",
       "containerization",
@@ -138,7 +138,7 @@ export const certificates = [
   },
   {
     title: "IT Basics",
-    path: "/certificates/ITBASICS_PROGRAMMINGHUB_27-10-2024.webp",
+    path: "/certificates/ITBASICS_PROGRAMMINGHUB_27-10-2024.avif",
     tags: [
       "it fundamentals",
       "information technology",

@@ -58,7 +58,7 @@ export const certificates = [
     title: "Fundamentals",
     path: "/certificates/FUNDAMENTALS_PROGRAMMINGHUB_05-08-2024.webp",
     tags: ["fundamentals", "programminghub", "basics"],
-    issuer: "ProgrammingHub",
+    issuer: "Programming Hub",
     date: "05-08-2024",
   },
   {
@@ -96,7 +96,7 @@ export const certificates = [
     title: "C and PLT",
     path: "/certificates/C&PROGRAMMINGINLOGICTECHNIC_SOFTECH_20-06-2024.webp",
     tags: ["softech", "c", "logic techniques", "programming basics"],
-    issuer: "SofTech",
+    issuer: "Softech",
     date: "20-06-2024",
   },
   {
@@ -108,7 +108,7 @@ export const certificates = [
       "programminghub",
       "server-side development",
     ],
-    issuer: "ProgrammingHub",
+    issuer: "Programming Hub",
     date: "05-08-2024",
   },
   {
@@ -120,7 +120,7 @@ export const certificates = [
       "python programming",
       "general-purpose language",
     ],
-    issuer: "ProgrammingHub",
+    issuer: "Programming Hub",
     date: "25-10-2024",
   },
   {
@@ -133,7 +133,7 @@ export const certificates = [
       "devops tools",
       "programminghub",
     ],
-    issuer: "ProgrammingHub",
+    issuer: "Programming Hub",
     date: "25-10-2024",
   },
   {
@@ -145,7 +145,7 @@ export const certificates = [
       "programminghub",
       "basics",
     ],
-    issuer: "ProgrammingHub",
+    issuer: "Programming Hub",
     date: "27-10-2024",
   },
 ];

@@ -1,5 +1,9 @@
-const isDevelopment = process.env.NODE_ENV === 'development';
+const isDevelopment = process.env.NEXT_PUBLIC_ENV === 'development';
 
-export const api = isDevelopment
+const API = isDevelopment
     ? 'http://localhost:4000'
     : 'https://api.upayan.dev';
+
+console.log(API);
+
+export default API;

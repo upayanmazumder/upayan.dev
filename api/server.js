@@ -8,7 +8,7 @@ const morgan = require("morgan");
 dotenv.config();
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
-const API_PORT = 3000;
+const API_PORT = 4000;
 const USER_ID = "1240025366853193758";
 
 const logger = winston.createLogger({

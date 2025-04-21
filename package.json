@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "api": "node api/server",
-    "dev": "cd app && npm run dev",
-    "build": "cd app && next build"
+    "app": "cd app && npm run dev",
+    "build": "cd app && next build",
+    "dev": "concurrently \"npm run app\" \"npm run api\""
   },
   "repository": {
     "type": "git",
@@ -24,13 +25,8 @@
     "url": "https://github.com/upayanmazumder/upayan.dev/issues"
   },
   "homepage": "https://github.com/upayanmazumder/upayan.dev#readme",
-  "dependencies": {
-    "axios": "^1.8.2",
-    "cors": "^2.8.5",
-    "discord.js": "^14.16.3",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.2",
-    "morgan": "^1.10.0",
-    "winston": "^3.16.0"
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^8.2.0"
   }
 }

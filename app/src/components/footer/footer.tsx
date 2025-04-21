@@ -12,6 +12,7 @@ import {
   FaLinkedin,
   FaArrowUp,
 } from "react-icons/fa";
+import clubsData from "../../data/clubs.json";
 
 const whitelist = ["Github", "Discord", "Instagram", "Facebook", "LinkedIn"];
 
@@ -51,26 +52,28 @@ const Footer: React.FC = () => {
             </li>
           </ul>
         </div>
-        <div id="footer-companies" className={footerStyles.column}>
-          <Link href="#footer-companies">
-            <h3>Companies</h3>
+        <div id="footer-clubs" className={footerStyles.column}>
+          <Link href="#footer-clubs">
+            <h3>Clubs</h3>
           </Link>
           <ul>
-            <li>
-              <a href="https://bbn.one" target="_blank" rel="noopener">
-                BBN
-              </a>
-            </li>
-            <li>
-              <a href="https://eranodes.com" target="_blank" rel="noopener">
-                EraNodes
-              </a>
-            </li>
-            <li>
-              <a href="https://purbyte.com" target="_blank" rel="noopener">
-                Purbyte
-              </a>
-            </li>
+            {clubsData.map((club) => {
+              const websiteLink = club.links.find(
+                (link) => link.name === "Website"
+              );
+              const linkedInLink = club.links.find(
+                (link) => link.name === "LinkedIn"
+              );
+              const link = websiteLink?.url || linkedInLink?.url;
+
+              return (
+                <li key={club.name}>
+                  <a href={link} target="_blank" rel="noopener">
+                    {club.name}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
         <div id="footer-projects" className={footerStyles.column}>

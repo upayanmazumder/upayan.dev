@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSpotify } from "react-icons/fa";
 import { BiLogoVisualStudio } from "react-icons/bi";
+import API from "../../../utils/api";
 
 interface Activity {
   name: string;
@@ -21,7 +22,7 @@ export default function Branding() {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await axios.get("https://api.upayan.dev/");
+        const response = await axios.get(`${API}/`);
         const activeList: Activity[] = response.data[0]?.activities || [];
         setActivities(
           activeList.map((a) => ({

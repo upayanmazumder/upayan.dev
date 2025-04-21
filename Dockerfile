@@ -1,17 +1,23 @@
-# Use the official Node.js image
-FROM node:20-alpine
-
-# Create and change to the app directory
+FROM node:23-alpine AS build-app
 WORKDIR /app
-
-# Copy application dependency manifests to the container image
-COPY package*.json ./
-
-# Install dependencies
+COPY app/package.json ./package.json
 RUN npm install
+COPY app/ ./
+RUN npm run build
 
-# Copy the local code to the container image
-COPY . .
+FROM node:23-alpine AS build-api
+WORKDIR /api
+COPY api/package.json ./package.json
+RUN npm install
+COPY api/ ./
 
-# Run the web service on container startup
-CMD [ "npm", "run", "api" ]
+FROM node:23-alpine
+WORKDIR /workspace
+
+COPY --from=build-app /app ./app
+COPY --from=build-api /api ./api
+
+EXPOSE 3000
+EXPOSE 4000
+
+CMD ["sh", "-c", "cd app && npm run start & cd api && npm run start"]

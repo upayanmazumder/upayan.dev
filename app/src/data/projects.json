@@ -1,7 +1,7 @@
 [
   {
     "name": "kodesphere",
-    "icon": "https://ks.upayan.dev/icons/icon-256x256.webp",
+    "icon": "/projects/kodesphere.webp",
     "description": "Deploy Smarter, Not Harder",
     "links": [
       {
@@ -25,8 +25,24 @@
     ]
   },
   {
+    "name": "Papers | Codechef VIT",
+    "icon": "/projects/papers-codechef.webp",
+    "description": "Discover previous year question papers created by CodeChef-VIT at Vellore Institute of Technology. Made with ♡ to help students excel.",
+    "links": [
+      {
+        "name": "Github Repository",
+        "url": "https://github.com/CodechefVIT/papers-codechef"
+      },
+      {
+        "name": "Website",
+        "url": "https://papers.codechefvit.com"
+      }
+    ],
+    "packageLinks": []
+  },
+  {
     "name": "Traffic Control System",
-    "icon": "https://ibreakstuff.upayan.dev/icons/icon-256x256.png",
+    "icon": "/projects/traffic-control-system.webp",
     "description": "Smarter signals, smoother streets",
     "links": [
       {
@@ -47,7 +63,7 @@
   },
   {
     "name": "Boardly",
-    "icon": "https://boardly.in/favicon.ico",
+    "icon": "/projects/boardly.webp",
     "description": "A one stop solution for board exams!",
     "links": [
       {
@@ -62,7 +78,7 @@
   },
   {
     "name": "Collaborative Article Sharing",
-    "icon": "https://cas.upayan.dev/favicon.ico",
+    "icon": "/projects/collaborative-article-sharing.webp",
     "description": "Designed for seamless content exchange and engagement.",
     "links": [
       {
@@ -91,7 +107,7 @@
   },
   {
     "name": "DevJourney",
-    "icon": "https://upayan.dev/upayan.svg",
+    "icon": "/projects/devjourney.webp",
     "description": "My coding journey!",
     "links": [
       {

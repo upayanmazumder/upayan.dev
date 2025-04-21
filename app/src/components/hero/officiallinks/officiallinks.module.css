@@ -12,6 +12,7 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     letter-spacing: 0.2em;
     font-size: 0.9em;
+    border-radius: var(--border-radius-tiny);
 }
 
 .officialLinks button:hover {

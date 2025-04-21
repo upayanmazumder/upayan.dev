@@ -39,7 +39,7 @@ export default function OfficialLinks() {
               backgroundColor: link.backgroundColor,
             }}
             className={officialLinksStyles.officialLink}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.9 }}
           >
             {link.name}

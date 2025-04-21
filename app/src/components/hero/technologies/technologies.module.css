@@ -1,0 +1,27 @@
+.technologies {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    cursor: default;
+    font-family: monospace;
+    height: 100%;
+    margin: var(--margin-medium) 0;
+}
+
+@media (max-width: 1024px) {
+    .technologies {
+        justify-content: center;
+        padding: 0;
+    }
+}
+
+.technology {
+    padding: var(--padding-tiny) var(--padding-small);
+    margin: var(--margin-tiny);
+    border-radius: var(--border-radius-tiny);
+}
+
+.technology:hover {
+    transform: translateY(-2px);
+}

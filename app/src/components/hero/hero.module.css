@@ -19,6 +19,12 @@
     margin: var(--padding-huge) 0;
 }
 
+@media (max-width: 1024px) {
+    .hero {
+        margin: var(--padding-tiny) 0;
+    }
+}
+
 .branding {
     display: flex;
     justify-content: space-between;
@@ -30,5 +36,6 @@
     .branding {
         flex-direction: column;
         padding: 0;
+        width: 100%;
     }
 }

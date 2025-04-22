@@ -14,6 +14,13 @@
     .technologies {
         justify-content: center;
         padding: 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 960px) {
+    .technologies {
+        min-width: 85vw;
     }
 }
 

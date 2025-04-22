@@ -52,7 +52,7 @@ module.exports = (client, app, USER_ID) => {
     };
 
     updateGuildStatus();
-    setInterval(updateGuildStatus, 15 * 1000);
+    setInterval(updateGuildStatus, 5 * 1000);
 
     router.get("/", async (req, res) => {
         try {

@@ -39,7 +39,7 @@ export default function Branding() {
     };
 
     fetchActivities();
-    const interval = setInterval(fetchActivities, 5000);
+    const interval = setInterval(fetchActivities, 1000);
     return () => clearInterval(interval);
   }, []);
 

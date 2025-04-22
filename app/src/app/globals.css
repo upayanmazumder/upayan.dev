@@ -10,15 +10,15 @@
 
 :root {
   --header-background-color: var(--background-color);
-  --footer-background-color: #12121247;
-  --sidebar-background-color: #29292980;
+  --footer-background-color: #121212bd;
+  --sidebar-background-color: #0e0e0ebb;
   --card-background: linear-gradient(145deg, rgba(10, 25, 47, 0.7), rgba(2, 12, 27, 0.7));
 
   --screen-horizontal-margin: 200px;
   --screen-vertical-margin: 0;
 
-  --text-link-color: color-mix(in srgb, var(--color) 40%, #1E90FF 60%);
-  --text-link-hover-color: color-mix(in srgb, var(--color) 20%, #1C86EE 80%);
+  --text-link-color: #1C86EE;
+  --text-link-hover-color: rgb(77, 156, 235);
 
   --padding-tiny: 5px;
   --padding-small: 10px;

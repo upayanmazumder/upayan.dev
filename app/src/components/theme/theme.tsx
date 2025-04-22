@@ -88,7 +88,6 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Apply theme CSS variables
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("theme", selectedTheme);
@@ -101,7 +100,6 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, [selectedTheme, theme]);
 
-  // Star canvas animation
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;

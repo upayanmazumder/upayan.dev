@@ -17,24 +17,12 @@
   justify-items: center;
 }
 
-.projectCard {
-  background: var(--card-background);
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: 16px;
-  padding: 2rem;
-  width: 100%;
-  max-width: 420px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
 .projectIcon {
   width: 64px;
   height: 64px;
   object-fit: contain;
   margin-bottom: 1rem;
-  border-radius: 50%;
+  border-radius: var(--border-radius-tiny);
 }
 
 .projectTitle {

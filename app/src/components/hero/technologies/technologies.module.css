@@ -1,6 +1,6 @@
 .technologies {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     cursor: default;
@@ -20,8 +20,4 @@
     padding: var(--padding-tiny) var(--padding-small);
     margin: var(--margin-tiny);
     border-radius: var(--border-radius-tiny);
-}
-
-.technology:hover {
-    transform: translateY(-2px);
 }

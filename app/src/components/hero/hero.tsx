@@ -15,13 +15,20 @@ const Hero: React.FC = () => {
         className={heroStyles.branding}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 3 }}
       >
         <Branding />
         <Technologies />
       </motion.div>
 
-      <OfficialLinks />
+      <motion.div
+        className={heroStyles.image}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 4 }}
+      >
+        <OfficialLinks />
+      </motion.div>
     </div>
   );
 };

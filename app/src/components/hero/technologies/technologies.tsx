@@ -11,7 +11,7 @@ const techVariants = {
     opacity: 1,
     color: technologies[index].textColor,
     backgroundColor: technologies[index].backgroundColor,
-    transition: { delay: index * 0.05, duration: 0.05 },
+    transition: { delay: index * 0.02, duration: 0.05 },
   }),
 };
 

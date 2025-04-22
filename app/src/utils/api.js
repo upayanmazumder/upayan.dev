@@ -4,6 +4,4 @@ const API = isDevelopment
     ? 'http://localhost:4000'
     : 'https://api.upayan.dev';
 
-console.log(API);
-
 export default API;

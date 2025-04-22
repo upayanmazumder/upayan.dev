@@ -3,8 +3,7 @@ import "./globals.css";
 import Sidebar from "../components/sidebar/sidebar";
 import Footer from "../components/footer/footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import Bg from "../components/background/background";
-import { ThemeManager } from "../components/theme/theme";
+import { ThemeProvider } from "../components/theme/theme";
 import ServiceWorkerRegister from "../components/serviceworkerregister/serviceworkerregister";
 
 export const metadata: Metadata = {
@@ -36,15 +35,13 @@ export default function RootLayout({
         <meta property="og:type" content="website" />
       </head>
       <body>
-        <Bg>
-          <ThemeManager>
-            <Sidebar />
-            {children}
-            <ServiceWorkerRegister />
-            <Footer />
-            <SpeedInsights />
-          </ThemeManager>
-        </Bg>
+        <ThemeProvider>
+          <Sidebar />
+          {children}
+          <ServiceWorkerRegister />
+          <Footer />
+          <SpeedInsights />
+        </ThemeProvider>
       </body>
     </html>
   );

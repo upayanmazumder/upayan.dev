@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useContext,
   useMemo,
+  useRef,
   ReactNode,
 } from "react";
 import { FaPalette } from "react-icons/fa";
@@ -68,11 +69,11 @@ const themes: Record<string, Theme> = {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-interface ThemeManagerProps {
+interface ThemeProviderProps {
   children: ReactNode;
 }
 
-const ThemeManager: React.FC<ThemeManagerProps> = ({ children }) => {
+const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [selectedTheme, setSelectedTheme] = useState<string>(() => {
     if (typeof window !== "undefined") {
       return localStorage.getItem("theme") || "space";
@@ -80,10 +81,14 @@ const ThemeManager: React.FC<ThemeManagerProps> = ({ children }) => {
     return "space";
   });
 
-  const theme = useMemo(() => {
-    return themes[selectedTheme] || themes.space;
-  }, [selectedTheme]);
+  const theme = useMemo(
+    () => themes[selectedTheme] || themes.space,
+    [selectedTheme]
+  );
 
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  // Apply theme CSS variables
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("theme", selectedTheme);
@@ -94,21 +99,87 @@ const ThemeManager: React.FC<ThemeManagerProps> = ({ children }) => {
         }
       });
     }
-  }, [theme, selectedTheme]);
+  }, [selectedTheme, theme]);
+
+  // Star canvas animation
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    const starColors = [
+      "rgba(255, 255, 255, 0.8)",
+      "rgba(255, 255, 200, 0.7)",
+      "rgba(230, 230, 250, 0.6)",
+      "rgba(255, 250, 205, 0.7)",
+      "rgba(240, 248, 255, 0.5)",
+    ];
+
+    const stars = Array.from({ length: 70 }).map(() => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      radius: Math.random() * 2.5,
+      vx: (Math.random() - 0.5) * 0.1,
+      vy: (Math.random() - 0.5) * 0.1,
+      color: starColors[Math.floor(Math.random() * starColors.length)],
+    }));
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const star of stars) {
+        ctx.fillStyle = star.color;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        star.x += star.vx;
+        star.y += star.vy;
+
+        if (star.x < 0) star.x = canvas.width;
+        if (star.x > canvas.width) star.x = 0;
+        if (star.y < 0) star.y = canvas.height;
+        if (star.y > canvas.height) star.y = 0;
+      }
+      requestAnimationFrame(draw);
+    };
+
+    resizeCanvas();
+    draw();
+    window.addEventListener("resize", resizeCanvas);
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+    };
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ selectedTheme, setSelectedTheme }}>
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          zIndex: -1,
+          width: "100%",
+          height: "100%",
+        }}
+      />
       {children}
     </ThemeContext.Provider>
   );
 };
 
 const ThemeSelector: React.FC = () => {
-  const { selectedTheme, setSelectedTheme } = useContext(
-    ThemeContext
-  ) as ThemeContextType;
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const selectorRef = React.useRef<HTMLDivElement | null>(null);
+  const { selectedTheme, setSelectedTheme } = useContext(ThemeContext)!;
+  const selectorRef = useRef<HTMLDivElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -119,11 +190,8 @@ const ThemeSelector: React.FC = () => {
         setIsOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -136,12 +204,9 @@ const ThemeSelector: React.FC = () => {
       >
         <FaPalette size={15} />
       </button>
-
       {isOpen && (
         <div className={styles.selector}>
-          <label htmlFor="theme-select" className={styles.label}>
-            Select theme:
-          </label>
+          <label className={styles.label}>Select theme:</label>
           <div className={styles.options}>
             {Object.entries(themes).map(([key, theme]) => (
               <button
@@ -161,12 +226,13 @@ const ThemeSelector: React.FC = () => {
                 }}
                 onMouseLeave={() => {
                   const root = document.documentElement;
-                  const currentTheme = themes[selectedTheme];
-                  Object.entries(currentTheme).forEach(([cssVar, value]) => {
-                    if (cssVar.startsWith("--")) {
-                      root.style.setProperty(cssVar, value);
+                  Object.entries(themes[selectedTheme]).forEach(
+                    ([cssVar, value]) => {
+                      if (cssVar.startsWith("--")) {
+                        root.style.setProperty(cssVar, value);
+                      }
                     }
-                  });
+                  );
                 }}
                 style={{
                   background: theme["--background-color"],
@@ -187,4 +253,4 @@ const ThemeSelector: React.FC = () => {
   );
 };
 
-export { ThemeManager, ThemeSelector };
+export { ThemeProvider, ThemeSelector };

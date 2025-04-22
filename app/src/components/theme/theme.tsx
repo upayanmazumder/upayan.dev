@@ -23,15 +23,26 @@ interface ThemeContextType {
 }
 
 const themes: Record<string, Theme> = {
-  light: {
-    name: "Light",
-    "--background-color": "lightgray",
-    "--color": "black",
-  },
   dark: {
     name: "Dark",
     "--background-color": "black",
     "--color": "white",
+  },
+  noir: {
+    name: "Noir",
+    "--background-color": "linear-gradient(135deg, #000000, #434343)",
+    "--color": "#ffffff",
+  },
+  midnight: {
+    name: "Midnight",
+    "--background-color": "linear-gradient(120deg, #232526, #414345)",
+    "--color": "#dcdcdc",
+  },
+  space: {
+    name: "Space",
+    "--background-color":
+      "radial-gradient(circle at 30% 30%, #1a1a2e, #16213e, #0f3460)",
+    "--color": "#e0e0e0",
   },
   ocean: {
     name: "Ocean",
@@ -43,71 +54,15 @@ const themes: Record<string, Theme> = {
     `,
     "--color": "#caf0f8",
   },
-  cyberpunk: {
-    name: "Cyberpunk",
-    "--background-color": "linear-gradient(120deg, #0f0c29, #302b63, #24243e)",
-    "--color": "#fff",
-  },
-  forest: {
-    name: "Forest",
-    "--background-color": "linear-gradient(120deg, #2b580c, #639a67, #a3c4bc)",
-    "--color": "#f4f4f9",
-  },
-  sunset: {
-    name: "Sunset",
-    "--background-color": "linear-gradient(120deg, #ff7e5f, #feb47b)",
-    "--color": "#2c3e50",
-  },
-  pastel: {
-    name: "Pastel",
-    "--background-color": "linear-gradient(120deg, #ff9a9e, #fad0c4)",
-    "--color": "#6a0572",
-  },
-  midnight: {
-    name: "Midnight",
-    "--background-color": "linear-gradient(120deg, #232526, #414345)",
-    "--color": "#dcdcdc",
-  },
   aurora: {
     name: "Aurora",
     "--background-color": "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
     "--color": "#e0f7fa",
   },
-  space: {
-    name: "Space",
-    "--background-color":
-      "radial-gradient(circle at 30% 30%, #1a1a2e, #16213e, #0f3460)",
-    "--color": "#e0e0e0",
-  },
-  desert: {
-    name: "Desert",
-    "--background-color": "linear-gradient(120deg, #edc9af, #d2b48c, #c19a6b)",
-    "--color": "#3e2f1c",
-  },
-  mint: {
-    name: "Mint",
-    "--background-color": "linear-gradient(120deg, #98ff98, #b2f7ef)",
-    "--color": "#065535",
-  },
-  noir: {
-    name: "Noir",
-    "--background-color": "linear-gradient(135deg, #000000, #434343)",
-    "--color": "#ffffff",
-  },
-  lavender: {
-    name: "Lavender",
-    "--background-color": "linear-gradient(120deg, #e0c3fc, #8ec5fc)",
-    "--color": "#4b0082",
-  },
-  winter: {
-    name: "Winter",
-    "--background-color": "linear-gradient(120deg, #a8c0ff, #3f2b96)",
-    "--color": "#ffffff",
-  },
-  spring: {
-    name: "Spring",
-    "--background-color": "linear-gradient(120deg, #f6d365, #fda085)",
-    "--color": "#2c3e50",
+  cyberpunk: {
+    name: "Cyberpunk",
+    "--background-color": "linear-gradient(120deg, #0f0c29, #302b63, #24243e)",
+    "--color": "#fff",
   },
 };
 

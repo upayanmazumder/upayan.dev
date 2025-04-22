@@ -5,6 +5,7 @@ import Footer from "../components/footer/footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Bg from "../components/background/background";
 import { ThemeManager } from "../components/theme/theme";
+import ServiceWorkerRegister from "../components/serviceworkerregister/serviceworkerregister";
 
 export const metadata: Metadata = {
   title: "Upayan",
@@ -39,6 +40,7 @@ export default function RootLayout({
           <ThemeManager>
             <Sidebar />
             {children}
+            <ServiceWorkerRegister />
             <Footer />
             <SpeedInsights />
           </ThemeManager>

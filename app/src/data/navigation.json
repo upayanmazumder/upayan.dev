@@ -5,14 +5,14 @@
     "label": "Home"
   },
   {
-    "href": "/#projects",
-    "icon": "BsLayers",
-    "label": "Projects"
-  },
-  {
     "href": "/#clubs",
     "icon": "BsPeople",
     "label": "Clubs"
+  },
+  {
+    "href": "/#projects",
+    "icon": "BsLayers",
+    "label": "Projects"
   },
   {
     "href": "/certificates",

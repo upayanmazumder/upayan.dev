@@ -93,6 +93,16 @@ export const certificates = [
     date: "19-03-2025",
   },
   {
+    title: "Introduction to Github's Products",
+    path: "/certificates/INTRODUCTIONTOGITHUB'SPRODUCTS_MICROSOFTLEARN_24-04-2025.avif",
+    tags: [
+      "github",
+      "microsoft learn"
+    ],
+    issuer: "Microsoft Learn",
+    date: "24-04-2025",
+  },
+  {
     title: "C and PLT",
     path: "/certificates/C&PROGRAMMINGINLOGICTECHNIC_SOFTECH_20-06-2024.avif",
     tags: ["softech", "c", "logic techniques", "programming basics"],

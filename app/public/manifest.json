@@ -126,7 +126,7 @@
       "name": "Certifications",
       "short_name": "Certifications",
       "description": "View My Certifications",
-      "url": "/certifactes",
+      "url": "/certificates",
       "icons": [
         {
           "src": "/icons/icon-96x96.webp",

@@ -17,6 +17,15 @@
     }
 }
 
+.footer a {
+    color: gainsboro;
+}
+
+.footer a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
 .footerTop {
     display: flex;
     flex-direction: row;
@@ -58,8 +67,8 @@
 @media (max-width: 961px) {
     .footerBottom {
         padding-right: var(--padding-small);
+        justify-content: space-between;
     }
-
 }
 
 .footerLinks {
@@ -67,6 +76,14 @@
     flex-direction: row;
     justify-content: center;
     gap: var(--margin-tiny);
+}
+
+@media (max-width: 961px) {
+    .footerLinks {
+        width: 60%;
+        justify-content: space-around;
+        gap: var(--margin-tiny);
+    }
 }
 
 .footerLinks a {
@@ -79,7 +96,6 @@
     .footerLinks a {
         padding: 0;
     }
-
 }
 
 .footerLinks a:hover {

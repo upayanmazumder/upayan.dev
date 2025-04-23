@@ -151,15 +151,59 @@
   ],
   "screenshots": [
     {
-      "src": "/screenshots/screenshot-1.avif",
-      "sizes": "2879x1558",
-      "type": "image/png",
+      "src": "/screenshots/screenshot-home-wide.avif",
+      "sizes": "2880x1556",
+      "type": "image/avif",
       "form_factor": "wide"
     },
     {
-      "src": "/screenshots/screenshot-2.png",
-      "sizes": "1080x2400",
-      "type": "image/png"
+      "src": "/screenshots/screenshot-clubs-wide.avif",
+      "sizes": "2880x1556",
+      "type": "image/avif",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/screenshot-projects-wide.avif",
+      "sizes": "2880x1556",
+      "type": "image/avif",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/screenshot-certificates-wide.avif",
+      "sizes": "2880x1556",
+      "type": "image/avif",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/screenshot-devjourney-wide.avif",
+      "sizes": "2880x1556",
+      "type": "image/avif",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/screenshot-home.avif",
+      "sizes": "618x1372",
+      "type": "image/avif"
+    },
+    {
+      "src": "/screenshots/screenshot-clubs.avif",
+      "sizes": "618x1372",
+      "type": "image/avif"
+    },
+    {
+      "src": "/screenshots/screenshot-projects.avif",
+      "sizes": "618x1372",
+      "type": "image/avif"
+    },
+    {
+      "src": "/screenshots/screenshot-certificates.avif",
+      "sizes": "618x1372",
+      "type": "image/avif"
+    },
+    {
+      "src": "/screenshots/screenshot-devjourney.avif",
+      "sizes": "618x1372",
+      "type": "image/avif"
     }
   ]
 }

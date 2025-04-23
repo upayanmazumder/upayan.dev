@@ -1,7 +1,9 @@
-const express = require("express");
-const logger = require("winston");
+import express, { Application, Request, Response } from "express";
+import { Client } from "discord.js";
+import logger from "winston";
+import { ActivityInfo } from "../types";
 
-module.exports = (client, app, USER_ID) => {
+export default (client: Client, app: Application, USER_ID: string) => {
     const router = express.Router();
 
     const updateGuildStatus = async () => {
@@ -16,37 +18,38 @@ module.exports = (client, app, USER_ID) => {
                         return null;
                     });
                     if (member) {
-                        const activities =
+                        const activities: ActivityInfo[] =
                             member.presence?.activities.map((activity) => ({
                                 name: activity.name,
                                 type: activity.type,
-                                details: activity.details,
-                                state: activity.state,
-                                startTimestamp: activity.timestamps?.start,
-                                endTimestamp: activity.timestamps?.end,
-                                largeImageURL: activity.assets?.largeImageURL(),
-                                largeText: activity.assets?.largeText,
-                                smallImageURL: activity.assets?.smallImageURL(),
-                                smallText: activity.assets?.smallText,
-                                partyId: activity.party?.id,
-                                partySize: activity.party?.size,
-                                partyMax: activity.party?.max,
-                                syncId: activity.syncId,
-                                sessionId: activity.sessionId,
-                                flags: activity.flags?.toArray(),
+                                details: activity.details ?? null,
+                                state: activity.state ?? null,
+                                startTimestamp: activity.timestamps?.start?.getTime(),
+                                endTimestamp: activity.timestamps?.end?.getTime(),
+                                largeImageURL: activity.assets?.largeImageURL() ?? null,
+                                largeText: activity.assets?.largeText ?? null,
+                                smallImageURL: activity.assets?.smallImageURL() ?? null,
+                                smallText: activity.assets?.smallText ?? null,
+                                partyId: activity.party?.id ?? undefined,
+                                partySize: activity.party?.size ?? undefined,
+                                partyMax: Array.isArray(activity.party?.size) ? activity.party?.size[1] : undefined,
+                                syncId: activity.syncId ?? undefined,
+                                sessionId: (activity as any).sessionId ?? undefined,
+                                flags: activity.flags?.toArray() ?? [],
                             })) || [];
+
                         guildStatus.push({
                             guildId: guild.id,
                             discordstatus: member.presence?.status || "offline",
                             activities,
                         });
                     }
-                } catch (err) {
+                } catch (err: any) {
                     logger.error(`Error processing guild ${guild.id}: ${err.message}`);
                 }
             }
             app.set("guildStatus", guildStatus);
-        } catch (err) {
+        } catch (err: any) {
             logger.error(`Failed to update guild status: ${err.message}`);
         }
     };
@@ -54,10 +57,10 @@ module.exports = (client, app, USER_ID) => {
     updateGuildStatus();
     setInterval(updateGuildStatus, 5 * 1000);
 
-    router.get("/", async (req, res) => {
+    router.get("/", async (req: Request, res: Response) => {
         try {
             res.json(app.get("guildStatus"));
-        } catch (err) {
+        } catch (err: any) {
             logger.error(`Error handling request to '/': ${err.message}`);
             res.status(500).json({ error: "Internal Server Error" });
         }

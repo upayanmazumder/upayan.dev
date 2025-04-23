@@ -20,4 +20,4 @@ COPY --from=build-api /api ./api
 EXPOSE 3000
 EXPOSE 4000
 
-CMD ["sh", "-c", "cd app && npm run start & cd api && npm run start"]
+CMD ["sh", "-c", "cd app && npm run start & cd api && npm run build && npm run start"]

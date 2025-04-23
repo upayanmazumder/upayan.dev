@@ -105,11 +105,6 @@
     "textColor": "#FFFFFF"
   },
   {
-    "name": "Jenkins",
-    "backgroundColor": "#D24939",
-    "textColor": "#FFFFFF"
-  },
-  {
     "name": "MongoDB",
     "backgroundColor": "#47A248",
     "textColor": "#FFFFFF"
@@ -117,26 +112,6 @@
   {
     "name": "SQLite",
     "backgroundColor": "#003B57",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Figma",
-    "backgroundColor": "#F24E1E",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Canva",
-    "backgroundColor": "#00C4CC",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "NumPy",
-    "backgroundColor": "#013243",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Pandas",
-    "backgroundColor": "#150458",
     "textColor": "#FFFFFF"
   },
   {
@@ -155,28 +130,8 @@
     "textColor": "#FFFFFF"
   },
   {
-    "name": "Arduino",
-    "backgroundColor": "#00979D",
-    "textColor": "#FFFFFF"
-  },
-  {
     "name": "Docker",
     "backgroundColor": "#2496ED",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "ESLint",
-    "backgroundColor": "#4B32C3",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Notion",
-    "backgroundColor": "#000000",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Postman",
-    "backgroundColor": "#FF6C37",
     "textColor": "#FFFFFF"
   },
   {

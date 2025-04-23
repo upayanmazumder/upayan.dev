@@ -101,6 +101,7 @@ For local development, you can use the `npm run dev` command in the project root
     - **Backend**: The API will be available at [http://localhost:4000](http://localhost:4000).
 
 5. To stop the development server, press `Ctrl+C` in the terminal.
+
 ## Contributing
 
 Contributions are welcome! Please follow these steps:

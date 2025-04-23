@@ -188,10 +188,5 @@
     "name": "Raspberry Pi",
     "backgroundColor": "#C51A4A",
     "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Trello",
-    "backgroundColor": "#0079BF",
-    "textColor": "#FFFFFF"
   }
 ]

@@ -6,7 +6,7 @@ export default function ServiceWorkerRegister() {
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register("/service-worker.js")
+        .register("/service-worker.ts")
         .then((reg) => console.log("[SW] Registered:", reg))
         .catch((err) => console.error("[SW] Registration failed:", err));
     }

@@ -10,6 +10,7 @@ WORKDIR /api
 COPY api/package.json ./package.json
 RUN npm install
 COPY api/ ./
+RUN npm run build
 
 FROM node:23-alpine
 WORKDIR /workspace
@@ -20,4 +21,4 @@ COPY --from=build-api /api ./api
 EXPOSE 3000
 EXPOSE 4000
 
-CMD ["sh", "-c", "cd app && npm run start & cd api && npm run build && npm run start"]
+CMD ["sh", "-c", "cd app && npm run start & cd api && npm run start"]

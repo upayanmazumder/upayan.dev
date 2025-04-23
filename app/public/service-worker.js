@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 
-const CACHE_NAME = "UPAYAN-V4.3.1";
-const CORE_ASSETS: string[] = [
+const CACHE_NAME = "UPAYAN-V4.3.3";
+const CORE_ASSETS = [
     '/',
     '/offline',
     '/manifest.json',
@@ -29,12 +29,12 @@ const CORE_ASSETS: string[] = [
     '/upayan-transparent-cropped.avif'
 ];
 
-async function cacheCoreAssets(): Promise<void> {
+async function cacheCoreAssets() {
     const cache = await caches.open(CACHE_NAME);
     await cache.addAll(CORE_ASSETS);
 }
 
-async function dynamicCaching(request: Request): Promise<Response> {
+async function dynamicCaching(request) {
     const cache = await caches.open(CACHE_NAME);
     try {
         const response = await fetch(request);
@@ -42,21 +42,19 @@ async function dynamicCaching(request: Request): Promise<Response> {
         return response;
     } catch (error) {
         console.warn("[SW] Fetch failed; serving from cache if possible:", error);
-        return (await cache.match(request)) || (await cache.match('/offline'))!;
+        return (await cache.match(request)) || (await cache.match('/offline'));
     }
 }
 
 self.addEventListener("install", (event) => {
-    const swEvent = event as ExtendableEvent;
     console.log("[SW] Installing...");
-    swEvent.waitUntil(cacheCoreAssets());
-    (self as unknown as ServiceWorkerGlobalScope).skipWaiting();
+    event.waitUntil(cacheCoreAssets());
+    self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
-    const swEvent = event as ExtendableEvent;
     console.log("[SW] Activating...");
-    swEvent.waitUntil(
+    event.waitUntil(
         (async () => {
             const cacheNames = await caches.keys();
             await Promise.all(
@@ -64,18 +62,17 @@ self.addEventListener("activate", (event) => {
                     .filter((name) => name !== CACHE_NAME)
                     .map((name) => caches.delete(name))
             );
-            (self as unknown as ServiceWorkerGlobalScope).clients.claim();
+            self.clients.claim();
         })()
     );
 });
 
 self.addEventListener("fetch", (event) => {
-    const fetchEvent = event as FetchEvent;
-    const url = new URL(fetchEvent.request.url);
+    const url = new URL(event.request.url);
 
-    if (fetchEvent.request.method !== 'GET') return;
+    if (event.request.method !== 'GET') return;
 
     if (url.origin === self.location.origin) {
-        fetchEvent.respondWith(dynamicCaching(fetchEvent.request));
+        event.respondWith(dynamicCaching(event.request));
     }
 });

@@ -1,13 +1,14 @@
-const express = require("express");
-const cors = require("cors");
-const { Client, GatewayIntentBits, Partials } = require("discord.js");
-const dotenv = require("dotenv");
-const winston = require("winston");
-const morgan = require("morgan");
+import express from "express";
+import cors from "cors";
+import { Client, GatewayIntentBits, Partials } from "discord.js";
+import dotenv from "dotenv";
+import winston from "winston";
+import morgan from "morgan";
+import path from "path";
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
-const BOT_TOKEN = process.env.BOT_TOKEN;
+const BOT_TOKEN = process.env.BOT_TOKEN!;
 const API_PORT = 4000;
 const USER_ID = "1240025366853193758";
 
@@ -48,11 +49,15 @@ client.once("ready", async () => {
 
     app.set("guildStatus", []);
 
-    app.use("/", require("./routes/main")(client, app, USER_ID));
-    app.use("/contact", require("./routes/contact"));
+    const mainRoute = await import("./routes/main");
+    const contactRoute = await import("./routes/contact");
+
+    app.use("/", mainRoute.default(client, app, USER_ID));
+    app.use("/contact", contactRoute.default);
 
     app.listen(API_PORT, () => {
         logger.info(`API is listening on port ${API_PORT}`);
+        logger.info(`API URL: http://localhost:${API_PORT}`);
     });
 });
 

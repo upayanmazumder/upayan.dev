@@ -21,14 +21,18 @@ Welcome to the source code repository for my personal website. This project show
 - **Frontend**: [Next.js](https://nextjs.org/)
 - **Backend**: [Express.js](https://expressjs.com/)
 - **Containerization**: Docker
-- **Hosting**: Vercel (for the frontend)
+- **Hosting**: Docker with Caddy (hosted on a personal VM)
+
+## Deployment
+
+- **Frontend and Backend**: Deployed using Docker and served with [Caddy](https://caddyserver.com/) on a personal VM.
 
 ## Features
 
 - Responsive design
 - Fast loading times with Next.js optimization
 - RESTful API built with Express.js
-- Dockerized setup for easy deployment
+- Dockerized setup for easy deployment with Caddy as a reverse proxy
 
 ## Getting Started
 
@@ -46,40 +50,57 @@ git clone https://github.com/upayanmazumder/upayan.dev.git
 cd upayan.dev
 ```
 
-### Running the Backend
+### Running the Application
 
-1. Navigate to the `api` folder:
+You can run the application either using Docker (recommended for production-like environments) or locally using `npm run dev` for development purposes.
 
-    ```bash
-    cd api
-    ```
+#### Option 1: Using Docker
 
-2. Build and run the Docker container:
+The application is fully containerized using Docker. Follow these steps to run both the backend and frontend:
+
+1. Ensure Docker is installed and running on your system. If not, download it from [Docker's official website](https://www.docker.com/get-started).
+
+2. Build and start the containers using `docker-compose`:
 
     ```bash
     docker-compose up --build
     ```
 
-### Running the Frontend
+3. Once the containers are running, access the application:
 
-1. Navigate to the frontend folder:
+    - **Frontend**: Open [http://localhost:3000](http://localhost:3000) in your browser.
+    - **Backend**: The API will be available at [http://localhost:4000](http://localhost:4000).
+
+4. To stop the containers, press `Ctrl+C` in the terminal and run:
 
     ```bash
-    cd frontend
+    docker-compose down
     ```
 
-2. Start the development server:
+#### Option 2: Local Development
+
+For local development, you can use the `npm run dev` command in the project root. This will start both the frontend and backend concurrently.
+
+1. Ensure you have Node.js installed on your system. If not, download it from [Node.js official website](https://nodejs.org/).
+
+2. Install the dependencies:
 
     ```bash
     npm install
-    npm start
     ```
 
-## Deployment
+3. Start the development server:
 
-- **Frontend**: Deployed on [Vercel](https://vercel.com/)
-- **Backend**: Dockerized and can be deployed using Docker.
+    ```bash
+    npm run dev
+    ```
 
+4. Once the server is running, access the application:
+
+    - **Frontend**: Open [http://localhost:3000](http://localhost:3000) in your browser.
+    - **Backend**: The API will be available at [http://localhost:4000](http://localhost:4000).
+
+5. To stop the development server, press `Ctrl+C` in the terminal.
 ## Contributing
 
 Contributions are welcome! Please follow these steps:

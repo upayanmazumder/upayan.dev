@@ -49,10 +49,10 @@ client.once("ready", async () => {
 
     app.set("guildStatus", []);
 
-    const mainRoute = await import("./routes/main");
+    const activityRoute = await import("./routes/activity");
     const contactRoute = await import("./routes/contact");
 
-    app.use("/", mainRoute.default(client, app, USER_ID));
+    app.use("/", activityRoute.default(client, app, USER_ID));
     app.use("/contact", contactRoute.default);
 
     app.listen(API_PORT, () => {

@@ -14,4 +14,5 @@ export interface ActivityInfo {
     partyMax?: number;
     syncId?: string;
     flags?: string[];
+    sessionId?: string;
 }

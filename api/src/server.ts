@@ -52,7 +52,7 @@ client.once("ready", async () => {
     const activityRoute = await import("./routes/activity");
     const contactRoute = await import("./routes/contact");
 
-    app.use("/", activityRoute.default(client, app, USER_ID));
+    app.use("/activity", activityRoute.default(client, app, USER_ID));
     app.use("/contact", contactRoute.default);
 
     app.listen(API_PORT, () => {

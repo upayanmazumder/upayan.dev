@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
 
   return (
     <footer className={footerStyles.footer}>
-      <div className={footerStyles.footerTop}>
+      {/* <div className={footerStyles.footerTop}>
         <div id="footer-resources" className={footerStyles.column}>
           <Link href="#footer-resources">
             <h3>Resources</h3>
@@ -108,7 +108,7 @@ const Footer: React.FC = () => {
             </li>
           </ul>
         </div>
-      </div>
+      </div> */}
       <div className={footerStyles.footerBottom}>
         <ul className={footerStyles.footerLinks}>
           {filteredLinks.map((link, index) => (
@@ -122,14 +122,18 @@ const Footer: React.FC = () => {
             <GitHubSponsor />
           </li>
           <li>
-            <ThemeSelector />
+            <button title="Change theme">
+              <ThemeSelector />
+            </button>
           </li>
-          <button
-            title="Scroll to top"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
-            <FaArrowUp />
-          </button>
+          <li>
+            <button
+              title="Scroll to top"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              <FaArrowUp />
+            </button>
+          </li>
         </ul>
       </div>
     </footer>

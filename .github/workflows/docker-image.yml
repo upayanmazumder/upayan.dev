@@ -2,9 +2,11 @@ name: Build Docker Image
 
 on:
   push:
-    branches: ["master"]
+    branches:
+      - "*"
   pull_request:
-    branches: ["master"]
+    branches:
+      - "*"
 
 permissions:
   contents: read
@@ -24,7 +26,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set image tag
+        id: set_tag
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
+            echo "TAG=latest" >> $GITHUB_ENV  # Tag as 'latest' for master
+          else
+            BRANCH_NAME=${GITHUB_REF#refs/heads/}  # Get branch name for other branches
+            echo "TAG=${BRANCH_NAME}" >> $GITHUB_ENV
+          fi
+
       - name: Build and Push Docker Image
         run: |
-          docker build . --tag ghcr.io/upayanmazumder/upayan.dev:latest --build-arg NODE_ENV=production
-          docker push ghcr.io/upayanmazumder/upayan.dev:latest
+          docker build . --tag ghcr.io/upayanmazumder/upayan.dev:${{ env.TAG }} --build-arg NODE_ENV=production
+          docker push ghcr.io/upayanmazumder/upayan.dev:${{ env.TAG }}

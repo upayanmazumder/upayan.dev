@@ -22,7 +22,7 @@ export default function Branding() {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await axios.get(`${API}/`);
+        const response = await axios.get(`${API}/activity`);
         const activeList: Activity[] = response.data[0]?.activities || [];
         setActivities(
           activeList.map((a) => ({

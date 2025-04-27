@@ -13,6 +13,8 @@ import {
   FaArrowUp,
 } from "react-icons/fa";
 import clubsData from "../../data/clubs.json";
+import { ThemeSelector } from "../theme/Theme";
+import GitHubSponsor from "../githubsponsor/GithubSponsor";
 
 const whitelist = ["Github", "Discord", "Instagram", "Facebook", "LinkedIn"];
 
@@ -115,7 +117,13 @@ const Footer: React.FC = () => {
             </a>
           ))}
         </ul>
-        <ul className={footerStyles.toTop}>
+        <ul className={footerStyles.helper}>
+          <li>
+            <GitHubSponsor />
+          </li>
+          <li>
+            <ThemeSelector />
+          </li>
           <button
             title="Scroll to top"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

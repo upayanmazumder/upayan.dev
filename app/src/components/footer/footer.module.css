@@ -102,11 +102,18 @@
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-.toTop button {
+.helper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--margin-tiny);
+}
+
+.helper button {
     background-color: transparent;
     color: var(--color);
 }
 
-.toTop button:hover {
+.helper button:hover {
     box-shadow: none;
 }

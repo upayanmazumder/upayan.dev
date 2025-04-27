@@ -17,7 +17,6 @@
 }
 
 .branding {
-    color: white;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -30,14 +29,18 @@
 .title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #a0cfff;
+    color: white;
+}
+
+.title:hover {
+    color: white;
 }
 
 .left {
     display: flex;
     justify-content: space-between;
     gap: 1.5rem;
-    width: 100%;
+
 }
 
 .right {
@@ -55,11 +58,6 @@
     font-size: 1rem;
     padding: 0.5rem 1rem;
     border-radius: 8px;
-    transition: background 0.3s ease;
-}
-
-.link:hover {
-    background: rgba(255, 255, 255, 0.08);
 }
 
 .icon {

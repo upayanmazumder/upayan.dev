@@ -3,9 +3,11 @@ pre code.hljs {
   overflow-x: auto;
   padding: 1em
 }
+
 code.hljs {
   padding: 3px 5px
 }
+
 /*!
     Theme: devibeans (dark)
     Author: @terminaldweller
@@ -17,36 +19,42 @@ code.hljs {
   color: #a39e9b;
   font-family: 'RedHatMono';
 }
+
 .hljs-attr,
 .hljs-template-tag {
   color: #8787d7
 }
+
 .hljs-comment,
 .hljs-doctag,
 .hljs-quote {
   color: #339966
 }
+
 .hljs-params {
   color: #a39e9b
 }
+
 .hljs-regexp {
   color: #d700ff
 }
+
 .hljs-tag,
 .hljs-selector-id,
 .hljs-number,
 .hljs-literal {
   color: #ef5350
 }
+
 .hljs-meta,
 .hljs-meta .hljs-keyword {
   color: #0087ff
 }
+
 /* opt-out */
 .hljs-operator,
-.hljs-punctuation {
-  
-}
+.hljs-punctuation {}
+
 .hljs-selector-class,
 .hljs-code,
 .hljs-formula,
@@ -58,11 +66,13 @@ code.hljs {
 .hljs-keyword {
   color: #64b5f6
 }
+
 .hljs-built_in,
 .hljs-title,
 .hljs-deletion {
   color: #ff8700
 }
+
 .hljs-type,
 .hljs-section,
 .hljs-function,
@@ -71,6 +81,7 @@ code.hljs {
 .hljs-attribute {
   color: #ffd75f
 }
+
 .hljs-meta .hljs-string,
 .hljs-string,
 .hljs-subst,
@@ -79,12 +90,15 @@ code.hljs {
 .hljs-addition {
   color: #558b2f
 }
+
 .hljs-selector-tag {
   color: #9966ff
 }
+
 .hljs-emphasis {
   font-style: italic
 }
+
 .hljs-strong {
   font-weight: bold
 }

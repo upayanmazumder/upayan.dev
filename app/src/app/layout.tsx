@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Sidebar from "../components/sidebar/sidebar";
-import Footer from "../components/footer/footer";
+import Header from "../components/header/Header";
+import Sidebar from "../components/sidebar/Sidebar";
+import Footer from "../components/footer/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { ThemeProvider } from "../components/theme/theme";
-import ServiceWorkerRegister from "../components/serviceworkerregister/serviceworkerregister";
+import { ThemeProvider } from "../components/theme/Theme";
+import ServiceWorkerRegister from "../components/serviceworkerregister/ServiceWorkerRegister";
 
 export const metadata: Metadata = {
   title: "Upayan",
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <Sidebar />
+          <Header />
           {children}
           <ServiceWorkerRegister />
           <Footer />

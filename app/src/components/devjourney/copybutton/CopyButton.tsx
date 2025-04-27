@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
-import copyButtonStyles from "./copybutton.module.css";
+import copyButtonStyles from "./CopyButton.module.css";
 
 interface CopyButtonProps {
   text: string;

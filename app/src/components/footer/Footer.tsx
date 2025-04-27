@@ -1,8 +1,8 @@
 "use client";
 
 import React, { JSX } from "react";
-import Link from "next/link";
-import footerStyles from "./footer.module.css";
+// import Link from "next/link";
+import footerStyles from "./Footer.module.css";
 import links from "../../data/links.json";
 import {
   FaGithub,
@@ -12,7 +12,9 @@ import {
   FaLinkedin,
   FaArrowUp,
 } from "react-icons/fa";
-import clubsData from "../../data/clubs.json";
+// import clubsData from "../../data/clubs.json";
+import { ThemeSelector } from "../theme/Theme";
+import GitHubSponsor from "../githubsponsor/GithubSponsor";
 
 const whitelist = ["Github", "Discord", "Instagram", "Facebook", "LinkedIn"];
 
@@ -29,7 +31,7 @@ const Footer: React.FC = () => {
 
   return (
     <footer className={footerStyles.footer}>
-      <div className={footerStyles.footerTop}>
+      {/* <div className={footerStyles.footerTop}>
         <div id="footer-resources" className={footerStyles.column}>
           <Link href="#footer-resources">
             <h3>Resources</h3>
@@ -106,7 +108,7 @@ const Footer: React.FC = () => {
             </li>
           </ul>
         </div>
-      </div>
+      </div> */}
       <div className={footerStyles.footerBottom}>
         <ul className={footerStyles.footerLinks}>
           {filteredLinks.map((link, index) => (
@@ -115,13 +117,23 @@ const Footer: React.FC = () => {
             </a>
           ))}
         </ul>
-        <ul className={footerStyles.toTop}>
-          <button
-            title="Scroll to top"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
-            <FaArrowUp />
-          </button>
+        <ul className={footerStyles.helper}>
+          <li>
+            <GitHubSponsor />
+          </li>
+          <li>
+            <button title="Change theme">
+              <ThemeSelector />
+            </button>
+          </li>
+          <li>
+            <button
+              title="Scroll to top"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              <FaArrowUp />
+            </button>
+          </li>
         </ul>
       </div>
     </footer>

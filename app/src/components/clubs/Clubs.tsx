@@ -4,8 +4,8 @@
 import React from "react";
 import { FaLink, FaLinkedin } from "react-icons/fa";
 import clubs from "../../data/clubs.json";
-import styles from "./clubs.module.css";
-import Card from "../ui/card/card";
+import styles from "./Clubs.module.css";
+import Card from "../ui/card/Card";
 
 const ClubShowcase: React.FC = () => {
   const isLinkedIn = (url: string) => {

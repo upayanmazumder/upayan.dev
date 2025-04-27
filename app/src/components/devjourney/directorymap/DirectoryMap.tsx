@@ -1,7 +1,7 @@
 "use client";
 import { BsFileEarmark, BsFolderFill } from "react-icons/bs";
-import directoryMapStyles from "./directorymap.module.css";
-import Loader from "../../loader/loader";
+import directoryMapStyles from "./DirectoryMap.module.css";
+import Loader from "../../loader/Loader";
 
 interface RepoContent {
   name: string;

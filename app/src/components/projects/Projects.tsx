@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 // filepath: d:\upayanmazumder\upayan.dev\app\src\components\projects\projects.tsx
 import React from "react";
-import styles from "./projects.module.css";
+import styles from "./Projects.module.css";
 import projectsData from "../../data/projects.json";
 import defaultImage from "../../media/icon.png";
-import Card from "../ui/card/card";
+import Card from "../ui/card/Card";
 
 const Projects = () => {
   return (

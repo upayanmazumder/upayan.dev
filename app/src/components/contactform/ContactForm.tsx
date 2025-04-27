@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import styles from "./contactform.module.css";
+import styles from "./ContactForm.module.css";
 import API from "../../utils/api";
 
 const ContactForm = () => {

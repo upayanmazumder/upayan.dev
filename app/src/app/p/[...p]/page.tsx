@@ -1,5 +1,5 @@
 import React from "react";
-import GetRekt from "../../../components/getrekt/getrekt";
+import GetRekt from "../../../components/getrekt/GetRekt";
 
 const P = () => {
   return (

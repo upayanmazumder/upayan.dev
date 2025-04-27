@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import technologyStyles from "./technologies.module.css";
+import technologyStyles from "./Technologies.module.css";
 import technologies from "../../../data/technologies.json";
 
 const techVariants = {

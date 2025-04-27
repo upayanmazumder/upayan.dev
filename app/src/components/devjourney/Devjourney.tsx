@@ -2,13 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-
-import Breadcrumb from "./breadcrumb/breadcrumb";
-import GitHubButton from "./githubbutton/githubbutton";
-import FileContent from "./filecontent/filecontent";
-import DirectoryMap from "./directorymap/directorymap";
-
-import djStyles from "./devjourney.module.css";
+import Breadcrumb from "./breadcrumb/BreadCrumb";
+import GitHubButton from "./githubbutton/GithubButton";
+import FileContent from "./filecontent/FileContent";
+import DirectoryMap from "./directorymap/DirectoryMap";
+import djStyles from "./Devjourney.module.css";
 
 interface FileContentData {
   name: string;

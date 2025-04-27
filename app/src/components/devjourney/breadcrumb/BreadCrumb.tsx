@@ -2,7 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import breadcrumbStyles from "./breadcrumb.module.css";
+import breadcrumbStyles from "./BreadCrumb.module.css";
 
 interface BreadcrumbProps {
   pathname: string;

@@ -3,7 +3,7 @@
 import React from "react";
 import Certificate, {
   certificates,
-} from "../../../components/certificate/certificate";
+} from "../../../components/certificate/Certificate";
 import { useParams } from "next/navigation";
 
 const CertificatePage = () => {

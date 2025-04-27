@@ -10,7 +10,7 @@ import React, {
   ReactNode,
 } from "react";
 import { FaPalette } from "react-icons/fa";
-import styles from "./theme.module.css";
+import styles from "./Theme.module.css";
 
 interface Theme {
   name: string;

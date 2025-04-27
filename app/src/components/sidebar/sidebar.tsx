@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { BsList } from "react-icons/bs";
 import * as Icons from "react-icons/bs";
@@ -11,29 +11,12 @@ import GitHubSponsor from "../githubsponsor/githubsponsor";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
-  const sidebarRef = useRef<HTMLDivElement>(null);
 
   const toggle = () => setOpen(!open);
 
-  useEffect(() => {
-    const observer = new ResizeObserver(() => {
-      if (sidebarRef.current) {
-        const sidebarWidth = sidebarRef.current.offsetWidth;
-        setCollapsed(sidebarWidth < 160);
-      }
-    });
-
-    if (sidebarRef.current) {
-      observer.observe(sidebarRef.current);
-    }
-
-    return () => {
-      if (sidebarRef.current) {
-        observer.unobserve(sidebarRef.current);
-      }
-    };
-  }, []);
+  const handleLinkClick = () => {
+    setOpen(false);
+  };
 
   return (
     <>
@@ -41,12 +24,7 @@ const Sidebar = () => {
         <BsList />
       </div>
 
-      <aside
-        ref={sidebarRef}
-        className={`${styles.sidebar} ${open ? styles.open : ""} ${
-          collapsed ? styles.collapsed : ""
-        }`}
-      >
+      <aside className={`${styles.sidebar} ${open ? styles.open : ""}`}>
         <nav className={styles.nav}>
           {sidebarData.map((item, index) => {
             const Icon = Icons[item.icon as keyof typeof Icons];
@@ -55,7 +33,7 @@ const Sidebar = () => {
                 key={index}
                 href={item.href}
                 className={styles.link}
-                onClick={() => setOpen(false)}
+                onClick={handleLinkClick}
               >
                 <Icon className={styles.icon} />
                 <span className={styles.label}>{item.label}</span>
@@ -69,6 +47,7 @@ const Sidebar = () => {
           <ThemeSelector />
         </ul>
       </aside>
+
       {open && <div className={styles.overlay} onClick={toggle} />}
     </>
   );

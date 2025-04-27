@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Header from "../components/header/header";
 import Sidebar from "../components/sidebar/sidebar";
 import Footer from "../components/footer/footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <Sidebar />
+          <Header />
           {children}
           <ServiceWorkerRegister />
           <Footer />

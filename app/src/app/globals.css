@@ -110,7 +110,7 @@ main {
 
 @media (max-width: 600px) {
   main {
-    padding-top: var(--padding-large);
+    margin-top: var(--margin-large);
     min-height: 78vh;
     justify-content: center;
   }

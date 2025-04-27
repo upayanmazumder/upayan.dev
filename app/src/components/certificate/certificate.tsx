@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import certificateStyles from "./certificate.module.css";
+import certificateStyles from "./Certificate.module.css";
 import { createSlug, certificates } from "../../data/certificates";
 import Four04 from "../404/404";
 

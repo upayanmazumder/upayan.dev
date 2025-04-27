@@ -5,9 +5,9 @@ import Link from "next/link";
 import { BsList } from "react-icons/bs";
 import * as Icons from "react-icons/bs";
 import sidebarData from "../../data/navigation.json";
-import styles from "./sidebar.module.css";
-import { ThemeSelector } from "../theme/theme";
-import GitHubSponsor from "../githubsponsor/githubsponsor";
+import styles from "./Sidebar.module.css";
+import { ThemeSelector } from "../theme/Theme";
+import GitHubSponsor from "../githubsponsor/GithubSponsor";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);

@@ -2,7 +2,7 @@
 
 import React, { JSX } from "react";
 import Link from "next/link";
-import footerStyles from "./footer.module.css";
+import footerStyles from "./Footer.module.css";
 import links from "../../data/links.json";
 import {
   FaGithub,

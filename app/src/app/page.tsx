@@ -1,12 +1,12 @@
 import React from "react";
-import Hero from "../components/hero/hero";
+import Hero from "../components/hero/Hero";
 import dynamic from "next/dynamic";
 
-const Clubs = dynamic(() => import("../components/clubs/clubs"), {
+const Clubs = dynamic(() => import("../components/clubs/Clubs"), {
   ssr: true,
 });
 
-const Projects = dynamic(() => import("../components/projects/projects"), {
+const Projects = dynamic(() => import("../components/projects/Projects"), {
   ssr: true,
 });
 

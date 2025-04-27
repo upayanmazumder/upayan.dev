@@ -1,5 +1,5 @@
 import React from "react";
-import Certificates from "../../components/certificates/certificates";
+import Certificates from "../../components/certificates/Certificates";
 
 const CertificatesPage = () => {
   return (

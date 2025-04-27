@@ -1,5 +1,5 @@
 import React from "react";
-import githubSponsorStyles from "./githubsponsor.module.css";
+import githubSponsorStyles from "./GithubSponsor.module.css";
 
 const GitHubSponsor: React.FC = () => {
   return (

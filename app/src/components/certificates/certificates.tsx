@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import certificateStyles from "./certificates.module.css";
+import certificateStyles from "./Certificates.module.css";
 import { createSlug, certificates } from "../../data/certificates";
 import { BsFunnel, BsFunnelFill } from "react-icons/bs";
 

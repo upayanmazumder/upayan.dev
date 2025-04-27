@@ -2,10 +2,10 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import heroStyles from "./hero.module.css";
-import Branding from "./branding/branding";
-import OfficialLinks from "./officiallinks/officiallinks";
-import Technologies from "./technologies/technologies";
+import heroStyles from "./Hero.module.css";
+import Branding from "./branding/Branding";
+import OfficialLinks from "./officiallinks/OfficialLinks";
+import Technologies from "./technologies/Technologies";
 
 const Hero: React.FC = () => {
   return (

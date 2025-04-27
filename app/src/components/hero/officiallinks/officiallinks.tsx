@@ -1,7 +1,7 @@
 import officialLinks from "../../../data/links.json";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import officialLinksStyles from "./officiallinks.module.css";
+import officialLinksStyles from "./OfficialLinks.module.css";
 
 const whitelist = [
   "IIT-Madras",

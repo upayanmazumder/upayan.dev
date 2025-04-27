@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import styles from "./branding.module.css";
+import styles from "./Branding.module.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSpotify } from "react-icons/fa";

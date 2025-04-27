@@ -1,6 +1,6 @@
 "use client";
 import { BsGithub } from "react-icons/bs";
-import githubButtonStyles from "./githubbutton.module.css";
+import githubButtonStyles from "./GithubButton.module.css";
 
 interface GitHubButtonProps {
   pathname: string;

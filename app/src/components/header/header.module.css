@@ -13,12 +13,31 @@
     padding: 0 2rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 1000;
+    gap: var(--margin-huge);
+}
+
+.branding {
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo {
+    height: 3.5rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #a0cfff;
 }
 
 .left {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
     gap: 1.5rem;
+    width: 100%;
 }
 
 .right {

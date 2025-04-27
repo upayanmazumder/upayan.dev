@@ -1,7 +1,7 @@
 "use client";
 
 import React, { JSX } from "react";
-import Link from "next/link";
+// import Link from "next/link";
 import footerStyles from "./Footer.module.css";
 import links from "../../data/links.json";
 import {
@@ -12,7 +12,7 @@ import {
   FaLinkedin,
   FaArrowUp,
 } from "react-icons/fa";
-import clubsData from "../../data/clubs.json";
+// import clubsData from "../../data/clubs.json";
 import { ThemeSelector } from "../theme/Theme";
 import GitHubSponsor from "../githubsponsor/GithubSponsor";
 

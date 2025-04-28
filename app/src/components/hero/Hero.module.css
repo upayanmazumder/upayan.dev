@@ -37,12 +37,19 @@
 .name {
     margin: 0;
     font-size: 70px;
+    color: white;
 }
 
 .role {
     margin: 10px 0;
-    color: #9c9c9c;
+    color: #c0c0c0;
     font-size: 30px;
+}
+
+.description {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #c4c4c4;
 }
 
 .cta {
@@ -57,6 +64,10 @@
     border-radius: 13px;
     background-color: #cfcfcf2a;
     color: white;
+    padding: 0.5rem 1.2rem;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
 }
 
 .cta__button:hover {

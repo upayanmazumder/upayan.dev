@@ -1,12 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
-"use client";
-
-import styles from "./Branding.module.css";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { FaSpotify } from "react-icons/fa";
 import { BiLogoVisualStudio } from "react-icons/bi";
+import activityStyles from "./Activity.module.css";
 import API from "../../../utils/api";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 interface Activity {
   name: string;
@@ -16,7 +13,7 @@ interface Activity {
   largeImageURL?: string;
 }
 
-export default function Branding() {
+export default function Activity() {
   const [activities, setActivities] = useState<Activity[]>([]);
 
   useEffect(() => {
@@ -45,29 +42,22 @@ export default function Branding() {
 
   const getActivityIcon = (name: string) => {
     if (name === "Spotify")
-      return <FaSpotify className={styles.activityIcon} />;
+      return <FaSpotify className={activityStyles.activityIcon} />;
     if (name === "Visual Studio Code")
-      return <BiLogoVisualStudio className={styles.activityIcon} />;
+      return <BiLogoVisualStudio className={activityStyles.activityIcon} />;
     return null;
   };
 
   const getActivityStyle = (name: string) => {
-    if (name === "Spotify") return styles.spotifyBackground;
-    if (name === "Visual Studio Code") return styles.vscodeBackground;
-    return styles.defaultBackground;
+    if (name === "Spotify") return activityStyles.spotifyBackground;
+    if (name === "Visual Studio Code") return activityStyles.vscodeBackground;
+    return activityStyles.defaultBackground;
   };
 
   return (
-    <div className={styles.wrapper}>
-      <img
-        src="/upayan-transparent-cropped.avif"
-        alt="Upayan's Profile Picture"
-        width={200}
-        height={100}
-        className={styles.upayanIcon}
-      />
+    <>
       {activities.length > 0 && (
-        <div className={styles.activitiesBelow}>
+        <div className={activityStyles.activitiesBelow}>
           {activities.map((activity, index) => {
             const key = `${activity.name}-${activity.startTimestamp}-${index}`;
             const icon = getActivityIcon(activity.name);
@@ -78,19 +68,24 @@ export default function Branding() {
                 : activity.state;
 
             return (
-              <div className={`${styles.activityItem} ${bgClass}`} key={key}>
-                <div className={styles.activityTop}>
+              <div
+                className={`${activityStyles.activityItem} ${bgClass}`}
+                key={key}
+              >
+                <div className={activityStyles.activityTop}>
                   {icon}
-                  <span className={styles.activityDetails}>
+                  <span className={activityStyles.activityDetails}>
                     {activity.details}
                   </span>
                 </div>
-                <span className={styles.activityState}>{cleanState}</span>
+                <span className={activityStyles.activityState}>
+                  {cleanState}
+                </span>
               </div>
             );
           })}
         </div>
       )}
-    </div>
+    </>
   );
 }

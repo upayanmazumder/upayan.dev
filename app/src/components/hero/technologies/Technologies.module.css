@@ -7,7 +7,9 @@
     font-family: monospace;
     height: 100%;
     margin: var(--margin-medium) 0;
-    max-width: 40vw;
+    max-width: 100%;
+    padding: var(--padding-small) var(--padding-medium);
+    gap: calc((var(--margin-medium) + var(--margin-small))/2) var(--margin-small);
 }
 
 @media (max-width: 1024px) {
@@ -26,6 +28,5 @@
 
 .technology {
     padding: var(--padding-tiny) var(--padding-small);
-    margin: var(--margin-tiny);
     border-radius: var(--border-radius-tiny);
 }

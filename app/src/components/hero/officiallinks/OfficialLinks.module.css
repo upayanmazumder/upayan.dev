@@ -2,15 +2,14 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: var(--margin-medium);
+    gap: var(--margin-small);
     flex-wrap: wrap;
-    padding: var(--padding-tiny);
+    padding: var(--padding-tiny) 0;
     margin: var(--margin-medium) 0;
 }
 
 .officialLinks button {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    letter-spacing: 0.2em;
     font-size: 0.9em;
     border-radius: var(--border-radius-tiny);
 }

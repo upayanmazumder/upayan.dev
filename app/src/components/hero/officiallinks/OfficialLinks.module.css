@@ -1,20 +1,26 @@
 .officialLinks {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: var(--margin-small);
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--margin-small);
     padding: var(--padding-tiny) 0;
     margin: var(--margin-medium) 0;
 }
 
-.officialLinks button {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 0.9em;
-    border-radius: var(--border-radius-tiny);
+.officialLink {
+    font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-small);
+    transition: all 0.3s ease;
+    min-width: 100px;
+    text-align: center;
+    border: none;
 }
 
-.officialLinks button:hover {
-    box-shadow: none;
+.officialLink:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     cursor: pointer;
+    transform: translateY(-2px);
 }

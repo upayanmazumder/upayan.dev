@@ -70,26 +70,6 @@
     "textColor": "#FFFFFF"
   },
   {
-    "name": "Flask",
-    "backgroundColor": "#000000",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "jQuery",
-    "backgroundColor": "#0769AD",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "JWT",
-    "backgroundColor": "#000000",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "npm",
-    "backgroundColor": "#CB3837",
-    "textColor": "#FFFFFF"
-  },
-  {
     "name": "Next.js",
     "backgroundColor": "#000000",
     "textColor": "#FFFFFF"

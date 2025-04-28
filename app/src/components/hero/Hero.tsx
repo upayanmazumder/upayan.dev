@@ -13,23 +13,47 @@ export default function Hero() {
   const [roleDone, setRoleDone] = useState(false);
 
   return (
-    <div className={heroStyles.hero}>
-      <div className={heroStyles.branding}>
+    <section className={heroStyles.hero}>
+      <motion.div
+        className={heroStyles.branding}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2 }}
+      >
         <div className={heroStyles.left}>
-          <p className={heroStyles.greet}>Hi, my name is</p>
-          <h1 className={heroStyles.name}>
+          <motion.p
+            className={heroStyles.greet}
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            Hi, my name is
+          </motion.p>
+
+          <motion.h1
+            className={heroStyles.name}
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
             <Typewriter
               words={["Upayan Mazumder"]}
               cursor={!nameDone}
               cursorStyle="|"
               typeSpeed={70}
               deleteSpeed={0}
-              delaySpeed={200}
+              delaySpeed={300}
               loop={1}
-              onLoopDone={() => setNameDone(true)} // Using onLoopDone to detect when typing ends
+              onLoopDone={() => setNameDone(true)}
             />
-          </h1>
-          <h2 className={heroStyles.role}>
+          </motion.h1>
+
+          <motion.h2
+            className={heroStyles.role}
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
             <Typewriter
               words={["I build things for the web"]}
               cursor={!roleDone}
@@ -38,15 +62,29 @@ export default function Hero() {
               deleteSpeed={0}
               delaySpeed={200}
               loop={1}
-              onLoopDone={() => setRoleDone(true)} // Using onLoopDone to detect when typing ends
+              onLoopDone={() => setRoleDone(true)}
             />
-          </h2>
-          <p className={heroStyles.description}>
+          </motion.h2>
+
+          <motion.p
+            className={heroStyles.description}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.8 }}
+          >
             I am a full stack developer passionate about building web
             applications and learning new technologies.
-          </p>
-          <div className={heroStyles.cta}>
-            <button
+          </motion.p>
+
+          <motion.div
+            className={heroStyles.cta}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1 }}
+          >
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               className={heroStyles.cta__button}
               onClick={() => {
                 const link = document.createElement("a");
@@ -58,65 +96,71 @@ export default function Hero() {
               }}
             >
               Resume
-            </button>
-            <button
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               className={heroStyles.cta__button}
               onClick={() => (window.location.href = "#clubs")}
             >
               Clubs
-            </button>
-            <button
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               className={heroStyles.cta__button}
               onClick={() => (window.location.href = "#projects")}
             >
               Projects
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
+
           <motion.div
             initial="hidden"
             animate="visible"
             variants={{
               hidden: {},
               visible: {
-                transition: {
-                  staggerChildren: 0.3,
-                },
+                transition: { staggerChildren: 0.2, delayChildren: 1.2 },
               },
             }}
           >
             <OfficialLinks />
           </motion.div>
         </div>
+
         <motion.div
           className={heroStyles.right}
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.5 }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, delay: 1 }}
         >
-          <img
+          <motion.img
             src="/upayan-transparent-cropped.avif"
             alt="Upayan Mazumder"
             className={heroStyles.image}
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.5 }}
           />
           <Activity />
         </motion.div>
-      </div>
+      </motion.div>
 
       <motion.div
+        className={heroStyles.technologies}
         initial="hidden"
         animate="visible"
         variants={{
           hidden: {},
           visible: {
-            transition: {
-              staggerChildren: 0.3,
-              delayChildren: 1,
-            },
+            transition: { staggerChildren: 0.3, delayChildren: 1.5 },
           },
         }}
       >
         <Technologies />
       </motion.div>
-    </div>
+    </section>
   );
 }

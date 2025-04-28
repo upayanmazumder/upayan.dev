@@ -2,7 +2,8 @@ import { FaSpotify } from "react-icons/fa";
 import { BiLogoVisualStudio } from "react-icons/bi";
 import activityStyles from "./Activity.module.css";
 import API from "../../../utils/api";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 
 interface Activity {
@@ -30,13 +31,11 @@ export default function Activity() {
             largeImageURL: a.largeImageURL,
           }))
         );
-      } catch (err) {
-        console.error("Error fetching activity:", err);
-      }
+      } catch {}
     };
 
     fetchActivities();
-    const interval = setInterval(fetchActivities, 1000);
+    const interval = setInterval(fetchActivities, 3000);
     return () => clearInterval(interval);
   }, []);
 
@@ -55,9 +54,15 @@ export default function Activity() {
   };
 
   return (
-    <>
+    <AnimatePresence>
       {activities.length > 0 && (
-        <div className={activityStyles.activitiesBelow}>
+        <motion.div
+          className={activityStyles.activitiesBelow}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        >
           {activities.map((activity, index) => {
             const key = `${activity.name}-${activity.startTimestamp}-${index}`;
             const icon = getActivityIcon(activity.name);
@@ -68,9 +73,12 @@ export default function Activity() {
                 : activity.state;
 
             return (
-              <div
+              <motion.div
                 className={`${activityStyles.activityItem} ${bgClass}`}
                 key={key}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", damping: 12 }}
               >
                 <div className={activityStyles.activityTop}>
                   {icon}
@@ -81,11 +89,11 @@ export default function Activity() {
                 <span className={activityStyles.activityState}>
                   {cleanState}
                 </span>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
 }

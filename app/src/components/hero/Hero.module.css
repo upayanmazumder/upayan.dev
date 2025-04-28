@@ -10,7 +10,7 @@
 .branding {
     display: grid;
     grid-template-columns: 70% 30%;
-    margin: var(--margin-medium) 0;
+    margin: var(--margin-small) 0;
 }
 
 .info {
@@ -57,14 +57,15 @@
     width: 100%;
     flex-direction: row;
     justify-content: flex-start;
-    gap: var(--margin-small);
+    gap: var(--margin-medium);
+    margin-top: 10px;
 }
 
 .cta__button {
     border-radius: 13px;
     background-color: #cfcfcf2a;
     color: white;
-    padding: 0.5rem 1.2rem;
+    padding: 0.6rem 1.3rem;
     font-size: 16px;
     border: none;
     cursor: pointer;

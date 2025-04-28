@@ -12,9 +12,10 @@
 
 .projectsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(410px, 1fr));
   gap: 2rem;
   justify-items: center;
+  padding: 0 1rem;
 }
 
 .projectIcon {

@@ -5,12 +5,21 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(3px);
     color: var(--color);
+    text-align: center;
 }
 
 @media (max-width: 961px) {
+    .footer {
+        padding: var(--padding-tiny);
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 600px) {
     .footer {
         padding: var(--padding-tiny);
         font-size: 0.7rem;
@@ -19,6 +28,7 @@
 
 .footer a {
     color: gainsboro;
+    text-decoration: none;
 }
 
 .footer a:hover {
@@ -31,19 +41,28 @@
     flex-direction: row;
     justify-content: space-around;
     border-bottom: 1px solid gray;
+    width: 100%;
+}
+
+@media (max-width: 961px) {
+    .footerTop {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 .column {
     display: flex;
     flex-direction: column;
-    margin-left: 0;
     margin: var(--margin-medium);
     padding: var(--padding-small);
+    text-align: left;
 }
 
 @media (max-width: 961px) {
     .column {
         padding: 0;
+        margin: var(--margin-small);
     }
 }
 
@@ -55,19 +74,22 @@
 .column ul {
     padding: 0;
     margin: 0;
+    list-style: none;
 }
 
 .footerBottom {
     margin-top: 10px;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 
 @media (max-width: 961px) {
     .footerBottom {
-        padding-right: var(--padding-small);
-        justify-content: space-between;
+        flex-direction: column;
+        gap: var(--margin-small);
     }
 }
 
@@ -76,13 +98,13 @@
     flex-direction: row;
     justify-content: center;
     gap: var(--margin-tiny);
+    flex-wrap: wrap;
 }
 
 @media (max-width: 961px) {
     .footerLinks {
-        width: 60%;
+        width: 100%;
         justify-content: space-around;
-        gap: var(--margin-tiny);
     }
 }
 
@@ -90,11 +112,14 @@
     padding: var(--padding-small);
     border-radius: 50%;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
 }
 
 @media (max-width: 961px) {
     .footerLinks a {
-        padding: 0;
+        padding: var(--padding-tiny);
     }
 }
 
@@ -107,13 +132,24 @@
     justify-content: center;
     align-items: center;
     gap: var(--margin-tiny);
+    flex-wrap: wrap;
 }
 
 .helper button {
     background-color: transparent;
     color: var(--color);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
 .helper button:hover {
-    box-shadow: none;
+    transform: scale(1.1);
+}
+
+@media (max-width: 600px) {
+    .helper {
+        flex-direction: column;
+        gap: var(--margin-small);
+    }
 }

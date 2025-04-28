@@ -20,46 +20,46 @@
   --text-link-color: #1C86EE;
   --text-link-hover-color: rgb(77, 156, 235);
 
-  --padding-tiny: 5px;
-  --padding-small: 10px;
-  --padding-medium: 20px;
-  --padding-large: 40px;
-  --padding-huge: 80px;
+  --padding-tiny: 0.25rem;
+  --padding-small: 0.5rem;
+  --padding-medium: 1rem;
+  --padding-large: 2rem;
+  --padding-huge: 4rem;
 
-  --margin-tiny: 5px;
-  --margin-small: 10px;
-  --margin-medium: 20px;
-  --margin-large: 40px;
-  --margin-huge: 80px;
+  --margin-tiny: 0.25rem;
+  --margin-small: 0.5rem;
+  --margin-medium: 1rem;
+  --margin-large: 2rem;
+  --margin-huge: 4rem;
 
-  --border-radius-tiny: 5px;
-  --border-radius-small: 10px;
-  --border-radius-medium: 20px;
-  --border-radius-large: 40px;
-  --border-radius-huge: 80px;
+  --border-radius-tiny: 0.25rem;
+  --border-radius-small: 0.5rem;
+  --border-radius-medium: 1rem;
+  --border-radius-large: 2rem;
+  --border-radius-huge: 4rem;
 
-  --font-size-tiny: 12px;
-  --font-size-small: 14px;
-  --font-size-medium: 18px;
-  --font-size-large: 22px;
-  --font-size-huge: 28px;
+  --font-size-tiny: clamp(0.7rem, 1vw, 0.8rem);
+  --font-size-small: clamp(0.8rem, 1.2vw, 0.9rem);
+  --font-size-medium: clamp(1rem, 2vw, 1.125rem);
+  --font-size-large: clamp(1.25rem, 2.5vw, 1.5rem);
+  --font-size-huge: clamp(1.75rem, 4vw, 2rem);
 
   --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-bold: 700;
 
-  --transition-tiny: 0.1s;
-  --transition-small: 0.2s;
-  --transition-medium: 0.4s;
-  --transition-large: 0.8s;
-  --transition-huge: 1.6s;
+  --transition-fast: 0.2s ease-in-out;
+  --transition-medium: 0.4s ease-in-out;
+  --transition-slow: 0.8s ease-in-out;
 }
 
 * {
-  transition: all var(--transition-small) ease-in-out;
+  box-sizing: border-box;
+  transition: all var(--transition-fast);
 }
 
-html {
+html,
+body {
   margin: 0;
   padding: 0;
   scroll-behavior: smooth;
@@ -70,31 +70,28 @@ html {
 body {
   background: var(--background-color);
   color: var(--color);
+  font-family: "RedHatDisplay", "din alternate", system-ui, optima, avenir, sans-serif;
   font-size: var(--font-size-medium);
   font-weight: var(--font-weight-normal);
-  transition: background 0.8s ease-in-out, color 0.4s ease-in-out;
   background-attachment: fixed;
   background-size: cover;
-  padding: 0;
-  margin: 0;
-  font-family: "Red Hat Display", "din alternate", system-ui, optima, avenir;
-  transition:
-    background-color 2s ease-in-out,
-    color 0.4s ease-in-out;
 }
 
 main {
   margin: var(--screen-vertical-margin) var(--screen-horizontal-margin);
   margin-top: 4.5rem;
+  padding: var(--padding-medium);
   min-height: 70vh;
   display: flex;
   flex-direction: column;
+  gap: var(--margin-medium);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   main {
     margin-top: var(--margin-large);
-    min-height: 78vh;
+    padding: var(--padding-small);
+    min-height: 80vh;
     justify-content: center;
   }
 }
@@ -106,6 +103,7 @@ h4,
 h5,
 h6 {
   font-weight: var(--font-weight-bold);
+  margin: 0 0 var(--margin-small) 0;
 }
 
 a {
@@ -115,42 +113,41 @@ a {
 
 a:hover {
   color: var(--text-link-hover-color);
-  text-decoration: none;
 }
 
 ul {
   list-style: none;
+  padding: 0;
 }
 
 button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: var(--padding-small) var(--padding-medium);
+  border: none;
   border-radius: 50dvh;
   background-color: rgb(36, 36, 36);
-  border: none;
-  padding: var(--padding-small) var(--padding-medium);
-  display: flex;
-  align-items: center;
   font-size: var(--font-size-medium);
+  cursor: pointer;
 }
 
 button:hover {
   background-color: rgb(22, 22, 22);
-  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.24);
-  cursor: pointer;
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.2);
 }
 
 button svg {
-  margin: 0;
-  padding: 0;
-}
-
-::-webkit-scrollbar {
-  display: none;
+  width: 1em;
+  height: 1em;
 }
 
 .page-header {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  gap: var(--margin-small);
   margin: var(--margin-medium) 0;
   font-family: system-ui;
 }
@@ -161,7 +158,19 @@ button svg {
   }
 }
 
-.page-header * {
-  margin: 0;
-  padding: 0;
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--border-radius-small);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }

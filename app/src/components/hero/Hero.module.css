@@ -1,6 +1,5 @@
 .hero {
     min-height: 100vh;
-    max-height: 100vh;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -89,4 +88,82 @@
     width: 70%;
     height: auto;
     margin-bottom: var(--margin-small);
+}
+
+@media (max-width: 1024px) {
+    .branding {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .left {
+        align-items: center;
+        padding: 0 1rem;
+    }
+
+    .name {
+        font-size: 50px;
+    }
+
+    .role {
+        font-size: 24px;
+    }
+
+    .description {
+        font-size: 16px;
+    }
+
+    .cta {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .name {
+        font-size: 40px;
+    }
+
+    .role {
+        font-size: 20px;
+    }
+
+    .description {
+        font-size: 14px;
+    }
+
+    .cta__button {
+        font-size: 14px;
+        padding: 0.5rem 1rem;
+    }
+
+    .image {
+        width: 80%;
+    }
+}
+
+@media (max-width: 480px) {
+    .branding {
+        margin: var(--margin-tiny) 0;
+    }
+
+    .name {
+        font-size: 30px;
+    }
+
+    .role {
+        font-size: 18px;
+    }
+
+    .description {
+        font-size: 12px;
+    }
+
+    .cta__button {
+        font-size: 12px;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .image {
+        width: 90%;
+    }
 }

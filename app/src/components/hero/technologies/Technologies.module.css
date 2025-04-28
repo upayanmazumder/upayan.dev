@@ -42,6 +42,7 @@
 @media (max-width: 1024px) {
     .technologies {
         padding: 1rem;
+        gap: 0.8rem;
     }
 }
 
@@ -49,5 +50,20 @@
     .technology {
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
+        min-width: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .technologies {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .technology {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+        min-width: 70px;
     }
 }

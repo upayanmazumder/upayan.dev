@@ -57,3 +57,52 @@
     background: rgba(255, 255, 255, 0.05);
     color: #fff;
 }
+
+@media (max-width: 768px) {
+    .activitiesBelow {
+        max-width: 100%;
+        padding: 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    .activityItem {
+        padding: 0.5rem;
+        gap: 0.4rem;
+    }
+
+    .activityIcon {
+        font-size: 1rem;
+    }
+
+    .activityDetails {
+        font-size: 0.9rem;
+    }
+
+    .activityState {
+        font-size: 0.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .activitiesBelow {
+        padding: 0.25rem;
+        gap: 0.5rem;
+    }
+
+    .activityItem {
+        padding: 0.4rem;
+        gap: 0.3rem;
+    }
+
+    .activityIcon {
+        font-size: 0.9rem;
+    }
+
+    .activityDetails {
+        font-size: 0.8rem;
+    }
+
+    .activityState {
+        font-size: 0.5rem;
+    }
+}

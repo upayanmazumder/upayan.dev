@@ -12,7 +12,6 @@
     font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1rem;
     padding: 0.5rem 1rem;
-    border-radius: var(--border-radius-small);
     transition: all 0.3s ease;
     min-width: 100px;
     text-align: center;

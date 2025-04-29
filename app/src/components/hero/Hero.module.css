@@ -6,9 +6,11 @@
     justify-content: center;
     padding: 1rem;
     max-width: 1200px;
-    /* Added max-width for better layout control */
     margin: 0 auto;
-    /* Center the hero section */
+}
+
+.hero button {
+    border-radius: var(--border-radius-tiny);
 }
 
 .branding {
@@ -16,7 +18,6 @@
     grid-template-columns: 70% 30%;
     margin: var(--margin-small) 0;
     gap: var(--margin-medium);
-    /* Added gap for better spacing */
 }
 
 .info {
@@ -32,20 +33,17 @@
     align-items: start;
     padding: 0 2rem;
     gap: 1rem;
-    /* Adjusted gap for better spacing */
 }
 
 .greet {
     margin: 0;
     color: #9c9c9c;
     font-size: clamp(16px, 2vw, 20px);
-    /* Responsive font size */
 }
 
 .name {
     margin: 0;
     font-size: clamp(40px, 5vw, 70px);
-    /* Responsive font size */
     color: white;
 }
 
@@ -53,13 +51,11 @@
     margin: 10px 0;
     color: #c0c0c0;
     font-size: clamp(18px, 3vw, 30px);
-    /* Responsive font size */
 }
 
 .description {
     margin: 10px 0;
     font-size: clamp(12px, 2vw, 18px);
-    /* Responsive font size */
     color: #c4c4c4;
 }
 
@@ -73,12 +69,10 @@
 }
 
 .cta__button {
-    border-radius: 13px;
     background-color: #cfcfcf2a;
     color: white;
     padding: 0.6rem 1.3rem;
     font-size: clamp(12px, 2vw, 16px);
-    /* Responsive font size */
     border: none;
     cursor: pointer;
 }
@@ -102,7 +96,6 @@
     height: auto;
     margin-bottom: var(--margin-small);
     max-width: 400px;
-    /* Added max-width for better scaling */
 }
 
 @media (max-width: 1024px) {
@@ -110,7 +103,6 @@
         grid-template-columns: 1fr;
         text-align: center;
         gap: var(--margin-small);
-        /* Adjusted gap for smaller screens */
     }
 
     .left {
@@ -120,17 +112,14 @@
 
     .name {
         font-size: clamp(30px, 5vw, 50px);
-        /* Adjusted font size */
     }
 
     .role {
         font-size: clamp(16px, 3vw, 24px);
-        /* Adjusted font size */
     }
 
     .description {
         font-size: clamp(14px, 2vw, 16px);
-        /* Adjusted font size */
     }
 
     .cta {
@@ -141,22 +130,18 @@
 @media (max-width: 768px) {
     .name {
         font-size: clamp(28px, 5vw, 40px);
-        /* Adjusted font size */
     }
 
     .role {
         font-size: clamp(14px, 3vw, 20px);
-        /* Adjusted font size */
     }
 
     .description {
         font-size: clamp(12px, 2vw, 14px);
-        /* Adjusted font size */
     }
 
     .cta__button {
         font-size: clamp(10px, 2vw, 14px);
-        /* Adjusted font size */
         padding: 0.5rem 1rem;
     }
 
@@ -172,17 +157,14 @@
 
     .name {
         font-size: clamp(24px, 5vw, 30px);
-        /* Adjusted font size */
     }
 
     .role {
         font-size: clamp(12px, 3vw, 18px);
-        /* Adjusted font size */
     }
 
     .description {
         font-size: clamp(10px, 2vw, 12px);
-        /* Adjusted font size */
     }
 
     .cta__button {

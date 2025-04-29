@@ -4,6 +4,7 @@ import heroStyles from "./Hero.module.css";
 import OfficialLinks from "./officiallinks/OfficialLinks";
 import Technologies from "./technologies/Technologies";
 import Activity from "./activity/Activity";
+import Resume from "./resume/Resume";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
@@ -95,21 +96,7 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1 }}
           >
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className={heroStyles.cta__button}
-              onClick={() => {
-                const link = document.createElement("a");
-                link.href = "/resume.pdf";
-                link.download = "Upayan Mazumder Resume.pdf";
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-              }}
-            >
-              Resume
-            </motion.button>
+            <Resume />
 
             <motion.button
               whileHover={{ scale: 1.1 }}

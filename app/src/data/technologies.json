@@ -1,127 +1,41 @@
 [
-  {
-    "name": "HTML",
-    "backgroundColor": "#E34F26",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "CSS",
-    "backgroundColor": "#1572B6",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "JavaScript",
-    "backgroundColor": "#F7DF1E",
-    "textColor": "#000000"
-  },
-  {
-    "name": "Python",
-    "backgroundColor": "#3776AB",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "C",
-    "backgroundColor": "#00599c",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "C++",
-    "backgroundColor": "#00599C",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "React",
-    "backgroundColor": "#61DAFB",
-    "textColor": "#000000"
-  },
-  {
-    "name": "Node.js",
-    "backgroundColor": "#339933",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "TypeScript",
-    "backgroundColor": "#3178C6",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Cloudflare",
-    "backgroundColor": "#F38020",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Firebase",
-    "backgroundColor": "#FFCA28",
-    "textColor": "#000000"
-  },
-  {
-    "name": "Google Cloud",
-    "backgroundColor": "#4285F4",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Vercel",
-    "backgroundColor": "#000000",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Express.js",
-    "backgroundColor": "#000000",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Next.js",
-    "backgroundColor": "#000000",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Vite",
-    "backgroundColor": "#646CFF",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Nginx",
-    "backgroundColor": "#009639",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "MongoDB",
-    "backgroundColor": "#47A248",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "SQLite",
-    "backgroundColor": "#003B57",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "GitHub Actions",
-    "backgroundColor": "#2088FF",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Git",
-    "backgroundColor": "#F05032",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "GitHub",
-    "backgroundColor": "#181717",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Docker",
-    "backgroundColor": "#2496ED",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "ESP32",
-    "backgroundColor": "#E7352C",
-    "textColor": "#FFFFFF"
-  },
-  {
-    "name": "Raspberry Pi",
-    "backgroundColor": "#C51A4A",
-    "textColor": "#FFFFFF"
-  }
+  [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Vite",
+    "jQuery"
+  ],
+  [
+    "Node.js",
+    "Express.js",
+    "Flask",
+    "Python",
+    "C",
+    "C++"
+  ],
+  [
+    "MongoDB",
+    "SQLite",
+    "Firebase",
+    "Google Cloud",
+    "Vercel",
+    "Cloudflare"
+  ],
+  [
+    "Docker",
+    "Nginx",
+    "ESP32",
+    "Raspberry Pi"
+  ],
+  [
+    "JWT",
+    "npm",
+    "Git",
+    "GitHub",
+    "GitHub Actions"
+  ]
 ]

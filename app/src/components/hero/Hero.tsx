@@ -75,6 +75,19 @@ export default function Hero() {
             I am a full stack developer passionate about building web
             applications and learning new technologies.
           </motion.p>
+          <motion.div
+            className={heroStyles.technologies}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.3, delayChildren: 1.5 },
+              },
+            }}
+          >
+            <Technologies />
+          </motion.div>
 
           <motion.div
             className={heroStyles.cta}
@@ -146,20 +159,6 @@ export default function Hero() {
           />
           <Activity />
         </motion.div>
-      </motion.div>
-
-      <motion.div
-        className={heroStyles.technologies}
-        initial="hidden"
-        animate="visible"
-        variants={{
-          hidden: {},
-          visible: {
-            transition: { staggerChildren: 0.3, delayChildren: 1.5 },
-          },
-        }}
-      >
-        <Technologies />
       </motion.div>
     </section>
   );

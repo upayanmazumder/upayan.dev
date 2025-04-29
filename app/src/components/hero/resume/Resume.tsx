@@ -1,11 +1,11 @@
 import React from "react";
-import styled from "styled-components";
+import styles from "./Resume.module.css";
 
-const Button = () => {
+export default function Resume() {
   return (
-    <StyledWrapper>
+    <div>
       <button
-        className="Download-button"
+        className={styles.downloadButton}
         onClick={() => {
           const link = document.createElement("a");
           link.href = "/resume.pdf";
@@ -28,69 +28,6 @@ const Button = () => {
         </svg>
         <span>Resume</span>
       </button>
-    </StyledWrapper>
+    </div>
   );
-};
-
-const StyledWrapper = styled.div`
-  .Download-button {
-    display: flex;
-    align-items: center;
-    font-family: inherit;
-    font-weight: 500;
-    font-size: 17px;
-    padding: 12px 20px;
-    color: white;
-    background: rgba(103, 92, 156, 0.38);
-    border: none;
-    box-shadow: 0 0.7em 1.5em -0.5em rgba(59, 48, 78, 0.527);
-    letter-spacing: 0.05em;
-    border-radius: 8px;
-    cursor: pointer;
-    position: relative;
-  }
-
-  .Download-button svg {
-    margin-right: 8px;
-    width: 25px;
-  }
-
-  .Download-button:hover {
-    box-shadow: 0 0.5em 1.5em -0.5em rgba(88, 71, 116, 0.627);
-  }
-
-  .Download-button:active {
-    box-shadow: 0 0.3em 1em -0.5em rgba(88, 71, 116, 0.627);
-  }
-
-  .Download-button::before {
-    content: "";
-    width: 4px;
-    height: 40%;
-    background-color: white;
-    position: absolute;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    left: 0;
-    transition: all 0.2s;
-  }
-
-  .Download-button::after {
-    content: "";
-    width: 4px;
-    height: 40%;
-    background-color: white;
-    position: absolute;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    right: 0;
-    transition: all 0.2s;
-  }
-
-  .Download-button:hover::before,
-  .Download-button:hover::after {
-    height: 60%;
-  }
-`;
-
-export default Button;
+}

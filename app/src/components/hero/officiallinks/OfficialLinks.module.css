@@ -1,11 +1,11 @@
 .officialLinks {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: var(--margin-small);
     padding: var(--padding-tiny) 0;
     margin: var(--margin-medium) 0;
+    width: 100%;
 }
 
 .officialLink {

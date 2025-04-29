@@ -104,18 +104,7 @@ export default function Hero() {
             <Button text="Projects" to="#projects" />
           </motion.div>
 
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {},
-              visible: {
-                transition: { staggerChildren: 0.2, delayChildren: 1.2 },
-              },
-            }}
-          >
-            <OfficialLinks />
-          </motion.div>
+          <OfficialLinks />
         </div>
 
         <motion.div

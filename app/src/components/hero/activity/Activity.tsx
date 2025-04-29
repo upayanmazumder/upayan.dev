@@ -3,7 +3,7 @@ import { BiLogoVisualStudio } from "react-icons/bi";
 import activityStyles from "./Activity.module.css";
 import API from "../../../utils/api";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import axios from "axios";
 
 interface Activity {
@@ -56,13 +56,7 @@ export default function Activity() {
   return (
     <AnimatePresence>
       {activities.length > 0 && (
-        <motion.div
-          className={activityStyles.activitiesBelow}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-        >
+        <div className={activityStyles.activitiesBelow}>
           {activities.map((activity, index) => {
             const key = `${activity.name}-${activity.startTimestamp}-${index}`;
             const icon = getActivityIcon(activity.name);
@@ -73,12 +67,9 @@ export default function Activity() {
                 : activity.state;
 
             return (
-              <motion.div
+              <div
                 className={`${activityStyles.activityItem} ${bgClass}`}
                 key={key}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", damping: 12 }}
               >
                 <div className={activityStyles.activityTop}>
                   {icon}
@@ -89,10 +80,10 @@ export default function Activity() {
                 <span className={activityStyles.activityState}>
                   {cleanState}
                 </span>
-              </motion.div>
+              </div>
             );
           })}
-        </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );

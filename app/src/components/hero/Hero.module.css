@@ -66,6 +66,7 @@
     justify-content: flex-start;
     gap: var(--margin-medium);
     margin-top: 10px;
+    align-items: center;
 }
 
 .cta__button {

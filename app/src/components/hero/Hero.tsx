@@ -5,6 +5,7 @@ import OfficialLinks from "./officiallinks/OfficialLinks";
 import Technologies from "./technologies/Technologies";
 import Activity from "./activity/Activity";
 import Resume from "./resume/Resume";
+import Button from "../ui/button/Button";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
@@ -98,23 +99,9 @@ export default function Hero() {
           >
             <Resume />
 
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className={heroStyles.cta__button}
-              onClick={() => (window.location.href = "#clubs")}
-            >
-              Clubs
-            </motion.button>
+            <Button text="Clubs" to="#clubs" />
 
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className={heroStyles.cta__button}
-              onClick={() => (window.location.href = "#projects")}
-            >
-              Projects
-            </motion.button>
+            <Button text="Projects" to="#projects" />
           </motion.div>
 
           <motion.div

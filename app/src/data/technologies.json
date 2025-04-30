@@ -6,8 +6,7 @@
     "TypeScript",
     "React",
     "Next.js",
-    "Vite",
-    "jQuery"
+    "Vite"
   ],
   [
     "Node.js",
@@ -32,8 +31,6 @@
     "Raspberry Pi"
   ],
   [
-    "JWT",
-    "npm",
     "Git",
     "GitHub",
     "GitHub Actions"

@@ -181,3 +181,11 @@
         width: 20%;
     }
 }
+
+.typingText :global(.typewriter-cursor) {
+    visibility: visible;
+}
+
+.staticText :global(.typewriter-cursor) {
+    visibility: hidden;
+}

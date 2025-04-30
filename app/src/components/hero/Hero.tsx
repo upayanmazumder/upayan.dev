@@ -1,14 +1,15 @@
 "use client";
 
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Typewriter } from "react-simple-typewriter";
+
 import heroStyles from "./Hero.module.css";
 import OfficialLinks from "./officiallinks/OfficialLinks";
 import Technologies from "./technologies/Technologies";
 import Activity from "./activity/Activity";
 import Resume from "./resume/Resume";
 import Button from "../ui/button/Button";
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Typewriter } from "react-simple-typewriter";
 
 export default function Hero() {
   const [nameDone, setNameDone] = useState(false);
@@ -40,8 +41,7 @@ export default function Hero() {
           >
             <Typewriter
               words={["Upayan Mazumder"]}
-              cursor={!nameDone}
-              cursorStyle="|"
+              cursor={false}
               typeSpeed={70}
               deleteSpeed={0}
               delaySpeed={300}
@@ -58,8 +58,7 @@ export default function Hero() {
           >
             <Typewriter
               words={["I build things for the web"]}
-              cursor={!roleDone}
-              cursorStyle="|"
+              cursor={false}
               typeSpeed={50}
               deleteSpeed={0}
               delaySpeed={200}
@@ -77,6 +76,7 @@ export default function Hero() {
             I am a full stack developer passionate about building web
             applications and learning new technologies.
           </motion.p>
+
           <motion.div
             className={heroStyles.technologies}
             initial="hidden"
@@ -98,9 +98,7 @@ export default function Hero() {
             transition={{ duration: 1, delay: 1 }}
           >
             <Resume />
-
             <Button text="Clubs" to="#clubs" />
-
             <Button text="Projects" to="#projects" />
           </motion.div>
 

@@ -102,6 +102,7 @@ body {
 
 main {
   margin: var(--screen-vertical-margin) var(--screen-horizontal-margin);
+  margin-top: 4.5rem;
   min-height: 70vh;
   display: flex;
   flex-direction: column;
@@ -109,7 +110,7 @@ main {
 
 @media (max-width: 600px) {
   main {
-    padding-top: var(--padding-large);
+    margin-top: var(--margin-large);
     min-height: 78vh;
     justify-content: center;
   }

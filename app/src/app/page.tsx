@@ -12,7 +12,7 @@ const Projects = dynamic(() => import("../components/projects/Projects"), {
 
 export default function Home() {
   return (
-    <main>
+    <main style={{ marginTop: "0px" }}>
       <Hero />
       <Clubs />
       <Projects />

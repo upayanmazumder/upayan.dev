@@ -45,12 +45,17 @@
     margin: 0;
     font-size: clamp(40px, 5vw, 70px);
     color: white;
+    line-height: 1;
+    height: auto;
 }
+
 
 .role {
     margin: 10px 0;
     color: #c0c0c0;
     font-size: clamp(18px, 3vw, 30px);
+    line-height: 1;
+    height: auto;
 }
 
 .description {
@@ -134,6 +139,12 @@
 }
 
 @media (max-width: 768px) {
+
+    .hero {
+        padding: 0;
+        max-width: 100%;
+    }
+
     .name {
         font-size: clamp(28px, 5vw, 40px);
     }

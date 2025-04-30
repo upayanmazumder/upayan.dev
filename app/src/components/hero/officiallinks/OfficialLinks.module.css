@@ -1,21 +1,52 @@
 .officialLinks {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: var(--margin-medium);
-    flex-wrap: wrap;
-    padding: var(--padding-tiny);
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--padding-tiny) 0;
     margin: var(--margin-medium) 0;
+    width: 100%;
 }
 
-.officialLinks button {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    letter-spacing: 0.2em;
-    font-size: 0.9em;
-    border-radius: var(--border-radius-tiny);
+.officialLink {
+    font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+    min-width: 100px;
+    text-align: center;
+    border: none;
 }
 
-.officialLinks button:hover {
-    box-shadow: none;
+.officialLink:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     cursor: pointer;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .officialLinks {
+        gap: var(--margin-tiny);
+        padding: var(--padding-tiny);
+    }
+
+    .officialLink {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+        min-width: 80px;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .officialLinks {
+        flex-direction: column;
+        gap: var(--margin-tiny);
+    }
+
+    .officialLink {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+        min-width: 70px;
+    }
 }

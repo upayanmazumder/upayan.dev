@@ -86,8 +86,6 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     [selectedTheme]
   );
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("theme", selectedTheme);
@@ -100,75 +98,8 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, [selectedTheme, theme]);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    const starColors = [
-      "rgba(255, 255, 255, 0.8)",
-      "rgba(255, 255, 200, 0.7)",
-      "rgba(230, 230, 250, 0.6)",
-      "rgba(255, 250, 205, 0.7)",
-      "rgba(240, 248, 255, 0.5)",
-    ];
-
-    const stars = Array.from({ length: 70 }).map(() => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      radius: Math.random() * 2.5,
-      vx: (Math.random() - 0.5) * 0.1,
-      vy: (Math.random() - 0.5) * 0.1,
-      color: starColors[Math.floor(Math.random() * starColors.length)],
-    }));
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (const star of stars) {
-        ctx.fillStyle = star.color;
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fill();
-
-        star.x += star.vx;
-        star.y += star.vy;
-
-        if (star.x < 0) star.x = canvas.width;
-        if (star.x > canvas.width) star.x = 0;
-        if (star.y < 0) star.y = canvas.height;
-        if (star.y > canvas.height) star.y = 0;
-      }
-      requestAnimationFrame(draw);
-    };
-
-    resizeCanvas();
-    draw();
-    window.addEventListener("resize", resizeCanvas);
-
-    return () => {
-      window.removeEventListener("resize", resizeCanvas);
-    };
-  }, []);
-
   return (
     <ThemeContext.Provider value={{ selectedTheme, setSelectedTheme }}>
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          zIndex: -1,
-          width: "100%",
-          height: "100%",
-        }}
-      />
       {children}
     </ThemeContext.Provider>
   );

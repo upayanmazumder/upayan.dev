@@ -23,7 +23,7 @@
     "name": "Microsoft Learn",
     "url": "https://learn.microsoft.com/en-gb/users/upayan",
     "backgroundColor": "#f25022",
-    "textColor": "#171717"
+    "textColor": "rgb(230, 230, 230)"
   },
   {
     "name": "Devfolio",

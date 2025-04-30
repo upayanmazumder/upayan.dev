@@ -13,7 +13,7 @@
     "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.8.2",
     "dotenv": "^16.5.0",
-    "framer-motion": "^12.4.7",
+    "framer-motion": "^12.9.2",
     "highlight.js": "^11.11.1",
     "lucide-react": "^0.479.0",
     "marked": "^15.0.6",
@@ -21,6 +21,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
+    "react-simple-typewriter": "^5.0.1",
     "styled-components": "^6.1.15"
   },
   "devDependencies": {

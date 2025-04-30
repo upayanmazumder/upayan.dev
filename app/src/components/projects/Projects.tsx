@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-// filepath: d:\upayanmazumder\upayan.dev\app\src\components\projects\projects.tsx
 import React from "react";
 import styles from "./Projects.module.css";
 import projectsData from "../../data/projects.json";

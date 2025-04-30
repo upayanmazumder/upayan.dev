@@ -20,3 +20,25 @@
     margin-bottom: 8px;
     text-align: center;
 }
+
+@media (max-width: 768px) {
+    .card {
+        padding: 1.5rem;
+        max-width: 100%;
+    }
+
+    .title {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 1rem;
+        border-radius: var(--border-radius-small);
+    }
+
+    .title {
+        font-size: 1rem;
+    }
+}

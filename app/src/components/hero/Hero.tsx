@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 
@@ -12,9 +12,6 @@ import Resume from "./resume/Resume";
 import Button from "../ui/button/Button";
 
 export default function Hero() {
-  const [nameDone, setNameDone] = useState(false);
-  const [roleDone, setRoleDone] = useState(false);
-
   return (
     <section className={heroStyles.hero}>
       <motion.div
@@ -46,7 +43,6 @@ export default function Hero() {
               deleteSpeed={0}
               delaySpeed={300}
               loop={1}
-              onLoopDone={() => setNameDone(true)}
             />
           </motion.h1>
 
@@ -63,7 +59,6 @@ export default function Hero() {
               deleteSpeed={0}
               delaySpeed={200}
               loop={1}
-              onLoopDone={() => setRoleDone(true)}
             />
           </motion.h2>
 

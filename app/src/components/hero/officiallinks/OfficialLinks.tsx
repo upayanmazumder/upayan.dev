@@ -1,6 +1,6 @@
 import officialLinks from "../../../data/links.json";
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import officialLinksStyles from "./OfficialLinks.module.css";
 
 const whitelist = [
@@ -24,9 +24,9 @@ export default function OfficialLinks() {
   return (
     <motion.div
       className={officialLinksStyles.officialLinks}
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.2 }}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
     >
       {officialLinks
         .filter((link) => whitelist.includes(link.name))
@@ -39,8 +39,9 @@ export default function OfficialLinks() {
               backgroundColor: link.backgroundColor,
             }}
             className={officialLinksStyles.officialLink}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300 }}
           >
             {link.name}
           </motion.button>

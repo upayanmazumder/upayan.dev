@@ -1,5 +1,5 @@
 .dirMapContainer {
-    padding: var(--padding-small) var(--padding-medium);
+    padding: var(--padding-small) 0;
     gap: 10px;
     display: flex;
     flex-direction: column;
@@ -12,19 +12,29 @@
 }
 
 .dirMapContainer li {
-    width: 100%;
+    width: 80%;
+    align-self: center;
+}
+
+@media (max-width: 768px) {
+    .dirMapContainer li {
+        width: 100%;
+    }
+
 }
 
 .dirMapContainer li button {
     width: 100%;
     text-align: left;
     border: 0.5px rgba(255, 255, 255, 0.26) solid;
-    background-color: #52525245;
+    background-color: #4343432e;
     text-transform: inherit;
     font-weight: inherit;
-    border-radius: var(--border-radius-small);
+    border-radius: var(--border-radius-tiny);
     padding-left: 1em;
     color: color-mix(in srgb, var(--color), gray);
+    display: flex;
+    justify-content: flex-start;
 }
 
 .dirMapContainer li button:hover {

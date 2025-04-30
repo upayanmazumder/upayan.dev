@@ -15,9 +15,9 @@ function TechTypewriter({
   const [text, helper] = useTypewriter({
     words: [group.join("  •  "), ""],
     loop: 1,
-    typeSpeed: 40,
-    deleteSpeed: 20,
-    delaySpeed: 750,
+    typeSpeed: 60,
+    deleteSpeed: 15,
+    delaySpeed: 2000,
   });
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function Technologies() {
     setTimeout(() => {
       setIndex((prev) => (prev + 1) % techGroups.length);
       setShow(true);
-    }, 100);
+    }, 10);
   };
 
   return (

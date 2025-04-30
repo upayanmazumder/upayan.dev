@@ -27,12 +27,12 @@
   [
     "Docker",
     "Nginx",
-    "ESP32",
-    "Raspberry Pi"
-  ],
-  [
     "Git",
     "GitHub",
     "GitHub Actions"
+  ],
+  [
+    "ESP32",
+    "Raspberry Pi"
   ]
 ]

@@ -1,5 +1,5 @@
 "use client";
-import { BsFileEarmark, BsFolderFill } from "react-icons/bs";
+import { BsFileEarmark, BsFolder } from "react-icons/bs";
 import directoryMapStyles from "./DirectoryMap.module.css";
 import Loader from "../../loader/Loader";
 
@@ -37,7 +37,7 @@ const DirectoryMap: React.FC<DirectoryMapProps> = ({
       {sortedData.map((item) => (
         <li key={item.sha}>
           <button onClick={() => handleItemClick(item)}>
-            {item.type === "dir" ? <BsFolderFill /> : <BsFileEarmark />}
+            {item.type === "dir" ? <BsFolder /> : <BsFileEarmark />}
             {item.name}
           </button>
         </li>

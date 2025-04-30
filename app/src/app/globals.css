@@ -89,7 +89,7 @@ main {
 
 @media (max-width: 768px) {
   main {
-    margin-top: var(--margin-large);
+    margin: var(--margin-large) 0;
     padding: var(--padding-small);
     min-height: 80vh;
     justify-content: center;

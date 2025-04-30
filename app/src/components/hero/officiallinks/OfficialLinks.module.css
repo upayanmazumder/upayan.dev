@@ -1,6 +1,6 @@
 .officialLinks {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
     padding: var(--padding-tiny) 0;
@@ -10,7 +10,7 @@
 
 .officialLink {
     font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1rem;
+    font-size: 16px;
     padding: 0.5rem 1rem;
     transition: all 0.3s ease;
     min-width: 100px;
@@ -34,6 +34,7 @@
         font-size: 0.9rem;
         padding: 0.4rem 0.8rem;
         min-width: 80px;
+        margin-top: 10px;
     }
 }
 

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { JSX } from "react";
-// import Link from "next/link";
 import footerStyles from "./Footer.module.css";
 import links from "../../data/links.json";
 import {
@@ -12,7 +11,6 @@ import {
   FaLinkedin,
   FaArrowUp,
 } from "react-icons/fa";
-// import clubsData from "../../data/clubs.json";
 import { ThemeSelector } from "../theme/Theme";
 import GitHubSponsor from "../githubsponsor/GithubSponsor";
 
@@ -31,111 +29,31 @@ const Footer: React.FC = () => {
 
   return (
     <footer className={footerStyles.footer}>
-      {/* <div className={footerStyles.footerTop}>
-        <div id="footer-resources" className={footerStyles.column}>
-          <Link href="#footer-resources">
-            <h3>Resources</h3>
-          </Link>
-          <ul>
-            <li>
-              <a
-                href="https://github.com/upayanmazumder/upayan.dev"
-                target="_blank"
-                rel="noopener"
-              >
-                Source Code
-              </a>
-            </li>
-            <li>
-              <Link href="/p/privacy-policy">Privacy Policy</Link>
-            </li>
-            <li>
-              <Link href="/p/terms-of-service">Terms of Service</Link>
-            </li>
-          </ul>
-        </div>
-        <div id="footer-clubs" className={footerStyles.column}>
-          <Link href="#footer-clubs">
-            <h3>Clubs</h3>
-          </Link>
-          <ul>
-            {clubsData.map((club) => {
-              const websiteLink = club.links.find(
-                (link) => link.name === "Website"
-              );
-              const linkedInLink = club.links.find(
-                (link) => link.name === "LinkedIn"
-              );
-              const link = websiteLink?.url || linkedInLink?.url;
-
-              return (
-                <li key={club.name}>
-                  <a href={link} target="_blank" rel="noopener">
-                    {club.name}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div id="footer-projects" className={footerStyles.column}>
-          <Link href="#footer-projects">
-            <h3>Projects</h3>
-          </Link>
-          <ul>
-            <li>
-              <a href="https://www.boardly.in/" target="_blank" rel="noopener">
-                Boardly
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://github.com/upayanmazumder/Collaborative-Article-Sharing"
-                target="_blank"
-                rel="noopener"
-              >
-                Collaborative Article Sharing
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://github.com/upayanmazumder/Status-Page"
-                target="_blank"
-                rel="noopener"
-              >
-                Status Page
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div> */}
-      <div className={footerStyles.footerBottom}>
-        <ul className={footerStyles.footerLinks}>
-          {filteredLinks.map((link, index) => (
-            <a key={index} href={link.url} target="_blank" rel="noopener">
-              {iconDictionary[link.name]}
-            </a>
-          ))}
-        </ul>
-        <ul className={footerStyles.helper}>
-          <li>
-            <GitHubSponsor />
-          </li>
-          <li>
-            <button title="Change theme">
-              <ThemeSelector />
-            </button>
-          </li>
-          <li>
-            <button
-              title="Scroll to top"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            >
-              <FaArrowUp />
-            </button>
-          </li>
-        </ul>
-      </div>
+      <ul className={footerStyles.footerLinks}>
+        {filteredLinks.map((link, index) => (
+          <a key={index} href={link.url} target="_blank" rel="noopener">
+            {iconDictionary[link.name]}
+          </a>
+        ))}
+      </ul>
+      <ul className={footerStyles.helper}>
+        <li>
+          <GitHubSponsor />
+        </li>
+        <li>
+          <button title="Change theme">
+            <ThemeSelector />
+          </button>
+        </li>
+        <li>
+          <button
+            title="Scroll to top"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            <FaArrowUp />
+          </button>
+        </li>
+      </ul>
     </footer>
   );
 };

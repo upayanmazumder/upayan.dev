@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import certificateStyles from "./Certificate.module.css";
 import { createSlug, certificates } from "../../data/certificates";
 import Four04 from "../404/404";
@@ -34,11 +33,10 @@ const CertificateDetail: React.FC<CertificateDetailProps> = ({ slug }) => {
             className={certificateStyles.certificateLink}
             title={`View ${certificate.title} certificate`}
           >
-            <Image
+            <img
               src={certificate.path}
               alt={`${certificate.title} certificate`}
               className={certificateStyles.certificateImage}
-              layout="responsive"
               width={700}
               height={475}
             />

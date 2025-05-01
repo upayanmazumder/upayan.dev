@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import certificateStyles from "./Certificates.module.css";
 import { createSlug, certificates } from "../../data/certificates";
 import { BsFunnel, BsFunnelFill } from "react-icons/bs";
@@ -71,12 +70,13 @@ const Certificates: React.FC = () => {
                 href={`/certificates/${slug}`}
                 title={`View certificate: ${certificate.title}`}
               >
-                <Image
+                <img
                   src={certificate.path}
                   alt={`${certificate.title} certificate`}
                   className={certificateStyles.certificateImage}
                   width={500}
                   height={300}
+                  loading="lazy"
                 />
               </a>
               <div className={certificateStyles.cardContent}>

@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -29,14 +29,20 @@ jobs:
       - name: Set image tag
         id: set_tag
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
-            echo "TAG=latest" >> $GITHUB_ENV  # Tag as 'latest' for master
+          if [[ "${GITHUB_REF}" == "refs/heads/master" ]]; then
+            TAG="latest"
+          elif [[ "${GITHUB_REF}" == refs/pull/* ]]; then
+            PR_NUMBER=$(echo "${GITHUB_REF}" | grep -oP 'refs/pull/\K[0-9]+')
+            TAG="pr-${PR_NUMBER}"
           else
-            BRANCH_NAME=${GITHUB_REF#refs/heads/}  # Get branch name for other branches
-            echo "TAG=${BRANCH_NAME}" >> $GITHUB_ENV
+            BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+            TAG="${BRANCH_NAME//\//-}"
           fi
+          echo "TAG=$TAG" >> $GITHUB_ENV
 
       - name: Build and Push Docker Image
         run: |
-          docker build . --tag ghcr.io/upayanmazumder/upayan.dev:${{ env.TAG }} --build-arg NODE_ENV=production
+          docker build . \
+            --tag ghcr.io/upayanmazumder/upayan.dev:${{ env.TAG }} \
+            --build-arg NODE_ENV=production
           docker push ghcr.io/upayanmazumder/upayan.dev:${{ env.TAG }}

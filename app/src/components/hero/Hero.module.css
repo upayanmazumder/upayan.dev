@@ -38,6 +38,7 @@
 .greet {
     margin: 0;
     color: #9c9c9c;
+    font-size: 1.1em;
 }
 
 .name {
@@ -45,14 +46,16 @@
     color: white;
     line-height: 1;
     height: auto;
+    font-size: 3.5rem;
+    margin-bottom: -10px;
 }
-
 
 .role {
     margin: 10px 0;
     color: #c0c0c0;
     line-height: 1;
     height: auto;
+    font-size: 1.35em;
 }
 
 .description {

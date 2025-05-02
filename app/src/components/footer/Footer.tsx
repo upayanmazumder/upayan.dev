@@ -41,9 +41,7 @@ const Footer: React.FC = () => {
           <GitHubSponsor />
         </li>
         <li>
-          <button title="Change theme">
-            <ThemeSelector />
-          </button>
+          <ThemeSelector />
         </li>
         <li>
           <button

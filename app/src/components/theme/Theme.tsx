@@ -73,7 +73,7 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
-const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [selectedTheme, setSelectedTheme] = useState<string>(() => {
     if (typeof window !== "undefined") {
       return localStorage.getItem("theme") || "space";
@@ -105,7 +105,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   );
 };
 
-const ThemeSelector: React.FC = () => {
+export const ThemeSelector: React.FC = () => {
   const { selectedTheme, setSelectedTheme } = useContext(ThemeContext)!;
   const selectorRef = useRef<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -131,7 +131,7 @@ const ThemeSelector: React.FC = () => {
         aria-label="Select Theme"
         aria-expanded={isOpen}
       >
-        <FaPalette size={15} />
+        <FaPalette size={18} />
       </button>
       {isOpen && (
         <div className={styles.selector}>
@@ -181,5 +181,3 @@ const ThemeSelector: React.FC = () => {
     </div>
   );
 };
-
-export { ThemeProvider, ThemeSelector };

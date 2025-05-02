@@ -45,10 +45,3 @@
 .dirMapContainer li button svg {
     margin-right: 15px;
 }
-
-/* Adjust button styles for smaller screens */
-@media (max-width: 768px) {
-    .dirMapContainer li button {
-        font-size: 0.85em;
-    }
-}

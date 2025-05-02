@@ -4,7 +4,6 @@
 }
 
 .title {
-    font-size: 2em;
     font-weight: bold;
     margin-bottom: 40px;
     color: #fff;
@@ -26,14 +25,12 @@
 }
 
 .name {
-    font-size: 1.4rem;
     font-weight: 600;
     margin-bottom: 10px;
     color: #ffffff;
 }
 
 .description {
-    font-size: 1rem;
     color: #d5d5d5;
     margin-bottom: 15px;
     padding: 0 10px;
@@ -46,7 +43,6 @@
 }
 
 .link {
-    font-size: 1.2rem;
     color: #0056b3;
     transition: color 0.3s ease;
 }
@@ -64,27 +60,5 @@
     .image {
         width: 80px;
         height: 80px;
-    }
-
-    .name {
-        font-size: 1.5rem;
-    }
-
-    .description {
-        font-size: 0.9rem;
-    }
-}
-
-@media (max-width: 600px) {
-    .title {
-        font-size: 2rem;
-    }
-
-    .name {
-        font-size: 1.2rem;
-    }
-
-    .description {
-        font-size: 0.95rem;
     }
 }

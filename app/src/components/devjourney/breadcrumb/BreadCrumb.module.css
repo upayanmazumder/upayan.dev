@@ -1,7 +1,6 @@
 .breadcrumbContainer {
     display: flex;
     justify-content: flex-start;
-    font-size: 0.8em;
     vertical-align: middle;
     align-items: center;
     gap: 0.5em;
@@ -14,7 +13,6 @@
 
 @media (max-width: 768px) {
     .breadcrumbContainer {
-        font-size: 0.5em;
         gap: 0.3em;
         flex-wrap: wrap;
     }
@@ -31,7 +29,6 @@
 
 @media (max-width: 768px) {
     .breadcrumbContainer button {
-        font-size: 0.7rem;
         padding: 0;
     }
 }

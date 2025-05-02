@@ -38,12 +38,10 @@
 .greet {
     margin: 0;
     color: #9c9c9c;
-    font-size: clamp(16px, 2vw, 20px);
 }
 
 .name {
     margin: 0;
-    font-size: clamp(40px, 5vw, 70px);
     color: white;
     line-height: 1;
     height: auto;
@@ -53,14 +51,12 @@
 .role {
     margin: 10px 0;
     color: #c0c0c0;
-    font-size: clamp(18px, 3vw, 30px);
     line-height: 1;
     height: auto;
 }
 
 .description {
     margin: 10px 0;
-    font-size: clamp(12px, 2vw, 18px);
     color: #c4c4c4;
 }
 
@@ -78,7 +74,7 @@
     background-color: #cfcfcf2a;
     color: white;
     padding: 0.6rem 1.3rem;
-    font-size: clamp(12px, 2vw, 16px);
+
     border: none;
     cursor: pointer;
 }
@@ -121,18 +117,6 @@
         padding: 0 1rem;
     }
 
-    .name {
-        font-size: clamp(30px, 5vw, 50px);
-    }
-
-    .role {
-        font-size: clamp(16px, 3vw, 24px);
-    }
-
-    .description {
-        font-size: clamp(14px, 2vw, 16px);
-    }
-
     .cta {
         justify-content: center;
     }
@@ -155,20 +139,7 @@
         max-width: 100%;
     }
 
-    .name {
-        font-size: clamp(28px, 5vw, 40px);
-    }
-
-    .role {
-        font-size: clamp(14px, 3vw, 20px);
-    }
-
-    .description {
-        font-size: clamp(12px, 2vw, 14px);
-    }
-
     .cta__button {
-        font-size: clamp(10px, 2vw, 14px);
         padding: 0.5rem 1rem;
     }
 
@@ -189,20 +160,7 @@
         margin: var(--margin-tiny) 0;
     }
 
-    .name {
-        font-size: clamp(24px, 5vw, 30px);
-    }
-
-    .role {
-        font-size: clamp(12px, 3vw, 18px);
-    }
-
-    .description {
-        font-size: clamp(10px, 2vw, 12px);
-    }
-
     .cta__button {
-        font-size: clamp(10px, 2vw, 12px);
         padding: 0.4rem 0.8rem;
     }
 

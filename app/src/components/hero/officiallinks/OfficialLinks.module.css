@@ -11,7 +11,6 @@
 
 .officialLink {
     font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 16px;
     padding: 0.5rem 1rem;
     transition: all 0.3s ease;
     min-width: 100px;
@@ -28,7 +27,6 @@
 
 @media (max-width: 768px) {
     .officialLink {
-        font-size: 0.95rem;
         padding: 0.5rem 1rem;
         min-width: 100px;
     }
@@ -40,7 +38,6 @@
     }
 
     .officialLink {
-        font-size: 0.9rem;
         padding: 0.4rem 0.8rem;
         min-width: 90px;
         width: 50%;

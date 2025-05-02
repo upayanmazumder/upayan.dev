@@ -4,7 +4,6 @@
     margin: var(--margin-medium) var(--margin-medium);
     padding: calc(2 * var(--padding-medium)) var(--padding-medium);
     border-radius: var(--border-radius-large);
-    font-size: 0.8em;
 }
 
 @media (max-width: 768px) {

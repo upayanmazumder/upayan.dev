@@ -1,19 +1,16 @@
 .projectsSection {
   padding: 5rem 2rem;
   text-align: center;
-  font-size: 1rem;
 }
 
 .heading {
   margin-bottom: var(--margin-medium);
   font-weight: 700;
-  font-size: 2em;
 }
 
 .projectsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  /* Adjusted for smaller screens */
   gap: 2rem;
   justify-items: center;
   padding: 0 1rem;
@@ -28,14 +25,12 @@
 }
 
 .projectTitle {
-  font-size: var(--font-size-large);
   font-weight: var(--font-weight-bold);
   margin-bottom: 0.75rem;
   color: #60a5fa;
 }
 
 .projectDescription {
-  font-size: 1rem;
   color: #cbd5e1;
   margin-bottom: 1.25rem;
   line-height: 1.6;
@@ -56,7 +51,6 @@
   border: 1px solid #3b82f6;
   padding: 0.4rem 0.9rem;
   border-radius: 8px;
-  font-size: 0.9rem;
   text-decoration: none;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -66,49 +60,30 @@
   background-color: #5f5f5f3a;
 }
 
-/* Responsive styles */
 @media (max-width: 768px) {
   .projectsSection {
     padding: 3rem 1rem;
   }
 
-  .heading {
-    font-size: 1.8em;
-  }
-
   .projectsGrid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    /* Smaller column width for narrow screens */
     gap: 1.5rem;
-  }
-
-  .projectDescription {
-    font-size: 0.9rem;
   }
 
   .linkButton,
   .packageButton {
-    font-size: 0.8rem;
     padding: 0.3rem 0.7rem;
   }
 }
 
 @media (max-width: 480px) {
-  .heading {
-    font-size: 1.5em;
-  }
 
   .projectsGrid {
     grid-template-columns: 1fr;
-    /* Single column for very small screens */
   }
 
   .projectIcon {
     width: 48px;
     height: 48px;
-  }
-
-  .projectDescription {
-    font-size: 0.85rem;
   }
 }

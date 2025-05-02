@@ -8,6 +8,11 @@
   src: url('../../public/fonts/RedHatMono-VariableFont_wght.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Montserrat-Regular';
+  src: url('../../public/fonts/Montserrat-Regular.ttf') format('truetype');
+}
+
 :root {
   --header-background-color: var(--background-color);
   --footer-background-color: #121212bd;
@@ -68,7 +73,7 @@ body {
   overflow-x: hidden;
   background: var(--background-color);
   color: var(--color);
-  font-family: 'RedHatDisplay', system-ui, sans-serif;
+  font-family: 'Montserrat-Regular', 'RedHatDisplay', system-ui, sans-serif;
   font-size: var(--font-size-medium);
   font-weight: var(--font-weight-normal);
   line-height: 1.6;

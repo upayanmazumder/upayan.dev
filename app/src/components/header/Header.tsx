@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import styles from "./Header.module.css";
 import sidebarData from "../../data/navigation.json";
@@ -23,10 +24,12 @@ const Header = () => {
         href="/"
         onClick={handleClick("/")}
       >
-        <img
+        <Image
           src="/upayan-transparent.webp"
           alt="Logo"
           className={styles.logo}
+          width={63}
+          height={63}
         />
         <h1 className={styles.title}>Upayan</h1>
       </Link>

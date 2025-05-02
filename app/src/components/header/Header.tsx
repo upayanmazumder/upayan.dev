@@ -1,14 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import styles from "./Header.module.css";
 import sidebarData from "../../data/navigation.json";
 import * as Icons from "react-icons/bs";
 
 const Header = () => {
   const pathname = usePathname();
-  const router = useRouter();
 
   const handleClick = (href: string) => (e: React.MouseEvent) => {
     if (href === "/" && pathname === "/") {

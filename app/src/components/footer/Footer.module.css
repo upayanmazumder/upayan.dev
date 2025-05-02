@@ -21,6 +21,7 @@
     transition: transform 0.2s ease, color 0.2s ease;
     display: flex;
     padding: var(--padding-small);
+    border-radius: 50%;
 }
 
 .footerLinks a:hover {

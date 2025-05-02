@@ -3,7 +3,6 @@ import "./globals.css";
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import Footer from "../components/footer/Footer";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "../components/theme/Theme";
 import ServiceWorkerRegister from "../components/serviceworkerregister/ServiceWorkerRegister";
 
@@ -42,7 +41,6 @@ export default function RootLayout({
           {children}
           <ServiceWorkerRegister />
           <Footer />
-          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>

@@ -10,7 +10,6 @@
     "lintgg": "eslint --config eslint.config.ts ."
   },
   "dependencies": {
-    "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.8.2",
     "dotenv": "^16.5.0",
     "framer-motion": "^12.9.2",

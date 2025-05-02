@@ -13,6 +13,11 @@
   src: url('../../public/fonts/Montserrat-Regular.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Montserrat-Bold';
+  src: url('../../public/fonts/Montserrat-Bold.ttf') format('truetype');
+}
+
 :root {
   --header-background-color: var(--background-color);
   --footer-background-color: #121212bd;
@@ -79,6 +84,7 @@ body {
   line-height: 1.6;
   background-attachment: fixed;
   background-size: cover;
+  scroll-padding-top: 100px;
 }
 
 h1 {
@@ -130,6 +136,28 @@ main {
     min-height: 80vh;
     justify-content: center;
   }
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--margin-medium);
+  min-height: 100vh;
+}
+
+.section-link {
+  color: lightgray;
+  align-self: center;
+}
+
+.section-link:hover {
+  color: whitesmoke
+}
+
+.section-title {
+  font-size: var(--font-size-huge);
+  font-weight: var(--font-weight-bold);
+  font-family: 'Montserrat-Bold';
 }
 
 .page-header {

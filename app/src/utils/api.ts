@@ -1,7 +1,10 @@
-const isDevelopment = process.env.NEXT_PUBLIC_ENV === 'development';
+const env = process.env.NEXT_PUBLIC_ENV || 'production';
 
-const API = isDevelopment
+const API = env === 'development'
     ? 'http://localhost:4000'
-    : 'https://api.upayan.dev';
+    : env === 'staging'
+        ? 'https://api.staging.upayan.dev'
+        : 'https://api.upayan.dev';
 
+console.log('API URL:', API);
 export default API;

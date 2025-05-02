@@ -83,6 +83,7 @@
     border-radius: 12px;
     overflow: hidden;
     text-align: center;
+    font-size: .75em;
 }
 
 .certificateCard:hover {
@@ -104,6 +105,7 @@
     color: #a0cfff;
     font-weight: 600;
     margin-bottom: 10px;
+    font-size: 1.1rem;
 }
 
 .tagsContainer {

@@ -7,12 +7,11 @@
     background-color: black;
     color: rgba(255, 255, 255, 0.709);
     gap: 10px;
-    border: 1px rgba(255, 255, 255, 0.435) solid;
     border-radius: var(--border-radius-small);
 }
 
 .githubButtonContainer button:hover {
-    box-shadow: 0 0 4px 8px rgba(250, 250, 250, 0.024);
+    box-shadow: 0 0 6px 8px rgba(178, 178, 178, 0.05);
 }
 
 @media (max-width: 768px) {

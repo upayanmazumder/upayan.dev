@@ -292,17 +292,23 @@ blockquote {
 
 ::-webkit-scrollbar {
   width: 8px;
+  background: linear-gradient(to bottom,
+      rgba(128, 128, 128, 0.1),
+      rgba(128, 128, 128, 0.15)),
+    var(--background-color);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: var(--border-radius-small);
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: var(--border-radius-small, 6px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(128, 128, 128, 0.05);
 }

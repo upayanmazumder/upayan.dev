@@ -77,6 +77,7 @@ const Certificates: React.FC = () => {
                   className={certificateStyles.certificateImage}
                   width={500}
                   height={300}
+                  loading="lazy"
                 />
               </a>
               <div className={certificateStyles.cardContent}>

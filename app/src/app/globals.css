@@ -292,6 +292,7 @@ blockquote {
 
 ::-webkit-scrollbar {
   width: 8px;
+  background: var(--background-color);
 }
 
 ::-webkit-scrollbar-thumb {

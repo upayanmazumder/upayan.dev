@@ -6,5 +6,4 @@ const API = env === 'development'
         ? 'https://api.staging.upayan.dev'
         : 'https://api.upayan.dev';
 
-console.log('API URL:', API);
 export default API;

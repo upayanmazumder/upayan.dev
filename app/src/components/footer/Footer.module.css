@@ -20,6 +20,8 @@
 .footerLinks a {
     color: inherit;
     transition: transform 0.2s ease, color 0.2s ease;
+    display: flex;
+    padding: var(--padding-small);
 }
 
 .footerLinks a:hover {
@@ -50,6 +52,7 @@
 
 .footer button:hover {
     transform: scale(1.1);
+    box-shadow: none;
 }
 
 @media (min-width: 640px) {

@@ -3,7 +3,7 @@ import githubSponsorStyles from "./GithubSponsor.module.css";
 
 const GitHubSponsor: React.FC = () => {
   return (
-    <div>
+    <div className={githubSponsorStyles.githubSponsorContainer}>
       <iframe
         src="https://github.com/sponsors/upayanmazumder/button"
         title="Sponsor upayanmazumder"

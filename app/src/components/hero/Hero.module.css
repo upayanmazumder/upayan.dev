@@ -136,10 +136,20 @@
     .cta {
         justify-content: center;
     }
+
+    .right {
+        flex-direction: row;
+        padding: 0 var(--padding-medium);
+        gap: var(--margin-medium);
+    }
+
+    .image {
+        width: 20%;
+        margin-bottom: 0;
+    }
 }
 
 @media (max-width: 768px) {
-
     .hero {
         padding: 0;
         max-width: 100%;
@@ -167,6 +177,13 @@
     }
 }
 
+@media (max-width: 576px) {
+    .cta {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
 @media (max-width: 480px) {
     .branding {
         margin: var(--margin-tiny) 0;
@@ -190,7 +207,12 @@
     }
 
     .image {
-        width: 20%;
+        width: 50px;
+    }
+
+    .right {
+        flex-direction: column;
+        padding: 0 var(--padding-small);
     }
 }
 

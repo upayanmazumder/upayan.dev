@@ -12,3 +12,24 @@
 .line {
     white-space: nowrap;
 }
+
+@media (max-width: 1024px) {
+    .container {
+        padding: 0;
+        margin-bottom: -28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        max-width: 90vw;
+    }
+
+    .line {
+        white-space: normal;
+        word-break: break-word;
+
+        max-width: 100%;
+    }
+
+}

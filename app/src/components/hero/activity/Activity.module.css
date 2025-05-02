@@ -59,6 +59,12 @@
     color: #fff;
 }
 
+@media (max-width: 1024px) {
+    .activitiesBelow {
+        margin: 0;
+    }
+}
+
 @media (max-width: 768px) {
     .activitiesBelow {
         max-width: 100%;

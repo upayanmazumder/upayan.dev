@@ -1,13 +1,5 @@
 .container {
-    padding: 5rem 2rem;
     text-align: center;
-}
-
-.title {
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 40px;
-    color: #fff;
 }
 
 .grid {
@@ -20,20 +12,17 @@
 .image {
     width: 90px;
     height: 90px;
-    border-radius: 50%;
     object-fit: cover;
     margin-bottom: 20px;
 }
 
 .name {
-    font-size: 1.4rem;
     font-weight: 600;
     margin-bottom: 10px;
     color: #ffffff;
 }
 
 .description {
-    font-size: 1rem;
     color: #d5d5d5;
     margin-bottom: 15px;
     padding: 0 10px;
@@ -43,16 +32,16 @@
     display: flex;
     justify-content: center;
     gap: 15px;
+    font-size: var(--font-size-large);
 }
 
 .link {
-    font-size: 1.2rem;
-    color: #0056b3;
+    color: #849ab2;
     transition: color 0.3s ease;
 }
 
 .link:hover {
-    color: #007bff;
+    color: #abb7c4;
 }
 
 @media (max-width: 1400px) {
@@ -64,27 +53,5 @@
     .image {
         width: 80px;
         height: 80px;
-    }
-
-    .name {
-        font-size: 1.5rem;
-    }
-
-    .description {
-        font-size: 0.9rem;
-    }
-}
-
-@media (max-width: 600px) {
-    .title {
-        font-size: 2rem;
-    }
-
-    .name {
-        font-size: 1.2rem;
-    }
-
-    .description {
-        font-size: 0.95rem;
     }
 }

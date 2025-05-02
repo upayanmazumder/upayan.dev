@@ -10,6 +10,7 @@
     max-width: 420px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     align-self: center;
+    font-size: 0.9em;
 }
 
 .card:hover {
@@ -19,6 +20,7 @@
 .title {
     margin-bottom: 8px;
     text-align: center;
+    font-size: 1.4em;
 }
 
 @media (max-width: 768px) {
@@ -26,19 +28,11 @@
         padding: 1.5rem;
         max-width: 100%;
     }
-
-    .title {
-        font-size: 1.25rem;
-    }
 }
 
 @media (max-width: 480px) {
     .card {
         padding: 1rem;
         border-radius: var(--border-radius-small);
-    }
-
-    .title {
-        font-size: 1rem;
     }
 }

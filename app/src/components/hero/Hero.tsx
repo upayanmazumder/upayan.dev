@@ -92,7 +92,7 @@ export default function Hero() {
             className={heroStyles.cta}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
+            transition={{ duration: 1, delay: 2 }}
           >
             <Resume />
             <Button text="Clubs" to="#clubs" />

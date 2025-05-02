@@ -7,8 +7,18 @@ export default function Home() {
   return (
     <main style={{ marginTop: "0px" }}>
       <Hero />
-      <Clubs />
-      <Projects />
+      <section id="clubs">
+        <a className="section-link" href="#clubs">
+          <h2 className="section-title">Clubs</h2>
+        </a>
+        <Clubs />
+      </section>
+      <section id="projects">
+        <a className="section-link" href="#projects">
+          <h2 className="section-title">Projects</h2>
+        </a>
+        <Projects />
+      </section>
     </main>
   );
 }

@@ -2,7 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--margin-small);
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     padding: var(--padding-tiny) 0;
     margin: var(--margin-medium) 0;
@@ -10,8 +10,7 @@
 }
 
 .officialLink {
-    font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 16px;
+    font-family: "RedHatDisplay";
     padding: 0.5rem 1rem;
     transition: all 0.3s ease;
     min-width: 100px;
@@ -19,6 +18,7 @@
     transition: transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    font-size: 0.8em;
 }
 
 .officialLink:hover {
@@ -28,7 +28,6 @@
 
 @media (max-width: 768px) {
     .officialLink {
-        font-size: 0.95rem;
         padding: 0.5rem 1rem;
         min-width: 100px;
     }
@@ -40,7 +39,6 @@
     }
 
     .officialLink {
-        font-size: 0.9rem;
         padding: 0.4rem 0.8rem;
         min-width: 90px;
         width: 50%;

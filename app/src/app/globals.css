@@ -76,7 +76,6 @@ body {
   padding: 0;
   scroll-behavior: smooth;
   overflow-x: hidden;
-
   background: var(--background-color, rgb(15, 15, 15));
   color: var(--color);
   font-family: 'Montserrat-Regular', 'RedHatDisplay', system-ui, sans-serif;
@@ -86,6 +85,10 @@ body {
   background-attachment: fixed;
   background-size: cover;
   scroll-padding-top: 100px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 h1 {

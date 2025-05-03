@@ -152,6 +152,10 @@
         max-width: 100%;
     }
 
+    .cta {
+        margin-top: var(--margin-small);
+    }
+
     .cta__button {
         padding: 0.5rem 1rem;
     }

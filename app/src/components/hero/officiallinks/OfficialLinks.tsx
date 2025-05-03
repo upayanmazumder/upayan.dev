@@ -40,7 +40,7 @@ export default function OfficialLinks() {
       variants={containerVariants}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1.5, delay: 3 }}
+      transition={{ duration: 1.5, delay: 1.3 }}
     >
       {filteredLinks.map((link, index) => (
         <motion.button

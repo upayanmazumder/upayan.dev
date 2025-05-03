@@ -76,7 +76,8 @@ body {
   padding: 0;
   scroll-behavior: smooth;
   overflow-x: hidden;
-  background: var(--background-color);
+
+  background: var(--background-color, rgb(15, 15, 15));
   color: var(--color);
   font-family: 'Montserrat-Regular', 'RedHatDisplay', system-ui, sans-serif;
   font-size: var(--font-size-medium);

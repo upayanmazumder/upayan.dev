@@ -16,7 +16,6 @@
     margin: 0 0 0 auto;
     display: flex;
     flex-direction: row;
-    gap: 15px;
 }
 
 .filterContainer .filterSelect {
@@ -37,6 +36,13 @@
     gap: 10px;
     font-weight: 600;
     color: #a0cfff;
+    background-color: transparent;
+}
+
+.filterSummary:hover {
+    cursor: default;
+    box-shadow: none;
+    background-color: transparent;
 }
 
 .filterButtons {
@@ -66,6 +72,10 @@
     background: linear-gradient(145deg, #0056b3, #007bff);
     border-color: #007bff;
     box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+}
+
+.filterOption {
+    background-color: #222;
 }
 
 .gridContainer {

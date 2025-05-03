@@ -68,6 +68,7 @@
 * {
   box-sizing: border-box;
   transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -204,6 +205,8 @@ button {
   background-color: rgb(36, 36, 36);
   font-size: var(--font-size-medium);
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 button:hover {

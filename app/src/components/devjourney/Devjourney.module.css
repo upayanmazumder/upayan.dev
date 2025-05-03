@@ -2,14 +2,15 @@
     -webkit-backdrop-filter: blur(1px);
     backdrop-filter: blur(1px);
     margin: var(--margin-medium) var(--margin-medium);
-    padding: 0 var(--padding-medium);
-    border-radius: var(--border-radius-large);
+    padding: var(--padding-large) var(--padding-medium);
+    border-radius: var(--border-radius-medium);
+    background-color: rgba(3, 3, 3, 0.473);
 }
 
 @media (max-width: 768px) {
     .devjourneyContainer {
-        margin: auto;
-        padding: var(--padding-small);
+        margin: var(--margin-medium) 0;
+        padding: var(--padding-medium) var(--padding-small) var(--padding-small);
         min-width: 75vw;
         max-width: 97vw;
         width: fill-available;

@@ -125,8 +125,7 @@ p {
 }
 
 main {
-  margin: var(--screen-vertical-margin) var(--screen-horizontal-margin);
-  margin-top: 4.5rem;
+  margin: 4.5rem var(--screen-horizontal-margin) var(--margin-huge);
   padding: var(--padding-medium);
   min-height: 70vh;
   display: flex;

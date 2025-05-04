@@ -8,7 +8,6 @@ import Card from "../ui/card/Card";
 const Projects = () => {
   return (
     <section id="projects" className={styles.projectsSection}>
-      <h1 className={styles.heading}>Projects</h1>
       <div className={styles.projectsGrid}>
         {projectsData.map((project, index) => (
           <Card

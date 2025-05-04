@@ -3,31 +3,16 @@
     padding: var(--padding-medium);
     border-radius: var(--border-radius-medium);
     background-color: rgb(0 0 0 / 70%);
-    font-size: 18px;
 }
 
 @media (max-width: 768px) {
     .contentContainer {
         margin: var(--margin-small);
         padding: var(--padding-small);
-        font-size: 1em;
     }
 }
 
-.contentContainer h1,
-.contentContainer h2,
-.contentContainer h3,
-.contentContainer h4,
-.contentContainer h5,
-.contentContainer h6,
-.contentContainer p,
-.contentContainer ul,
-.contentContainer a {
-    font-size: 0.9em;
-}
-
 .contentContainer .fileName {
-    font-size: 0.8em;
     color: #aeaeae;
     margin-bottom: 10px;
 }
@@ -50,7 +35,6 @@
     max-height: 60dvh;
     overflow-y: scroll;
     background: #70707014;
-    font-size: 1rem;
 }
 
 /* Webkit (Chrome, Edge, Safari) */

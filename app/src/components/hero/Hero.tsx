@@ -81,7 +81,7 @@ export default function Hero() {
             variants={{
               hidden: {},
               visible: {
-                transition: { staggerChildren: 0.3, delayChildren: 1.5 },
+                transition: { staggerChildren: 0.3, delayChildren: 1 },
               },
             }}
           >
@@ -92,7 +92,7 @@ export default function Hero() {
             className={heroStyles.cta}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
+            transition={{ duration: 1, delay: 1.1 }}
           >
             <Resume />
             <Button text="Clubs" to="#clubs" />
@@ -113,7 +113,7 @@ export default function Hero() {
             alt="Upayan Mazumder"
             className={heroStyles.image}
             whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, delay: 2 }}
           />
           <Activity />
         </motion.div>

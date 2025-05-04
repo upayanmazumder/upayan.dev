@@ -54,7 +54,11 @@ const Certificates: React.FC = () => {
           >
             <option value="">All</option>
             {validTags.map((tag, index) => (
-              <option key={index} value={tag}>
+              <option
+                key={index}
+                value={tag}
+                className={certificateStyles.filterOption}
+              >
                 {tag}
               </option>
             ))}

@@ -17,7 +17,6 @@
   cursor: pointer;
   padding: 10px;
   border-radius: 50%;
-  font-size: 1.25rem;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -52,7 +51,6 @@
 
 .label {
   color: white;
-  font-size: 0.85rem;
   margin-bottom: 8px;
 }
 
@@ -71,7 +69,6 @@
   padding: 10px;
   border-radius: 8px;
   text-align: center;
-  font-size: 0.7rem !important;
   cursor: pointer;
   transition: background-color 0.2s ease, opacity 0.2s ease;
 }

@@ -16,12 +16,10 @@
     margin: 0 0 0 auto;
     display: flex;
     flex-direction: row;
-    gap: 15px;
 }
 
 .filterContainer .filterSelect {
     padding: 8px 12px;
-    font-size: 0.9em;
     color: #f0f0f0;
     background: #2222228d;
     border: 1px solid #444;
@@ -36,9 +34,15 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    font-size: 1.1rem;
     font-weight: 600;
     color: #a0cfff;
+    background-color: transparent;
+}
+
+.filterSummary:hover {
+    cursor: default;
+    box-shadow: none;
+    background-color: transparent;
 }
 
 .filterButtons {
@@ -51,7 +55,6 @@
 
 .filterButton {
     padding: 8px 12px;
-    font-size: 0.9em;
     color: #f0f0f0;
     background: #222;
     border: 1px solid #444;
@@ -71,6 +74,10 @@
     box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
 }
 
+.filterOption {
+    background-color: #222;
+}
+
 .gridContainer {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -86,6 +93,7 @@
     border-radius: 12px;
     overflow: hidden;
     text-align: center;
+    font-size: .75em;
 }
 
 .certificateCard:hover {
@@ -105,9 +113,9 @@
 
 .cardTitle {
     color: #a0cfff;
-    font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 10px;
+    font-size: 1.1rem;
 }
 
 .tagsContainer {
@@ -122,7 +130,6 @@
     color: #f0f0f0;
     padding: 4px 8px;
     border-radius: 6px;
-    font-size: 0.75em;
     text-transform: uppercase;
 }
 

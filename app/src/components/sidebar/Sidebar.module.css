@@ -34,7 +34,6 @@
     gap: 1.25rem;
     color: antiquewhite;
     text-decoration: none;
-    font-size: 1rem;
     padding: 0.8rem 1.2rem;
     border-radius: 12px;
     transition: background 0.3s ease;
@@ -45,7 +44,6 @@
 }
 
 .icon {
-    font-size: 1.4rem;
     flex-shrink: 0;
 }
 
@@ -58,11 +56,11 @@
     position: fixed;
     top: 1.5rem;
     left: 1.5rem;
-    font-size: 2rem;
     color: white;
     z-index: 1100;
     display: block;
     cursor: pointer;
+    font-size: var(--font-size-huge);
 }
 
 .overlay {

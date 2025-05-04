@@ -7,6 +7,13 @@ import styles from "./Header.module.css";
 import sidebarData from "../../data/navigation.json";
 import * as Icons from "react-icons/bs";
 
+type IconName = keyof typeof Icons;
+interface SidebarItem {
+  label: string;
+  href: string;
+  icon: IconName;
+}
+
 const Header = () => {
   const pathname = usePathname();
 
@@ -20,8 +27,8 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <Link
-        className={`${styles.branding} ${styles.left}`}
         href="/"
+        className={`${styles.branding} ${styles.left}`}
         onClick={handleClick("/")}
       >
         <Image
@@ -33,22 +40,30 @@ const Header = () => {
         />
         <h1 className={styles.title}>Upayan</h1>
       </Link>
-      <div className={styles.right}>
-        {sidebarData.map((item, index) => {
-          const Icon = Icons[item.icon as keyof typeof Icons];
+
+      <nav
+        className={styles.right}
+        role="navigation"
+        aria-label="Main navigation"
+      >
+        {(sidebarData as SidebarItem[]).map((item, index) => {
+          const Icon = Icons[item.icon];
+          const isActive = pathname === item.href;
+
           return (
             <Link
               key={index}
               href={item.href}
               onClick={handleClick(item.href)}
-              className={styles.link}
+              className={`${styles.link} ${isActive ? styles.active : ""}`}
+              aria-current={isActive ? "page" : undefined}
             >
               <Icon className={styles.icon} />
               <span className={styles.label}>{item.label}</span>
             </Link>
           );
         })}
-      </div>
+      </nav>
     </header>
   );
 };

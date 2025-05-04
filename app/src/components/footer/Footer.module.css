@@ -7,6 +7,7 @@
     color: var(--footer-text, #ffffff);
     gap: 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    bottom: 0;
 }
 
 .footerLinks {
@@ -14,7 +15,6 @@
     flex-wrap: wrap;
     gap: 1.25rem;
     justify-content: center;
-    font-size: 1.5rem;
 }
 
 .footerLinks a {
@@ -22,6 +22,7 @@
     transition: transform 0.2s ease, color 0.2s ease;
     display: flex;
     padding: var(--padding-small);
+    border-radius: 50%;
 }
 
 .footerLinks a:hover {
@@ -45,7 +46,6 @@
     border: none;
     color: inherit;
     cursor: pointer;
-    font-size: 1.25rem;
     padding: 0.5rem;
     transition: color 0.2s ease, transform 0.2s ease;
 }

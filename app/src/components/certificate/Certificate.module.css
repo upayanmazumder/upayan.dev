@@ -6,7 +6,6 @@
     min-height: max-content;
     color: #f0f0f0;
     border-radius: var(--border-radius-medium);
-    font-size: 1rem;
 }
 
 .certificateCard {
@@ -41,10 +40,10 @@
 
 .cardContent {
     padding: 20px;
+    font-size: .8em;
 }
 
 .certificateTitle {
-    font-size: var(--font-size-large);
     font-weight: 700;
     color: #a0cfff;
     margin-bottom: 10px;
@@ -64,27 +63,18 @@
     color: #f0f0f0;
     padding: 6px 12px;
     border-radius: var(--border-radius-tiny);
-    font-size: 0.8em;
     text-transform: uppercase;
 }
 
 @media (max-width: 768px) {
-    .certificateTitle {
-        font-size: 1.3em;
-    }
-
     .certificateCard {
         max-width: 90%;
     }
 }
 
 @media (max-width: 480px) {
-    .certificateTitle {
-        font-size: 1.1em;
-    }
-
     .certificateTag {
         padding: 4px 8px;
-        font-size: 0.7em;
+
     }
 }

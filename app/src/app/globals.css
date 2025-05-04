@@ -8,6 +8,16 @@
   src: url('../../public/fonts/RedHatMono-VariableFont_wght.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Montserrat-Regular';
+  src: url('../../public/fonts/Montserrat-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Montserrat-Bold';
+  src: url('../../public/fonts/Montserrat-Bold.ttf') format('truetype');
+}
+
 :root {
   --header-background-color: var(--background-color);
   --footer-background-color: #121212bd;
@@ -58,6 +68,7 @@
 * {
   box-sizing: border-box;
   transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -66,14 +77,19 @@ body {
   padding: 0;
   scroll-behavior: smooth;
   overflow-x: hidden;
-  background: var(--background-color);
+  background: var(--background-color, rgb(15, 15, 15));
   color: var(--color);
-  font-family: 'RedHatDisplay', system-ui, sans-serif;
+  font-family: 'Montserrat-Regular', 'RedHatDisplay', system-ui, sans-serif;
   font-size: var(--font-size-medium);
   font-weight: var(--font-weight-normal);
   line-height: 1.6;
   background-attachment: fixed;
   background-size: cover;
+  scroll-padding-top: 100px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 h1 {
@@ -109,8 +125,7 @@ p {
 }
 
 main {
-  margin: var(--screen-vertical-margin) var(--screen-horizontal-margin);
-  margin-top: 4.5rem;
+  margin: 4.5rem var(--screen-horizontal-margin) var(--margin-huge);
   padding: var(--padding-medium);
   min-height: 70vh;
   display: flex;
@@ -121,10 +136,32 @@ main {
 @media (max-width: 768px) {
   main {
     margin: var(--margin-large) 0;
-    padding: var(--padding-small);
+    padding: var(--padding-small) var(--padding-medium);
     min-height: 80vh;
     justify-content: center;
   }
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--margin-medium);
+  min-height: 100vh;
+}
+
+.section-link {
+  color: lightgray;
+  align-self: center;
+}
+
+.section-link:hover {
+  color: whitesmoke
+}
+
+.section-title {
+  font-size: var(--font-size-huge);
+  font-weight: var(--font-weight-bold);
+  font-family: 'Montserrat-Bold';
 }
 
 .page-header {
@@ -167,6 +204,8 @@ button {
   background-color: rgb(36, 36, 36);
   font-size: var(--font-size-medium);
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 button:hover {

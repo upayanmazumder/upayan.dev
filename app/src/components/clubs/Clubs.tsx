@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { FaLink, FaLinkedin } from "react-icons/fa";
+import { FaExternalLinkAlt, FaLinkedin } from "react-icons/fa";
 import clubs from "../../data/clubs.json";
 import styles from "./Clubs.module.css";
 import Card from "../ui/card/Card";
@@ -22,16 +22,15 @@ const ClubShowcase: React.FC = () => {
 
   return (
     <div className={styles.container} id="clubs">
-      <h1 className={styles.title}>Clubs</h1>
       <div className={styles.grid}>
         {clubs.map((club, index) => (
           <Card
             key={index}
             className={styles.card}
+            title={club.name}
             content={
               <>
                 <img src={club.icon} alt={club.name} className={styles.image} />
-                <h2 className={styles.name}>{club.name}</h2>
                 <p className={styles.description}>{club.description}</p>
                 <div className={styles.links}>
                   {club.links.map((link, i) => (
@@ -42,13 +41,16 @@ const ClubShowcase: React.FC = () => {
                       rel="noopener noreferrer"
                       className={styles.link}
                     >
-                      {isLinkedIn(link.url) ? <FaLinkedin /> : <FaLink />}
+                      {isLinkedIn(link.url) ? (
+                        <FaLinkedin />
+                      ) : (
+                        <FaExternalLinkAlt />
+                      )}
                     </a>
                   ))}
                 </div>
               </>
             }
-            title={""}
           />
         ))}
       </div>

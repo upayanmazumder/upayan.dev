@@ -38,8 +38,9 @@ export default function OfficialLinks() {
     <motion.div
       className={officialLinksStyles.officialLinks}
       variants={containerVariants}
-      initial="hidden"
-      animate="show"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.5, delay: 1.3 }}
     >
       {filteredLinks.map((link, index) => (
         <motion.button

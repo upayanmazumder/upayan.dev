@@ -58,12 +58,13 @@
 
 @media (max-width: 768px) {
   .projectsSection {
-    padding: 3rem 1rem;
+    padding: 0;
   }
 
   .projectsGrid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.5rem;
+    padding: 0;
   }
 
   .linkButton,

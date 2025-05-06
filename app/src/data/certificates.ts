@@ -62,6 +62,17 @@ export const certificates = [
     date: "05-08-2024",
   },
   {
+    title: "Introduction to Docker Containers",
+    path: "/certificates/INTRODUCTIONTODOCKERCONTAINERS_MICROSOFTLEARN_06-05-2025.avif",
+    tags: [
+      "containers",
+      "docker",
+      "microsoft learn"
+    ],
+    issuer: "Microsoft Learn",
+    date: "19-03-2025",
+  },
+  {
     title: "Github Copilot",
     path: "/certificates/GITHUBCOPILOT_MICROSOFTLEARN_19-03-2025.avif",
     tags: [

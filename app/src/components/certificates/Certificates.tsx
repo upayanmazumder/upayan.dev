@@ -82,52 +82,50 @@ const Certificates: React.FC = () => {
 
       <div className={certificateStyles.gridContainer}>
         <AnimatePresence mode="wait">
-          {filteredCertificates.map(
-            (certificate: Certificate, index: number) => {
-              const slug = createSlug(certificate.title);
-              return (
-                <motion.div
-                  key={slug}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className={certificateStyles.certificateCard}
+          {filteredCertificates.map((certificate: Certificate) => {
+            const slug = createSlug(certificate.title);
+            return (
+              <motion.div
+                key={slug}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className={certificateStyles.certificateCard}
+              >
+                <a
+                  href={`/certificates/${slug}`}
+                  title={`View certificate: ${certificate.title}`}
                 >
-                  <a
-                    href={`/certificates/${slug}`}
-                    title={`View certificate: ${certificate.title}`}
-                  >
-                    <Image
-                      src={certificate.path}
-                      alt={`${certificate.title} certificate`}
-                      className={certificateStyles.certificateImage}
-                      width={500}
-                      height={300}
-                      loading="lazy"
-                    />
-                  </a>
-                  <div className={certificateStyles.cardContent}>
-                    <h2 className={certificateStyles.cardTitle}>
-                      {certificate.title}
-                    </h2>
-                    <div className={certificateStyles.tagsContainer}>
-                      {certificate.tags.map((tag, tagIndex) => (
-                        <motion.span
-                          key={tagIndex}
-                          className={certificateStyles.certificateTag}
-                          transition={{ type: "spring", stiffness: 300 }}
-                        >
-                          {tag}
-                        </motion.span>
-                      ))}
-                    </div>
+                  <Image
+                    src={certificate.path}
+                    alt={`${certificate.title} certificate`}
+                    className={certificateStyles.certificateImage}
+                    width={500}
+                    height={300}
+                    loading="lazy"
+                  />
+                </a>
+                <div className={certificateStyles.cardContent}>
+                  <h2 className={certificateStyles.cardTitle}>
+                    {certificate.title}
+                  </h2>
+                  <div className={certificateStyles.tagsContainer}>
+                    {certificate.tags.map((tag, tagIndex) => (
+                      <motion.span
+                        key={tagIndex}
+                        className={certificateStyles.certificateTag}
+                        transition={{ type: "spring", stiffness: 300 }}
+                      >
+                        {tag}
+                      </motion.span>
+                    ))}
                   </div>
-                </motion.div>
-              );
-            }
-          )}
+                </div>
+              </motion.div>
+            );
+          })}
         </AnimatePresence>
       </div>
     </section>

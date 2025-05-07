@@ -5,6 +5,7 @@ import Image from "next/image";
 import certificateStyles from "./Certificates.module.css";
 import { createSlug, certificates } from "../../data/certificates";
 import { BsFunnel, BsFunnelFill } from "react-icons/bs";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Certificate {
   title: string;
@@ -40,9 +41,22 @@ const Certificates: React.FC = () => {
           className={certificateStyles.filterSummary}
           onClick={() => document.getElementById("tagFilter")?.focus()}
         >
-          {selectedTag ? <BsFunnelFill /> : <BsFunnel />}
+          <motion.div
+            key={selectedTag ? "filled" : "empty"}
+            initial={{ rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: 90, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {selectedTag ? <BsFunnelFill /> : <BsFunnel />}
+          </motion.div>
         </button>
-        <div className={certificateStyles.filterDropdown}>
+        <motion.div
+          className={certificateStyles.filterDropdown}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <label htmlFor="tagFilter" className={certificateStyles.filterLabel}>
             Filter by tag
           </label>
@@ -63,45 +77,56 @@ const Certificates: React.FC = () => {
               </option>
             ))}
           </select>
-        </div>
+        </motion.div>
       </div>
 
       <div className={certificateStyles.gridContainer}>
-        {filteredCertificates.map((certificate: Certificate, index: number) => {
-          const slug = createSlug(certificate.title);
-          return (
-            <div key={index} className={certificateStyles.certificateCard}>
-              <a
-                href={`/certificates/${slug}`}
-                title={`View certificate: ${certificate.title}`}
+        <AnimatePresence mode="wait">
+          {filteredCertificates.map((certificate: Certificate) => {
+            const slug = createSlug(certificate.title);
+            return (
+              <motion.div
+                key={slug}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className={certificateStyles.certificateCard}
               >
-                <Image
-                  src={certificate.path}
-                  alt={`${certificate.title} certificate`}
-                  className={certificateStyles.certificateImage}
-                  width={500}
-                  height={300}
-                  loading="lazy"
-                />
-              </a>
-              <div className={certificateStyles.cardContent}>
-                <h2 className={certificateStyles.cardTitle}>
-                  {certificate.title}
-                </h2>
-                <div className={certificateStyles.tagsContainer}>
-                  {certificate.tags.map((tag, tagIndex) => (
-                    <span
-                      key={tagIndex}
-                      className={certificateStyles.certificateTag}
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <a
+                  href={`/certificates/${slug}`}
+                  title={`View certificate: ${certificate.title}`}
+                >
+                  <Image
+                    src={certificate.path}
+                    alt={`${certificate.title} certificate`}
+                    className={certificateStyles.certificateImage}
+                    width={500}
+                    height={300}
+                    loading="lazy"
+                  />
+                </a>
+                <div className={certificateStyles.cardContent}>
+                  <h2 className={certificateStyles.cardTitle}>
+                    {certificate.title}
+                  </h2>
+                  <div className={certificateStyles.tagsContainer}>
+                    {certificate.tags.map((tag, tagIndex) => (
+                      <motion.span
+                        key={tagIndex}
+                        className={certificateStyles.certificateTag}
+                        transition={{ type: "spring", stiffness: 300 }}
+                      >
+                        {tag}
+                      </motion.span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </div>
-          );
-        })}
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
     </section>
   );

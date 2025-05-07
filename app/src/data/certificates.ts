@@ -4,46 +4,28 @@ export const certificates = [
   {
     title: "Internal Hackathon 2025",
     path: "/certificates/INTERNALHACK_CODECHEFVIT_14-04-2025.avif",
-    tags: ["codechef", "devops", "kubernetes", "docker", "ci/cd pipelines", "hackathon", "vit"],
+    tags: ["codechef", "devops", "kubernetes", "docker", "ci/cd", "hackathon", "vit"],
     issuer: "CodeChef VIT",
     date: "14-04-2025",
   },
   {
     title: "Cookoff 9",
     path: "/certificates/COOKOFF9_CODECHEFVIT_22-11-2024.avif",
-    tags: [
-      "codechef",
-      "cookoff 9",
-      "competitive programming",
-      "coding contest",
-      "gravitas",
-      "vit",
-    ],
+    tags: ["codechef", "cookoff", "competitive programming", "contest", "gravitas", "vit"],
     issuer: "CodeChef VIT",
     date: "22-11-2024",
   },
   {
     title: "Github Foundations",
     path: "/certificates/GITHUBFOUNDATIONS_GITHUB_11-04-2025.avif",
-    tags: [
-      "foundations",
-      "github"
-    ],
+    tags: ["github", "foundations"],
     issuer: "GitHub",
     date: "11-04-2025",
   },
   {
     title: "Sensored 9",
     path: "/certificates/SENSORED9_TEC_15-12-2024.avif",
-    tags: [
-      "tec",
-      "sensored 9",
-      "iot",
-      "electronics",
-      "hackathon",
-      "gravitas",
-      "vit",
-    ],
+    tags: ["tec", "sensored", "iot", "electronics", "hackathon", "gravitas", "vit"],
     issuer: "The Electronics Club VIT",
     date: "15-12-2024",
   },
@@ -57,105 +39,79 @@ export const certificates = [
   {
     title: "Fundamentals",
     path: "/certificates/FUNDAMENTALS_PROGRAMMINGHUB_05-08-2024.avif",
-    tags: ["fundamentals", "programminghub", "basics"],
+    tags: ["programminghub", "fundamentals", "basics"],
     issuer: "Programming Hub",
     date: "05-08-2024",
   },
   {
+    title: "Introduction to Docker Containers",
+    path: "/certificates/INTRODUCTIONTODOCKERCONTAINERS_MICROSOFTLEARN_06-05-2025.avif",
+    tags: ["docker", "containers", "microsoft learn"],
+    issuer: "Microsoft Learn",
+    date: "19-03-2025",
+  },
+  {
     title: "Github Copilot",
     path: "/certificates/GITHUBCOPILOT_MICROSOFTLEARN_19-03-2025.avif",
-    tags: [
-      "copilot",
-      "github",
-      "microsoft learn"
-    ],
+    tags: ["github", "copilot", "microsoft learn"],
     issuer: "Microsoft Learn",
     date: "19-03-2025",
   },
   {
     title: "Introduction to Git",
     path: "/certificates/INTRODUCTIONTOGIT_MICROSOFTLEARN_18-03-2025.avif",
-    tags: [
-      "github",
-      "microsoft learn"
-    ],
+    tags: ["git", "microsoft learn"],
     issuer: "Microsoft Learn",
     date: "18-03-2025",
   },
   {
     title: "Introduction to Github",
     path: "/certificates/INTRODUCTIONTOGITHUB_MICROSOFTLEARN_19-03-2025.avif",
-    tags: [
-      "github",
-      "microsoft learn"
-    ],
+    tags: ["github", "microsoft learn"],
     issuer: "Microsoft Learn",
     date: "19-03-2025",
   },
   {
     title: "Introduction to Github's Products",
     path: "/certificates/INTRODUCTIONTOGITHUB'SPRODUCTS_MICROSOFTLEARN_24-04-2025.avif",
-    tags: [
-      "github",
-      "microsoft learn"
-    ],
+    tags: ["github", "microsoft learn"],
     issuer: "Microsoft Learn",
     date: "24-04-2025",
   },
   {
     title: "C and PLT",
     path: "/certificates/C&PROGRAMMINGINLOGICTECHNIC_SOFTECH_20-06-2024.avif",
-    tags: ["softech", "c", "logic techniques", "programming basics"],
+    tags: ["softech", "c programming", "logic techniques", "basics"],
     issuer: "Softech",
     date: "20-06-2024",
   },
   {
     title: "NodeJS",
     path: "/certificates/NODEJS_PROGRAMMINGHUB_05-08-2024.avif",
-    tags: [
-      "node.js",
-      "javascript backend",
-      "programminghub",
-      "server-side development",
-    ],
+    tags: ["node.js", "javascript", "backend", "programminghub"],
     issuer: "Programming Hub",
     date: "05-08-2024",
   },
   {
     title: "Python 3",
     path: "/certificates/PYTHON3_25-10-2024.avif",
-    tags: [
-      "python 3",
-      "programminghub",
-      "python programming",
-      "general-purpose language",
-    ],
+    tags: ["python", "programminghub"],
     issuer: "Programming Hub",
     date: "25-10-2024",
   },
   {
     title: "Docker",
     path: "/certificates/DOCKER_PROGRAMMINGHUB_25-10-2024.avif",
-    tags: [
-      "docker",
-      "containerization",
-      "ci/cd pipelines",
-      "devops tools",
-      "programminghub",
-    ],
+    tags: ["docker", "containerization", "ci/cd", "devops", "programminghub"],
     issuer: "Programming Hub",
     date: "25-10-2024",
   },
   {
     title: "IT Basics",
     path: "/certificates/ITBASICS_PROGRAMMINGHUB_27-10-2024.avif",
-    tags: [
-      "it fundamentals",
-      "information technology",
-      "programminghub",
-      "basics",
-    ],
+    tags: ["it", "information technology", "basics", "programminghub"],
     issuer: "Programming Hub",
     date: "27-10-2024",
   },
 ];
+

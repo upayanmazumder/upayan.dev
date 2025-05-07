@@ -26,6 +26,7 @@ const CORE_ASSETS = [
     '/icons/icon-256x256.webp',
     '/icons/icon-384x384.webp',
     '/icons/icon-512x512.webp',
+    '/upayan-transparent.webp',
     '/upayan-transparent-cropped.avif'
 ];
 

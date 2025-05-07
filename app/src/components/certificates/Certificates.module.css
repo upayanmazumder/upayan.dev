@@ -128,7 +128,7 @@
 .certificateTag {
     display: inline-block;
     color: #f0f0f0;
-    padding: 4px 8px;
+    padding: 0 4px;
     border-radius: 6px;
     text-transform: uppercase;
 }

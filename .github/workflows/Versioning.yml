@@ -1,4 +1,6 @@
 name: Update package.json Version on Release
+permissions:
+  contents: write
 
 on:
   release:

@@ -30,11 +30,12 @@
   bottom: 120%;
   right: 0;
   background: #222;
-  padding: 12px;
+  padding: 4px 6px;
   border-radius: 12px;
   width: clamp(160px, 30vw, 240px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
   animation: fadeIn 0.3s ease-out forwards;
+  font-size: 16px;
 }
 
 @keyframes fadeIn {
@@ -60,17 +61,35 @@
   gap: 6px;
   max-height: 40vh;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #888 #222;
   padding: 2px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.options::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.options::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.options:hover::-webkit-scrollbar {
+  display: block;
 }
 
 .option {
-  padding: 10px;
+  padding: 3px;
   border-radius: 8px;
   text-align: center;
   cursor: pointer;
   transition: background-color 0.2s ease, opacity 0.2s ease;
+  font-size: 16px;
 }
 
 .option:hover {

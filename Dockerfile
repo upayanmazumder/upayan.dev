@@ -42,6 +42,9 @@ WORKDIR /workspace
 COPY --from=build-app /app ./app
 COPY --from=build-api /api ./api
 
+# Copy PM2 ecosystem config
+COPY ecosystem.config.js ./ecosystem.config.js
+
 # Expose ports used by frontend (e.g., Next.js) and backend (Express?)
 EXPOSE 3000 4000
 

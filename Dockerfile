@@ -32,6 +32,9 @@ FROM node:23-alpine AS runner
 # Tini for better signal handling (e.g., Docker stop)
 RUN apk add --no-cache tini
 
+# Install PM2 globally
+RUN npm install -g pm2
+
 # Set working directory
 WORKDIR /workspace
 
@@ -45,5 +48,5 @@ EXPOSE 3000 4000
 # Use tini as the init system to handle PID 1
 ENTRYPOINT ["/sbin/tini", "--"]
 
-# Start both frontend and backend concurrently
-CMD ["sh", "-c", "cd app && npm start & cd api && npm start"]
+# Start both frontend and backend with PM2
+CMD ["pm2-runtime", "start", "ecosystem.config.js"]

@@ -62,6 +62,27 @@
     ]
   },
   {
+    "name": "Scamzap",
+    "icon": "/projects/scamzap.webp",
+    "description": "Discover and report scams effortlessly.",
+    "links": [
+      {
+        "name": "Github",
+        "url": "https://github.com/upayanmazumder/scamzap"
+      },
+      {
+        "name": "Website",
+        "url": "https://scamzap.upayan.dev"
+      }
+    ],
+    "packageLinks": [
+      {
+        "name": "Docker Image",
+        "url": "https://github.com/users/upayanmazumder/packages/container/package/scamzap"
+      }
+    ]
+  },
+  {
     "name": "Boardly",
     "icon": "/projects/boardly.webp",
     "description": "A one stop solution for board exams!",

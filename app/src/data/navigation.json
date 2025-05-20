@@ -5,16 +5,6 @@
     "label": "Home"
   },
   {
-    "href": "/#clubs",
-    "icon": "BsPeople",
-    "label": "Clubs"
-  },
-  {
-    "href": "/#projects",
-    "icon": "BsLayers",
-    "label": "Projects"
-  },
-  {
     "href": "/certificates",
     "icon": "BsPatchCheck",
     "label": "Certificates"

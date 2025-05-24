@@ -127,6 +127,27 @@
     ]
   },
   {
+    "name": "Status Page",
+    "icon": "/projects/status-page.webp",
+    "description": "A status page for your websites!",
+    "links": [
+      {
+        "name": "Github",
+        "url": "https://github.com/upayanmazumder/status-page"
+      },
+      {
+        "name": "Website",
+        "url": "https://status-page.upayan.dev/devjourney"
+      }
+    ],
+    "packageLinks": [
+      {
+        "name": "Docker Image",
+        "url": "https://github.com/upayanmazumder/status-page/pkgs/container/status-page"
+      }
+    ]
+  },
+  {
     "name": "DevJourney",
     "icon": "/projects/devjourney.webp",
     "description": "My coding journey!",

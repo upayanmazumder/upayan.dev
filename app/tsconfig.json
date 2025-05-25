@@ -28,7 +28,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "public/service-worker.js"
+    "public/service-worker.js",
+    "src/components/medical-roster/medical-roster.jsx"
   ],
   "exclude": ["node_modules"]
 }

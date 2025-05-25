@@ -1,0 +1,176 @@
+:root {
+  --bg-dark: #121212;
+  --bg-light: #1e1e1e;
+  --accent: #006fbf;
+  --error: #ff5252;
+  --text: #ffffff;
+  --text-muted: #bbbbbb;
+  --border: #333;
+}
+
+.container {
+  background-color: var(--bg-dark);
+  border-radius: var(--border-radius-huge);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: "Segoe UI", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 0.6s ease;
+}
+
+.container button:hover {
+  box-shadow: none;
+}
+
+.title {
+  color: var(--accent);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.subtitle {
+  color: var(--accent);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.error {
+  background-color: var(--error);
+  color: var(--text);
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.inputStep,
+.nameInputStep,
+.daysOffStep,
+.generateStep,
+.tableWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin-top: 1rem;
+}
+
+.inputField,
+.nameInput {
+  width: 100%;
+  max-width: 400px;
+  margin: 0.5rem 0;
+  padding: 0.6rem 1rem;
+  background-color: var(--bg-light);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.inputField:focus,
+.nameInput:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.button {
+  background-color: var(--accent);
+  color: var(--bg-dark);
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  margin: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.5rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.dateButton {
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  background-color: var(--bg-light);
+  color: var(--text);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.dateButton:hover {
+  background-color: #2a2a2a;
+  transform: scale(1.03);
+}
+
+.selected {
+  background-color: var(--accent);
+  color: var(--bg-dark);
+  font-weight: bold;
+}
+
+.disabled {
+  background-color: #333;
+  cursor: not-allowed;
+  color: #777;
+}
+
+.rosterTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: var(--bg-light);
+  border: 1px solid var(--border);
+}
+
+.rosterTable th,
+.rosterTable td {
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.rosterTable th {
+  background-color: #1a1a1a;
+  color: var(--accent);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive table scrolling */
+.tableWrapper {
+  overflow-x: auto;
+}

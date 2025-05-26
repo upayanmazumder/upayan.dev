@@ -1,33 +1,39 @@
 @font-face {
-  font-family: 'RedHatDisplay';
-  src: url('../../public/fonts/RedHatDisplay-VariableFont_wght.ttf') format('truetype');
+  font-family: "RedHatDisplay";
+  src: url("../../public/fonts/RedHatDisplay-VariableFont_wght.ttf")
+    format("truetype");
 }
 
 @font-face {
-  font-family: 'RedHatMono';
-  src: url('../../public/fonts/RedHatMono-VariableFont_wght.ttf') format('truetype');
+  font-family: "RedHatMono";
+  src: url("../../public/fonts/RedHatMono-VariableFont_wght.ttf")
+    format("truetype");
 }
 
 @font-face {
-  font-family: 'Montserrat-Regular';
-  src: url('../../public/fonts/Montserrat-Regular.ttf') format('truetype');
+  font-family: "Montserrat-Regular";
+  src: url("../../public/fonts/Montserrat-Regular.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Montserrat-Bold';
-  src: url('../../public/fonts/Montserrat-Bold.ttf') format('truetype');
+  font-family: "Montserrat-Bold";
+  src: url("../../public/fonts/Montserrat-Bold.ttf") format("truetype");
 }
 
 :root {
   --header-background-color: var(--background-color);
   --footer-background-color: #121212bd;
   --sidebar-background-color: #0e0e0ebb;
-  --card-background: linear-gradient(145deg, rgba(10, 25, 47, 0.7), rgba(2, 12, 27, 0.7));
+  --card-background: linear-gradient(
+    145deg,
+    rgba(10, 25, 47, 0.7),
+    rgba(2, 12, 27, 0.7)
+  );
 
   --screen-horizontal-margin: var(--margin-huge);
   --screen-vertical-margin: 0;
 
-  --text-link-color: #1C86EE;
+  --text-link-color: #1c86ee;
   --text-link-hover-color: rgb(77, 156, 235);
 
   --padding-tiny: 0.25rem;
@@ -69,6 +75,7 @@
   box-sizing: border-box;
   transition: all var(--transition-fast);
   -webkit-tap-highlight-color: transparent;
+  font-family: "Montserrat-Regular", "RedHatDisplay", system-ui, sans-serif;
 }
 
 html,
@@ -79,7 +86,7 @@ body {
   overflow-x: hidden;
   background: var(--background-color, rgb(15, 15, 15));
   color: var(--color);
-  font-family: 'Montserrat-Regular', 'RedHatDisplay', system-ui, sans-serif;
+  font-family: "Montserrat-Regular", "RedHatDisplay", system-ui, sans-serif;
   font-size: var(--font-size-medium);
   font-weight: var(--font-weight-normal);
   line-height: 1.6;
@@ -155,13 +162,13 @@ section {
 }
 
 .section-link:hover {
-  color: whitesmoke
+  color: whitesmoke;
 }
 
 .section-title {
   font-size: var(--font-size-huge);
   font-weight: var(--font-weight-bold);
-  font-family: 'Montserrat-Bold';
+  font-family: "Montserrat-Bold";
 }
 
 .page-header {
@@ -270,7 +277,7 @@ td {
 
 code,
 pre {
-  font-family: 'RedHatMono', monospace;
+  font-family: "RedHatMono", monospace;
   background-color: rgba(0, 0, 0, 0.3);
   padding: var(--padding-tiny);
   border-radius: var(--border-radius-tiny);
@@ -331,9 +338,11 @@ blockquote {
 
 ::-webkit-scrollbar {
   width: 8px;
-  background: linear-gradient(to bottom,
+  background: linear-gradient(
+      to bottom,
       rgba(128, 128, 128, 0.1),
-      rgba(128, 128, 128, 0.15)),
+      rgba(128, 128, 128, 0.15)
+    ),
     var(--background-color);
 }
 

@@ -7,12 +7,10 @@
   --text-muted: #bbbbbb;
   --border: #333;
 
-  background-color: var(--bg-dark);
   border-radius: var(--border-radius-huge);
   color: var(--text);
   min-height: 100vh;
   padding: 2rem;
-  font-family: "Segoe UI", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,7 +62,6 @@
   max-width: 400px;
   margin: 0.5rem 0;
   padding: 0.6rem 1rem;
-  background-color: var(--bg-light);
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: 8px;

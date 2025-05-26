@@ -1,4 +1,4 @@
-:root {
+.container {
   --bg-dark: #121212;
   --bg-light: #1e1e1e;
   --accent: #006fbf;
@@ -6,9 +6,7 @@
   --text: #ffffff;
   --text-muted: #bbbbbb;
   --border: #333;
-}
 
-.container {
   background-color: var(--bg-dark);
   border-radius: var(--border-radius-huge);
   color: var(--text);

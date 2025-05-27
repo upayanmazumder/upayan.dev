@@ -1,6 +1,5 @@
 import { FaSpotify } from "react-icons/fa";
 import { BiLogoVisualStudio } from "react-icons/bi";
-import activityStyles from "./Activity.module.css";
 import API from "../../../utils/api";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
@@ -40,23 +39,24 @@ export default function Activity() {
   }, []);
 
   const getActivityIcon = (name: string) => {
-    if (name === "Spotify")
-      return <FaSpotify className={activityStyles.activityIcon} />;
+    if (name === "Spotify") return <FaSpotify className="flex-shrink-0" />;
     if (name === "Visual Studio Code")
-      return <BiLogoVisualStudio className={activityStyles.activityIcon} />;
+      return <BiLogoVisualStudio className="flex-shrink-0" />;
     return null;
   };
 
   const getActivityStyle = (name: string) => {
-    if (name === "Spotify") return activityStyles.spotifyBackground;
-    if (name === "Visual Studio Code") return activityStyles.vscodeBackground;
-    return activityStyles.defaultBackground;
+    if (name === "Spotify")
+      return "bg-gradient-to-br from-[#1db954] to-[#1ed760] text-black";
+    if (name === "Visual Studio Code")
+      return "bg-gradient-to-br from-[#007acc] to-[#005a9e] text-white";
+    return "bg-white/5 text-white";
   };
 
   return (
     <AnimatePresence>
       {activities.length > 0 && (
-        <div className={activityStyles.activitiesBelow}>
+        <div className="flex flex-col gap-3 p-4 rounded-2xl backdrop-blur-md w-fit max-w-[300px] text-white mt-6 font-redhat">
           {activities.map((activity, index) => {
             const key = `${activity.name}-${activity.startTimestamp}-${index}`;
             const icon = getActivityIcon(activity.name);
@@ -68,18 +68,16 @@ export default function Activity() {
 
             return (
               <div
-                className={`${activityStyles.activityItem} ${bgClass}`}
+                className={`flex flex-col gap-2 p-3 rounded-lg shadow-md transition-colors text-xs ${bgClass}`}
                 key={key}
               >
-                <div className={activityStyles.activityTop}>
+                <div className="flex items-center gap-2">
                   {icon}
-                  <span className={activityStyles.activityDetails}>
+                  <span className="font-semibold opacity-95">
                     {activity.details}
                   </span>
                 </div>
-                <span className={activityStyles.activityState}>
-                  {cleanState}
-                </span>
+                <span className="opacity-85">{cleanState}</span>
               </div>
             );
           })}

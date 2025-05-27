@@ -9,7 +9,7 @@
   border: none;
   box-shadow: 0 0.7em 1.5em -0.5em rgba(59, 48, 78, 0.527);
   letter-spacing: 0.05em;
-  border-radius: 8px;
+  border-radius: var(--border-radius-small);
   cursor: pointer;
   position: relative;
 }

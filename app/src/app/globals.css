@@ -32,7 +32,7 @@
     rgba(2, 12, 27, 0.7)
   );
 
-  --screen-horizontal-margin: var(--margin-huge);
+  --screen-horizontal-margin: clamp(1rem, 5vw, 4rem);
   --screen-vertical-margin: 0;
 
   --text-link-color: #1c86ee;
@@ -136,9 +136,11 @@ p {
 main {
   margin: 4.5rem var(--screen-horizontal-margin) var(--margin-huge);
   padding: var(--padding-medium);
-  min-height: 70vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: var(--margin-medium);
 }
 
@@ -174,9 +176,11 @@ section {
 }
 
 .page-header {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: baseline;
+  text-align: left;
   gap: var(--margin-small);
   margin: var(--margin-medium) 0;
   font-family: system-ui;
@@ -209,12 +213,15 @@ button {
   gap: 0.5rem;
   padding: var(--padding-small) var(--padding-medium);
   border: none;
-  border-radius: 50dvh;
+  border-radius: var(--border-radius-small);
   background-color: rgb(36, 36, 36);
   font-size: var(--font-size-medium);
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
+  align-self: center;
+  place-self: center;
+  justify-self: center;
 }
 
 button:hover {

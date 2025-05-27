@@ -3,8 +3,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
-
-import heroStyles from "./Hero.module.css";
 import OfficialLinks from "./officiallinks/OfficialLinks";
 import Technologies from "./technologies/Technologies";
 import Activity from "./activity/Activity";
@@ -13,17 +11,17 @@ import Button from "../ui/button/Button";
 
 export default function Hero() {
   return (
-    <section className={heroStyles.hero}>
+    <section className="min-h-screen flex flex-col justify-center px-4 max-w-5xl mx-auto">
       <motion.div
-        className={heroStyles.branding}
+        className="grid md:grid-cols-[70%_30%] grid-cols-1 gap-8 my-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2 }}
       >
-        <div className={heroStyles.left}>
+        <div className="flex flex-col justify-center items-start md:items-start px-8 gap-4">
           <div>
             <motion.p
-              className={heroStyles.greet}
+              className="m-0 text-gray-400 text-lg"
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8 }}
@@ -32,7 +30,7 @@ export default function Hero() {
             </motion.p>
 
             <motion.h1
-              className={heroStyles.name}
+              className="m-0 text-white leading-none text-5xl font-bold font-montserrat mb-[-10px]"
               initial={{ x: -50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 1 }}
@@ -49,7 +47,7 @@ export default function Hero() {
           </div>
 
           <motion.h2
-            className={heroStyles.role}
+            className="my-2 text-gray-300 leading-none text-2xl"
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
@@ -65,7 +63,7 @@ export default function Hero() {
           </motion.h2>
 
           <motion.p
-            className={heroStyles.description}
+            className="my-2 text-gray-300"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8 }}
@@ -75,7 +73,7 @@ export default function Hero() {
           </motion.p>
 
           <motion.div
-            className={heroStyles.technologies}
+            className="py-2"
             initial="hidden"
             animate="visible"
             variants={{
@@ -89,7 +87,7 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            className={heroStyles.cta}
+            className="flex w-full flex-row justify-start gap-6 items-center mt-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.1 }}
@@ -103,7 +101,7 @@ export default function Hero() {
         </div>
 
         <motion.div
-          className={heroStyles.right}
+          className="flex flex-col justify-center items-center px-12"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, delay: 1 }}
@@ -111,7 +109,7 @@ export default function Hero() {
           <motion.img
             src="/upayan-transparent-cropped.avif"
             alt="Upayan Mazumder"
-            className={heroStyles.image}
+            className="w-[70%] max-w-[400px] mb-4"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.5, delay: 2 }}
           />

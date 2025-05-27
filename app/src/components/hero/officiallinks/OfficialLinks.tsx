@@ -1,6 +1,5 @@
 import officialLinks from "../../../data/links.json";
 import { motion } from "framer-motion";
-import officialLinksStyles from "./OfficialLinks.module.css";
 
 const whitelist = [
   "IIT-Madras",
@@ -36,7 +35,8 @@ export default function OfficialLinks() {
 
   return (
     <motion.div
-      className={officialLinksStyles.officialLinks}
+      className="flex flex-row flex-wrap gap-3 justify-center items-center py-1 my-4 w-full
+        max-sm:flex-col"
       variants={containerVariants}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -50,7 +50,8 @@ export default function OfficialLinks() {
             color: link.textColor,
             backgroundColor: link.backgroundColor,
           }}
-          className={officialLinksStyles.officialLink}
+          className="font-redhat px-4 py-2 min-w-[100px] text-center rounded transition-all duration-300 shadow-md text-sm cursor-pointer hover:shadow-lg hover:-translate-y-0.5
+            w-auto max-sm:w-full"
           variants={itemVariants}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

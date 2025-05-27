@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import Image from "next/image";
 import projectsData from "../../data/projects.json";
 import defaultImage from "../../media/icon.png";
 
@@ -54,10 +55,13 @@ const Projects = () => {
               <div className="flex flex-col justify-between bg-gradient-to-br from-blue-950 via-cyan-950 to-blue-900 bg-opacity-95 backdrop-blur-xl rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.45)] border border-cyan-900 p-10 min-h-[420px]">
                 <div className="flex flex-col items-center">
                   <div className="relative mb-6">
-                    <img
-                      src={project.icon || defaultImage.src}
+                    <Image
+                      src={project.icon || defaultImage}
                       alt={`${project.name} icon`}
+                      width={96}
+                      height={96}
                       className="w-24 h-24 object-cover rounded-full border-4 border-cyan-500 shadow-xl bg-blue-950"
+                      unoptimized={typeof project.icon === "string"}
                     />
                     <span className="absolute -bottom-2 -right-2 w-6 h-6 bg-cyan-500 rounded-full blur-sm opacity-60" />
                   </div>

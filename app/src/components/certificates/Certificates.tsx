@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { createSlug, certificates } from "../../data/certificates";
-import { BsFunnel, BsFunnelFill } from "react-icons/bs";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Certificate {

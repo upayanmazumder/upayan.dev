@@ -35,7 +35,7 @@ export default function OfficialLinks() {
 
   return (
     <motion.div
-      className="flex flex-row flex-wrap gap-3 justify-center items-center py-1 my-4 w-full
+      className="flex flex-row flex-wrap gap-3 items-center py-1 my-4 w-full
         max-sm:flex-col"
       variants={containerVariants}
       initial={{ opacity: 0 }}
@@ -50,8 +50,7 @@ export default function OfficialLinks() {
             color: link.textColor,
             backgroundColor: link.backgroundColor,
           }}
-          className="font-redhat px-4 py-2 min-w-[100px] text-center rounded transition-all duration-300 shadow-md text-sm cursor-pointer hover:shadow-lg hover:-translate-y-0.5
-            w-auto max-sm:w-full"
+          className="font-redhat px-4 py-2 text-center transition-all duration-300 shadow-md text-sm cursor-pointer hover:shadow-lg hover:-translate-y-0.5 w-auto max-sm:w-full"
           variants={itemVariants}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

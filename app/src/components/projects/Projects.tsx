@@ -1,141 +1,116 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React from "react";
 import Image from "next/image";
+import { useKeenSlider } from "keen-slider/react";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import projectsData from "../../data/projects.json";
 import defaultImage from "../../media/icon.png";
 
-const Projects = () => {
-  const [current, setCurrent] = useState(0);
-  const total = projectsData.length;
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const goTo = (idx: number) => {
-    if (idx < 0) idx = 0;
-    if (idx > total - 1) idx = total - 1;
-    setCurrent(idx);
-    containerRef.current?.scrollTo({
-      left: idx * (containerRef.current.offsetWidth + 24),
-      behavior: "smooth",
-    });
-  };
-
-  const prev = () => goTo(current - 1);
-  const next = () => goTo(current + 1);
+const Projects: React.FC = () => {
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+    loop: false,
+    mode: "snap",
+    slides: {
+      perView: 3,
+      spacing: 24,
+    },
+    breakpoints: {
+      "(max-width: 1280px)": {
+        slides: { perView: 2.5, spacing: 20 },
+      },
+      "(max-width: 1024px)": {
+        slides: { perView: 2, spacing: 16 },
+      },
+      "(max-width: 768px)": {
+        slides: { perView: 1.3, spacing: 14 },
+      },
+      "(max-width: 480px)": {
+        slides: { perView: 1.05, spacing: 12 },
+      },
+    },
+  });
 
   return (
-    <section id="projects" className="relative py-20 overflow-hidden">
-      <div className="flex justify-center items-center gap-4 z-10 relative">
-        <button
-          onClick={prev}
-          disabled={current === 0}
-          className="p-2 rounded-full bg-cyan-900 text-cyan-300 hover:bg-cyan-700 disabled:opacity-30 transition"
-          style={{
-            boxShadow: "none",
-            backgroundColor: "none",
-            background: "none",
-          }}
-          aria-label="Previous"
-        >
-          &#8592;
-        </button>
+    <section id="projects" className="py-12 px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto">
+        {/* Navigation Buttons */}
+        <div className="flex justify-between items-center mb-6 px-1 sm:px-2">
+          <button
+            onClick={() => instanceRef.current?.prev()}
+            className="text-slate-400 hover:text-white disabled:opacity-30 transition"
+            aria-label="Previous"
+          >
+            <IoChevronBack size={28} />
+          </button>
+          <button
+            onClick={() => instanceRef.current?.next()}
+            className="text-slate-400 hover:text-white disabled:opacity-30 transition"
+            aria-label="Next"
+          >
+            <IoChevronForward size={28} />
+          </button>
+        </div>
+
+        {/* Slider */}
         <div
-          ref={containerRef}
-          className="flex overflow-x-hidden scroll-smooth w-full max-w-5xl"
-          style={{ scrollSnapType: "x mandatory" }}
+          ref={sliderRef}
+          className="keen-slider mx-auto max-w-screen-xl px-2 sm:px-4"
         >
           {projectsData.map((project, index) => (
-            <div
-              key={index}
-              className={`flex-shrink-0 w-full max-w-md mx-3 transition-transform duration-300 ${
-                index === current ? "scale-100" : "scale-95 opacity-60"
-              }`}
-              style={{ scrollSnapAlign: "center" }}
-            >
-              <div className="flex flex-col justify-between bg-gradient-to-br from-blue-950 via-cyan-950 to-blue-900 bg-opacity-95 backdrop-blur-xl rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.45)] border border-cyan-900 p-10 min-h-[420px]">
-                <div className="flex flex-col items-center">
-                  <div className="relative mb-6">
-                    <Image
-                      src={project.icon || defaultImage}
-                      alt={`${project.name} icon`}
-                      width={96}
-                      height={96}
-                      className="w-24 h-24 object-cover rounded-full border-4 border-cyan-500 shadow-xl bg-blue-950"
-                      unoptimized={typeof project.icon === "string"}
-                    />
-                    <span className="absolute -bottom-2 -right-2 w-6 h-6 bg-cyan-500 rounded-full blur-sm opacity-60" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-cyan-100 mb-2 text-center tracking-wide">
-                    {project.name}
-                  </h3>
-                  <p className="text-slate-300 text-center mb-6 text-base min-h-[60px]">
+            <div key={index} className="keen-slider__slide px-1 sm:px-2">
+              <div className="flex flex-col justify-between bg-slate-900 border border-slate-700 rounded-2xl p-6 h-full shadow-md transition-all duration-300 min-h-[350px]">
+                {/* Header */}
+                <div className="flex flex-col items-center text-center">
+                  <Image
+                    src={project.icon || defaultImage}
+                    alt={`${project.name} icon`}
+                    width={96}
+                    height={96}
+                    className="w-24 h-24 rounded-full object-cover border-2 border-slate-600 mb-4"
+                    unoptimized={typeof project.icon === "string"}
+                  />
+                  <h3 className="text-xl font-semibold mb-2">{project.name}</h3>
+                  <p className="text-slate-400 text-sm mb-4 min-h-[48px]">
                     {project.description}
                   </p>
                 </div>
-                <div>
-                  <div className="flex flex-wrap justify-center gap-3 mb-3">
-                    {project.links.map((link, i) => (
+
+                {/* Project Links */}
+                <div className="flex flex-wrap justify-center gap-2 mt-auto">
+                  {project.links.map((link, i) => (
+                    <a
+                      key={i}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 text-sm rounded-md bg-slate-800 hover:bg-slate-700 transition border border-slate-600 whitespace-nowrap"
+                    >
+                      {link.name}
+                    </a>
+                  ))}
+                </div>
+
+                {/* Optional Package Links */}
+                {project.packageLinks?.length > 0 && (
+                  <div className="flex flex-wrap justify-center gap-2 mt-3">
+                    {project.packageLinks.map((pkg, i) => (
                       <a
                         key={i}
-                        href={link.url}
+                        href={pkg.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-gradient-to-r from-cyan-700 via-blue-700 to-blue-900 hover:from-cyan-500 hover:to-blue-700 text-white px-5 py-2 rounded-xl shadow-md transition-all text-sm font-semibold tracking-wide border border-cyan-800"
+                        className="text-xs px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 whitespace-nowrap"
                       >
-                        {link.name}
+                        {pkg.name}
                       </a>
                     ))}
                   </div>
-                  {project.packageLinks && (
-                    <div className="flex flex-wrap justify-center gap-2">
-                      {project.packageLinks.map((pkg, i) => (
-                        <a
-                          key={i}
-                          href={pkg.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-blue-950 hover:bg-cyan-800 text-cyan-300 px-3 py-1 rounded-md text-xs font-medium border border-cyan-900 transition-colors"
-                        >
-                          {pkg.name}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
             </div>
           ))}
         </div>
-        <button
-          onClick={next}
-          disabled={current === projectsData.length - 1}
-          className="p-2 rounded-full bg-cyan-900 text-cyan-300 hover:bg-cyan-700 disabled:opacity-30 transition"
-          style={{
-            boxShadow: "none",
-            backgroundColor: "none",
-            background: "none",
-          }}
-          aria-label="Next"
-        >
-          &#8594;
-        </button>
-      </div>
-      <div className="flex justify-center mt-6 gap-2">
-        {projectsData.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => goTo(idx)}
-            className={`w-3 h-3 rounded-full transition-all ${
-              idx === current
-                ? "bg-cyan-400 scale-125"
-                : "bg-cyan-900 hover:bg-cyan-600"
-            }`}
-            style={{
-              boxShadow: "none",
-            }}
-            aria-label={`Go to project ${idx + 1}`}
-          />
-        ))}
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "keen-slider/keen-slider.min.css";
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import Footer from "../components/footer/Footer";

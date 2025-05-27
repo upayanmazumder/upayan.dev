@@ -14,6 +14,7 @@
     "dotenv": "^16.5.0",
     "framer-motion": "^12.9.2",
     "highlight.js": "^11.11.1",
+    "keen-slider": "^6.8.6",
     "lucide-react": "^0.479.0",
     "marked": "^15.0.6",
     "next": "15.2.4",

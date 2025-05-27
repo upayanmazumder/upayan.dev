@@ -8,7 +8,7 @@ RUN npm ci
 
 # ---------- Stage 2: Build the frontend ----------
 FROM deps-app AS build-app
-# Now copy the source code and build
+# Copy frontend source code and build
 COPY app/ ./
 RUN npm run build
 
@@ -22,34 +22,33 @@ RUN npm ci
 
 # ---------- Stage 4: Build the backend ----------
 FROM deps-api AS build-api
-# Now copy backend source and build
+# Copy backend source code and build
 COPY api/ ./
 RUN npm run build
 
 # ---------- Stage 5: Final runtime image ----------
 FROM node:23-alpine AS runner
 
-# Tini for better signal handling (e.g., Docker stop)
+# Install tini for proper signal handling
 RUN apk add --no-cache tini
 
-# Install PM2 globally
+# Install PM2 globally to run both frontend and backend
 RUN npm install -g pm2
 
-# Set working directory
 WORKDIR /workspace
 
-# Copy built frontend & backend from previous stages
+# Copy built frontend and backend from build stages
 COPY --from=build-app /app ./app
 COPY --from=build-api /api ./api
 
 # Copy PM2 ecosystem config
-COPY ecosystem.config.js ./ecosystem.config.js
+COPY ecosystem.config.js ./
 
-# Expose ports used by frontend (e.g., Next.js) and backend (Express?)
+# Expose frontend and backend ports
 EXPOSE 3000 4000
 
-# Use tini as the init system to handle PID 1
+# Use tini as init system to handle signals properly
 ENTRYPOINT ["/sbin/tini", "--"]
 
-# Start both frontend and backend with PM2
+# Start both processes using PM2
 CMD ["pm2-runtime", "start", "ecosystem.config.js"]

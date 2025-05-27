@@ -110,6 +110,9 @@ export default function Hero() {
             src="/upayan-transparent-cropped.avif"
             alt="Upayan Mazumder"
             className="w-[70%] max-w-[400px] mb-4"
+            style={{
+              borderRadius: "0",
+            }}
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.5, delay: 2 }}
           />

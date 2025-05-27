@@ -214,7 +214,6 @@ button {
   padding: var(--padding-small) var(--padding-medium);
   border: none;
   border-radius: var(--border-radius-small);
-  background-color: rgb(36, 36, 36);
   font-size: var(--font-size-medium);
   cursor: pointer;
   -webkit-user-select: none;
@@ -225,7 +224,6 @@ button {
 }
 
 button:hover {
-  background-color: rgb(22, 22, 22);
   box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.2);
 }
 

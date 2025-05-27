@@ -1,43 +1,43 @@
 [
-    {
-        "name": "CodeChef-VIT",
-        "icon": "/clubs/codechefvit.png",
-        "description": "Community for competitive programming and dev. I contribute to Papers CodeChef and won Internal Hackathon #1.",
-        "links": [
-            {
-                "name": "Website",
-                "url": "https://www.codechefvit.com"
-            },
-            {
-                "name": "LinkedIn",
-                "url": "https://www.linkedin.com/company/codechefvit"
-            }
-        ]
-    },
-    {
-        "name": "GDSC-VIT",
-        "icon": "/clubs/gdscvit.png",
-        "description": "Tech community at VIT under Google. We build, learn, and collaborate on real-world projects.",
-        "links": [
-            {
-                "name": "Website",
-                "url": "https://dscvit.com"
-            },
-            {
-                "name": "LinkedIn",
-                "url": "https://www.linkedin.com/company/dscvit"
-            }
-        ]
-    },
-    {
-        "name": "TAM-VIT",
-        "icon": "/clubs/tamvit.png",
-        "description": "VIT’s club for AI & ML, focused on applied research and innovation in AI and Machine Learning",
-        "links": [
-            {
-                "name": "LinkedIn",
-                "url": "https://www.linkedin.com/company/tam-vit"
-            }
-        ]
-    }
+  {
+    "name": "CodeChef-VIT",
+    "icon": "/clubs/codechefvit.png",
+    "description": "Community for competitive programming and dev. I contribute to Papers CodeChef and won Internal Hackathon #1.",
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://www.codechefvit.com"
+      },
+      {
+        "name": "LinkedIn",
+        "url": "https://www.linkedin.com/company/codechefvit"
+      }
+    ]
+  },
+  {
+    "name": "GDSC-VIT",
+    "icon": "/clubs/gdscvit.png",
+    "description": "Tech community at VIT under Google. We build, learn, and collaborate on real-world projects.",
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://dscvit.com"
+      },
+      {
+        "name": "LinkedIn",
+        "url": "https://www.linkedin.com/company/dscvit"
+      }
+    ]
+  },
+  {
+    "name": "TAM-VIT",
+    "icon": "/clubs/tamvit.png",
+    "description": "VIT’s club for AI & ML, focused on applied research and innovation in AI and Machine Learning",
+    "links": [
+      {
+        "name": "LinkedIn",
+        "url": "https://www.linkedin.com/company/tam-vit"
+      }
+    ]
+  }
 ]

@@ -1,47 +1,46 @@
 .dirMapContainer {
-    padding: var(--padding-small) 0;
-    gap: 10px;
-    display: flex;
-    flex-direction: column;
+  padding: var(--padding-small) 0;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 768px) {
-    .dirMapContainer {
-        padding: var(--padding-small);
-    }
+  .dirMapContainer {
+    padding: var(--padding-small);
+  }
 }
 
 .dirMapContainer li {
-    width: 80%;
-    align-self: center;
+  width: 80%;
+  align-self: center;
 }
 
 @media (max-width: 768px) {
-    .dirMapContainer li {
-        width: 100%;
-    }
-
+  .dirMapContainer li {
+    width: 100%;
+  }
 }
 
 .dirMapContainer li button {
-    width: 100%;
-    text-align: left;
-    border: 0.5px rgba(255, 255, 255, 0.26) solid;
-    background-color: #4343432e;
-    text-transform: inherit;
-    font-weight: inherit;
-    border-radius: var(--border-radius-tiny);
-    padding-left: 1em;
-    color: color-mix(in srgb, var(--color), gray);
-    display: flex;
-    justify-content: flex-start;
+  width: 100%;
+  text-align: left;
+  border: 0.5px rgba(255, 255, 255, 0.26) solid;
+  background-color: #4343432e;
+  text-transform: inherit;
+  font-weight: inherit;
+  border-radius: var(--border-radius-tiny);
+  padding-left: 1em;
+  color: color-mix(in srgb, var(--color), gray);
+  display: flex;
+  justify-content: flex-start;
 }
 
 .dirMapContainer li button:hover {
-    box-shadow: none;
-    background-color: #70707045;
+  box-shadow: none;
+  background-color: #70707045;
 }
 
 .dirMapContainer li button svg {
-    margin-right: 15px;
+  margin-right: 15px;
 }

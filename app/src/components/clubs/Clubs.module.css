@@ -1,57 +1,57 @@
 .container {
-    text-align: center;
+  text-align: center;
 }
 
 .grid {
-    display: flex;
-    flex-direction: row;
-    gap: 30px;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  justify-content: center;
 }
 
 .image {
-    width: 90px;
-    height: 90px;
-    object-fit: cover;
-    margin-bottom: 20px;
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  margin-bottom: 20px;
 }
 
 .name {
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #ffffff;
 }
 
 .description {
-    color: #d5d5d5;
-    margin-bottom: 15px;
-    padding: 0 10px;
+  color: #d5d5d5;
+  margin-bottom: 15px;
+  padding: 0 10px;
 }
 
 .links {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    font-size: var(--font-size-large);
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  font-size: var(--font-size-large);
 }
 
 .link {
-    color: #849ab2;
-    transition: color 0.3s ease;
+  color: #849ab2;
+  transition: color 0.3s ease;
 }
 
 .link:hover {
-    color: #abb7c4;
+  color: #abb7c4;
 }
 
 @media (max-width: 1400px) {
-    .grid {
-        flex-direction: column;
-        align-items: center;
-    }
+  .grid {
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .image {
-        width: 80px;
-        height: 80px;
-    }
+  .image {
+    width: 80px;
+    height: 80px;
+  }
 }

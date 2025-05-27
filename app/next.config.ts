@@ -1,12 +1,12 @@
-import dotenv from 'dotenv';
-import path from 'path';
-import type { NextConfig } from 'next';
+import dotenv from "dotenv";
+import path from "path";
+import type { NextConfig } from "next";
 
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['lh3.googleusercontent.com'],
+    domains: ["lh3.googleusercontent.com"],
   },
   reactStrictMode: true,
   env: {

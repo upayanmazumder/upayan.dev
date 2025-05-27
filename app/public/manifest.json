@@ -6,11 +6,7 @@
   "display": "fullscreen",
   "background_color": "#000000",
   "theme_color": "#000000",
-  "categories": [
-    "portfolio",
-    "developer",
-    "technology"
-  ],
+  "categories": ["portfolio", "developer", "technology"],
   "icons": [
     {
       "src": "/icons/icon-16x16.webp",

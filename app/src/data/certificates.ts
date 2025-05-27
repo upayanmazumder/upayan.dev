@@ -1,17 +1,33 @@
-export const createSlug = (title: string) => title.toLowerCase().replace(/\s+/g, "-");
+export const createSlug = (title: string) =>
+  title.toLowerCase().replace(/\s+/g, "-");
 
 export const certificates = [
   {
     title: "Internal Hackathon 2025",
     path: "/certificates/INTERNALHACK_CODECHEFVIT_14-04-2025.avif",
-    tags: ["codechef", "devops", "kubernetes", "docker", "ci/cd", "hackathon", "vit"],
+    tags: [
+      "codechef",
+      "devops",
+      "kubernetes",
+      "docker",
+      "ci/cd",
+      "hackathon",
+      "vit",
+    ],
     issuer: "CodeChef VIT",
     date: "14-04-2025",
   },
   {
     title: "Cookoff 9",
     path: "/certificates/COOKOFF9_CODECHEFVIT_22-11-2024.avif",
-    tags: ["codechef", "cookoff", "competitive programming", "contest", "gravitas", "vit"],
+    tags: [
+      "codechef",
+      "cookoff",
+      "competitive programming",
+      "contest",
+      "gravitas",
+      "vit",
+    ],
     issuer: "CodeChef VIT",
     date: "22-11-2024",
   },
@@ -25,7 +41,15 @@ export const certificates = [
   {
     title: "Sensored 9",
     path: "/certificates/SENSORED9_TEC_15-12-2024.avif",
-    tags: ["tec", "sensored", "iot", "electronics", "hackathon", "gravitas", "vit"],
+    tags: [
+      "tec",
+      "sensored",
+      "iot",
+      "electronics",
+      "hackathon",
+      "gravitas",
+      "vit",
+    ],
     issuer: "The Electronics Club VIT",
     date: "15-12-2024",
   },
@@ -114,4 +138,3 @@ export const certificates = [
     date: "27-10-2024",
   },
 ];
-

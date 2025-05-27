@@ -1,33 +1,32 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    align-items: flex-start;
-    padding: 1rem 0;
-    color: #d3d3d3;
-    min-height: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 1rem 0;
+  color: #d3d3d3;
+  min-height: 56px;
 }
 
 .line {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 @media (max-width: 1024px) {
-    .container {
-        padding: 0;
-        margin-bottom: -28px;
-    }
+  .container {
+    padding: 0;
+    margin-bottom: -28px;
+  }
 }
 
 @media (max-width: 480px) {
-    .container {
-        max-width: 90vw;
-    }
+  .container {
+    max-width: 90vw;
+  }
 
-    .line {
-        white-space: normal;
-        word-break: break-word;
-        max-width: 100%;
-    }
-
+  .line {
+    white-space: normal;
+    word-break: break-word;
+    max-width: 100%;
+  }
 }

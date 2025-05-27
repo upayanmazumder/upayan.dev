@@ -1,68 +1,68 @@
 .footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1.5rem;
-    background-color: var(--footer-background-color, #1a1a1a);
-    color: var(--footer-text, #ffffff);
-    gap: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: var(--footer-background-color, #1a1a1a);
+  color: var(--footer-text, #ffffff);
+  gap: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  bottom: 0;
 }
 
 .footerLinks {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.25rem;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  justify-content: center;
 }
 
 .footerLinks a {
-    color: inherit;
-    transition: transform 0.2s ease, color 0.2s ease;
-    display: flex;
-    padding: var(--padding-small);
-    border-radius: 50%;
+  color: inherit;
+  transition: transform 0.2s ease, color 0.2s ease;
+  display: flex;
+  padding: var(--padding-small);
+  border-radius: 50%;
 }
 
 .footerLinks a:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .helper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
 }
 
 .helper li {
-    list-style: none;
+  list-style: none;
 }
 
 .footer button {
-    background: none;
-    border: none;
-    color: inherit;
-    cursor: pointer;
-    padding: 0.5rem;
-    transition: color 0.2s ease, transform 0.2s ease;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .footer button:hover {
-    transform: scale(1.1);
-    box-shadow: none;
+  transform: scale(1.1);
+  box-shadow: none;
 }
 
 @media (min-width: 640px) {
-    .footer {
-        flex-direction: row;
-        justify-content: space-between;
-    }
+  .footer {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-    .footerLinks,
-    .helper {
-        justify-content: flex-start;
-    }
+  .footerLinks,
+  .helper {
+    justify-content: flex-start;
+  }
 }

@@ -1,38 +1,38 @@
 .breadcrumbContainer {
-    display: flex;
-    justify-content: flex-start;
-    vertical-align: middle;
-    align-items: center;
-    gap: 0.5em;
-    flex-wrap: wrap;
-    max-width: 100%;
-    text-wrap: wrap;
-    height: max-content;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-start;
+  vertical-align: middle;
+  align-items: center;
+  gap: 0.5em;
+  flex-wrap: wrap;
+  max-width: 100%;
+  white-space: normal;
+  height: max-content;
+  margin-bottom: 20px;
 }
 
 @media (max-width: 768px) {
-    .breadcrumbContainer {
-        gap: 0.3em;
-        flex-wrap: wrap;
-    }
+  .breadcrumbContainer {
+    gap: 0.3em;
+    flex-wrap: wrap;
+  }
 }
 
 .breadcrumbContainer button {
-    background-color: transparent;
-    box-shadow: none;
-    color: var(--color);
-    border: none;
-    padding: 0 var(--padding-tiny);
-    cursor: pointer;
+  background-color: transparent;
+  box-shadow: none;
+  color: var(--color);
+  border: none;
+  padding: 0 var(--padding-tiny);
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
-    .breadcrumbContainer button {
-        padding: 0;
-    }
+  .breadcrumbContainer button {
+    padding: 0;
+  }
 }
 
 .breadcrumbContainer button:hover {
-    color: darkgray;
+  color: darkgray;
 }

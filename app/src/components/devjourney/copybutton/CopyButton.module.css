@@ -1,18 +1,18 @@
 .copyButton {
-    background: #282c34;
-    color: #ffffff;
-    border: none;
-    padding: 6px 12px;
-    cursor: pointer;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-bottom: 8px;
-    transition: background 0.2s ease-in-out;
+  background: #282c34;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 8px;
+  transition: background 0.2s ease-in-out;
 }
 
 .copyButton:hover {
-    background: #3a3f4b;
-    box-shadow: none;
+  background: #3a3f4b;
+  box-shadow: none;
 }

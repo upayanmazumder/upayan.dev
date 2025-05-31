@@ -1,7 +1,7 @@
 [
   {
     "name": "CodeChef-VIT",
-    "icon": "/clubs/codechefvit.png",
+    "icon": "/clubs/codechef-vit.png",
     "description": "Community for competitive programming and dev. I contribute to Papers CodeChef and won Internal Hackathon #1.",
     "links": [
       {
@@ -16,7 +16,7 @@
   },
   {
     "name": "GDSC-VIT",
-    "icon": "/clubs/gdscvit.png",
+    "icon": "/clubs/gdsc-vit.png",
     "description": "Tech community at VIT under Google. We build, learn, and collaborate on real-world projects.",
     "links": [
       {
@@ -30,8 +30,19 @@
     ]
   },
   {
+    "name": "IEEE-SPS",
+    "icon": "/clubs/ieee-sps.png",
+    "description": "IEEE-Signal Processing Society is a Student Chapter of VIT Vellore, exploring the field of Signal Processing , ML & IOT.",
+    "links": [
+      {
+        "name": "LinkedIn",
+        "url": "https://www.linkedin.com/company/ieee-sps-vit/"
+      }
+    ]
+  },
+  {
     "name": "TAM-VIT",
-    "icon": "/clubs/tamvit.png",
+    "icon": "/clubs/tam-vit.png",
     "description": "VIT’s club for AI & ML, focused on applied research and innovation in AI and Machine Learning",
     "links": [
       {

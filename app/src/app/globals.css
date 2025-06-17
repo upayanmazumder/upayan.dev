@@ -24,11 +24,7 @@
   --header-background-color: var(--background-color);
   --footer-background-color: #121212bd;
   --sidebar-background-color: #0e0e0ebb;
-  --card-background: linear-gradient(
-    145deg,
-    rgba(10, 25, 47, 0.7),
-    rgba(2, 12, 27, 0.7)
-  );
+  --card-background: #8889891f;
 
   --screen-horizontal-margin: var(--margin-huge);
   --screen-vertical-margin: 0;

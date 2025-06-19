@@ -9,6 +9,35 @@ import styles from "./Sidebar.module.css";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
+  const sidebarRef = React.useRef<HTMLDivElement>(null);
+  const [mouseNear, setMouseNear] = useState(false);
+
+  React.useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (open) return;
+
+      const sidebar = sidebarRef.current;
+      if (!sidebar) return;
+
+      // Calculate sidebar position
+      const mouseY = e.clientY;
+      const windowHeight = window.innerHeight;
+      const sidebarHeight = sidebar.offsetHeight;
+
+      // Keep sidebar within screen bounds
+      let newY = mouseY - sidebarHeight / 2;
+      newY = Math.max(0, Math.min(newY, windowHeight - sidebarHeight));
+
+      sidebar.style.top = `${newY}px`;
+
+      // Check if mouse is in right 30% of screen
+      const triggerZone = window.innerWidth * 0.7; // 70% from left = 30% from right
+      setMouseNear(e.clientX > triggerZone);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [open]);
 
   const toggle = () => setOpen(!open);
 
@@ -18,30 +47,47 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className={styles.hamburger} onClick={toggle}>
-        <BsList />
-      </div>
+      <aside
+        ref={sidebarRef}
+        className={`${styles.sidebar} ${open ? styles.open : ""} ${
+          mouseNear ? styles.expanded : ""
+        }`}
+        onClick={() => !open && toggle()}
+      >
+        <div className={styles.sidebarContent}>
+          <div
+            className={styles.hamburger}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggle();
+            }}
+          >
+            <BsList />
+          </div>
 
-      <aside className={`${styles.sidebar} ${open ? styles.open : ""}`}>
-        <nav className={styles.nav}>
-          {sidebarData.map((item, index) => {
-            const Icon = Icons[item.icon as keyof typeof Icons];
-            return (
-              <Link
-                key={index}
-                href={item.href}
-                className={styles.link}
-                onClick={handleLinkClick}
-              >
-                <Icon className={styles.icon} />
-                <span className={styles.label}>{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
+          <nav className={styles.nav}>
+            {sidebarData.map((item, index) => {
+              const Icon = Icons[item.icon as keyof typeof Icons];
+              return (
+                <Link
+                  key={index}
+                  href={item.href}
+                  className={styles.link}
+                  onClick={handleLinkClick}
+                  style={{
+                    transitionDelay: `${index * 0.05}s`,
+                  }}
+                >
+                  <Icon className={styles.icon} />
+                  <span className={styles.label}>{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
       </aside>
 
-      {open && <div className={styles.overlay} onClick={toggle} />}
+      <div className={styles.overlay} onClick={toggle} />
     </>
   );
 };

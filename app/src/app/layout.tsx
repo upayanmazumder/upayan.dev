@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import Footer from "../components/footer/Footer";
 import { ThemeProvider } from "../components/theme/Theme";
@@ -37,7 +36,6 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <Sidebar />
-          <Header />
           {children}
           <ServiceWorkerRegister />
           <Footer />

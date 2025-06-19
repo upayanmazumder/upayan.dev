@@ -88,7 +88,6 @@ body {
   line-height: 1.6;
   background-attachment: fixed;
   background-size: cover;
-  scroll-padding-top: 100px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -128,7 +127,7 @@ p {
 }
 
 main {
-  margin: 4.5rem var(--screen-horizontal-margin) var(--margin-huge);
+  margin: 0 var(--screen-horizontal-margin);
   padding: var(--padding-medium);
   min-height: 70vh;
   display: flex;

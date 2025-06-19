@@ -8,8 +8,21 @@
   flex-direction: column;
   justify-content: center;
   z-index: 1000;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
   transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+.sidebar.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100%);
+}
+
+.sidebar.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
 }
 
 .sidebarContent {
@@ -27,7 +40,7 @@
 
 .sidebar.expanded .sidebarContent {
   width: clamp(6rem, 10vw, 8rem);
-  clip-path: polygon(100% 0, 100% 100%, 5% 50%);
+  clip-path: polygon(100% 0, 100% 100%, 50% 50%);
 }
 
 .sidebar.open {

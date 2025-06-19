@@ -9,12 +9,24 @@ import styles from "./Sidebar.module.css";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(true);
   const sidebarRef = React.useRef<HTMLDivElement>(null);
   const [mouseNear, setMouseNear] = useState(false);
+  const [initialLoadComplete, setInitialLoadComplete] = React.useState(false);
+
+  React.useEffect(() => {
+    // Initial visibility timer
+    const timer = setTimeout(() => {
+      setVisible(false);
+      setInitialLoadComplete(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   React.useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (open) return;
+      if (open || !initialLoadComplete) return;
 
       const sidebar = sidebarRef.current;
       if (!sidebar) return;
@@ -30,19 +42,28 @@ const Sidebar = () => {
 
       sidebar.style.top = `${newY}px`;
 
-      // Check if mouse is in right 30% of screen
-      const triggerZone = window.innerWidth * 0.7; // 70% from left = 30% from right
-      setMouseNear(e.clientX > triggerZone);
+      // Check if mouse is in right 10% of screen
+      const triggerZone = window.innerWidth * 0.9; // 90% from left = 10% from right
+      if (e.clientX > triggerZone) {
+        setVisible(true);
+        setMouseNear(true);
+      } else {
+        setMouseNear(false);
+        // Only hide if not in open state
+        if (!open) {
+          setVisible(false);
+        }
+      }
     };
-
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [open]);
+  }, [open, initialLoadComplete]);
 
   const toggle = () => setOpen(!open);
 
   const handleLinkClick = () => {
     setOpen(false);
+    setVisible(false);
   };
 
   return (
@@ -51,7 +72,7 @@ const Sidebar = () => {
         ref={sidebarRef}
         className={`${styles.sidebar} ${open ? styles.open : ""} ${
           mouseNear ? styles.expanded : ""
-        }`}
+        } ${visible ? styles.visible : styles.hidden}`}
         onClick={() => !open && toggle()}
       >
         <div className={styles.sidebarContent}>
@@ -87,7 +108,7 @@ const Sidebar = () => {
         </div>
       </aside>
 
-      <div className={styles.overlay} onClick={toggle} />
+      {open && <div className={styles.overlay} onClick={toggle} />}
     </>
   );
 };

@@ -3,7 +3,6 @@
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  width: 3rem;
   height: 3rem;
   z-index: 1000;
   cursor: pointer;
@@ -11,6 +10,7 @@
   align-items: center;
   justify-content: center;
   transition: background 0.3s ease;
+  padding: 0;
 }
 
 .sidebarImage {
@@ -33,7 +33,7 @@
   width: min(90vw, 400px);
   height: 100vh;
   background: #0e0e0e;
-  z-index: 10000;
+  z-index: 1000;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;

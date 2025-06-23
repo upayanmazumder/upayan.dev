@@ -75,6 +75,27 @@ const Sidebar = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [open, initialLoadComplete]);
 
+  // Show sidebar expanded for 3s when scrolled to top
+  React.useEffect(() => {
+    let timeout: NodeJS.Timeout | null = null;
+    const handleScroll = () => {
+      if (window.scrollY === 0 && !open) {
+        setVisible(true);
+        setMouseNear(true);
+        if (timeout) clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          setMouseNear(false);
+          setVisible(false);
+        }, 3000);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [open]);
+
   const toggle = () => setOpen(!open);
 
   const handleLinkClick = () => {

@@ -8,7 +8,9 @@
   flex-direction: column;
   justify-content: center;
   z-index: 5000;
-  transition: width 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translate3d(0, 0, 0);
   opacity: 1;
 }
@@ -35,7 +37,9 @@
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   border-left: 1px solid rgba(255, 255, 255, 0.05);
-  transition: width 0.3s ease, clip-path 0.3s ease, background 0.3s ease;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    clip-path 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -55,7 +59,7 @@
 .sidebar.open .sidebarContent {
   width: 100%;
   clip-path: none;
-  padding: var(--padding-huge) var(--padding-small) var(--padding-small);
+  padding: var(--padding-medium) var(--padding-small) var(--padding-small);
   background: rgba(0, 0, 0, 0.99);
 }
 
@@ -69,7 +73,7 @@
   gap: 1rem 3rem;
   padding: 0 1.5rem;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   flex: 1;
   justify-content: center;
   max-width: 600px;
@@ -90,7 +94,7 @@
   text-decoration: none;
   padding: 1rem 1.5rem;
   border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   transform: translateX(20px);
   background: transparent;
@@ -117,7 +121,7 @@
   display: none;
   cursor: pointer;
   font-size: var(--font-size-huge);
-  transition: opacity 0.3s ease;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar.open .hamburger {
@@ -132,7 +136,7 @@
   backdrop-filter: blur(3px);
   z-index: 900;
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
 
@@ -148,7 +152,8 @@
   padding: 1.5rem 2rem;
   opacity: 0;
   transform: translateY(-20px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   margin-bottom: 2rem;
 }
 
@@ -177,7 +182,8 @@
   margin-top: auto;
   padding: 2rem;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 2rem;
 }
 
@@ -198,7 +204,7 @@
   text-decoration: none;
   padding: 0.4rem;
   border-radius: 6px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   transform: translateY(20px);
   background: transparent !important;

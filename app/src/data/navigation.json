@@ -5,6 +5,16 @@
     "label": "Home"
   },
   {
+    "href": "/#clubs",
+    "icon": "BsPeople",
+    "label": "Clubs"
+  },
+  {
+    "href": "/#projects",
+    "icon": "BsKanban",
+    "label": "Projects"
+  },
+  {
     "href": "/certificates",
     "icon": "BsPatchCheck",
     "label": "Certificates"
@@ -13,5 +23,10 @@
     "href": "/devjourney",
     "icon": "BsCodeSlash",
     "label": "DevJourney"
+  },
+  {
+    "href": "/contact",
+    "icon": "BsEnvelope",
+    "label": "Contact"
   }
 ]

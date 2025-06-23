@@ -23,7 +23,7 @@
 :root {
   --header-background-color: var(--background-color);
   --footer-background-color: #121212bd;
-  --sidebar-background-color: #0f0f0fc3;
+  --sidebar-background-color: transparent;
   --card-background: #6163631f;
 
   --screen-horizontal-margin: var(--margin-huge);

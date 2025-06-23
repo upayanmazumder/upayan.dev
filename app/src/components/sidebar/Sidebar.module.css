@@ -32,22 +32,18 @@
   right: 0;
   height: 100%;
   width: 100%;
-  clip-path: polygon(100% 0, 100% 100%, 0 50%);
   background: var(--sidebar-background-color);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-  border-left: 1px solid rgba(255, 255, 255, 0.05);
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    clip-path 0.6s cubic-bezier(0.4, 0, 0.2, 1),
     background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 .sidebar.expanded .sidebarContent {
-  width: clamp(6rem, 10vw, 8rem);
-  clip-path: polygon(100% 0, 100% 100%, 50% 50%);
+  background: transparent url("/sidebar.svg") center center no-repeat;
+  background-size: contain;
 }
 
 .sidebar.open {

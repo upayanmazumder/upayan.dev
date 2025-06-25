@@ -55,7 +55,7 @@ export default function Sidebar() {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         timeoutRef.current = setTimeout(() => {
           setShowOnScrollTop(false);
-        }, 3000); // show trigger for 3s
+        }, 3000);
       }
     };
 
@@ -102,10 +102,10 @@ export default function Sidebar() {
 
             <motion.aside
               className={styles.sidebarPanel}
-              initial={{ x: "100%" }}
+              initial={{ x: "100vw" }}
               animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "tween", ease: "easeInOut", duration: 0.4 }}
+              exit={{ x: "100vw" }}
+              transition={{ type: "tween", ease: "easeInOut", duration: 0.5 }}
             >
               <div className={styles.header}>
                 <BsList

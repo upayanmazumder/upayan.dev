@@ -30,7 +30,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  width: min(90vw, 400px);
+  width: 100vw;
   height: 100vh;
   background: #0e0e0e;
   z-index: 1000;
@@ -48,7 +48,7 @@
 }
 
 .closeIcon {
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: #fff;
   cursor: pointer;
 }

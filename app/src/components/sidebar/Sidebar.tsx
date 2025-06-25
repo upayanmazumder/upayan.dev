@@ -39,6 +39,8 @@ const socialIcons: Record<string, React.ElementType> = {
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveringEdge, setHoveringEdge] = useState(false);
+  const [showOnScrollTop, setShowOnScrollTop] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -47,15 +49,33 @@ export default function Sidebar() {
       setHoveringEdge(isNearRight);
     };
 
+    const handleScroll = () => {
+      if (window.scrollY === 0) {
+        setShowOnScrollTop(true);
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => {
+          setShowOnScrollTop(false);
+        }, 3000); // show trigger for 3s
+      }
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScroll);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, []);
+
+  const shouldShowTrigger = hoveringEdge || isOpen || showOnScrollTop;
 
   return (
     <>
       <motion.div
         className={styles.sidebarTrigger}
-        animate={{ x: hoveringEdge || isOpen ? 0 : "100%" }}
+        animate={{ x: shouldShowTrigger ? 0 : "100%" }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         onClick={() => setIsOpen(true)}
         ref={sidebarRef}

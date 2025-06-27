@@ -4,6 +4,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 import Footer from "../components/footer/Footer";
 import { ThemeProvider } from "../components/theme/Theme";
 import ServiceWorkerRegister from "../components/serviceworkerregister/ServiceWorkerRegister";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Upayan",
@@ -37,6 +38,7 @@ export default function RootLayout({
         <ThemeProvider>
           <Sidebar />
           {children}
+          <Analytics />
           <ServiceWorkerRegister />
           <Footer />
         </ThemeProvider>

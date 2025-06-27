@@ -10,6 +10,7 @@
     "lintgg": "eslint --config eslint.config.ts ."
   },
   "dependencies": {
+    "@vercel/analytics": "^1.5.0",
     "axios": "^1.8.2",
     "dotenv": "^16.5.0",
     "framer-motion": "^12.9.2",

@@ -4,7 +4,6 @@ const CACHE_NAME = "UPAYAN-V4.3.8";
 const CORE_ASSETS = [
   "/",
   "/offline",
-  "/manifest.json",
   "/fonts/RedHatDisplay-VariableFont_wght.ttf",
   "/fonts/RedHatMono-VariableFont_wght.ttf",
   "/icons/icon-16x16.webp",

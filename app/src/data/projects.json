@@ -1,25 +1,5 @@
 [
   {
-    "name": "Kargo",
-    "icon": "/projects/kargo.webp",
-    "description": "Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface.",
-    "links": [
-      {
-        "name": "Website",
-        "url": "https://kargo.upayan.dev"
-      },
-      {
-        "name": "Github - Backend",
-        "url": "https://github.com/GDGVIT/kargo-backend"
-      },
-      {
-        "name": "Github - Frontend",
-        "url": "https://github.com/GDGVIT/kargo-frontend"
-      }
-    ],
-    "packageLinks": []
-  },
-  {
     "name": "FFCS-inator | Codechef VIT",
     "icon": "/projects/ffcs-inator.webp",
     "description": "Generate priority-based timetables in seconds. No more clashes, no more stress.",
@@ -77,6 +57,26 @@
     "packageLinks": []
   },
   {
+    "name": "Kargo",
+    "icon": "/projects/kargo.webp",
+    "description": "Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface.",
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://kargo.upayan.dev"
+      },
+      {
+        "name": "Github - Backend",
+        "url": "https://github.com/GDGVIT/kargo-backend"
+      },
+      {
+        "name": "Github - Frontend",
+        "url": "https://github.com/GDGVIT/kargo-frontend"
+      }
+    ],
+    "packageLinks": []
+  },
+  {
     "name": "Traffic Control System",
     "icon": "/projects/traffic-control-system.webp",
     "description": "Smarter signals, smoother streets",
@@ -119,6 +119,27 @@
     ]
   },
   {
+    "name": "Bandit",
+    "icon": "/projects/bandit.webp",
+    "description": "Ever wanted to form a music band but found it too hard to find fellow band members? Bandit is here to help!",
+    "links": [
+      {
+        "name": "Github",
+        "url": "https://github.com/upayanmazumder/bandit"
+      },
+      {
+        "name": "Website",
+        "url": "https://bandit.upayan.dev"
+      }
+    ],
+    "packageLinks": [
+      {
+        "name": "Docker Image",
+        "url": "https://github.com/upayanmazumder/bandit/pkgs/container/bandit"
+      }
+    ]
+  },
+  {
     "name": "Boardly",
     "icon": "/projects/boardly.webp",
     "description": "A one stop solution for board exams!",
@@ -131,7 +152,8 @@
         "name": "Linkedin",
         "url": "https://www.linkedin.com/company/kalkini-ai-surveillance-system"
       }
-    ]
+    ],
+    "packageLinks": []
   },
   {
     "name": "Collaborative Article Sharing",
@@ -162,27 +184,7 @@
       }
     ]
   },
-  {
-    "name": "Bandit",
-    "icon": "/projects/bandit.webp",
-    "description": "Ever wanted to form a music band but found it too hard to find fellow band members? Bandit is here to help!",
-    "links": [
-      {
-        "name": "Github",
-        "url": "https://github.com/upayanmazumder/bandit"
-      },
-      {
-        "name": "Website",
-        "url": "https://bandit.upayan.dev"
-      }
-    ],
-    "packageLinks": [
-      {
-        "name": "Docker Image",
-        "url": "https://github.com/upayanmazumder/bandit/pkgs/container/bandit"
-      }
-    ]
-  },
+
   {
     "name": "Status Page",
     "icon": "/projects/status-page.webp",

@@ -61,7 +61,7 @@ const SponsorCard: React.FC<SponsorCardProps> = ({
               whiteSpace: "nowrap",
             }}
           >
-            "i love vibecoders"
+            &quot;i love vibecoders&quot;
           </div>
         </div>
       </>

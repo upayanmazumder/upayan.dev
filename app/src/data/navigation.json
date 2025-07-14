@@ -5,6 +5,11 @@
     "label": "Home"
   },
   {
+    "href": "/#sponsors",
+    "icon": "BsHeart",
+    "label": "Sponsors"
+  },
+  {
     "href": "/#clubs",
     "icon": "BsPeople",
     "label": "Clubs"

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Devices from "../components/ui/Devices/Devices";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +26,27 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`
+          ${geistSans.variable}
+          ${geistMono.variable}
+          antialiased
+          min-h-screen
+          flex flex-col items-center justify-center
+          bg-no-repeat bg-center bg-cover
+          bg-[url('/Wall.svg')]
+          sm:bg-[url('/Wall.svg')]
+          md:bg-[url('/Wall.svg')]
+          lg:bg-[url('/Wall.svg')]
+          xl:bg-[url('/Wall.svg')]
+        `}
+        style={{
+          backgroundImage: "url('/Wall.svg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
       >
-        {children}
+        <Devices>{children}</Devices>
       </body>
     </html>
   );

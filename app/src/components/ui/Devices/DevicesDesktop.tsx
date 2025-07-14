@@ -18,7 +18,7 @@ export default function DevicesDesktop({ children }: DevicesDesktopProps) {
         <div className="w-full md:w-[880px] h-[300px] md:h-[540px] rounded-md bg-background flex items-center justify-center overflow-auto scrollbar-thin scrollbar-thumb-neutral-500 scrollbar-track-neutral-900">
           {children}
         </div>
-        <div className="w-[50px] h-[22px] bg-[url('/upayan-transparent.svg')] bg-contain bg-no-repeat" />
+        <div className="w-[50px] h-[22px] bg-[url('/upayan-transparent-cropped.avif')] bg-contain bg-no-repeat" />
       </div>
     </motion.div>
   );

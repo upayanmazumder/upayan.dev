@@ -1,6 +1,5 @@
 import React from "react";
 import Card from "../ui/card/Card";
-import { BsCardHeading } from "react-icons/bs";
 
 interface SponsorCardProps {
   imgSrc: string;

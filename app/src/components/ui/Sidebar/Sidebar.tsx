@@ -58,23 +58,6 @@ export default function Sidebar() {
           </svg>
           Projects
         </Link>
-        <Link
-          href="/#contact"
-          className="flex items-center gap-2 text-neutral-200 hover:text-white transition-colors"
-        >
-          <svg
-            width="20"
-            height="20"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <path d="M21 10.5a8.38 8.38 0 0 1-1.9.8c-.5.2-1 .3-1.6.3a8.5 8.5 0 0 1-8.5-8.5c0-.6.1-1.1.3-1.6.2-.5.5-1 .8-1.9" />
-            <path d="M2 2l20 20" />
-          </svg>
-          Contact
-        </Link>
       </nav>
       <div className="mt-6 flex gap-2">
         <a

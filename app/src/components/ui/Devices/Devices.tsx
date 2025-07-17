@@ -12,7 +12,7 @@ interface DevicesProps {
 export default function Devices({ children, sidebar }: DevicesProps) {
   const sidebarContent = sidebar ?? <Sidebar />;
   return (
-    <div className="relative w-full flex flex-col md:flex-row items-center justify-center max-w-6xl mx-auto py-10 md:py-24 gap-6 md:gap-16">
+    <div className="relative w-full flex flex-col md:flex-row items-center justify-center max-w-6xl mx-auto py-10 md:py-24 gap-6 md:gap-16 h-full">
       {/* Desktop Section: Main Content (always visible) */}
       <DevicesDesktop>{children}</DevicesDesktop>
 

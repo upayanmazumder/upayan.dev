@@ -1,8 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Devices from "../components/ui/Devices/Devices";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import Background from "../components/ui/Background/Background";
 
 // Load fonts
 const geistSans = Geist({
@@ -40,27 +41,9 @@ export default function RootLayout({
           backgroundColor: "#0a0a0a",
         }}
       >
-        {/* Fullscreen SVG Background */}
-        <img
-          src="/Wall.svg"
-          alt="Background"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            objectFit: "fill",
-            display: "block",
-            zIndex: -1,
-            pointerEvents: "none",
-            userSelect: "none",
-          }}
-          draggable={false}
-        />
-
-        {/* App Content */}
+        <Background />
         <Devices>{children}</Devices>
+        <SpeedInsights />
       </body>
     </html>
   );

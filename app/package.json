@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@vercel/speed-insights": "^1.2.0",
     "dotenv": "^17.2.0",
     "framer-motion": "^12.23.5",
     "gsap": "^3.13.0",

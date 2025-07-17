@@ -22,7 +22,7 @@ export default function Sidebar() {
           </svg>
           Home
         </Link>
-        <a
+        <Link
           href="/about"
           className="flex items-center gap-2 text-neutral-200 hover:text-white transition-colors"
         >
@@ -38,9 +38,9 @@ export default function Sidebar() {
             <path d="M5.5 21a6.5 6.5 0 0 1 13 0" />
           </svg>
           About
-        </a>
-        <a
-          href="/projects"
+        </Link>
+        <Link
+          href="/#projects"
           className="flex items-center gap-2 text-neutral-200 hover:text-white transition-colors"
         >
           <svg
@@ -57,9 +57,9 @@ export default function Sidebar() {
             <rect x="3" y="14" width="7" height="7" />
           </svg>
           Projects
-        </a>
-        <a
-          href="/contact"
+        </Link>
+        <Link
+          href="/#contact"
           className="flex items-center gap-2 text-neutral-200 hover:text-white transition-colors"
         >
           <svg
@@ -74,7 +74,7 @@ export default function Sidebar() {
             <path d="M2 2l20 20" />
           </svg>
           Contact
-        </a>
+        </Link>
       </nav>
       <div className="mt-6 flex gap-2">
         <a

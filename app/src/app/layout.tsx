@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";

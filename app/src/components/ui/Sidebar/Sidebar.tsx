@@ -1,10 +1,11 @@
 import React from "react";
+import Link from "next/link";
 
 export default function Sidebar() {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full p-2 gap-4">
       <nav className="flex flex-col gap-3 w-full">
-        <a
+        <Link
           href="/"
           className="flex items-center gap-2 text-neutral-200 hover:text-white transition-colors"
         >
@@ -20,7 +21,7 @@ export default function Sidebar() {
             <path d="M4 10v10h5v-6h6v6h5V10" />
           </svg>
           Home
-        </a>
+        </Link>
         <a
           href="/about"
           className="flex items-center gap-2 text-neutral-200 hover:text-white transition-colors"

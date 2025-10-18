@@ -77,6 +77,22 @@
     "packageLinks": []
   },
   {
+    "name": "Cookoff 10 Portal | Codechef VIT",
+    "icon": "/projects/cookoff-10.webp",
+    "description": "CookOff 10.0 launched a custom portal, offering coders real-time scoring, progress tracking, and seamless competition experience.",
+    "links": [
+      {
+        "name": "Github",
+        "url": "https://github.com/CodeChefVIT/cookoff-portal-10.0"
+      },
+      {
+        "name": "Website",
+        "url": "https://cookoff.codechefvit.com"
+      }
+    ],
+    "packageLinks": []
+  },
+  {
     "name": "Traffic Control System",
     "icon": "/projects/traffic-control-system.webp",
     "description": "Smarter signals, smoother streets",

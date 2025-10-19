@@ -12,8 +12,12 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: ["portfolio", "developer", "technology"],
     icons: [
       { src: "/icons/icon-16x16.webp", sizes: "16x16", type: "image/webp" },
+      { src: "/icons/icon-24x24.webp", sizes: "24x24", type: "image/webp" },
       { src: "/icons/icon-32x32.webp", sizes: "32x32", type: "image/webp" },
+      { src: "/icons/icon-36x36.webp", sizes: "36x36", type: "image/webp" },
       { src: "/icons/icon-48x48.webp", sizes: "48x48", type: "image/webp" },
+      { src: "/icons/icon-57x57.webp", sizes: "57x57", type: "image/webp" },
+      { src: "/icons/icon-60x60.webp", sizes: "60x60", type: "image/webp" },
       { src: "/icons/icon-64x64.webp", sizes: "64x64", type: "image/webp" },
       { src: "/icons/icon-72x72.webp", sizes: "72x72", type: "image/webp" },
       { src: "/icons/icon-76x76.webp", sizes: "76x76", type: "image/webp" },
@@ -23,6 +27,7 @@ export default function manifest(): MetadataRoute.Manifest {
       { src: "/icons/icon-128x128.webp", sizes: "128x128", type: "image/webp" },
       { src: "/icons/icon-144x144.webp", sizes: "144x144", type: "image/webp" },
       { src: "/icons/icon-152x152.webp", sizes: "152x152", type: "image/webp" },
+      { src: "/icons/icon-167x167.webp", sizes: "167x167", type: "image/webp" },
       { src: "/icons/icon-180x180.webp", sizes: "180x180", type: "image/webp" },
       { src: "/icons/icon-192x192.webp", sizes: "192x192", type: "image/webp" },
       { src: "/icons/icon-196x196.webp", sizes: "196x196", type: "image/webp" },
@@ -30,6 +35,7 @@ export default function manifest(): MetadataRoute.Manifest {
       { src: "/icons/icon-256x256.webp", sizes: "256x256", type: "image/webp" },
       { src: "/icons/icon-384x384.webp", sizes: "384x384", type: "image/webp" },
       { src: "/icons/icon-512x512.webp", sizes: "512x512", type: "image/webp" },
+      { src: "/icons/icon-1024x1024.webp", sizes: "1024x1024", type: "image/webp" },
     ],
     shortcuts: [
       {

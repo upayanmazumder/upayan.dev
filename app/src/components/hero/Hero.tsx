@@ -109,7 +109,7 @@ export default function Hero() {
           transition={{ duration: 1.2, delay: 1 }}
         >
           <motion.img
-            src="/upayan-transparent-cropped.avif"
+            src="/upayan.avif"
             alt="Upayan Mazumder"
             className={heroStyles.image}
             whileHover={{ scale: 1.05 }}

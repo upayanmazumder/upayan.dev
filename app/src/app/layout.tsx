@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     images: ["/icon.svg"],
     creator: "@upayanmazumder",
   },
-  manifest: "/manifest",
+  manifest: "/manifest.webmanifest",
   robots: {
     index: true,
     follow: true,

@@ -1,5 +1,6 @@
 import express from "express";
 import type { Request, Response } from "express";
+import logger from "winston";
 
 const router = express.Router();
 
@@ -22,6 +23,8 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
   const requestedPath = typeof req.query.path === "string" ? req.query.path : undefined;
   const githubUrl = buildGithubUrl(requestedPath);
 
+  logger.info(`DevJourney request received: path=${requestedPath || "/"}`);
+
   try {
     const response = await fetch(githubUrl, {
       headers: {
@@ -33,6 +36,9 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
 
     if (!response.ok) {
       const details = await response.text();
+      logger.error(
+        `Failed to fetch DevJourney data from GitHub: status=${response.status}, path=${requestedPath || "/"}`
+      );
       res.status(response.status).json({
         error: "Failed to fetch DevJourney data from GitHub.",
         status: response.status,
@@ -44,6 +50,9 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
     const payload = await response.json();
     res.status(200).json(payload);
   } catch (error) {
+    logger.error(
+      `Error handling request to '/devjourney': ${error instanceof Error ? error.message : "Unknown error"}`
+    );
     res.status(500).json({
       error: "Unexpected error while fetching DevJourney data.",
       details: error instanceof Error ? error.message : "Unknown error",

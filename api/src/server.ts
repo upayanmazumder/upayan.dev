@@ -51,6 +51,7 @@ client.once("ready", async () => {
 
   const activityRoute = await import("./routes/activity");
   const contactRoute = await import("./routes/contact");
+  const devJourneyRoute = await import("./routes/devjourney");
 
   app.get("/", (_req, res) => {
     res.json({ status: "ok", message: "API is running" });
@@ -58,6 +59,7 @@ client.once("ready", async () => {
 
   app.use("/activity", activityRoute.default(client, app, USER_ID));
   app.use("/contact", contactRoute.default);
+  app.use("/devjourney", devJourneyRoute.default);
 
   app.listen(API_PORT, () => {
     logger.info(`API is listening on port ${API_PORT}`);

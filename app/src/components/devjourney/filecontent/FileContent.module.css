@@ -21,6 +21,79 @@
   color: #f3f3f3d7;
 }
 
+.contentContainer .markdownContent pre {
+  background: #282c34;
+  padding: 1em;
+  border-radius: var(--border-radius-small);
+  overflow-x: auto;
+  max-height: 60dvh;
+  overflow-y: auto;
+}
+
+.contentContainer .markdownContent code {
+  font-family: "RedHatMono", monospace;
+}
+
+.contentContainer .markdownContent pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.contentContainer .markdownContent :not(pre) > code {
+  background: #3a3f4b;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.contentContainer .markdownContent h1,
+.contentContainer .markdownContent h2,
+.contentContainer .markdownContent h3,
+.contentContainer .markdownContent h4,
+.contentContainer .markdownContent h5,
+.contentContainer .markdownContent h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  color: #ffffff;
+}
+
+.contentContainer .markdownContent a {
+  color: #64b5f6;
+  text-decoration: none;
+}
+
+.contentContainer .markdownContent a:hover {
+  text-decoration: underline;
+}
+
+.contentContainer .markdownContent ul,
+.contentContainer .markdownContent ol {
+  margin-left: 1.5em;
+}
+
+.contentContainer .markdownContent blockquote {
+  border-left: 4px solid #64b5f6;
+  margin: 1em 0;
+  padding-left: 1em;
+  color: #aeaeae;
+}
+
+.contentContainer .markdownContent table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+.contentContainer .markdownContent table th,
+.contentContainer .markdownContent table td {
+  border: 1px solid #3a3f4b;
+  padding: 0.5em;
+}
+
+.contentContainer .markdownContent table th {
+  background: #282c34;
+}
+
 .contentContainer .fileContent {
   color: white;
 }

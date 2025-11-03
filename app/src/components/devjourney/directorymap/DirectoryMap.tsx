@@ -23,10 +23,11 @@ const DirectoryMap: React.FC<DirectoryMapProps> = ({
   handleItemClick,
 }) => {
   if (loading) return <Loader />;
-  if (error) return <p>Error: {error}</p>;
-  if (data.length === 0) return null;
+  if (error) return <p style={{ color: "red", textAlign: "center" }}>Error: {error}</p>;
+  if (!data || data.length === 0) return null;
 
   const sortedData = [...data].sort((a, b) => {
+    // Sort directories first, then files, alphabetically within each group
     if (a.type === "dir" && b.type !== "dir") return -1;
     if (a.type !== "dir" && b.type === "dir") return 1;
     return a.name.localeCompare(b.name);

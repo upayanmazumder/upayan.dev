@@ -51,6 +51,10 @@ const Repository = () => {
         try {
           const payload = await response.json();
           if (typeof payload?.error === "string") details = payload.error;
+          if (payload?.details) details += ` - ${payload.details}`;
+          if (payload?.githubUrl) {
+            console.error("Failed GitHub URL:", payload.githubUrl);
+          }
         } catch {
           /* ignore JSON parse errors */
         }

@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 
-const CACHE_NAME = "UPAYAN-V4.3.8";
+const CACHE_NAME = "UPAYAN-V4.4.0";
 const CORE_ASSETS = [
   "/",
   "/offline",

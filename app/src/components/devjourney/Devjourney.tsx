@@ -75,7 +75,7 @@ const Repository = () => {
         if (Array.isArray(result)) {
           setData(result);
           setFileContent(null);
-        } else if (result?.type === "file") {
+        } else if (result.type === "file") {
           const file = result as RepoFileContent;
           const decodedContent =
             typeof file.content === "string" && file.encoding === "base64"

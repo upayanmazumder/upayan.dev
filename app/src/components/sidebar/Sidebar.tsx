@@ -36,6 +36,29 @@ const socialIcons: Record<string, React.ElementType> = {
   Devfolio: BsKanban,
 };
 
+const navVariants = {
+  hidden: { opacity: 0, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.3,
+      ease: "easeOut",
+      when: "beforeChildren",
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const navItemVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: "easeOut" },
+  },
+};
+
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveringEdge, setHoveringEdge] = useState(false);
@@ -124,22 +147,38 @@ export default function Sidebar() {
                 </div>
               </div>
 
-              <nav className={styles.nav}>
-                {sidebarData.map((item, index) => {
-                  const Icon = Icons[item.icon as keyof typeof Icons];
-                  return (
-                    <Link
-                      key={index}
-                      href={item.href}
-                      className={styles.link}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <Icon className={styles.icon} />
-                      <span>{item.label}</span>
-                    </Link>
-                  );
-                })}
-              </nav>
+              <motion.nav
+                className={styles.nav}
+                aria-label="Primary navigation"
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={navVariants}
+              >
+                <ul className={styles.navList}>
+                  {sidebarData.map((item) => {
+                    const Icon = Icons[item.icon as keyof typeof Icons];
+                    return (
+                      <motion.li
+                        key={item.href}
+                        className={styles.navItem}
+                        variants={navItemVariants}
+                        whileHover={{ y: -6, scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Link
+                          href={item.href}
+                          className={styles.link}
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <Icon className={styles.icon} />
+                          <span>{item.label}</span>
+                        </Link>
+                      </motion.li>
+                    );
+                  })}
+                </ul>
+              </motion.nav>
 
               <div className={styles.social}>
                 {links

@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Breadcrumb from "./breadcrumb/BreadCrumb";
 import GitHubButton from "./githubbutton/GithubButton";
 import FileContent from "./filecontent/FileContent";
 import DirectoryMap from "./directorymap/DirectoryMap";
 import djStyles from "./Devjourney.module.css";
+import API from "../../utils/api";
 
 interface FileContentData {
   name: string;
@@ -20,6 +21,11 @@ interface RepoContent {
   sha: string;
 }
 
+interface RepoFileContent extends RepoContent {
+  content?: string;
+  encoding?: string;
+}
+
 const Repository = () => {
   const [data, setData] = useState<RepoContent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -30,62 +36,31 @@ const Repository = () => {
   const repoOwner = "upayanmazumder";
   const repoName = "DevJourney";
 
-  const fetchRepoContents = async (
-    path: string = ""
-  ): Promise<RepoContent[] | null> => {
-    const token = process.env.GITHUB_TOKEN;
-    const headers: Record<string, string> = token
-      ? { Authorization: `token ${token}` }
-      : {};
+  const buildDevJourneyUrl = useCallback((path: string = "") => {
+    const url = new URL("/devjourney", API);
+    if (path) url.searchParams.set("path", path);
+    return url.toString();
+  }, []);
 
-    try {
-      const response = await fetch(
-        `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${path}`,
-        { headers }
-      );
+  const requestDevJourney = useCallback(
+    async (path: string = ""): Promise<RepoContent[] | RepoFileContent> => {
+      const response = await fetch(buildDevJourneyUrl(path));
 
-      if (!response.ok) throw new Error("Failed to fetch repository contents");
-
-      return await response.json();
-    } catch (err: unknown) {
-      setError(
-        `Error fetching repository contents: ${
-          err instanceof Error ? err.message : "Unknown error"
-        }`
-      );
-      return null;
-    }
-  };
-
-  const fetchFileContent = async (path: string): Promise<void> => {
-    const token = process.env.GITHUB_TOKEN;
-    const headers: Record<string, string> = token
-      ? { Authorization: `token ${token}` }
-      : {};
-
-    try {
-      const response = await fetch(
-        `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${path}`,
-        { headers }
-      );
-
-      if (!response.ok) throw new Error("Failed to fetch file content");
-
-      const result = await response.json();
-      if (result.type === "file") {
-        setFileContent({ name: result.name, content: atob(result.content) });
-      } else {
-        setFileContent(null);
-        throw new Error("Path is not a file");
+      if (!response.ok) {
+        let details = "Unknown error";
+        try {
+          const payload = await response.json();
+          if (typeof payload?.error === "string") details = payload.error;
+        } catch {
+          /* ignore JSON parse errors */
+        }
+        throw new Error(details);
       }
-    } catch (err: unknown) {
-      setError(
-        `Error fetching file content: ${
-          err instanceof Error ? err.message : "Unknown error"
-        }`
-      );
-    }
-  };
+
+      return response.json();
+    },
+    [buildDevJourneyUrl]
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,14 +70,27 @@ const Repository = () => {
       const repoPath = pathname.replace("/devjourney", "").replace(/^\//, "");
 
       try {
-        const contents = await fetchRepoContents(repoPath);
-        if (Array.isArray(contents)) {
-          setData(contents);
+        const result = await requestDevJourney(repoPath);
+
+        if (Array.isArray(result)) {
+          setData(result);
           setFileContent(null);
+        } else if (result.type === "file") {
+          const file = result as RepoFileContent;
+          const decodedContent =
+            typeof file.content === "string" && file.encoding === "base64"
+              ? atob(file.content)
+              : file.content ?? "";
+          setData([]);
+          setFileContent({ name: file.name, content: decodedContent });
         } else {
-          await fetchFileContent(repoPath);
+          setData([]);
+          setFileContent(null);
+          setError("Unsupported DevJourney content type.");
         }
       } catch (err: unknown) {
+        setData([]);
+        setFileContent(null);
         setError(
           `Error during data fetching: ${
             err instanceof Error ? err.message : "Unknown error"
@@ -114,7 +102,7 @@ const Repository = () => {
     };
 
     if (pathname) fetchData();
-  }, [pathname]);
+  }, [pathname, requestDevJourney]);
 
   const handleItemClick = (item: RepoContent): void => {
     router.push(`/devjourney/${item.path}`);

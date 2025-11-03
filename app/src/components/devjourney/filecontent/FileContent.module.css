@@ -3,6 +3,18 @@
   padding: var(--padding-medium);
   border-radius: var(--border-radius-medium);
   background-color: rgb(0 0 0 / 70%);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 768px) {
@@ -28,15 +40,21 @@
   overflow-x: auto;
   max-height: 60dvh;
   overflow-y: auto;
+  font-family: "RedHatMono", "Fira Code", "Consolas", "Monaco", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 1em 0;
 }
 
 .contentContainer .markdownContent code {
-  font-family: "RedHatMono", monospace;
+  font-family: "RedHatMono", "Fira Code", "Consolas", "Monaco", monospace;
 }
 
 .contentContainer .markdownContent pre code {
   background: transparent;
   padding: 0;
+  display: block;
+  color: #a39e9b;
 }
 
 .contentContainer .markdownContent :not(pre) > code {
@@ -44,6 +62,7 @@
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 0.9em;
+  color: #ffd75f;
 }
 
 .contentContainer .markdownContent h1,
@@ -104,33 +123,110 @@
   }
 }
 
+.codeBlock {
+  position: relative;
+}
+
+.languageBadge {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #73d0ff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(115, 208, 255, 0.2);
+}
+
 .code {
   max-height: 60dvh;
-  overflow-y: scroll;
-  background: #70707014;
+  overflow-y: auto;
+  overflow-x: auto;
+  background: #282c34;
+  border-radius: var(--border-radius-small);
+  padding: 0;
+  margin: 0;
+  font-family: "RedHatMono", "Fira Code", "Consolas", "Monaco", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.code code {
+  display: block;
+  padding: 1em;
+  white-space: pre;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  color: #a39e9b;
+  background: transparent;
+}
+
+@media (max-width: 768px) {
+  .code {
+    font-size: 12px;
+    max-height: 50dvh;
+  }
 }
 
 /* Webkit (Chrome, Edge, Safari) */
 .code::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 .code::-webkit-scrollbar-track {
-  background: #2a2a2a;
-  border-radius: 4px;
+  background: #1e2127;
+  border-radius: 5px;
 }
 
 .code::-webkit-scrollbar-thumb {
-  background: #555;
-  border-radius: 4px;
+  background: #4a4e57;
+  border-radius: 5px;
+  border: 2px solid #282c34;
 }
 
 .code::-webkit-scrollbar-thumb:hover {
-  background: #777;
+  background: #5a5e67;
+}
+
+.code::-webkit-scrollbar-corner {
+  background: #282c34;
 }
 
 /* Firefox */
 .code {
   scrollbar-width: thin;
-  scrollbar-color: #555 #2a2a2a;
+  scrollbar-color: #4a4e57 #1e2127;
+}
+
+/* Markdown scrollbars */
+.contentContainer .markdownContent pre::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.contentContainer .markdownContent pre::-webkit-scrollbar-track {
+  background: #1e2127;
+  border-radius: 5px;
+}
+
+.contentContainer .markdownContent pre::-webkit-scrollbar-thumb {
+  background: #4a4e57;
+  border-radius: 5px;
+  border: 2px solid #282c34;
+}
+
+.contentContainer .markdownContent pre::-webkit-scrollbar-thumb:hover {
+  background: #5a5e67;
+}
+
+.contentContainer .markdownContent pre {
+  scrollbar-width: thin;
+  scrollbar-color: #4a4e57 #1e2127;
 }

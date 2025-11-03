@@ -21,9 +21,14 @@ const CopyButton: React.FC<CopyButtonProps> = ({ text }) => {
   };
 
   return (
-    <button className={copyButtonStyles.copyButton} onClick={handleCopy}>
-      {copied ? <Check size={12} /> : <Copy size={12} />}
-      {copied ? " Copied!" : " Copy"}
+    <button 
+      className={copyButtonStyles.copyButton} 
+      onClick={handleCopy}
+      title={copied ? "Copied!" : "Copy code to clipboard"}
+      aria-label={copied ? "Copied!" : "Copy code"}
+    >
+      {copied ? <Check size={14} /> : <Copy size={14} />}
+      {copied ? "Copied!" : "Copy"}
     </button>
   );
 };

@@ -2,55 +2,70 @@ pre code.hljs {
   display: block;
   overflow-x: auto;
   padding: 1em;
+  background: #23232371;
+  border-radius: 4px;
 }
 
 code.hljs {
   padding: 3px 5px;
+  border-radius: 3px;
 }
 
 /*!
-    Theme: devibeans (dark)
+    Theme: devibeans (dark) - Enhanced
     Author: @terminaldweller
     Maintainer: @terminaldweller
-
     Inspired by vim's jellybeans theme (https://github.com/nanotech/jellybeans.vim)
 */
 .hljs {
-  color: #a39e9b;
-  font-family: "RedHatMono";
+  color: #e6e6e6;
+  background: #282c34;
+  font-family: "RedHatMono", "Fira Code", "Consolas", "Monaco", monospace;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
+/* Attributes and template tags */
 .hljs-attr,
-.hljs-template-tag {
-  color: #8787d7;
+.hljs-template-tag,
+.hljs-attribute {
+  color: #a99ef0;
 }
 
+/* Comments */
 .hljs-comment,
 .hljs-doctag,
 .hljs-quote {
-  color: #339966;
+  color: #5f875f;
+  font-style: italic;
 }
 
+/* Parameters */
 .hljs-params {
-  color: #a39e9b;
+  color: #e6b673;
 }
 
+/* Regular expressions */
 .hljs-regexp {
   color: #d700ff;
 }
 
+/* Tags, IDs, numbers, literals */
 .hljs-tag,
 .hljs-selector-id,
 .hljs-number,
-.hljs-literal {
-  color: #ef5350;
+.hljs-literal,
+.hljs-char {
+  color: #ff6b6b;
 }
 
+/* Meta and keywords in meta */
 .hljs-meta,
 .hljs-meta .hljs-keyword {
-  color: #0087ff;
+  color: #52a8ff;
 }
 
+/* Selectors, code, formulas, variables, keywords */
 .hljs-selector-class,
 .hljs-code,
 .hljs-formula,
@@ -59,42 +74,65 @@ code.hljs {
 .hljs-selector-attr,
 .hljs-selector-pseudo,
 .hljs-link,
-.hljs-keyword {
-  color: #64b5f6;
+.hljs-keyword,
+.hljs-built_in {
+  color: #73d0ff;
+  font-weight: 500;
 }
 
-.hljs-built_in,
+/* Built-ins, titles, deletions */
 .hljs-title,
 .hljs-deletion {
-  color: #ff8700;
+  color: #ffb454;
+  font-weight: 600;
 }
 
+/* Types, sections, functions, names, properties */
 .hljs-type,
 .hljs-section,
 .hljs-function,
 .hljs-name,
 .hljs-property,
-.hljs-attribute {
-  color: #ffd75f;
+.hljs-class .hljs-title {
+  color: #ffd580;
+  font-weight: 600;
 }
 
+/* Strings, symbols, bullets, additions */
 .hljs-meta .hljs-string,
 .hljs-string,
 .hljs-subst,
 .hljs-symbol,
 .hljs-bullet,
 .hljs-addition {
-  color: #558b2f;
+  color: #7cca6c;
 }
 
+/* Selector tags */
 .hljs-selector-tag {
-  color: #9966ff;
+  color: #b99eff;
 }
 
+/* Punctuation */
+.hljs-punctuation {
+  color: #c0c0c0;
+}
+
+/* Operators */
+.hljs-operator {
+  color: #73d0ff;
+}
+
+/* Emphasis and strong */
 .hljs-emphasis {
   font-style: italic;
 }
 
 .hljs-strong {
   font-weight: bold;
+}
+
+/* Line highlighting on hover for better readability */
+.hljs:hover {
+  background: #282c34;
 }

@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+set -e
+
+echo "🧼 Running Prettier and Black..."
+
+pnpm lint-staged
+
+# Run black via python to avoid PATH issues
+cd ai
+python -m black .
+cd ..

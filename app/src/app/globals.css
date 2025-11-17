@@ -6,8 +6,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -16,11 +18,13 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
+
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
+
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -37,6 +41,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -44,10 +49,10 @@
 }
 
 @theme {
-  /* Primary */
+  /* ===== Primary ===== */
   --color-primary: #638dde;
 
-  /* Secondary */
+  /* ===== Secondary (Blues) ===== */
   --color-secondary-100: #d5dcfb;
   --color-secondary-200: #a1b3f6;
   --color-secondary-300: #668bf1;
@@ -58,10 +63,10 @@
 
   --color-secondary: var(--color-secondary-400);
 
-  /* Tertiary */
+  /* ===== Tertiary ===== */
   --color-tertiary: #98b4e9;
 
-  /* Gray Scale */
+  /* ===== Gray Scale ===== */
   --color-grey-100: #dbdcdd;
   --color-grey-200: #b3b4b8;
   --color-grey-300: #8c8e94;
@@ -71,29 +76,73 @@
   --color-grey-700: #101112;
 
   --color-grey: var(--color-grey-400);
+
+  /* ===== System Colors from :root ===== */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Sidebar system */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
 }
 
 :root {
   --background: oklch(0.13 0.028 261.692);
   --foreground: oklch(0.985 0.002 247.839);
+
   --card: oklch(0.21 0.034 264.665);
   --card-foreground: oklch(0.985 0.002 247.839);
+
   --popover: oklch(0.21 0.034 264.665);
   --popover-foreground: oklch(0.985 0.002 247.839);
+
   --primary: oklch(0.928 0.006 264.531);
   --primary-foreground: oklch(0.21 0.034 264.665);
+
   --secondary: oklch(0.278 0.033 256.848);
   --secondary-foreground: oklch(0.985 0.002 247.839);
+
   --muted: oklch(0.278 0.033 256.848);
   --muted-foreground: oklch(0.707 0.022 261.325);
+
   --accent: oklch(0.278 0.033 256.848);
   --accent-foreground: oklch(0.985 0.002 247.839);
+
   --destructive: oklch(0.704 0.191 22.216);
 
   --border: oklch(1 0 0 / 10%);
-
   --input: oklch(1 0 0 / 15%);
-
   --ring: oklch(0.551 0.027 264.364);
 
   --chart-1: oklch(0.488 0.243 264.376);
@@ -115,8 +164,36 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    @apply transition-all duration-200 ease-out;
   }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.font-inter {
+  font-family: var(--font-inter);
+}
+
+.font-redhatdisplay {
+  font-family: var(--font-redhatdisplay);
+}
+.font-redhatmono {
+  font-family: var(--font-redhatmono);
+}
+
+.font-montserrat {
+  font-family: var(--font-montserrat);
+}
+
+.font-montserratalternates {
+  font-family: var(--font-montserratalternates);
+}
+
+body {
+  font-family: "Red Hat Display", sans-serif;
+}
+
+code {
+  font-family: "Red Hat Mono", monospace;
 }

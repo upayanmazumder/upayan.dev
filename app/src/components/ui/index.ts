@@ -1,3 +1,5 @@
 import ColorPalette from "./ColorPalette/ColorPalette";
 
-export { ColorPalette };
+import LaserFlow from "./Backgrounds/LaserFlow/LaserFlow";
+
+export { ColorPalette, LaserFlow };

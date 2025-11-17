@@ -1,15 +1,33 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+  Inter,
+  Red_Hat_Display,
+  Red_Hat_Mono,
+  Montserrat,
+  Montserrat_Alternates,
+} from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const redHatDisplay = Red_Hat_Display({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-red-hat-display",
 });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const redHatMono = Red_Hat_Mono({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-red-hat-mono",
+});
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-montserrat",
+});
+const montserratAlternates = Montserrat_Alternates({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-montserrat-alternates",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} ${redHatDisplay.variable} ${redHatMono.variable} ${montserrat.variable} ${montserratAlternates.variable} antialiased`}
       >
         {children}
       </body>

@@ -3,5 +3,3 @@ dist
 .next
 coverage
 .env
-venv
-__pycache__

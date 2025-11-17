@@ -1,7 +1,0 @@
-[
-  ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Next.js", "Vite"],
-  ["Node.js", "Express.js", "Flask", "Python", "C", "C++"],
-  ["MongoDB", "SQLite", "Firebase", "Google Cloud", "Vercel", "Cloudflare"],
-  ["Docker", "Nginx", "Git", "GitHub", "GitHub Actions"],
-  ["ESP32", "Raspberry Pi"]
-]

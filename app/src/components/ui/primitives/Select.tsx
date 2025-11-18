@@ -3,7 +3,10 @@
 import { forwardRef, SelectHTMLAttributes } from "react";
 
 type Option = { value: string; label: string };
-type Props = SelectHTMLAttributes<HTMLSelectElement> & { options?: Option[]; className?: string };
+type Props = SelectHTMLAttributes<HTMLSelectElement> & {
+  options?: Option[];
+  className?: string;
+};
 
 const Select = forwardRef<HTMLSelectElement, Props>(
   ({ className = "", options, children, ...props }, ref) => (
@@ -28,7 +31,7 @@ const Select = forwardRef<HTMLSelectElement, Props>(
           ))
         : children}
     </select>
-  )
+  ),
 );
 
 Select.displayName = "Select";

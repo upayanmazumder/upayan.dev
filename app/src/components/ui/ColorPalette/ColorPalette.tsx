@@ -44,9 +44,15 @@ const sections: { title: string; tokens: Token[] }[] = [
       { key: "--sidebar", label: "sidebar" },
       { key: "--sidebar-foreground", label: "sidebar-foreground" },
       { key: "--sidebar-primary", label: "sidebar-primary" },
-      { key: "--sidebar-primary-foreground", label: "sidebar-primary-foreground" },
+      {
+        key: "--sidebar-primary-foreground",
+        label: "sidebar-primary-foreground",
+      },
       { key: "--sidebar-accent", label: "sidebar-accent" },
-      { key: "--sidebar-accent-foreground", label: "sidebar-accent-foreground" },
+      {
+        key: "--sidebar-accent-foreground",
+        label: "sidebar-accent-foreground",
+      },
       { key: "--sidebar-border", label: "sidebar-border" },
       { key: "--sidebar-ring", label: "sidebar-ring" },
     ],
@@ -85,7 +91,7 @@ export default function ColorPalette() {
       s.tokens.forEach((t) => {
         const val = style.getPropertyValue(t.key).trim();
         r[t.key] = val || "(not set)";
-      })
+      }),
     );
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setResolved(r);
@@ -108,7 +114,9 @@ export default function ColorPalette() {
                   <div className="text-xs text-muted-foreground">{t.key}</div>
                 </div>
                 <div className="p-3 bg-white/60 dark:bg-black/60">
-                  <div className="text-xs warp-break-word">{resolved[t.key] ?? "…"}</div>
+                  <div className="text-xs warp-break-word">
+                    {resolved[t.key] ?? "…"}
+                  </div>
                 </div>
               </div>
             ))}

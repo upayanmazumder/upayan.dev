@@ -115,7 +115,7 @@ uniform float uFade;
         return powr*min(1.0,r);
     }
     float tri01(float x){float f=fract(x);return 1.0-abs(f*2.0-1.0);}
-    float tauWf(float t,float tmin,float tmax){float a=smoothstep(tmin,tmin+EDGE_SOFT,t),b=1.0-smoothstep(tmax-EDGE_SOFT,tmax,t);return max(0.0,a*b);} 
+    float tauWf(float t,float tmin,float tmax){float a=smoothstep(tmin,tmin+EDGE_SOFT,t),b=1.0-smoothstep(tmax-EDGE_SOFT,tmax,t);return max(0.0,a*b);}
     float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+34.123);return fract(p.x*p.y);}
     float vnoise(vec2 p){
         vec2 i=floor(p),f=fract(p);
@@ -285,7 +285,11 @@ export const LaserFlow = ({
         .map((x) => x + x)
         .join("");
     const n = parseInt(c, 16) || 0xffffff;
-    return { r: ((n >> 16) & 255) / 255, g: ((n >> 8) & 255) / 255, b: (n & 255) / 255 };
+    return {
+      r: ((n >> 16) & 255) / 255,
+      g: ((n >> 8) & 255) / 255,
+      b: (n & 255) / 255,
+    };
   };
 
   useEffect(() => {
@@ -322,7 +326,10 @@ export const LaserFlow = ({
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute(
       "position",
-      new THREE.BufferAttribute(new Float32Array([-1, -1, 0, 3, -1, 0, -1, 3, 0]), 3)
+      new THREE.BufferAttribute(
+        new Float32Array([-1, -1, 0, 3, -1, 0, -1, 3, 0]),
+        3,
+      ),
     );
 
     const uniforms = {
@@ -378,7 +385,8 @@ export const LaserFlow = ({
       const pr = currentDprRef.current;
 
       const last = lastSizeRef.current;
-      const sizeChanged = Math.abs(w - last.width) > 0.5 || Math.abs(h - last.height) > 0.5;
+      const sizeChanged =
+        Math.abs(w - last.width) > 0.5 || Math.abs(h - last.height) > 0.5;
       const dprChanged = Math.abs(pr - last.dpr) > 0.01;
       if (!sizeChanged && !dprChanged) {
         return;
@@ -409,7 +417,7 @@ export const LaserFlow = ({
       (entries) => {
         inViewRef.current = entries[0]?.isIntersecting ?? true;
       },
-      { root: null, threshold: 0 }
+      { root: null, threshold: 0 },
     );
     io.observe(mount);
 
@@ -585,7 +593,13 @@ export const LaserFlow = ({
     color,
   ]);
 
-  return <div ref={mountRef} className={`laser-flow-container ${className || ""}`} style={style} />;
+  return (
+    <div
+      ref={mountRef}
+      className={`laser-flow-container ${className || ""}`}
+      style={style}
+    />
+  );
 };
 
 export default LaserFlow;

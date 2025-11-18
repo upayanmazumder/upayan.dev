@@ -62,20 +62,19 @@ The application is fully containerized using Docker. Follow these steps to run b
 
 2. Build and start the containers using `docker-compose`:
 
-    ```bash
-    docker-compose up --build
-    ```
+   ```bash
+   docker-compose up --build
+   ```
 
 3. Once the containers are running, access the application:
-
-    - **Frontend**: Open [http://localhost:3000](http://localhost:3000) in your browser.
-    - **Backend**: The API will be available at [http://localhost:4000](http://localhost:4000).
+   - **Frontend**: Open [http://localhost:3000](http://localhost:3000) in your browser.
+   - **Backend**: The API will be available at [http://localhost:4000](http://localhost:4000).
 
 4. To stop the containers, press `Ctrl+C` in the terminal and run:
 
-    ```bash
-    docker-compose down
-    ```
+   ```bash
+   docker-compose down
+   ```
 
 #### Option 2: Local Development
 
@@ -85,20 +84,19 @@ For local development, you can use the `npm run dev` command in the project root
 
 2. Install the dependencies:
 
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 3. Start the development server:
 
-    ```bash
-    npm run dev
-    ```
+   ```bash
+   npm run dev
+   ```
 
 4. Once the server is running, access the application:
-
-    - **Frontend**: Open [http://localhost:3000](http://localhost:3000) in your browser.
-    - **Backend**: The API will be available at [http://localhost:4000](http://localhost:4000).
+   - **Frontend**: Open [http://localhost:3000](http://localhost:3000) in your browser.
+   - **Backend**: The API will be available at [http://localhost:4000](http://localhost:4000).
 
 5. To stop the development server, press `Ctrl+C` in the terminal.
 
@@ -109,21 +107,21 @@ Contributions are welcome! Please follow these steps:
 1. Fork the repository.
 2. Create a new branch:
 
-    ```bash
-    git checkout -b feature/YourFeature
-    ```
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
 
 3. Make your changes and commit them:
 
-    ```bash
-    git commit -m "Add your feature"
-    ```
+   ```bash
+   git commit -m "Add your feature"
+   ```
 
 4. Push to your branch:
 
-    ```bash
-    git push origin feature/YourFeature
-    ```
+   ```bash
+   git push origin feature/YourFeature
+   ```
 
 5. Open a pull request.
 

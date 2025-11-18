@@ -28,7 +28,9 @@ export default function Page() {
           </div>
 
           <div>
-            <h3 className="text-sm font-medium mb-2">All Button Combinations</h3>
+            <h3 className="text-sm font-medium mb-2">
+              All Button Combinations
+            </h3>
             <div className="grid grid-cols-3 gap-3">
               <Button>Default</Button>
               <Button variant="ghost">Ghost</Button>

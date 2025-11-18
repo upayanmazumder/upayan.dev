@@ -14,7 +14,15 @@ const Select = forwardRef<HTMLSelectElement, Props>(
     >
       {options
         ? options.map((o) => (
-            <option key={o.value} value={o.value}>
+            <option
+              key={o.value}
+              value={o.value}
+              className="bg-input text-foreground"
+              style={{
+                background: "var(--color-popover)",
+                color: "var(--color-popover-foreground)",
+              }}
+            >
               {o.label}
             </option>
           ))

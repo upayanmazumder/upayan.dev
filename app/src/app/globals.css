@@ -134,6 +134,25 @@ html {
   }
 }
 
+/* Improve native select option styling where supported */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+select option {
+  background: var(--color-popover);
+  color: var(--color-popover-foreground);
+  cursor: pointer;
+}
+
+/* keep the dropdown arrow visible on Windows but allow custom spacing */
+select::-ms-expand {
+  padding-right: 6px;
+}
+
 .page-bg-root {
   position: relative;
   min-height: 100vh;
@@ -155,6 +174,10 @@ html {
 
 code {
   font-family: "Red Hat Mono", monospace;
+}
+
+button {
+  cursor: pointer;
 }
 
 .font-inter {

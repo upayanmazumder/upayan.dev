@@ -1,31 +1,28 @@
-# Stage 1 — dependencies
-FROM node:22-alpine AS deps
-WORKDIR /api
-COPY package.json pnpm-lock.yaml* ./
-RUN corepack enable && \
-		if [ -f pnpm-lock.yaml ]; then \
-			pnpm install --frozen-lockfile; \
-		else \
-			pnpm install --no-frozen-lockfile; \
-		fi
+# ========== Stage 1: Build ==========
+FROM golang:1.23 AS builder
 
-# Stage 2 — builder (if using TypeScript)
-FROM node:22-alpine AS builder
-WORKDIR /api
-COPY --from=deps /api/node_modules ./node_modules
+WORKDIR /app
+
+# Cache deps
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy the rest of the source
 COPY . .
-RUN corepack enable && pnpm build
 
-# Stage 3 — runtime
-FROM node:22-alpine AS runner
-WORKDIR /api
+# Build the binary (static, no CGO headaches)
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o server ./cmd/api
 
-ENV NODE_ENV=production
-ENV PORT=4000
+# ========== Stage 2: Run ==========
+FROM alpine:latest
 
-COPY --from=builder /api/dist ./dist
-COPY --from=builder /api/package.json ./package.json
-COPY --from=builder /api/node_modules ./node_modules
+WORKDIR /app
 
-EXPOSE 4000
-CMD ["node", "dist/index.js"]
+# Copy binary from build stage
+COPY --from=builder /app/server .
+
+# Expose API port
+EXPOSE 8080
+
+# Run (no shell nonsense)
+ENTRYPOINT ["./server"]

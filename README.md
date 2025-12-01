@@ -2,7 +2,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/stargazers) [![Forks](https://img.shields.io/github/forks/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/network) [![Issues](https://img.shields.io/github/issues/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/issues)[![License: MIT](https://img.shields.io/github/license/upayanmazumder/upayan.dev?style=flat-square&color=green)](LICENSE) [![Build & Push API](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml/badge.svg)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml) [![Build & Push App](https://github.com/upayanmazumder/upayan.dev/actions/workflows/app.yml/badge.svg)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/app.yml)
 
-[Visit on DeepWiki](https://deepwiki.com/upayanamazumder/upayan.dev)
+[Visit on DeepWiki](https://deepwiki.com/upayanmazumder/upayan.dev)
 
 ---
 

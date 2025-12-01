@@ -5,8 +5,8 @@ on:
     branches:
       - "**"
     paths:
-      - "api/**"
-      - ".github/workflows/api.yml"
+      - "apps/api/**"
+      - ".github/workflows/apps/api.yml"
   workflow_dispatch:
 
 permissions:
@@ -33,16 +33,16 @@ jobs:
           BRANCH_LOWER="${GITHUB_REF_NAME,,}"
 
           if [ "$BRANCH_LOWER" = "main" ]; then
-            echo "TAGS=ghcr.io/$REPO_LOWER/api:latest,ghcr.io/$REPO_LOWER/api:$GITHUB_SHA" >> $GITHUB_OUTPUT
+            echo "TAGS=ghcr.io/$REPO_LOWER/apps/api:latest,ghcr.io/$REPO_LOWER/apps/api:$GITHUB_SHA" >> $GITHUB_OUTPUT
           else
-            echo "TAGS=ghcr.io/$REPO_LOWER/api:$BRANCH_LOWER,ghcr.io/$REPO_LOWER/api:$GITHUB_SHA" >> $GITHUB_OUTPUT
+            echo "TAGS=ghcr.io/$REPO_LOWER/apps/api:$BRANCH_LOWER,ghcr.io/$REPO_LOWER/apps/api:$GITHUB_SHA" >> $GITHUB_OUTPUT
           fi
 
       - uses: docker/build-push-action@v5
         with:
-          context: ./api
-          file: ./api/Dockerfile
+          context: ./apps/api
+          file: ./apps/api/Dockerfile
           push: true
           tags: ${{ steps.tags.outputs.TAGS }}
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/api:latest
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/apps/api:latest
           cache-to: type=inline

@@ -1,0 +1,6 @@
+{
+	"deviceId": "",
+	"token": "",
+	"apiHost": "https://<MY_API>",
+	"intervalSeconds": 60
+}

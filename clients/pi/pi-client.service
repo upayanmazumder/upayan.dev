@@ -1,0 +1,13 @@
+[Unit]
+Description=Pi Device Status Client
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/bin/python3 /usr/bin/pi-client-runner
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

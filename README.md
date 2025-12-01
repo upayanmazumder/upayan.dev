@@ -1,134 +1,97 @@
 # upayan.dev
 
-![GitHub stars](https://img.shields.io/github/stars/upayanmazumder/upayan.dev?style=social)
-![GitHub forks](https://img.shields.io/github/forks/upayanmazumder/upayan.dev?style=social)
-![License](https://img.shields.io/badge/license-MIT-green)
+[![GitHub stars](https://img.shields.io/github/stars/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/stargazers) [![Forks](https://img.shields.io/github/forks/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/network) [![Issues](https://img.shields.io/github/issues/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/issues)[![License: MIT](https://img.shields.io/github/license/upayanmazumder/upayan.dev?style=flat-square&color=green)](LICENSE) [![Build & Push API](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml/badge.svg)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml) [![Build & Push App](https://github.com/upayanmazumder/upayan.dev/actions/workflows/app.yml/badge.svg)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/app.yml)
 
-Welcome to the source code repository for my personal website. This project showcases my portfolio, skills, and various projects.
+[Visit on DeepWiki](https://deepwiki.com/upayanamazumder/upayan.dev)
 
-## Table of Contents
+---
 
-- [Technologies Used](#technologies-used)
-- [Features](#features)
-- [Getting Started](#getting-started)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [Code of Conduct](#code-of-conduct)
-- [License](#license)
+## What is this repo about?
 
-## Technologies Used
+This repository hosts the source code for my personal portfolio website. It includes:
 
-- **Frontend**: [Next.js](https://nextjs.org/)
-- **Backend**: [Express.js](https://expressjs.com/)
-- **Containerization**: Docker
-- **Hosting**: Docker with Caddy (hosted on a personal VM)
+- A fast, modern frontend with Next.js.
+- A backend API (hosted on my personal VM) for device-status, telemetry, and integrations.
+- Infrastructure for device‑clients (Windows, Android, Raspberry Pi) that report data.
+- A VS Code extension to optionally push real‑time coding activity to the backend.
 
-## Deployment
+---
 
-- **Frontend and Backend**: Deployed using Docker and served with [Caddy](https://caddyserver.com/) on a personal VM.
+## Repository Structure
+
+```
+
+apps/
+  app/         → Next.js frontend (portfolio site)
+  api/         → Backend API services
+  vscode/      → VS Code extension for live coding status
+
+clients/
+  win/         → Windows device‑agent (runs on both laptops)
+  android/     → Android device‑agent (runs on both phones)
+  pi/          → Raspberry Pi agent
+
+packages/
+  types/       → shared TS/Zod types
+  utils/       → helper modules, API clients, config utilities
+
+infra/
+  docker/      → Dockerfiles, compose configs
+  deploy/      → deployment and VM scripts
+
+```
+
+---
 
 ## Features
 
-- Responsive design
-- Fast loading times with Next.js optimization
-- RESTful API built with Express.js
-- Dockerized setup for easy deployment with Caddy as a reverse proxy
+- Responsive, fast‑loading portfolio site (Next.js)
+- Real-time device telemetry from multiple devices (laptops, phones, Pi)
+- Unified API + clients architecture — easy to extend
+- Secure per‑device authentication with tokens
+- Modular monorepo setup — clean separation of concerns
+- Supports future integrations: VS Code status, Spotify, device stats, etc.
 
-## Getting Started
+---
+
+## Local Setup (for development)
 
 ### Prerequisites
 
-Make sure you have the following installed:
+- Docker & Docker Compose
+- Node.js (for local dev & building clients)
 
-- [Docker](https://www.docker.com/get-started)
-- Node.js (for local development)
-
-### Cloning the Repository
+### Clone & Run
 
 ```bash
 git clone https://github.com/upayanmazumder/upayan.dev.git
 cd upayan.dev
+docker-compose up --build
 ```
 
-### Running the Application
+Once up:
 
-You can run the application either using Docker (recommended for production-like environments) or locally using `npm run dev` for development purposes.
+- Frontend: `http://localhost:3000`
+- Backend API: by default `http://localhost:8080`
 
-#### Option 1: Using Docker
+### Development Without Docker
 
-The application is fully containerized using Docker. Follow these steps to run both the backend and frontend:
+Inside `/apps/app` and `/apps/api`, you can run:
 
-1. Ensure Docker is installed and running on your system. If not, download it from [Docker's official website](https://www.docker.com/get-started).
+```bash
+npm install
+npm run dev
+```
 
-2. Build and start the containers using `docker-compose`:
-
-   ```bash
-   docker-compose up --build
-   ```
-
-3. Once the containers are running, access the application:
-   - **Frontend**: Open [http://localhost:3000](http://localhost:3000) in your browser.
-   - **Backend**: The API will be available at [http://localhost:4000](http://localhost:4000).
-
-4. To stop the containers, press `Ctrl+C` in the terminal and run:
-
-   ```bash
-   docker-compose down
-   ```
-
-#### Option 2: Local Development
-
-For local development, you can use the `npm run dev` command in the project root. This will start both the frontend and backend concurrently.
-
-1. Ensure you have Node.js installed on your system. If not, download it from [Node.js official website](https://nodejs.org/).
-
-2. Install the dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-
-   ```bash
-   npm run dev
-   ```
-
-4. Once the server is running, access the application:
-   - **Frontend**: Open [http://localhost:3000](http://localhost:3000) in your browser.
-   - **Backend**: The API will be available at [http://localhost:4000](http://localhost:4000).
-
-5. To stop the development server, press `Ctrl+C` in the terminal.
+---
 
 ## Contributing
 
-Contributions are welcome! Please follow these steps:
+Feel free to open issues or submit pull requests if you find bugs or want to add new features.
+Make sure to follow the existing code style and add tests/validation for new endpoints or clients.
 
-1. Fork the repository.
-2. Create a new branch:
-
-   ```bash
-   git checkout -b feature/YourFeature
-   ```
-
-3. Make your changes and commit them:
-
-   ```bash
-   git commit -m "Add your feature"
-   ```
-
-4. Push to your branch:
-
-   ```bash
-   git push origin feature/YourFeature
-   ```
-
-5. Open a pull request.
-
-## Code of Conduct
-
-Please read our [Code of Conduct](https://github.com/upayanmazumder/upayan.dev/blob/master/CODE_OF_CONDUCT.md) to ensure a welcoming environment for all contributors.
+---
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/upayanmazumder/upayan.dev/blob/master/LICENSE) file for details.
+This project is licensed under the **MIT License** — see `LICENSE` for full details.

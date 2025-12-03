@@ -4,17 +4,16 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/upayanmazumder/upayan.dev/apps/api/internal/routes"
 )
 
 func main() {
-	r := chi.NewRouter()
+	r := routes.SetupRoutes()
 
-	// test route
-	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("ok"))
-	})
+	log.Println("🚀 Backend running on :8080")
+	log.Println("📝 Health check: http://localhost:8080/health")
 
-	log.Println("backend running on :8080 🚀")
-	http.ListenAndServe(":8080", r)
+	if err := http.ListenAndServe(":8080", r); err != nil {
+		log.Fatal(err)
+	}
 }

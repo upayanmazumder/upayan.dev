@@ -23,6 +23,11 @@ func SetupRoutes() *chi.Mux {
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("API v1"))
 		})
+
+		// User activity endpoints
+		r.Get("/activity", handlers.GetUserActivity)
+		r.Get("/activity/spotify", handlers.GetSpotifyActivity)
+		r.Get("/activity/discord", handlers.GetDiscordActivity)
 	})
 
 	return r

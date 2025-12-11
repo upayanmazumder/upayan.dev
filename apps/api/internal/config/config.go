@@ -16,6 +16,7 @@ type Config struct {
 	DiscordBotToken     string
 	DiscordClientID     string
 	DiscordClientSecret string
+	WakatimeAPIKey      string
 	Port                string
 }
 
@@ -34,6 +35,7 @@ func Load() error {
 		DiscordBotToken:     os.Getenv("DISCORD_BOT_TOKEN"),
 		DiscordClientID:     os.Getenv("DISCORD_CLIENT_ID"),
 		DiscordClientSecret: os.Getenv("DISCORD_CLIENT_SECRET"),
+		WakatimeAPIKey:      os.Getenv("WAKATIME_API_KEY"),
 		Port:                getEnvOrDefault("PORT", "8080"),
 	}
 
@@ -52,6 +54,9 @@ func Load() error {
 	}
 	if config.DiscordBotToken == "" {
 		return fmt.Errorf("DISCORD_BOT_TOKEN is required")
+	}
+	if config.WakatimeAPIKey == "" {
+		return fmt.Errorf("WAKATIME_API_KEY is required")
 	}
 
 	// Validate Discord User ID is numeric

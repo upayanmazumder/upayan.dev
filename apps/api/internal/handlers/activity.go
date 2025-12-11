@@ -11,24 +11,27 @@ import (
 )
 
 var (
-	spotifyService *services.SpotifyService
-	discordService *services.DiscordService
-	once           sync.Once
+	spotifyService  *services.SpotifyService
+	discordService  *services.DiscordService
+	wakatimeService *services.WakatimeService
+	once            sync.Once
 )
 
 func initServices() {
 	once.Do(func() {
 		spotifyService = services.NewSpotifyService()
 		discordService = services.NewDiscordService()
+		wakatimeService = services.NewWakatimeService()
 	})
 }
 
 // UserActivityResponse represents the complete user activity
 type UserActivityResponse struct {
-	Username    string                    `json:"username"`
-	Spotify     *services.SpotifyActivity `json:"spotify"`
-	GuildStatus []*services.GuildStatus   `json:"guildStatus"`
-	Timestamp   int64                     `json:"timestamp"`
+	Username    string                     `json:"username"`
+	Spotify     *services.SpotifyActivity  `json:"spotify"`
+	GuildStatus []*services.GuildStatus    `json:"guildStatus"`
+	Wakatime    *services.WakatimeActivity `json:"wakatime"`
+	Timestamp   int64                      `json:"timestamp"`
 }
 
 type ErrorResponse struct {
@@ -44,8 +47,10 @@ func GetUserActivity(w http.ResponseWriter, r *http.Request) {
 	type result struct {
 		spotify     *services.SpotifyActivity
 		guildStatus []*services.GuildStatus
+		wakatime    *services.WakatimeActivity
 		errSpot     error
 		errGuild    error
+		errWaka     error
 	}
 
 	ch := make(chan result, 1)
@@ -53,7 +58,7 @@ func GetUserActivity(w http.ResponseWriter, r *http.Request) {
 	go func() {
 		var res result
 		var wg sync.WaitGroup
-		wg.Add(2)
+		wg.Add(3)
 
 		go func() {
 			defer wg.Done()
@@ -63,6 +68,11 @@ func GetUserActivity(w http.ResponseWriter, r *http.Request) {
 		go func() {
 			defer wg.Done()
 			res.guildStatus, res.errGuild = discordService.GetGuildStatuses()
+		}()
+
+		go func() {
+			defer wg.Done()
+			res.wakatime, res.errWaka = wakatimeService.GetTodayStatus()
 		}()
 
 		wg.Wait()
@@ -78,11 +88,15 @@ func GetUserActivity(w http.ResponseWriter, r *http.Request) {
 	if res.errGuild != nil {
 		log.Printf("Error fetching Discord guild statuses: %v", res.errGuild)
 	}
+	if res.errWaka != nil {
+		log.Printf("Error fetching Wakatime activity: %v", res.errWaka)
+	}
 
 	response := UserActivityResponse{
 		Username:    "upayan",
 		Spotify:     res.spotify,
 		GuildStatus: res.guildStatus,
+		Wakatime:    res.wakatime,
 		Timestamp:   time.Now().Unix(),
 	}
 
@@ -122,4 +136,21 @@ func GetDiscordActivity(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(guildStatus)
+}
+
+// GetWakatimeActivity returns only Wakatime status
+func GetWakatimeActivity(w http.ResponseWriter, r *http.Request) {
+	initServices()
+	w.Header().Set("Content-Type", "application/json")
+
+	activity, err := wakatimeService.GetTodayStatus()
+	if err != nil {
+		log.Printf("Error fetching Wakatime activity: %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(ErrorResponse{Error: err.Error()})
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(activity)
 }

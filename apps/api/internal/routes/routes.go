@@ -28,6 +28,7 @@ func SetupRoutes() *chi.Mux {
 		r.Get("/activity", handlers.GetUserActivity)
 		r.Get("/activity/spotify", handlers.GetSpotifyActivity)
 		r.Get("/activity/discord", handlers.GetDiscordActivity)
+		r.Get("/activity/wakatime", handlers.GetWakatimeActivity)
 	})
 
 	return r

@@ -25,10 +25,10 @@ func initServices() {
 
 // UserActivityResponse represents the complete user activity
 type UserActivityResponse struct {
-	Username  string                    `json:"username"`
-	Spotify   *services.SpotifyActivity `json:"spotify"`
-	Discord   *services.DiscordActivity `json:"discord"`
-	Timestamp int64                     `json:"timestamp"`
+	Username    string                    `json:"username"`
+	Spotify     *services.SpotifyActivity `json:"spotify"`
+	GuildStatus []*services.GuildStatus   `json:"guildStatus"`
+	Timestamp   int64                     `json:"timestamp"`
 }
 
 type ErrorResponse struct {
@@ -42,10 +42,10 @@ func GetUserActivity(w http.ResponseWriter, r *http.Request) {
 
 	// Fetch both activities concurrently
 	type result struct {
-		spotify *services.SpotifyActivity
-		discord *services.DiscordActivity
-		errSpot error
-		errDisc error
+		spotify     *services.SpotifyActivity
+		guildStatus []*services.GuildStatus
+		errSpot     error
+		errGuild    error
 	}
 
 	ch := make(chan result, 1)
@@ -62,7 +62,7 @@ func GetUserActivity(w http.ResponseWriter, r *http.Request) {
 
 		go func() {
 			defer wg.Done()
-			res.discord, res.errDisc = discordService.GetActivity()
+			res.guildStatus, res.errGuild = discordService.GetGuildStatuses()
 		}()
 
 		wg.Wait()
@@ -75,15 +75,15 @@ func GetUserActivity(w http.ResponseWriter, r *http.Request) {
 	if res.errSpot != nil {
 		log.Printf("Error fetching Spotify activity: %v", res.errSpot)
 	}
-	if res.errDisc != nil {
-		log.Printf("Error fetching Discord activity: %v", res.errDisc)
+	if res.errGuild != nil {
+		log.Printf("Error fetching Discord guild statuses: %v", res.errGuild)
 	}
 
 	response := UserActivityResponse{
-		Username:  "upayan",
-		Spotify:   res.spotify,
-		Discord:   res.discord,
-		Timestamp: time.Now().Unix(),
+		Username:    "upayan",
+		Spotify:     res.spotify,
+		GuildStatus: res.guildStatus,
+		Timestamp:   time.Now().Unix(),
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -112,14 +112,14 @@ func GetDiscordActivity(w http.ResponseWriter, r *http.Request) {
 	initServices()
 	w.Header().Set("Content-Type", "application/json")
 
-	discord, err := discordService.GetActivity()
+	guildStatus, err := discordService.GetGuildStatuses()
 	if err != nil {
-		log.Printf("Error fetching Discord activity: %v", err)
+		log.Printf("Error fetching Discord guild statuses: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(ErrorResponse{Error: err.Error()})
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(discord)
+	json.NewEncoder(w).Encode(guildStatus)
 }

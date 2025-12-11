@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/upayanmazumder/upayan.dev/apps/api/internal/config"
@@ -27,10 +28,35 @@ type spotifyTokenResponse struct {
 
 type spotifyCurrentlyPlaying struct {
 	IsPlaying bool `json:"is_playing"`
-	Item      *struct {
-		Name       string `json:"name"`
-		DurationMs int    `json:"duration_ms"`
-		Album      struct {
+	Device    struct {
+		ID               string `json:"id"`
+		Name             string `json:"name"`
+		Type             string `json:"type"`
+		VolumePercent    int    `json:"volume_percent"`
+		IsActive         bool   `json:"is_active"`
+		IsPrivateSession bool   `json:"is_private_session"`
+		IsRestricted     bool   `json:"is_restricted"`
+	} `json:"device"`
+	ShuffleState         bool   `json:"shuffle_state"`
+	RepeatState          string `json:"repeat_state"`
+	Timestamp            int64  `json:"timestamp"`
+	CurrentlyPlayingType string `json:"currently_playing_type"`
+	Context              *struct {
+		Type         string `json:"type"`
+		URI          string `json:"uri"`
+		ExternalURLs struct {
+			Spotify string `json:"spotify"`
+		} `json:"external_urls"`
+	} `json:"context"`
+	Item *struct {
+		Name        string `json:"name"`
+		DurationMs  int    `json:"duration_ms"`
+		Explicit    bool   `json:"explicit"`
+		TrackNumber int    `json:"track_number"`
+		DiscNumber  int    `json:"disc_number"`
+		Popularity  int    `json:"popularity"`
+		PreviewURL  string `json:"preview_url"`
+		Album       struct {
 			Name   string `json:"name"`
 			Images []struct {
 				URL string `json:"url"`
@@ -47,14 +73,31 @@ type spotifyCurrentlyPlaying struct {
 }
 
 type SpotifyActivity struct {
-	IsPlaying bool   `json:"isPlaying"`
-	TrackName string `json:"trackName,omitempty"`
-	Artist    string `json:"artist,omitempty"`
-	Album     string `json:"album,omitempty"`
-	AlbumArt  string `json:"albumArt,omitempty"`
-	TrackURL  string `json:"trackUrl,omitempty"`
-	Progress  int    `json:"progress,omitempty"`
-	Duration  int    `json:"duration,omitempty"`
+	IsPlaying    bool     `json:"isPlaying"`
+	TrackName    string   `json:"trackName,omitempty"`
+	Artist       string   `json:"artist,omitempty"`
+	Artists      []string `json:"artists,omitempty"`
+	Album        string   `json:"album,omitempty"`
+	AlbumArt     string   `json:"albumArt,omitempty"`
+	AlbumImages  []string `json:"albumImages,omitempty"`
+	TrackURL     string   `json:"trackUrl,omitempty"`
+	PreviewURL   string   `json:"previewUrl,omitempty"`
+	Progress     int      `json:"progress,omitempty"`
+	Duration     int      `json:"duration,omitempty"`
+	Explicit     bool     `json:"explicit,omitempty"`
+	TrackNumber  int      `json:"trackNumber,omitempty"`
+	DiscNumber   int      `json:"discNumber,omitempty"`
+	Popularity   int      `json:"popularity,omitempty"`
+	ContextType  string   `json:"contextType,omitempty"`
+	ContextURI   string   `json:"contextUri,omitempty"`
+	ContextURL   string   `json:"contextUrl,omitempty"`
+	DeviceName   string   `json:"deviceName,omitempty"`
+	DeviceType   string   `json:"deviceType,omitempty"`
+	DeviceVolume int      `json:"deviceVolume,omitempty"`
+	Shuffle      bool     `json:"shuffle,omitempty"`
+	Repeat       string   `json:"repeat,omitempty"`
+	PlayingType  string   `json:"playingType,omitempty"`
+	Timestamp    int64    `json:"timestamp,omitempty"`
 }
 
 func NewSpotifyService() *SpotifyService {
@@ -146,7 +189,21 @@ func (s *SpotifyService) GetCurrentlyPlaying() (*SpotifyActivity, error) {
 	}
 
 	activity := &SpotifyActivity{
-		IsPlaying: playing.IsPlaying,
+		IsPlaying:    playing.IsPlaying,
+		DeviceName:   playing.Device.Name,
+		DeviceType:   playing.Device.Type,
+		DeviceVolume: playing.Device.VolumePercent,
+		Shuffle:      playing.ShuffleState,
+		Repeat:       playing.RepeatState,
+		PlayingType:  playing.CurrentlyPlayingType,
+		Timestamp:    playing.Timestamp,
+		Progress:     playing.ProgressMs,
+	}
+
+	if playing.Context != nil {
+		activity.ContextType = playing.Context.Type
+		activity.ContextURI = playing.Context.URI
+		activity.ContextURL = playing.Context.ExternalURLs.Spotify
 	}
 
 	if playing.Item != nil {
@@ -154,17 +211,27 @@ func (s *SpotifyService) GetCurrentlyPlaying() (*SpotifyActivity, error) {
 		activity.Duration = playing.Item.DurationMs
 		activity.Album = playing.Item.Album.Name
 		activity.TrackURL = playing.Item.ExternalURLs.Spotify
-		activity.Progress = playing.ProgressMs
+		activity.PreviewURL = playing.Item.PreviewURL
+		activity.Explicit = playing.Item.Explicit
+		activity.TrackNumber = playing.Item.TrackNumber
+		activity.DiscNumber = playing.Item.DiscNumber
+		activity.Popularity = playing.Item.Popularity
 
 		if len(playing.Item.Artists) > 0 {
-			activity.Artist = playing.Item.Artists[0].Name
-			// Add additional artists
-			for i := 1; i < len(playing.Item.Artists); i++ {
-				activity.Artist += ", " + playing.Item.Artists[i].Name
+			artists := make([]string, 0, len(playing.Item.Artists))
+			for _, artist := range playing.Item.Artists {
+				artists = append(artists, artist.Name)
 			}
+			activity.Artists = artists
+			activity.Artist = strings.Join(artists, ", ")
 		}
 
 		if len(playing.Item.Album.Images) > 0 {
+			images := make([]string, 0, len(playing.Item.Album.Images))
+			for _, img := range playing.Item.Album.Images {
+				images = append(images, img.URL)
+			}
+			activity.AlbumImages = images
 			activity.AlbumArt = playing.Item.Album.Images[0].URL
 		}
 	}

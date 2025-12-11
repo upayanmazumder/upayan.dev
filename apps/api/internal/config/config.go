@@ -13,6 +13,9 @@ type Config struct {
 	SpotifyClientSecret string
 	SpotifyRefreshToken string
 	DiscordUserID       string
+	DiscordBotToken     string
+	DiscordClientID     string
+	DiscordClientSecret string
 	Port                string
 }
 
@@ -28,6 +31,9 @@ func Load() error {
 		SpotifyClientSecret: os.Getenv("SPOTIFY_CLIENT_SECRET"),
 		SpotifyRefreshToken: os.Getenv("SPOTIFY_REFRESH_TOKEN"),
 		DiscordUserID:       os.Getenv("DISCORD_USER_ID"),
+		DiscordBotToken:     os.Getenv("DISCORD_BOT_TOKEN"),
+		DiscordClientID:     os.Getenv("DISCORD_CLIENT_ID"),
+		DiscordClientSecret: os.Getenv("DISCORD_CLIENT_SECRET"),
 		Port:                getEnvOrDefault("PORT", "8080"),
 	}
 
@@ -43,6 +49,9 @@ func Load() error {
 	}
 	if config.DiscordUserID == "" {
 		return fmt.Errorf("DISCORD_USER_ID is required")
+	}
+	if config.DiscordBotToken == "" {
+		return fmt.Errorf("DISCORD_BOT_TOKEN is required")
 	}
 
 	// Validate Discord User ID is numeric

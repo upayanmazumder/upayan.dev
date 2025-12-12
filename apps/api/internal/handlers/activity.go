@@ -12,7 +12,6 @@ import (
 
 var (
 	spotifyService  *services.SpotifyService
-	discordService  *services.DiscordService
 	wakatimeService *services.WakatimeService
 	once            sync.Once
 )
@@ -20,7 +19,6 @@ var (
 func initServices() {
 	once.Do(func() {
 		spotifyService = services.NewSpotifyService()
-		discordService = services.NewDiscordService()
 		wakatimeService = services.NewWakatimeService()
 	})
 }
@@ -36,7 +34,7 @@ type ErrorResponse struct {
 	Error string `json:"error"`
 }
 
-// GetUserActivity returns the user's Spotify and Discord activity
+// GetUserActivity returns the user's activity
 func GetUserActivity(w http.ResponseWriter, r *http.Request) {
 	initServices()
 	w.Header().Set("Content-Type", "application/json")

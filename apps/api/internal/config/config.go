@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"os"
-	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -12,10 +11,6 @@ type Config struct {
 	SpotifyClientID     string
 	SpotifyClientSecret string
 	SpotifyRefreshToken string
-	DiscordUserID       string
-	DiscordBotToken     string
-	DiscordClientID     string
-	DiscordClientSecret string
 	WakatimeAPIKey      string
 	Port                string
 }
@@ -31,10 +26,6 @@ func Load() error {
 		SpotifyClientID:     os.Getenv("SPOTIFY_CLIENT_ID"),
 		SpotifyClientSecret: os.Getenv("SPOTIFY_CLIENT_SECRET"),
 		SpotifyRefreshToken: os.Getenv("SPOTIFY_REFRESH_TOKEN"),
-		DiscordUserID:       os.Getenv("DISCORD_USER_ID"),
-		DiscordBotToken:     os.Getenv("DISCORD_BOT_TOKEN"),
-		DiscordClientID:     os.Getenv("DISCORD_CLIENT_ID"),
-		DiscordClientSecret: os.Getenv("DISCORD_CLIENT_SECRET"),
 		WakatimeAPIKey:      os.Getenv("WAKATIME_API_KEY"),
 		Port:                getEnvOrDefault("PORT", "8080"),
 	}
@@ -49,19 +40,9 @@ func Load() error {
 	if config.SpotifyRefreshToken == "" {
 		return fmt.Errorf("SPOTIFY_REFRESH_TOKEN is required")
 	}
-	if config.DiscordUserID == "" {
-		return fmt.Errorf("DISCORD_USER_ID is required")
-	}
-	if config.DiscordBotToken == "" {
-		return fmt.Errorf("DISCORD_BOT_TOKEN is required")
-	}
+
 	if config.WakatimeAPIKey == "" {
 		return fmt.Errorf("WAKATIME_API_KEY is required")
-	}
-
-	// Validate Discord User ID is numeric
-	if _, err := strconv.ParseUint(config.DiscordUserID, 10, 64); err != nil {
-		return fmt.Errorf("DISCORD_USER_ID must be a valid numeric Discord user ID")
 	}
 
 	AppConfig = config

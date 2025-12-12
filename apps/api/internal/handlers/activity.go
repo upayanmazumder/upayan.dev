@@ -27,7 +27,6 @@ func initServices() {
 
 // UserActivityResponse represents the complete user activity
 type UserActivityResponse struct {
-	Username    string                     `json:"username"`
 	Spotify     *services.SpotifyActivity  `json:"spotify"`
 	GuildStatus []*services.GuildStatus    `json:"guildStatus"`
 	Wakatime    *services.WakatimeActivity `json:"wakatime"`
@@ -93,7 +92,6 @@ func GetUserActivity(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := UserActivityResponse{
-		Username:    "upayan",
 		Spotify:     res.spotify,
 		GuildStatus: res.guildStatus,
 		Wakatime:    res.wakatime,

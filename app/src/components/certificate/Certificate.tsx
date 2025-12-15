@@ -1,63 +1,77 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import certificateStyles from "./Certificate.module.css";
-import { createSlug, certificates } from "../../data/certificates";
+import {
+	createSlug,
+	createIssuerSlug,
+	certificates,
+} from "../../data/certificates";
 import Four04 from "../404/404";
+import CertificateFallback from "./CertificateFallback";
 
 interface Certificate {
-  title: string;
-  path: string;
-  tags: string[];
+	title: string;
+	path: string;
+	tags: string[];
+	issuer: string;
 }
 
 interface CertificateDetailProps {
-  slug: string;
+	issuerSlug: string;
+	slug: string;
 }
 
-const CertificateDetail: React.FC<CertificateDetailProps> = ({ slug }) => {
-  const certificate = certificates.find(
-    (cert: Certificate) => createSlug(cert.title) === slug
-  );
+const CertificateDetail: React.FC<CertificateDetailProps> = ({
+	issuerSlug,
+	slug,
+}) => {
+	const [imageError, setImageError] = useState(false);
 
-  if (!certificate) {
-    return <Four04 />;
-  }
+	const certificate = certificates.find(
+		(cert: Certificate) =>
+			createIssuerSlug(cert.issuer) === issuerSlug &&
+			createSlug(cert.title) === slug
+	);
 
-  return (
-    <section className={certificateStyles.detailPageContainer}>
-      <div className={certificateStyles.certificateCard}>
-        <div className={certificateStyles.imageContainer}>
-          <a
-            href={certificate.path}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={certificateStyles.certificateLink}
-            title={`View ${certificate.title} certificate`}
-          >
-            <Image
-              src={certificate.path}
-              alt={`${certificate.title} certificate`}
-              className={certificateStyles.certificateImage}
-              width={700}
-              height={475}
-            />
-          </a>
-        </div>
-        <div className={certificateStyles.cardContent}>
-          <h3 className={certificateStyles.certificateTitle}>
-            {certificate.title}
-          </h3>
-          <div className={certificateStyles.tagsContainer}>
-            {certificate.tags.map((tag, index) => (
-              <span key={index} className={certificateStyles.certificateTag}>
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+	if (!certificate) {
+		return <Four04 />;
+	}
+
+	return (
+		<section className={certificateStyles.detailPageContainer}>
+			<div className={certificateStyles.certificateCard}>
+				<div className={certificateStyles.imageContainer}>
+					<a
+						href={certificate.path}
+						target="_blank"
+						rel="noopener noreferrer"
+						className={certificateStyles.certificateLink}
+						title={`View ${certificate.title} certificate`}
+					>
+						<Image
+							src={certificate.path}
+							alt={`${certificate.title} certificate`}
+							className={certificateStyles.certificateImage}
+							width={700}
+							height={475}
+						/>
+					</a>
+				</div>
+				<div className={certificateStyles.cardContent}>
+					<h3 className={certificateStyles.certificateTitle}>
+						{certificate.title}
+					</h3>
+					<div className={certificateStyles.tagsContainer}>
+						{certificate.tags.map((tag, index) => (
+							<span key={index} className={certificateStyles.certificateTag}>
+								{tag}
+							</span>
+						))}
+					</div>
+				</div>
+			</div>
+		</section>
+	);
 };
 
 export default CertificateDetail;

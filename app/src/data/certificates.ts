@@ -1,6 +1,9 @@
 export const createSlug = (title: string) =>
 	title.toLowerCase().replace(/\s+/g, "-");
 
+export const createIssuerSlug = (issuer: string) =>
+	issuer.toLowerCase().replace(/\s+/g, "-");
+
 export const certificates = [
 	{
 		title: "Internal Hackathon 2025",
@@ -14,7 +17,7 @@ export const certificates = [
 			"hackathon",
 			"vit",
 		],
-		issuer: "CodeChef VIT",
+		issuer: "VIT/CodeChef-VIT",
 		date: "14-04-2025",
 	},
 	{
@@ -28,14 +31,14 @@ export const certificates = [
 			"gravitas",
 			"vit",
 		],
-		issuer: "CodeChef VIT",
+		issuer: "VIT/Gravitas",
 		date: "22-11-2024",
 	},
 	{
 		title: "Github Foundations",
 		path: "/certificates/Github/2025-04-11_Github-Foundations.avif",
 		tags: ["github", "foundations"],
-		issuer: "GitHub",
+		issuer: "Github",
 		date: "11-04-2025",
 	},
 	{
@@ -50,21 +53,21 @@ export const certificates = [
 			"gravitas",
 			"vit",
 		],
-		issuer: "The Electronics Club VIT",
+		issuer: "VIT/Gravitas",
 		date: "15-12-2024",
 	},
 	{
 		title: "Yantra Central Hackathon'25",
 		path: "/certificates/VIT/SW-VIT/2025-03-12_Yantra-Central_Hack.avif",
 		tags: ["swvit", "iot", "electronics", "hackathon", "yantra", "vit"],
-		issuer: "Students Welfare VIT",
+		issuer: "VIT/SW-VIT",
 		date: "12-03-2025",
 	},
 	{
 		title: "Fundamentals",
 		path: "/certificates/Programminghub/2024-08-05_Fundamentals.avif",
 		tags: ["programminghub", "fundamentals", "basics"],
-		issuer: "Programming Hub",
+		issuer: "Programminghub",
 		date: "05-08-2024",
 	},
 	{
@@ -113,28 +116,28 @@ export const certificates = [
 		title: "NodeJS",
 		path: "/certificates/Programminghub/2024-08-05_Nodejs.avif",
 		tags: ["node.js", "javascript", "backend", "programminghub"],
-		issuer: "Programming Hub",
+		issuer: "Programminghub",
 		date: "05-08-2024",
 	},
 	{
 		title: "Python 3",
 		path: "/certificates/Programminghub/2024-10-25_Python-3.avif",
 		tags: ["python", "programminghub"],
-		issuer: "Programming Hub",
+		issuer: "Programminghub",
 		date: "25-10-2024",
 	},
 	{
 		title: "Docker",
 		path: "/certificates/Programminghub/2024-10-25_Docker.avif",
 		tags: ["docker", "containerization", "ci/cd", "devops", "programminghub"],
-		issuer: "Programming Hub",
+		issuer: "Programminghub",
 		date: "25-10-2024",
 	},
 	{
 		title: "IT Basics",
 		path: "/certificates/Programminghub/2024-10-27_IT-Basics.avif",
 		tags: ["it", "information technology", "basics", "programminghub"],
-		issuer: "Programming Hub",
+		issuer: "Programminghub",
 		date: "27-10-2024",
 	},
 ];

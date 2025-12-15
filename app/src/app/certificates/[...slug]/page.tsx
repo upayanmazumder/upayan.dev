@@ -15,7 +15,7 @@ const CertificatePage = () => {
 	const slugArray = Array.isArray(slug) ? slug : [slug];
 
 	// Last item is the certificate slug, everything before is the issuer path
-	const certSlug = slugArray[slugArray.length - 1];
+	const certSlug = slugArray[slugArray.length - 1] || "";
 	const issuerSlug = slugArray.slice(0, -1).join("/");
 
 	const certificate = certificates.find(

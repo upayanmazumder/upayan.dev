@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import certificateStyles from "./Certificate.module.css";
 import {
 	createSlug,
@@ -7,7 +7,6 @@ import {
 	certificates,
 } from "../../data/certificates";
 import Four04 from "../404/404";
-import CertificateFallback from "./CertificateFallback";
 
 interface Certificate {
 	title: string;
@@ -25,8 +24,6 @@ const CertificateDetail: React.FC<CertificateDetailProps> = ({
 	issuerSlug,
 	slug,
 }) => {
-	const [imageError, setImageError] = useState(false);
-
 	const certificate = certificates.find(
 		(cert: Certificate) =>
 			createIssuerSlug(cert.issuer) === issuerSlug &&

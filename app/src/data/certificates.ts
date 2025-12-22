@@ -140,4 +140,11 @@ export const certificates = [
 		issuer: "Programminghub",
 		date: "27-10-2024",
 	},
+	{
+		title: "Goethe-Zertifikat A1",
+		path: "/certificates/Goethe Institut/2018-05-21_Goethe-Zertifikat-A1.avif",
+		tags: ["goethe institut", "german", "language", "a1"],
+		issuer: "Goethe Institut",
+		date: "21-05-2018",
+	},
 ];

@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/upayanmazumder/upayan.dev/apps/api/internal/config"
-	"github.com/upayanmazumder/upayan.dev/apps/api/internal/routes"
+	"github.com/upayanmazumder/upayan.dev/apps/backend/internal/config"
+	"github.com/upayanmazumder/upayan.dev/apps/backend/internal/routes"
 )
 
 func main() {
@@ -15,14 +15,14 @@ func main() {
 		log.Fatalf("❌ Failed to load configuration: %v", err)
 	}
 
-	log.Println("✅ Configuration loaded successfully")
+	log.Println("Configuration loaded successfully")
 
 	r := routes.SetupRoutes()
 
 	port := config.AppConfig.Port
-	log.Printf("🚀 Backend running on :%s", port)
-	log.Printf("📝 Health check: http://localhost:%s/health", port)
-	log.Printf("📊 User activity: http://localhost:%s/api/activity", port)
+	log.Printf("Backend running on :%s", port)
+	log.Printf("Health check: http://localhost:%s/health", port)
+	log.Printf("User activity: http://localhost:%s/api/activity", port)
 
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), r); err != nil {
 		log.Fatal(err)

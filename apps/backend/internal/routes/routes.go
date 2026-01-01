@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/upayanmazumder/upayan.dev/apps/api/internal/handlers"
-	"github.com/upayanmazumder/upayan.dev/apps/api/internal/middleware"
+	"github.com/upayanmazumder/upayan.dev/apps/backend/internal/handlers"
+	"github.com/upayanmazumder/upayan.dev/apps/backend/internal/middleware"
 )
 
 func SetupRoutes() *chi.Mux {

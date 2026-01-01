@@ -1,0 +1,28 @@
+# Dependencies (installed in container)
+node_modules/
+
+# Build outputs (built in container)
+dist/
+build/
+.cache/
+
+# Environment files
+.env
+.env.*
+
+# Version control
+.git/
+.gitignore
+
+# Development files
+.vscode/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+coverage/
+.eslintcache
+
+# OS files and miscellaneous
+.DS_Store
+Thumbs.db

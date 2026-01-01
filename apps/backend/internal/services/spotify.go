@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/upayanmazumder/upayan.dev/apps/api/internal/config"
+	"github.com/upayanmazumder/upayan.dev/apps/backend/internal/config"
 )
 
 type SpotifyService struct {

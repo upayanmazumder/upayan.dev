@@ -1,5 +1,6 @@
 # ========== Stage 1: Build ==========
-FROM golang:1.21.6 AS builder
+# Use a Go toolchain that satisfies the project's go.mod (>= 1.25.4)
+FROM golang:1.25.4 AS builder
 
 WORKDIR /app
 

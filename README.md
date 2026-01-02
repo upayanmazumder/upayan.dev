@@ -1,10 +1,11 @@
 # upayan.dev
 
-[![GitHub stars](https://img.shields.io/github/stars/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/stargazers) [![Forks](https://img.shields.io/github/forks/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/network) [![Issues](https://img.shields.io/github/issues/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/issues)[![License: MIT](https://img.shields.io/github/license/upayanmazumder/upayan.dev?style=flat-square&color=green)](LICENSE) [![Build & Push API](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml/badge.svg)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml) [![Build & Push App](https://github.com/upayanmazumder/upayan.dev/actions/workflows/app.yml/badge.svg)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/app.yml)
+[![GitHub stars](https://img.shields.io/github/stars/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/stargazers) [![Forks](https://img.shields.io/github/forks/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/network) [![Issues](https://img.shields.io/github/issues/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/issues)[![License: MIT](https://img.shields.io/github/license/upayanmazumder/upayan.dev?style=flat-square&color=green)](LICENSE)
+
+[![Build & Push Backend](https://github.com/upayanmazumder/upayan.dev/actions/workflows/deploy-backend.yml/badge.svg?branch=v5)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/deploy-backend.yml)
+[![Build & Push Frontend](https://github.com/upayanmazumder/upayan.dev/actions/workflows/frontend.yml/badge.svg?branch=v5)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/frontend.yml) [![Release Android App (APK/AAB)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/release-android.yml/badge.svg?branch=v5)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/release-android.yml) [![Release VS Code Extension (.vsix)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/release-vscode-extension.yml/badge.svg?branch=v5)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/release-vscode-extension.yml) [![Release Windows Client (.exe)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/release-windows-client.yml/badge.svg?branch=v5)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/release-windows-client.yml)
 
 [Visit on DeepWiki](https://deepwiki.com/upayanmazumder/upayan.dev)
-
----
 
 ## What is this repo about?
 

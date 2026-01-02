@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Install pnpm
         run: npm i -g pnpm
@@ -35,7 +35,7 @@ jobs:
         run: |
           npm i -g pkg
           # pkg input points to compiled JS entry
-          npx pkg dist/index.js --targets node20-win-x64 --output upayan-win-client.exe
+          npx pkg dist/index.js --targets node18-win-x64 --output upayan-win-client.exe
 
       - name: Create GitHub Release
         id: create_release

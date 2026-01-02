@@ -74,6 +74,8 @@ Once up:
 - Frontend: `http://localhost:3000`
 - Backend API: by default `http://localhost:8080`
 
+Note: The backend loads secrets from `./apps/backend/.env`. Copy or populate `apps/backend/.env` from `apps/backend/.env.example` before starting so required API keys are available to the service.
+
 ### Development Without Docker
 
 Inside `/apps/app` and `/apps/api`, you can run:

@@ -1,6 +1,8 @@
 {
 	"colorWheel.settings.workspaceColor": "hsl(101,31%,55%)",
 	"cSpell.words": [
+		"androidx",
+		"appcompat",
 		"appnet",
 		"Boardly",
 		"buildx",
@@ -77,5 +79,6 @@
 		"webglcontextrestored",
 		"webp",
 		"wght"
-	]
+	],
+	"java.configuration.updateBuildConfiguration": "interactive"
 }

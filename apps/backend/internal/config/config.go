@@ -1,6 +1,7 @@
 package config
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -13,6 +14,8 @@ type Config struct {
 	SpotifyRefreshToken string
 	WakatimeAPIKey      string
 	Port                string
+	// DeviceKeys maps a logical device name to its API key/token
+	DeviceKeys map[string]string
 }
 
 var AppConfig *Config
@@ -30,6 +33,17 @@ func Load() error {
 		Port:                getEnvOrDefault("PORT", "8080"),
 	}
 
+	// Load device keys from DEVICES_JSON environment variable if provided
+	devicesJSON := os.Getenv("DEVICES_JSON")
+	if devicesJSON != "" {
+		m := make(map[string]string)
+		if err := json.Unmarshal([]byte(devicesJSON), &m); err != nil {
+			return fmt.Errorf("failed to parse DEVICES_JSON: %w", err)
+		}
+		config.DeviceKeys = m
+	} else {
+		config.DeviceKeys = make(map[string]string)
+	}
 	// Validate required fields
 	if config.SpotifyClientID == "" {
 		return fmt.Errorf("SPOTIFY_CLIENT_ID is required")

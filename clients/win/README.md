@@ -1,3 +1,25 @@
+## Windows client
+
+Install and run as a service (optional):
+
+1. Build
+
+```bash
+pnpm install
+pnpm run build
+```
+
+2. (Optional) Install as Windows service
+
+```powershell
+pnpm add node-windows --workspace=false
+node ./scripts/install-service.js
+```
+
+3. Configure `config.json` (set `deviceId` and `token`)
+
+By default `apiHost` points to production: `https://api.upayan-v5.upayan.dev`.
+
 # Windows device-status client (TypeScript)
 
 Overview

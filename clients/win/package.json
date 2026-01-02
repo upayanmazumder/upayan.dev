@@ -9,13 +9,24 @@
 		"start": "node --enable-source-maps dist/index.js",
 		"dev": "ts-node-esm src/index.ts"
 	},
+	"bin": {
+		"upayan-win-client": "dist/index.js"
+	},
+	"service-scripts": {
+		"install": "node ./scripts/install-service.js",
+		"uninstall": "node ./scripts/uninstall-service.js"
+	},
 	"dependencies": {
 		"active-win": "^8.0.0",
 		"node-fetch": "^3.3.1",
 		"ping": "^0.4.0",
 		"systeminformation": "^5.12.0"
 	},
+	"optionalDependencies": {
+		"node-windows": "^1.0.0"
+	},
 	"devDependencies": {
+		"@types/node": "^20.0.0",
 		"@types/ping": "^0.4.4",
 		"ts-node": "^10.9.1",
 		"ts-node-esm": "^0.0.6",

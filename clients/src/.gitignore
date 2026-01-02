@@ -1,0 +1,8 @@
+# Kotlin/Java generic
+.gradle/
+build/
+out/
+*.class
+*.jar
+*.iml
+.idea/

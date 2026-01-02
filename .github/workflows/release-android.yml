@@ -1,0 +1,66 @@
+name: Release Android App (APK/AAB)
+
+on:
+    push:
+        tags: ["v*"]
+
+jobs:
+    build-and-release:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Set up JDK 17
+              uses: actions/setup-java@v4
+              with:
+                  distribution: "temurin"
+                  java-version: "17"
+
+            - name: Cache Gradle
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      ~/.gradle/caches
+                      ~/.gradle/wrapper
+                  key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                  restore-keys: |
+                      ${{ runner.os }}-gradle-
+
+            - name: Build Release
+              working-directory: clients/android/android-app
+              run: |
+                  chmod +x ./gradlew || true
+                  ./gradlew assembleRelease --no-daemon
+
+            - name: Find output artifacts
+              id: find_artifacts
+              run: |
+                  echo "Searching for APK/AAB..."
+                  find app/build/outputs -type f -name "*.apk" -o -name "*.aab" > artifacts.txt || true
+                  cat artifacts.txt || true
+                  echo "ARTS<<EOF" >> $GITHUB_OUTPUT
+                  cat artifacts.txt >> $GITHUB_OUTPUT
+                  echo "EOF" >> $GITHUB_OUTPUT
+
+            - name: Create GitHub Release
+              id: create_release
+              uses: actions/create-release@v1
+              with:
+                  tag_name: ${{ github.ref_name }}
+                  release_name: Release ${{ github.ref_name }} (Android)
+                  draft: false
+                  prerelease: false
+
+            - name: Upload artifacts to release
+              if: steps.find_artifacts.outputs.ARTS != ''
+              run: |
+                  while read -r file; do
+                    if [[ -f "$file" ]]; then
+                      name=$(basename "$file")
+                      echo "Uploading $file"
+                      gh release upload ${{ github.ref_name }} "$file" --clobber
+                    fi
+                  done < artifacts.txt
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

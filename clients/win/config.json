@@ -1,7 +1,7 @@
 {
 	"deviceId": "",
 	"token": "",
-	"apiHost": "https://<MY_API>",
+	"apiHost": "https://api.upayan-v5.upayan.dev",
 	"topNProcesses": 10,
 	"intervalSeconds": 10
 }

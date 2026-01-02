@@ -28,6 +28,10 @@ func SetupRoutes() *chi.Mux {
 		r.Get("/activity", handlers.GetUserActivity)
 		r.Get("/activity/spotify", handlers.GetSpotifyActivity)
 		r.Get("/activity/wakatime", handlers.GetWakatimeActivity)
+
+		// Device reporting endpoints
+		r.Post("/device/data", handlers.ReceiveDeviceData)
+		r.Get("/devices", handlers.GetDevices)
 	})
 
 	return r

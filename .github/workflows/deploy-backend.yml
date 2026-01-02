@@ -44,5 +44,5 @@ jobs:
           file: ./apps/backend/Dockerfile
           push: true
           tags: ${{ steps.tags.outputs.TAGS }}
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/apps/backend:latest
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/apps/backend:v5
           cache-to: type=inline

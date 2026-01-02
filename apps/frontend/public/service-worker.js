@@ -24,6 +24,8 @@ const CORE_ASSETS = [
   '/fonts/Montserrat_Alternates/MontserratAlternates-SemiBoldItalic.ttf',
   '/fonts/Montserrat_Alternates/MontserratAlternates-Thin.ttf',
   '/fonts/Montserrat_Alternates/MontserratAlternates-ThinItalic.ttf',
+  '/fonts/Inter/Inter-VariableFont_opsz,wght.ttf',
+  '/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf',
   '/fonts/Red_Hat_Display/RedHatDisplay-VariableFont_wght.ttf',
   '/fonts/Red_Hat_Display/RedHatDisplay-Italic-VariableFont_wght.ttf',
   '/fonts/Red_Hat_Mono/RedHatMono-VariableFont_wght.ttf',

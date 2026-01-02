@@ -134,7 +134,6 @@ html {
   }
 }
 
-/* Improve native select option styling where supported */
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -157,7 +156,6 @@ select option:checked {
   color: var(--color-accent-foreground);
 }
 
-/* keep the dropdown arrow visible on Windows but allow custom spacing */
 select::-ms-expand {
   padding-right: 6px;
 }
@@ -193,18 +191,18 @@ button {
   font-family: var(--font-inter);
 }
 
-.font-redhatdisplay {
-  font-family: var(--font-redhatdisplay);
+.font-redhat-display {
+  font-family: var(--font-red-hat-display);
 }
 
-.font-redhatmono {
-  font-family: var(--font-redhatmono);
+.font-redhat-mono {
+  font-family: var(--font-red-hat-mono);
 }
 
 .font-montserrat {
   font-family: var(--font-montserrat);
 }
 
-.font-montserratalternates {
-  font-family: var(--font-montserratalternates);
+.font-montserrat-alternates {
+  font-family: var(--font-montserrat-alternates);
 }

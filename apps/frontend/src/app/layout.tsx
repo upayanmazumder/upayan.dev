@@ -1,17 +1,29 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const redHatDisplay = localFont({
+const inter = localFont({
   src: [
     {
-      path: '/fonts/Red_Hat_Display/RedHatDisplay-VariableFont_wght.ttf',
+      path: '../../public/fonts/Inter/Inter-VariableFont_opsz,wght.ttf',
       style: 'normal',
     },
     {
-      path: '/fonts/Red_Hat_Display/RedHatDisplay-Italic-VariableFont_wght.ttf',
+      path: '../../public/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf',
+      style: 'italic',
+    },
+  ],
+  variable: '--font-inter',
+  display: 'swap',
+});
+const redHatDisplay = localFont({
+  src: [
+    {
+      path: '../../public/fonts/Red_Hat_Display/RedHatDisplay-VariableFont_wght.ttf',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/Red_Hat_Display/RedHatDisplay-Italic-VariableFont_wght.ttf',
       style: 'italic',
     },
   ],
@@ -21,11 +33,11 @@ const redHatDisplay = localFont({
 const redHatMono = localFont({
   src: [
     {
-      path: '/fonts/Red_Hat_Mono/RedHatMono-VariableFont_wght.ttf',
+      path: '../../public/fonts/Red_Hat_Mono/RedHatMono-VariableFont_wght.ttf',
       style: 'normal',
     },
     {
-      path: '/fonts/Red_Hat_Mono/RedHatMono-Italic-VariableFont_wght.ttf',
+      path: '../../public/fonts/Red_Hat_Mono/RedHatMono-Italic-VariableFont_wght.ttf',
       style: 'italic',
     },
   ],
@@ -35,11 +47,11 @@ const redHatMono = localFont({
 const montserrat = localFont({
   src: [
     {
-      path: '/fonts/Montserrat/Montserrat-VariableFont_wght.ttf',
+      path: '../../public/fonts/Montserrat/Montserrat-VariableFont_wght.ttf',
       style: 'normal',
     },
     {
-      path: '/fonts/Montserrat/Montserrat-Italic-VariableFont_wght.ttf',
+      path: '../../public/fonts/Montserrat/Montserrat-Italic-VariableFont_wght.ttf',
       style: 'italic',
     },
   ],
@@ -49,27 +61,27 @@ const montserrat = localFont({
 const montserratAlternates = localFont({
   src: [
     {
-      path: '/fonts/Montserrat_Alternates/MontserratAlternates-Regular.ttf',
+      path: '../../public/fonts/Montserrat_Alternates/MontserratAlternates-Regular.ttf',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf',
+      path: '../../public/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf',
       weight: '500',
       style: 'normal',
     },
     {
-      path: '/fonts/Montserrat_Alternates/MontserratAlternates-SemiBold.ttf',
+      path: '../../public/fonts/Montserrat_Alternates/MontserratAlternates-SemiBold.ttf',
       weight: '600',
       style: 'normal',
     },
     {
-      path: '/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf',
+      path: '../../public/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf',
       weight: '700',
       style: 'normal',
     },
     {
-      path: '/fonts/Montserrat_Alternates/MontserratAlternates-Italic.ttf',
+      path: '../../public/fonts/Montserrat_Alternates/MontserratAlternates-Italic.ttf',
       weight: '400',
       style: 'italic',
     },

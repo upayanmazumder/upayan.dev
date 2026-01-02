@@ -19,6 +19,50 @@ export default function Page() {
       <ColorPalette />
 
       <section className="p-6">
+        <h2 className="text-xl font-semibold mb-4">Font Showcase</h2>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 border rounded">
+              <h3 className="text-sm font-medium mb-2">Inter</h3>
+              <p className="font-inter">
+                The quick brown fox jumps over the lazy dog — 0123456789
+              </p>
+            </div>
+
+            <div className="p-4 border rounded">
+              <h3 className="text-sm font-medium mb-2">Red Hat Display</h3>
+              <p className="font-redhat-display">
+                The quick brown fox jumps over the lazy dog — 0123456789
+              </p>
+            </div>
+
+            <div className="p-4 border rounded">
+              <h3 className="text-sm font-medium mb-2">Red Hat Mono</h3>
+              <p className="font-redhat-mono">
+                The quick brown fox jumps over the lazy dog — 0123456789
+              </p>
+            </div>
+
+            <div className="p-4 border rounded">
+              <h3 className="text-sm font-medium mb-2">Montserrat</h3>
+              <p className="font-montserrat">
+                The quick brown fox jumps over the lazy dog — 0123456789
+              </p>
+            </div>
+
+            <div className="p-4 border rounded md:col-span-2">
+              <h3 className="text-sm font-medium mb-2">
+                Montserrat Alternates
+              </h3>
+              <p className="font-montserrat-alternates">
+                The quick brown fox jumps over the lazy dog — 0123456789
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="p-6">
         <h2 className="text-xl font-semibold mb-4">Primitives</h2>
         <div className="space-y-6">
           <div className="flex flex-wrap items-center gap-4">

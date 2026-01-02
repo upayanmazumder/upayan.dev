@@ -8,7 +8,7 @@ export default function Home() {
         href="/ui"
         className="px-6 py-3 bg-blue-900 text-white rounded-3xl hover:bg-blue-700 transition"
       >
-        Go to Color Palette
+        Go to UI Showcase
       </Link>
     </div>
   );

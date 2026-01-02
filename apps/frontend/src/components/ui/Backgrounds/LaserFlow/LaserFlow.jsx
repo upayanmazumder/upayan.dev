@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
-import * as THREE from "three";
-import "./LaserFlow.css";
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import './LaserFlow.css';
 
 const VERT = `
 precision highp float;
@@ -260,7 +260,7 @@ export const LaserFlow = ({
   decay = 1.1,
   falloffStart = 1.2,
   fogFallSpeed = 0.6,
-  color = "#FF79C6",
+  color = '#FF79C6',
 }) => {
   const mountRef = useRef(null);
   const rendererRef = useRef(null);
@@ -278,12 +278,12 @@ export const LaserFlow = ({
 
   const hexToRGB = (hex) => {
     let c = hex.trim();
-    if (c[0] === "#") c = c.slice(1);
+    if (c[0] === '#') c = c.slice(1);
     if (c.length === 3)
       c = c
-        .split("")
+        .split('')
         .map((x) => x + x)
-        .join("");
+        .join('');
     const n = parseInt(c, 16) || 0xffffff;
     return {
       r: ((n >> 16) & 255) / 255,
@@ -299,7 +299,7 @@ export const LaserFlow = ({
       alpha: false,
       depth: false,
       stencil: false,
-      powerPreference: "high-performance",
+      powerPreference: 'high-performance',
       premultipliedAlpha: false,
       preserveDrawingBuffer: false,
       failIfMajorPerformanceCaveat: false,
@@ -315,9 +315,9 @@ export const LaserFlow = ({
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setClearColor(0x000000, 1);
     const canvas = renderer.domElement;
-    canvas.style.width = "100%";
-    canvas.style.height = "100%";
-    canvas.style.display = "block";
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.display = 'block';
     mount.appendChild(canvas);
 
     const scene = new THREE.Scene();
@@ -325,7 +325,7 @@ export const LaserFlow = ({
 
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute(
-      "position",
+      'position',
       new THREE.BufferAttribute(
         new Float32Array([-1, -1, 0, 3, -1, 0, -1, 3, 0]),
         3,
@@ -424,7 +424,7 @@ export const LaserFlow = ({
     const onVis = () => {
       pausedRef.current = document.hidden;
     };
-    document.addEventListener("visibilitychange", onVis, { passive: true });
+    document.addEventListener('visibilitychange', onVis, { passive: true });
 
     const updateMouse = (clientX, clientY) => {
       const rect = rectRef.current;
@@ -437,10 +437,10 @@ export const LaserFlow = ({
     };
     const onMove = (ev) => updateMouse(ev.clientX, ev.clientY);
     const onLeave = () => mouseTarget.set(0, 0);
-    canvas.addEventListener("pointermove", onMove, { passive: true });
-    canvas.addEventListener("pointerdown", onMove, { passive: true });
-    canvas.addEventListener("pointerenter", onMove, { passive: true });
-    canvas.addEventListener("pointerleave", onLeave, { passive: true });
+    canvas.addEventListener('pointermove', onMove, { passive: true });
+    canvas.addEventListener('pointerdown', onMove, { passive: true });
+    canvas.addEventListener('pointerenter', onMove, { passive: true });
+    canvas.addEventListener('pointerleave', onLeave, { passive: true });
 
     const onCtxLost = (e) => {
       e.preventDefault();
@@ -450,8 +450,8 @@ export const LaserFlow = ({
       pausedRef.current = false;
       scheduleResize();
     };
-    canvas.addEventListener("webglcontextlost", onCtxLost, false);
-    canvas.addEventListener("webglcontextrestored", onCtxRestored, false);
+    canvas.addEventListener('webglcontextlost', onCtxLost, false);
+    canvas.addEventListener('webglcontextrestored', onCtxRestored, false);
 
     let raf = 0;
 
@@ -537,13 +537,13 @@ export const LaserFlow = ({
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
-      document.removeEventListener("visibilitychange", onVis);
-      canvas.removeEventListener("pointermove", onMove);
-      canvas.removeEventListener("pointerdown", onMove);
-      canvas.removeEventListener("pointerenter", onMove);
-      canvas.removeEventListener("pointerleave", onLeave);
-      canvas.removeEventListener("webglcontextlost", onCtxLost);
-      canvas.removeEventListener("webglcontextrestored", onCtxRestored);
+      document.removeEventListener('visibilitychange', onVis);
+      canvas.removeEventListener('pointermove', onMove);
+      canvas.removeEventListener('pointerdown', onMove);
+      canvas.removeEventListener('pointerenter', onMove);
+      canvas.removeEventListener('pointerleave', onLeave);
+      canvas.removeEventListener('webglcontextlost', onCtxLost);
+      canvas.removeEventListener('webglcontextrestored', onCtxRestored);
       geometry.dispose();
       material.dispose();
       renderer.dispose();
@@ -572,7 +572,7 @@ export const LaserFlow = ({
     uniforms.uFalloffStart.value = falloffStart;
     uniforms.uFogFallSpeed.value = fogFallSpeed;
 
-    const { r, g, b } = hexToRGB(color || "#FFFFFF");
+    const { r, g, b } = hexToRGB(color || '#FFFFFF');
     uniforms.uColor.value.set(r, g, b);
   }, [
     wispDensity,
@@ -596,7 +596,7 @@ export const LaserFlow = ({
   return (
     <div
       ref={mountRef}
-      className={`laser-flow-container ${className || ""}`}
+      className={`laser-flow-container ${className || ''}`}
       style={style}
     />
   );

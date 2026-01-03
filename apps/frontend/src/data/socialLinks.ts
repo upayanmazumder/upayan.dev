@@ -1,0 +1,68 @@
+interface SocialLink {
+  name: string;
+  url: string;
+  backgroundColor?: string;
+  textColor?: string;
+}
+
+const socialLinks: SocialLink[] = [
+  {
+    name: 'IIT-Madras',
+    url: 'https://ds.study.iitm.ac.in/student/24F2002974',
+    backgroundColor: '#2a0908',
+    textColor: '#d7a64f',
+  },
+  {
+    name: 'Kaggle',
+    url: 'https://www.kaggle.com/upayanmazumder',
+    backgroundColor: '#20beff',
+    textColor: '#ffffff',
+  },
+  {
+    name: 'LinkedIn',
+    url: 'https://www.linkedin.com/in/upayanmazumder/',
+  },
+  {
+    name: 'Github',
+    url: 'https://github.com/upayanmazumder',
+  },
+  {
+    name: 'Microsoft Learn',
+    url: 'https://learn.microsoft.com/en-gb/users/upayan',
+    backgroundColor: '#f25022',
+    textColor: 'rgb(230, 230, 230)',
+  },
+  {
+    name: 'Devfolio',
+    url: 'https://devfolio.co/@Upayan',
+    backgroundColor: '#3670ff',
+    textColor: '#ffffff',
+  },
+  {
+    name: 'Leetcode',
+    url: 'https://leetcode.com/u/upayanmazumder/',
+    backgroundColor: '#ffab1d',
+    textColor: '#000000',
+  },
+  {
+    name: 'Discord',
+    url: 'https://discord.com/users/1240025366853193758',
+  },
+  {
+    name: 'Gravatar',
+    url: 'https://gravatar.com/upayanmazumder',
+    backgroundColor: '#1e8cbe',
+    textColor: '#ffffff',
+  },
+  {
+    name: 'Instagram',
+    url: 'https://www.instagram.com/upayan.mazumder/',
+  },
+  {
+    name: 'Facebook',
+    url: 'https://www.facebook.com/upayan.mazumder',
+  },
+];
+
+export default socialLinks;
+export type { SocialLink };

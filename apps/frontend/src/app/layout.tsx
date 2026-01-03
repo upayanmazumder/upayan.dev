@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import { Sidebar } from '@/components/common';
 
 const inter = localFont({
   src: [
@@ -106,6 +107,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${redHatDisplay.variable} ${redHatMono.variable} ${montserrat.variable} ${montserratAlternates.variable} antialiased`}
       >
+        <Sidebar />
         {children}
       </body>
     </html>

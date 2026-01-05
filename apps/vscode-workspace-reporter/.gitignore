@@ -1,0 +1,9 @@
+node_modules
+out
+pnpm-lock.yaml
+.DS_Store
+.env
+.env.*
+*.vsix
+.vscode
+/.git

@@ -14,8 +14,8 @@ type Config struct {
 	SpotifyRefreshToken string
 	WakatimeAPIKey      string
 	Port                string
-	// DeviceKeys maps a logical device name to its API key/token
-	DeviceKeys map[string]string
+	SigningKey          string
+	DeviceKeys          map[string]string
 }
 
 var AppConfig *Config
@@ -44,6 +44,13 @@ func Load() error {
 	} else {
 		config.DeviceKeys = make(map[string]string)
 	}
+
+	// Load signing key from SIGNING_KEY env var (mandatory)
+	signingKey := os.Getenv("SIGNING_KEY")
+	if signingKey == "" {
+		return fmt.Errorf("SIGNING_KEY is required")
+	}
+	config.SigningKey = signingKey
 	// Validate required fields
 	if config.SpotifyClientID == "" {
 		return fmt.Errorf("SPOTIFY_CLIENT_ID is required")

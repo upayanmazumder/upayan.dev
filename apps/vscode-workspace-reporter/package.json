@@ -1,0 +1,53 @@
+{
+	"name": "vscode-workspace-reporter",
+	"displayName": "Workspace Reporter",
+	"publisher": "upayanmazumder",
+	"version": "0.1.0",
+	"engines": {
+		"vscode": "^1.50.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Workspace Reporter",
+			"properties": {
+				"workspaceReporter.endpoint": {
+					"type": "string",
+					"default": "http://localhost:8080/api/activity",
+					"description": "Backend URL to receive telemetry POSTs (configure to the appropriate backend endpoint)"
+				},
+				"workspaceReporter.signingKey": {
+					"type": "string",
+					"default": "",
+					"description": "Required signing key (HMAC secret) used to compute X-Signature."
+				},
+				"workspaceReporter.intervalSeconds": {
+					"type": "number",
+					"default": 60,
+					"description": "Heartbeat interval in seconds"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "pnpm run build",
+		"build": "tsc -p .",
+		"watch": "tsc -p . -w",
+		"pretest": "pnpm run build",
+		"dev": "pnpm run watch",
+		"package": "vsce package"
+	},
+	"devDependencies": {
+		"@types/node": "^18.0.0",
+		"@types/vscode": "^1.78.0",
+		"typescript": "^5.0.0",
+		"vsce": "^2.10.0"
+	}
+}

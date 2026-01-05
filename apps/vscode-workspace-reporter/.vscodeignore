@@ -1,0 +1,10 @@
+node_modules
+out/test
+**/.vscode-test
+pnpm-lock.yaml
+.DS_Store
+.env
+.env.*
+.git
+.github
+*.vsix

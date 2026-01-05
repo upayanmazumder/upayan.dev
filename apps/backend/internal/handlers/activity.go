@@ -1,12 +1,17 @@
 package handlers
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"sync"
 	"time"
 
+	"github.com/upayanmazumder/upayan.dev/apps/backend/internal/config"
 	"github.com/upayanmazumder/upayan.dev/apps/backend/internal/services"
 )
 
@@ -231,4 +236,60 @@ func GetWakatimeActivity(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(summary)
+}
+
+// TelemetryPayload matches the telemetry emitted by the VS Code extension
+type TelemetryPayload struct {
+	WorkspaceName string                 `json:"workspaceName,omitempty"`
+	Event         string                 `json:"event,omitempty"`
+	File          string                 `json:"file,omitempty"`
+	Durations     map[string]float64     `json:"durations,omitempty"`
+	Timestamp     string                 `json:"timestamp,omitempty"`
+	Extra         map[string]interface{} `json:"extra,omitempty"`
+}
+
+// ReceiveTelemetry accepts POST telemetry from clients (e.g., VS Code extension).
+// If a signing key is configured, it validates the X-Signature HMAC-SHA256 header.
+func ReceiveTelemetry(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	bodyBytes, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Printf("failed to read telemetry body: %v", err)
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"error": "invalid body"})
+		return
+	}
+
+	// validate signature if server has signing key
+	if config.AppConfig != nil && config.AppConfig.SigningKey != "" {
+		sig := r.Header.Get("X-Signature")
+		if sig == "" {
+			w.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(w).Encode(map[string]string{"error": "missing signature"})
+			return
+		}
+		mac := hmac.New(sha256.New, []byte(config.AppConfig.SigningKey))
+		mac.Write(bodyBytes)
+		expected := hex.EncodeToString(mac.Sum(nil))
+		if !hmac.Equal([]byte(expected), []byte(sig)) {
+			w.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(w).Encode(map[string]string{"error": "invalid signature"})
+			return
+		}
+	}
+
+	var payload TelemetryPayload
+	if err := json.Unmarshal(bodyBytes, &payload); err != nil {
+		log.Printf("invalid telemetry payload: %v", err)
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"error": "invalid payload"})
+		return
+	}
+
+	// For now: log telemetry and acknowledge. You can extend to persist or forward.
+	log.Printf("Telemetry received: workspace=%s event=%s file=%s", payload.WorkspaceName, payload.Event, payload.File)
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
 }

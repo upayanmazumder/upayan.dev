@@ -46,8 +46,8 @@ jobs:
       - name: Build & Push app
         uses: docker/build-push-action@v5
         with:
-          context: ./apps/app
-          file: ./apps/app/Dockerfile
+          context: ./app
+          file: ./app/Dockerfile
           push: true
           tags: ${{ steps.tags.outputs.TAGS }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/app:latest

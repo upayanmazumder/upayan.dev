@@ -1,11 +1,11 @@
 services:
-  backend:
+  api:
     build:
-      context: ./apps/backend
+      context: ./api
       dockerfile: Dockerfile
     command: sh -c "./server || go run ./cmd/api"
     volumes:
-      - ./apps/backend:/app:delegated
+      - ./api:/app:delegated
       - /app/tmp
     ports:
       - "8080:8080"
@@ -14,13 +14,13 @@ services:
     networks:
       - appnet
 
-  frontend:
+  app:
     build:
-      context: ./apps/frontend
+      context: ./app
       dockerfile: Dockerfile
     command: sh -c "corepack enable pnpm && pnpm dev -- -H 0.0.0.0"
     volumes:
-      - ./apps/frontend:/app:delegated
+      - ./app:/app:delegated
       - /app/node_modules
     ports:
       - "3000:3000"

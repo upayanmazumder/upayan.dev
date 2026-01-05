@@ -1,5 +1,5 @@
 {
-	"name": "vscode-workspace-reporter",
+	"name": "vscode-extension",
 	"displayName": "Workspace Reporter",
 	"publisher": "upayanmazumder",
 	"version": "0.1.0",
@@ -20,7 +20,7 @@
 			"properties": {
 				"workspaceReporter.endpoint": {
 					"type": "string",
-					"default": "http://localhost:8080/api/activity",
+					"default": "https://api.upayan-v5.upayan.dev/api/activity",
 					"description": "Backend URL to receive telemetry POSTs (configure to the appropriate backend endpoint)"
 				},
 				"workspaceReporter.signingKey": {

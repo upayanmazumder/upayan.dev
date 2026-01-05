@@ -1,4 +1,4 @@
-Workspace Reporter VS Code extension
+VS Code extension
 
 This extension reports basic workspace activity (workspace name, active file, durations, heartbeat) to a configured backend telemetry endpoint.
 
@@ -11,12 +11,12 @@ Quick start
 1. In the extension folder run:
 
 ```bash
-cd apps/vscode-workspace-reporter
+cd apps/vscode-extension
 pnpm install
 pnpm run build
 ```
 
-2. Configure the extension settings (File → Preferences → Settings → Extensions → Workspace Reporter):
+2. Configure the extension settings (File → Preferences → Settings → Extensions → ):
 
 - `workspaceReporter.endpoint` — Backend URL to receive telemetry (default: `https://api.upayan-v5.upayan.dev/api/activity`).
 - `workspaceReporter.signingKey` — REQUIRED: HMAC signing secret used to compute `X-Signature` for each POST.

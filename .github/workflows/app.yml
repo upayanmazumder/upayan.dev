@@ -1,12 +1,12 @@
-name: Build & Push Frontend
+name: Build & Push App
 
 on:
   push:
     branches:
       - "**"
     paths:
-      - "apps/frontend/**"
-      - ".github/workflows/apps/frontend.yml"
+      - "app/**"
+      - ".github/workflows/app.yml"
   workflow_dispatch:
 
 permissions:
@@ -14,7 +14,7 @@ permissions:
   packages: write
 
 jobs:
-  build-and-push-frontend:
+  build-and-push-app:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,17 +38,17 @@ jobs:
           BRANCH_LOWER="${GITHUB_REF_NAME,,}"
 
           if [ "$BRANCH_LOWER" = "main" ]; then
-            echo "TAGS=ghcr.io/$REPO_LOWER/apps/frontend:latest,ghcr.io/$REPO_LOWER/apps/frontend:$GITHUB_SHA" >> $GITHUB_OUTPUT
+            echo "TAGS=ghcr.io/$REPO_LOWER/app:latest,ghcr.io/$REPO_LOWER/app:$GITHUB_SHA" >> $GITHUB_OUTPUT
           else
-            echo "TAGS=ghcr.io/$REPO_LOWER/apps/frontend:$BRANCH_LOWER,ghcr.io/$REPO_LOWER/apps/frontend:$GITHUB_SHA" >> $GITHUB_OUTPUT
+            echo "TAGS=ghcr.io/$REPO_LOWER/app:$BRANCH_LOWER,ghcr.io/$REPO_LOWER/app:$GITHUB_SHA" >> $GITHUB_OUTPUT
           fi
 
-      - name: Build & Push Frontend
+      - name: Build & Push app
         uses: docker/build-push-action@v5
         with:
-          context: ./apps/frontend
-          file: ./apps/frontend/Dockerfile
+          context: ./apps/app
+          file: ./apps/app/Dockerfile
           push: true
           tags: ${{ steps.tags.outputs.TAGS }}
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/apps/frontend:latest
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/app:latest
           cache-to: type=inline

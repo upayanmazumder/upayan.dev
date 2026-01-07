@@ -4,8 +4,13 @@
 	"publisher": "upayanmazumder",
 	"version": "0.1.0",
 	"engines": {
-		"vscode": "^1.50.0"
+		"vscode": "^1.78.0"
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/upayanmazumder/upayan.dev"
+	},
+	"license": "MIT",
 	"categories": [
 		"Other"
 	],
@@ -42,12 +47,17 @@
 		"watch": "tsc -p . -w",
 		"pretest": "pnpm run build",
 		"dev": "pnpm run watch",
-		"package": "vsce package"
+		"package": "vsce package",
+		"package:out": "vsce package -o ./dist/extension.vsix",
+		"install:vsix": "code --install-extension ./dist/extension.vsix --force",
+		"dev:live": "pnpm run build && pnpm run package:out && pnpm run install:vsix && concurrently \"pnpm run watch\" \"chokidar \"src/**\" -c \"pnpm run package:out && pnpm run install:vsix\"\""
 	},
 	"devDependencies": {
 		"@types/node": "^18.0.0",
 		"@types/vscode": "^1.78.0",
 		"typescript": "^5.0.0",
-		"vsce": "^2.10.0"
+		"vsce": "^2.10.0",
+		"concurrently": "^8.2.0",
+		"chokidar-cli": "^3.0.0"
 	}
 }

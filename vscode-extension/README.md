@@ -1,45 +1,115 @@
-VS Code extension
+**Workspace Reporter** — VS Code extension
 
-This extension reports basic workspace activity (workspace name, active file, durations, heartbeat) to a configured backend telemetry endpoint.
+Reports lightweight workspace activity (workspace name, active file, durations, heartbeats) to a configurable backend endpoint. This README covers development, packaging, local distribution, and optional CI/publishing.
+
+**Quick Links**
+
+- Source repository: https://github.com/upayanmazumder/upayan.dev
+- Extension folder: `vscode-extension`
 
 Requirements
 
-- A signing key (shared secret) is mandatory. Configure it in the extension settings as `workspaceReporter.signingKey` (or provide a local file path via `workspaceReporter.signingKeyFile`). The extension will deactivate if a signing key is not provided.
+- `pnpm` (recommended) or a compatible Node package manager
+- `code` CLI (for installing `.vsix` locally) — ensure `code --version` works
 
-Quick start
+Developer quick start
 
-1. In the extension folder run:
+1. Install and build:
 
 ```bash
-cd apps/vscode-extension
+cd vscode-extension
 pnpm install
 pnpm run build
 ```
 
-2. Configure the extension settings (File → Preferences → Settings → Extensions → ):
+2. Run in the Extension Development Host for debugging:
+
+- Open the folder in VS Code and press F5 (Launch Extension Development Host)
+
+Configuration (user-level)
 
 - `workspaceReporter.endpoint` — Backend URL to receive telemetry (default: `https://api.upayan-v5.upayan.dev/api/activity`).
-- `workspaceReporter.signingKey` — REQUIRED: HMAC signing secret used to compute `X-Signature` for each POST.
-- `workspaceReporter.intervalSeconds` — Heartbeat interval in seconds (default: 60).
+- `workspaceReporter.signingKey` — REQUIRED: HMAC signing secret used to compute `X-Signature` for POSTs.
+- `workspaceReporter.intervalSeconds` — Heartbeat interval in seconds (default: `60`).
 
-3. Run the extension in the Extension Development Host or package and install the VSIX.
+Set these at the _User_ level (File → Preferences → Settings) to keep the same configuration across workspaces. To sync settings across machines enable VS Code Settings Sync.
 
-Packaging
+Local packaging & installation
 
-To produce a VSIX (requires `pnpm`):
+1. Package the extension into a VSIX file:
 
 ```bash
-cd apps/vscode-workspace-reporter
-pnpm install
-pnpm run package
+cd vscode-extension
+pnpm run package:out
 ```
 
-This uses `vsce` to create a `.vsix` you can install via `Extensions: Install from VSIX...`.
+Output: `dist/extension.vsix`.
 
-Backend notes
+2. Install the VSIX locally for the current user:
 
-- The backend must validate the HMAC-SHA256 `X-Signature` header. In the server, set `SIGNING_KEY` (env) to the same secret used by the extension.
-- The backend endpoint expected by default is `https://api.upayan-v5.upayan.dev/api/activity` and accepts POST telemetry JSON in the format:
+```bash
+code --install-extension ./dist/extension.vsix --force
+```
+
+Distribute the generated `dist/extension.vsix` to other machines and run the same `code --install-extension` command.
+
+Fast development loop (auto package + reinstall)
+Run the provided live watcher which rebuilds, repackages and reinstalls when `src/` changes:
+
+```bash
+cd vscode-extension
+pnpm run dev:live
+```
+
+Notes:
+
+- Ensure `code` is on your PATH; on Windows it may be `"C:\\Program Files\\Microsoft VS Code\\bin\\code.cmd"`.
+- `dev:live` depends on `concurrently` and `chokidar-cli` (installed as devDependencies) and will repackage and reinstall on file changes.
+
+Packaging notes
+
+- `vsce` is used to create the `.vsix` bundle. If `vsce` prompts interactively during packaging, ensure `package.json` contains `repository` and `license` fields and that a `LICENSE` file exists in the extension folder.
+- The `publisher` field in `package.json` must match your Marketplace publisher if you later publish.
+
+Private distribution vs Marketplace
+
+- Installing the `.vsix` makes the extension available across all workspaces for that VS Code user on that machine.
+- To deliver automatic updates across machines, publish to the Visual Studio Marketplace (recommended) or use an internal update mechanism.
+
+Optional: publish to Visual Studio Marketplace
+
+1. Create a publisher at https://marketplace.visualstudio.com/manage (publisher name must match `publisher` in `package.json`).
+2. Create a Personal Access Token (PAT) in Azure DevOps with Marketplace (Manage) scope.
+3. Login then publish using `vsce`:
+
+```bash
+npx vsce login <publisher-name>
+# paste PAT
+npx vsce publish minor
+```
+
+CI/CD: example GitHub Action to publish on tag
+Save `VSCE_PAT` as a repository secret and add a workflow `.github/workflows/publish.yml`:
+
+```yaml
+name: Publish Extension
+on:
+	push:
+		tags: ['v*']
+jobs:
+	publish:
+		runs-on: ubuntu-latest
+		steps:
+			- uses: actions/checkout@v4
+			- uses: pnpm/action-setup@v2
+				with:
+					version: 7
+			- run: pnpm install
+			- run: npx vsce publish --pat ${{ secrets.VSCE_PAT }}
+```
+
+Telemetry payload (backend expectations)
+The extension sends JSON to `workspaceReporter.endpoint`. Example:
 
 ```json
 {
@@ -52,15 +122,23 @@ Backend notes
 }
 ```
 
+The server MUST verify an `X-Signature` HMAC-SHA256 header computed with the shared signing key.
+
 Security
 
-- Use a long random secret for `workspaceReporter.signingKey` and `SIGNING_KEY` (server). Do not commit secrets into source control.
+- Keep `workspaceReporter.signingKey` secret. Do not commit it.
+- Use a long random secret (>= 32 bytes) for HMAC.
 
 Troubleshooting
 
-- If telemetry is not sent, confirm the signing key is set; the extension will show an error and disable itself if the signing key is missing.
-- Use the `workspaceReporter.endpoint` setting to point to a local dev backend during testing.
+- Packaging fails with prompts: add `repository` and `license` to `package.json` and include `LICENSE` file in the extension folder.
+- `code` CLI not found: ensure VS Code's `bin` folder is on PATH, or use the full path to `code.cmd` on Windows.
+- Extension disabled: open View → Output and choose the extension's output channel to see why the extension was disabled (commonly a missing signing key).
+
+Developer tips
+
+- Bump the `version` in `package.json` before packaging/publishing to avoid caching issues.
+- Use `npx vsce package -o ./dist/extension.vsix` to create a VSIX without the helper scripts.
 
 License
-
 MIT

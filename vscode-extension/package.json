@@ -19,6 +19,12 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"commands": [
+			{
+				"command": "workspaceReporter.sendSanitizedSummary",
+				"title": "Workspace Reporter: Send Sanitized Summary"
+			}
+		],
 		"configuration": {
 			"type": "object",
 			"title": "Workspace Reporter",

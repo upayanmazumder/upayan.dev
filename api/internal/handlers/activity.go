@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"sort"
 	"sync"
 	"time"
 
@@ -19,6 +20,17 @@ var (
 	spotifyService  *services.SpotifyService
 	wakatimeService *services.WakatimeService
 	once            sync.Once
+)
+
+// telemetry storage (in-memory recent telemetry from clients)
+type TelemetryEntry struct {
+	Payload    TelemetryPayload
+	ReceivedAt int64
+}
+
+var (
+	telemetryStore = make(map[string]TelemetryEntry)
+	telemetryMutex sync.RWMutex
 )
 
 func initServices() {
@@ -61,9 +73,10 @@ type WakatimeSummary struct {
 }
 
 type UserActivityResponse struct {
-	Spotify   *SpotifySummary  `json:"spotify"`
-	Wakatime  *WakatimeSummary `json:"wakatime"`
-	Timestamp int64            `json:"timestamp"`
+	Spotify   *SpotifySummary    `json:"spotify"`
+	Wakatime  *WakatimeSummary   `json:"wakatime"`
+	Timestamp int64              `json:"timestamp"`
+	Telemetry []TelemetryPayload `json:"telemetry,omitempty"`
 }
 
 type ErrorResponse struct {
@@ -162,6 +175,30 @@ func GetUserActivity(w http.ResponseWriter, r *http.Request) {
 		Spotify:   spotifySummary,
 		Wakatime:  wakaSummary,
 		Timestamp: time.Now().Unix(),
+	}
+
+	// attach recent telemetry (most recent 10)
+	telemetryMutex.RLock()
+	if len(telemetryStore) > 0 {
+		entries := make([]TelemetryEntry, 0, len(telemetryStore))
+		for _, e := range telemetryStore {
+			entries = append(entries, e)
+		}
+		telemetryMutex.RUnlock()
+
+		// sort by ReceivedAt desc
+		sort.Slice(entries, func(i, j int) bool { return entries[i].ReceivedAt > entries[j].ReceivedAt })
+		max := 10
+		if len(entries) < max {
+			max = len(entries)
+		}
+		recent := make([]TelemetryPayload, 0, max)
+		for i := 0; i < max; i++ {
+			recent = append(recent, entries[i].Payload)
+		}
+		response.Telemetry = recent
+	} else {
+		telemetryMutex.RUnlock()
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -289,6 +326,15 @@ func ReceiveTelemetry(w http.ResponseWriter, r *http.Request) {
 
 	// For now: log telemetry and acknowledge. You can extend to persist or forward.
 	log.Printf("Telemetry received: workspace=%s event=%s file=%s", payload.WorkspaceName, payload.Event, payload.File)
+
+	// store telemetry keyed by workspace name or timestamp
+	key := payload.WorkspaceName
+	if key == "" {
+		key = "anon-" + time.Now().Format(time.RFC3339Nano)
+	}
+	telemetryMutex.Lock()
+	telemetryStore[key] = TelemetryEntry{Payload: payload, ReceivedAt: time.Now().Unix()}
+	telemetryMutex.Unlock()
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"status": "ok"})

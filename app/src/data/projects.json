@@ -15,28 +15,19 @@
 		],
 		"packageLinks": []
 	},
+
 	{
-		"name": "kodesphere",
-		"icon": "/projects/kodesphere.webp",
-		"description": "Deploy Smarter, Not Harder",
+		"name": "Microsoft Powertoys",
+		"icon": "/projects/powertoys.webp",
+		"description": "A set of utilities for power users to tune and streamline their Windows experience for greater productivity.",
 		"links": [
 			{
 				"name": "Github",
-				"url": "https://github.com/upayanmazumder/kodesphere"
+				"url": "https://github.com/microsoft/PowerToys"
 			},
 			{
-				"name": "Website",
-				"url": "https://ks.upayan.dev"
-			}
-		],
-		"packageLinks": [
-			{
-				"name": "Main Docker Image",
-				"url": "https://github.com/users/upayanmazumder/packages/container/package/kodesphere"
-			},
-			{
-				"name": "Kubernetes Docker Image",
-				"url": "https://github.com/users/upayanmazumder/packages/container/package/kodesphere%2Fk8s"
+				"name": "Install",
+				"url": "https://aka.ms/installPowerToys"
 			}
 		]
 	},
@@ -118,6 +109,31 @@
 			}
 		],
 		"packageLinks": []
+	},
+	{
+		"name": "kodesphere",
+		"icon": "/projects/kodesphere.webp",
+		"description": "Deploy Smarter, Not Harder",
+		"links": [
+			{
+				"name": "Github",
+				"url": "https://github.com/upayanmazumder/kodesphere"
+			},
+			{
+				"name": "Website",
+				"url": "https://ks.upayan.dev"
+			}
+		],
+		"packageLinks": [
+			{
+				"name": "Main Docker Image",
+				"url": "https://github.com/users/upayanmazumder/packages/container/package/kodesphere"
+			},
+			{
+				"name": "Kubernetes Docker Image",
+				"url": "https://github.com/users/upayanmazumder/packages/container/package/kodesphere%2Fk8s"
+			}
+		]
 	},
 	{
 		"name": "Traffic Control System",

@@ -1,104 +1,108 @@
 .widget {
-  z-index: 3000;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+	z-index: 10;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
 }
 
 .widget button:hover {
-  transform: scale(1);
+	transform: scale(1);
 }
 
 .toggleButton {
-  background: transparent;
-  border: none;
-  color: var(--color);
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 50%;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+	background: transparent;
+	border: none;
+	color: var(--color);
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 50%;
+	transition:
+		background-color 0.3s ease,
+		box-shadow 0.3s ease;
 }
 
 .toggleButton:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+	background-color: rgba(255, 255, 255, 0.1);
+	box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
 }
 
 .selector {
-  position: absolute;
-  bottom: 120%;
-  right: 0;
-  background: #222;
-  padding: 4px 6px;
-  border-radius: 12px;
-  width: clamp(160px, 30vw, 240px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-  animation: fadeIn 0.3s ease-out forwards;
-  font-size: 16px;
+	position: absolute;
+	bottom: 120%;
+	right: 0;
+	background: #222;
+	padding: 4px 6px;
+	border-radius: 12px;
+	width: clamp(160px, 30vw, 240px);
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+	animation: fadeIn 0.3s ease-out forwards;
+	font-size: 16px;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    filter: blur(4px);
-  }
+	from {
+		opacity: 0;
+		filter: blur(4px);
+	}
 
-  to {
-    opacity: 1;
-    filter: blur(0);
-  }
+	to {
+		opacity: 1;
+		filter: blur(0);
+	}
 }
 
 .label {
-  color: white;
-  margin-bottom: 8px;
+	color: white;
+	margin-bottom: 8px;
 }
 
 .options {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-height: 40vh;
-  overflow-y: auto;
-  padding: 2px;
-  -ms-overflow-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	max-height: 40vh;
+	overflow-y: auto;
+	padding: 2px;
+	-ms-overflow-style: none;
 }
 
 .options::-webkit-scrollbar {
-  width: 6px;
+	width: 6px;
 }
 
 .options::-webkit-scrollbar-track {
-  background: transparent;
+	background: transparent;
 }
 
 .options::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 4px;
+	background-color: #888;
+	border-radius: 4px;
 }
 
 .options:hover::-webkit-scrollbar {
-  display: block;
+	display: block;
 }
 
 .option {
-  padding: 3px;
-  border-radius: 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.2s ease, opacity 0.2s ease;
-  font-size: 16px;
+	padding: 3px;
+	border-radius: 8px;
+	text-align: center;
+	cursor: pointer;
+	transition:
+		background-color 0.2s ease,
+		opacity 0.2s ease;
+	font-size: 16px;
 }
 
 .option:hover {
-  opacity: 0.95;
-  background-color: rgba(255, 255, 255, 0.05);
+	opacity: 0.95;
+	background-color: rgba(255, 255, 255, 0.05);
 }
 
 @media (max-width: 500px) {
-  .selector {
-    width: 90vw;
-    right: 5%;
-  }
+	.selector {
+		width: 90vw;
+		right: 5%;
+	}
 }

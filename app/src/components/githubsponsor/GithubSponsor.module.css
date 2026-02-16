@@ -1,9 +1,10 @@
 .githubSponsorContainer {
-  display: flex;
+	display: flex;
 }
 
 .githubSponsor {
-  border: 0;
-  border-radius: 6px;
-  z-index: 2000;
+	border: 0;
+	border-radius: 6px;
+	position: relative;
+	z-index: 10;
 }

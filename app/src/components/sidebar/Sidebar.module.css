@@ -105,7 +105,9 @@
 	padding: 1.5rem 0.75rem;
 	border-radius: 6px;
 	background-color: rgba(255, 255, 255, 0.05);
-	transition: background 0.3s ease, box-shadow 0.3s ease;
+	transition:
+		background 0.3s ease,
+		box-shadow 0.3s ease;
 	text-decoration: none;
 	justify-content: center;
 	text-align: center;
@@ -149,7 +151,10 @@
 	font-size: 0.85rem;
 	white-space: nowrap;
 
-	transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+	transition:
+		background 0.25s ease,
+		transform 0.2s ease,
+		box-shadow 0.2s ease;
 }
 
 .socialLink:hover {

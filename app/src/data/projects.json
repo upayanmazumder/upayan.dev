@@ -82,12 +82,24 @@
 		"icon": "/projects/devsoc-26.webp",
 		"links": [
 			{
-				"name": "Landing",
+				"name": "Landing Website",
 				"url": "https://devsoc26.codechefvit.com"
 			},
 			{
-				"name": "Portal",
+				"name": "Landing Github",
+				"url": "https://github.com/CodeChefVIT/devsoc-26-landing"
+			},
+			{
+				"name": "Portal Website",
 				"url": "https://portal.devsoc26.codechefvit.com"
+			},
+			{
+				"name": "Portal Github",
+				"url": "https://github.com/CodeChefVIT/devsoc-26-portal"
+			},
+			{
+				"name": "Backend Github",
+				"url": "https://github.com/CodechefVIT/devsoc-26-backend"
 			}
 		]
 	},

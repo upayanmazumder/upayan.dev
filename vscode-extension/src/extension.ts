@@ -8,8 +8,8 @@ import * as path from "path";
 function sendPost(
 	endpoint: string,
 	body: any,
-	extraHeaders: Record<string, string> = {}
-): Promise<void> {
+	extraHeaders: Record<string, string> = {},
+): Promise<{ statusCode?: number }> {
 	return new Promise((resolve, reject) => {
 		try {
 			const url = new URL(endpoint);
@@ -19,7 +19,7 @@ function sendPost(
 					"Content-Type": "application/json",
 					"Content-Length": data.length,
 				},
-				extraHeaders
+				extraHeaders,
 			);
 			const options: any = {
 				hostname: url.hostname,
@@ -31,9 +31,10 @@ function sendPost(
 			const req = (url.protocol === "https:" ? https.request : http.request)(
 				options,
 				(res) => {
+					const statusCode = res.statusCode;
 					res.on("data", () => {});
-					res.on("end", () => resolve());
-				}
+					res.on("end", () => resolve({ statusCode }));
+				},
 			);
 			req.on("error", reject);
 			req.write(data);
@@ -55,16 +56,172 @@ export function activate(context: vscode.ExtensionContext) {
 		config.get<number>("workspaceReporter.intervalSeconds") || 60;
 
 	let workspaceName =
-		vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]
-			? vscode.workspace.workspaceFolders[0].name
-			: vscode.workspace.name || "unknown";
+		vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0] ?
+			vscode.workspace.workspaceFolders[0].name
+		:	vscode.workspace.name || "unknown";
+
+	const outputChannel = vscode.window.createOutputChannel("Workspace Reporter");
+	const statusBar = vscode.window.createStatusBarItem(
+		vscode.StatusBarAlignment.Right,
+		100,
+	);
+	statusBar.command = "workspaceReporter.showStatus";
+	statusBar.show();
 
 	// privacy-respecting durations keyed by basename only
 	const durations: Record<string, number> = {};
-	let currentFile = vscode.window.activeTextEditor?.document.fileName
-		? path.basename(vscode.window.activeTextEditor!.document.fileName)
-		: "unknown";
+	let currentFile =
+		vscode.window.activeTextEditor?.document.fileName ?
+			path.basename(vscode.window.activeTextEditor!.document.fileName)
+		:	"unknown";
 	let lastSwitch = Date.now();
+
+	const stateKey = "workspaceReporter.widgetState";
+	const defaultState = {
+		counts: {
+			fileSwitch: 0,
+			fileSaved: 0,
+			heartbeat: 0,
+			reports: 0,
+			failures: 0,
+		},
+		lastEvent: null as null | {
+			event: string;
+			file: string;
+			time: string;
+		},
+		lastSend: null as null | {
+			ok: boolean;
+			time: string;
+			statusCode?: number;
+			error?: string;
+		},
+		recentEvents: [] as Array<{
+			event: string;
+			file: string;
+			time: string;
+			ok: boolean | null;
+			statusCode?: number;
+			error?: string;
+		}>,
+		lastEndpoint: endpoint,
+	};
+
+	const state = Object.assign(
+		{},
+		defaultState,
+		context.globalState.get(stateKey),
+	);
+	state.counts = Object.assign({}, defaultState.counts, state.counts || {});
+	state.recentEvents =
+		Array.isArray(state.recentEvents) ? state.recentEvents : [];
+	state.lastEndpoint = state.lastEndpoint || endpoint;
+	updateStatusBar();
+
+	function persistState() {
+		void context.globalState.update(stateKey, state);
+	}
+
+	function formatTimeLabel(iso: string | null) {
+		if (!iso) return "--";
+		try {
+			return new Date(iso).toLocaleTimeString();
+		} catch {
+			return iso;
+		}
+	}
+
+	function updateStatusBar() {
+		const lastSend = state.lastSend;
+		const lastSendLabel =
+			lastSend ?
+				lastSend.ok ?
+					"OK"
+				:	"ERR"
+			:	"--";
+		const timeLabel = formatTimeLabel(lastSend?.time || null);
+		statusBar.text = `WR: ${lastSendLabel} ${timeLabel}`;
+
+		const lastEvent =
+			state.lastEvent ?
+				`${state.lastEvent.event} (${state.lastEvent.file}) @ ${formatTimeLabel(
+					state.lastEvent.time,
+				)}`
+			:	"--";
+		const counts = state.counts;
+		const tooltip = new vscode.MarkdownString(
+			[
+				"**Workspace Reporter**",
+				`Endpoint: ${state.lastEndpoint || endpoint}`,
+				`Last event: ${lastEvent}`,
+				`Last send: ${lastSendLabel} ${timeLabel}`,
+				`Counts: switch ${counts.fileSwitch}, save ${counts.fileSaved}, heartbeat ${counts.heartbeat}, failures ${counts.failures}`,
+				"Click to open logs",
+			].join("\n"),
+		);
+		statusBar.tooltip = tooltip;
+	}
+
+	function appendLog(line: string) {
+		outputChannel.appendLine(line);
+	}
+
+	type EventEntry = {
+		event: string;
+		file: string;
+		time: string;
+		ok: boolean | null;
+		statusCode?: number;
+		error?: string;
+	};
+
+	function recordEvent(event: string, file: string): EventEntry {
+		const time = new Date().toISOString();
+		state.lastEvent = { event, file, time };
+		state.counts.reports += 1;
+		if (event === "file_switch") state.counts.fileSwitch += 1;
+		if (event === "file_saved") state.counts.fileSaved += 1;
+		if (event === "heartbeat") state.counts.heartbeat += 1;
+
+		const entry: EventEntry = {
+			event,
+			file,
+			time,
+			ok: null as boolean | null,
+		};
+		state.recentEvents.push(entry);
+		if (state.recentEvents.length > 20) state.recentEvents.shift();
+		persistState();
+		updateStatusBar();
+		return entry;
+	}
+
+	function recordSendResult(
+		ok: boolean,
+		entry: EventEntry,
+		statusCode?: number,
+		error?: string,
+	) {
+		entry.ok = ok;
+		if (statusCode) entry.statusCode = statusCode;
+		if (error) entry.error = error;
+		state.lastSend = {
+			ok,
+			time: new Date().toISOString(),
+			statusCode,
+			error,
+		};
+		if (!ok) state.counts.failures += 1;
+		persistState();
+		updateStatusBar();
+		appendLog(
+			`${state.lastSend.time} ${ok ? "OK" : "ERR"} ${entry.event} ${
+				entry.file
+			}${statusCode ? " status=" + statusCode : ""}${
+				error ? " error=" + error : ""
+			}`,
+		);
+	}
 
 	function recordSwitch(newFileFull: string) {
 		const newFile = newFileFull ? path.basename(newFileFull) : "unknown";
@@ -106,7 +263,17 @@ export function activate(context: vscode.ExtensionContext) {
 		};
 		const bodyStr = JSON.stringify(bodyObj);
 		const headers = makeHeaders(bodyStr);
-		return sendPost(endpoint, bodyObj, headers);
+		state.lastEndpoint = endpoint;
+		const entry = recordEvent(event, bodyObj.file);
+		return sendPost(endpoint, bodyObj, headers)
+			.then((res) => {
+				recordSendResult(true, entry, res.statusCode);
+				return res;
+			})
+			.catch((err) => {
+				recordSendResult(false, entry, undefined, err?.message || String(err));
+				throw err;
+			});
 	}
 
 	// Track editor switches (sanitized)
@@ -117,21 +284,27 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const saveEvent = vscode.workspace.onDidSaveTextDocument((doc) => {
 		sendReport("file_saved", { file: path.basename(doc.fileName) }).catch(
-			() => {}
+			() => {},
 		);
 	});
 
 	const folderChange = vscode.workspace.onDidChangeWorkspaceFolders(() => {
 		workspaceName =
-			vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]
-				? vscode.workspace.workspaceFolders[0].name
-				: vscode.workspace.name || workspaceName;
+			(
+				vscode.workspace.workspaceFolders &&
+				vscode.workspace.workspaceFolders[0]
+			) ?
+				vscode.workspace.workspaceFolders[0].name
+			:	vscode.workspace.name || workspaceName;
 		sendReport("workspace_changed", {}).catch(() => {});
 	});
 
-	const heartbeat = setInterval(() => {
-		sendReport("heartbeat", { durations }).catch(() => {});
-	}, Math.max(5, intervalSeconds) * 1000);
+	const heartbeat = setInterval(
+		() => {
+			sendReport("heartbeat", { durations }).catch(() => {});
+		},
+		Math.max(5, intervalSeconds) * 1000,
+	);
 
 	context.subscriptions.push(editorChange, saveEvent, folderChange, {
 		dispose: () => clearInterval(heartbeat),
@@ -160,21 +333,42 @@ export function activate(context: vscode.ExtensionContext) {
 						summary,
 						timestamp: new Date().toISOString(),
 					},
-					headers
+					headers,
 				);
 				vscode.window.showInformationMessage(
-					"Sanitized summary sent successfully."
+					"Sanitized summary sent successfully.",
 				);
 			} catch (err: any) {
 				console.error(err);
 				vscode.window.showErrorMessage(
-					"Failed to send sanitized summary: " + (err.message || String(err))
+					"Failed to send sanitized summary: " + (err.message || String(err)),
 				);
 			}
-		}
+		},
 	);
 
-	context.subscriptions.push(cmd);
+	const showStatusCmd = vscode.commands.registerCommand(
+		"workspaceReporter.showStatus",
+		() => {
+			updateStatusBar();
+			outputChannel.show(true);
+			appendLog(
+				`${new Date().toISOString()} STATUS lastEvent=${
+					state.lastEvent ?
+						`${state.lastEvent.event} ${state.lastEvent.file}`
+					:	"--"
+				} lastSend=${
+					state.lastSend ?
+						state.lastSend.ok ?
+							"OK"
+						:	"ERR"
+					:	"--"
+				}`,
+			);
+		},
+	);
+
+	context.subscriptions.push(cmd, showStatusCmd, outputChannel, statusBar);
 }
 
 export function deactivate() {
@@ -204,7 +398,7 @@ async function gatherSanitizedSummary() {
 	const files = await vscode.workspace.findFiles(
 		"**/*",
 		"**/{node_modules,.git,dist,build}/**",
-		200
+		200,
 	);
 
 	// compute sizes for files with selected extensions and capture top N
@@ -242,7 +436,7 @@ async function gatherSanitizedSummary() {
 			for (const repo of api.repositories) {
 				const head = repo.state.HEAD?.name || null;
 				const remotes = repo.state.remotes.map((r: any) =>
-					parseRemoteUrl(r.fetchUrl || r.pushUrl || r.url || "")
+					parseRemoteUrl(r.fetchUrl || r.pushUrl || r.url || ""),
 				);
 				gitInfo.push({ head, remotes });
 			}

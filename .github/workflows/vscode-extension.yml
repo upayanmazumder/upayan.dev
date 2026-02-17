@@ -1,0 +1,41 @@
+name: Publish VS Code Extension
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+          cache-dependency-path: vscode-extension/pnpm-lock.yaml
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        working-directory: vscode-extension
+        run: pnpm install
+
+      - name: Build extension
+        working-directory: vscode-extension
+        run: pnpm run build
+
+      - name: Publish extension
+        working-directory: vscode-extension
+        env:
+          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
+        run: pnpm exec vsce publish -p "$VSCE_TOKEN"

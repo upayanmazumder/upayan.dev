@@ -4,133 +4,143 @@
 ![GitHub forks](https://img.shields.io/github/forks/upayanmazumder/upayan.dev?style=social)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-Welcome to the source code repository for my personal website. This project showcases my portfolio, skills, and various projects.
+Monorepo for my personal website and API. This repository contains a Next.js frontend (`app/`) and a TypeScript + Express API (`api/`). The project is containerized for production (multi-stage Dockerfile + PM2) and supports a convenient local development workflow using `concurrently`.
 
-## Table of Contents
+## Table of contents
 
-- [Technologies Used](#technologies-used)
-- [Features](#features)
-- [Getting Started](#getting-started)
-- [Deployment](#deployment)
+- [Repository layout](#repository-layout)
+- [Tech stack](#tech-stack)
+- [Quick start (development)](#quick-start-development)
+- [Build & production](#build--production)
+- [Docker](#docker)
+- [Environment variables](#environment-variables)
 - [Contributing](#contributing)
-- [Code of Conduct](#code-of-conduct)
 - [License](#license)
 
-## Technologies Used
+## Repository layout
 
-- **Frontend**: [Next.js](https://nextjs.org/)
-- **Backend**: [Express.js](https://expressjs.com/)
-- **Containerization**: Docker
-- **Hosting**: Docker with Caddy (hosted on a personal VM)
+- `app/` – Next.js 16 frontend (React 19). See `app/package.json` for scripts.
+- `api/` – TypeScript + Express backend (src in `api/src`). See `api/package.json` for scripts.
+- `Dockerfile` – multi-stage build producing a runtime image that runs both services via PM2.
+- `docker-compose.yml` – simple compose file used for local/container runs (image: `ghcr.io/upayanmazumder/upayan.dev:latest`).
+- `ecosystem.config.js` – PM2 configuration used by the container runtime.
+- `example.env` – example environment variables.
 
-## Deployment
+## Tech stack
 
-- **Frontend and Backend**: Deployed using Docker and served with [Caddy](https://caddyserver.com/) on a personal VM.
+- Frontend: Next.js 16, React 19
+- Backend: Node.js, TypeScript, Express
+- Runtime: PM2 (production image), locally uses `concurrently` to run both services in dev
+- Containerization: Docker, Docker Compose
 
-## Features
+## Quick start (development)
 
-- Responsive design
-- Fast loading times with Next.js optimization
-- RESTful API built with Express.js
-- Dockerized setup for easy deployment with Caddy as a reverse proxy
+Prerequisites:
 
-## Getting Started
+- Node.js (recommend 18+; Dockerfile uses `node:23-alpine`)
+- npm or a compatible package manager
 
-### Prerequisites
-
-Make sure you have the following installed:
-
-- [Docker](https://www.docker.com/get-started)
-- Node.js (for local development)
-
-### Cloning the Repository
+1. Clone the repository:
 
 ```bash
 git clone https://github.com/upayanmazumder/upayan.dev.git
 cd upayan.dev
 ```
 
-### Running the Application
+2. Install dependencies:
 
-You can run the application either using Docker (recommended for production-like environments) or locally using `npm run dev` for development purposes.
+```bash
+# install root dev tools
+npm install
 
-#### Option 1: Using Docker
+# install frontend and backend dependencies
+cd app && npm install
+cd ../api && npm install
+cd ..
+```
 
-The application is fully containerized using Docker. Follow these steps to run both the backend and frontend:
+3. Start development servers (from repo root):
 
-1. Ensure Docker is installed and running on your system. If not, download it from [Docker's official website](https://www.docker.com/get-started).
+```bash
+npm run dev
+```
 
-2. Build and start the containers using `docker-compose`:
+This runs both the frontend and backend concurrently. By default:
 
-    ```bash
-    docker-compose up --build
-    ```
+- Frontend (Next dev): http://localhost:3000
+- Backend (ts-node dev server): http://localhost:4000
 
-3. Once the containers are running, access the application:
+You can also run each service individually:
 
-    - **Frontend**: Open [http://localhost:3000](http://localhost:3000) in your browser.
-    - **Backend**: The API will be available at [http://localhost:4000](http://localhost:4000).
+```bash
+cd app && npm run dev
+# in another terminal
+cd api && npm run dev
+```
 
-4. To stop the containers, press `Ctrl+C` in the terminal and run:
+## Build & production
 
-    ```bash
-    docker-compose down
-    ```
+- Build frontend (Next):
 
-#### Option 2: Local Development
+```bash
+npm run build    # runs `cd app && next build`
+```
 
-For local development, you can use the `npm run dev` command in the project root. This will start both the frontend and backend concurrently.
+- Build backend (TypeScript -> JS):
 
-1. Ensure you have Node.js installed on your system. If not, download it from [Node.js official website](https://nodejs.org/).
+```bash
+cd api && npm run build
+```
 
-2. Install the dependencies:
+The repository's `Dockerfile` performs both these steps in a multi-stage build and then starts both services with PM2 in the runtime image.
 
-    ```bash
-    npm install
-    ```
+## Docker
 
-3. Start the development server:
+Quick start with Docker Compose (recommended for production-like testing):
 
-    ```bash
-    npm run dev
-    ```
+```bash
+docker-compose up --build
+```
 
-4. Once the server is running, access the application:
+The compose file references the image `ghcr.io/upayanmazumder/upayan.dev:latest`. You can also build and run locally:
 
-    - **Frontend**: Open [http://localhost:3000](http://localhost:3000) in your browser.
-    - **Backend**: The API will be available at [http://localhost:4000](http://localhost:4000).
+```bash
+docker build -t upayan.dev .
+docker run -p 3000:3000 -p 4000:4000 --env-file .env upayan.dev
+```
 
-5. To stop the development server, press `Ctrl+C` in the terminal.
+The container uses `ecosystem.config.js` and `pm2-runtime` to start both the frontend and backend.
+
+## Environment variables
+
+Copy `example.env` to `.env` and fill in the required values:
+
+```bash
+cp example.env .env
+# edit .env
+```
+
+Key variables found in `example.env`:
+
+- `BOT_TOKEN` – (optional) bot token used by integrations
+- `CONTACT_WEBHOOK_URL` – (optional) contact webhook URL
+- `GITHUB_TOKEN` – (optional) GitHub token for API calls
+- `NEXT_PUBLIC_ENV` – `development`, `staging` or `production`
+
+Only provide the secrets you need for local testing or production.
 
 ## Contributing
 
-Contributions are welcome! Please follow these steps:
+Contributions are welcome. Recommended workflow:
 
 1. Fork the repository.
-2. Create a new branch:
+2. Create a feature branch: `git checkout -b feature/your-feature`.
+3. Make changes and run the relevant dev server(s) locally.
+4. Lint or format if necessary (`cd app && npm run lint`).
+5. Push your branch and open a PR.
 
-    ```bash
-    git checkout -b feature/YourFeature
-    ```
-
-3. Make your changes and commit them:
-
-    ```bash
-    git commit -m "Add your feature"
-    ```
-
-4. Push to your branch:
-
-    ```bash
-    git push origin feature/YourFeature
-    ```
-
-5. Open a pull request.
-
-## Code of Conduct
-
-Please read our [Code of Conduct](https://github.com/upayanmazumder/upayan.dev/blob/master/CODE_OF_CONDUCT.md) to ensure a welcoming environment for all contributors.
+Please follow the `CODE_OF_CONDUCT.md` and `SECURITY.md` in the repo.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/upayanmazumder/upayan.dev/blob/master/LICENSE) file for details.
+This project is licensed under the MIT License — see the [LICENSE](https://github.com/upayanmazumder/upayan.dev/blob/master/LICENSE) file for details.

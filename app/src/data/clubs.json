@@ -30,17 +30,6 @@
     ]
   },
   {
-    "name": "IEEE-SPS",
-    "icon": "/clubs/ieee-sps.png",
-    "description": "IEEE-Signal Processing Society is a Student Chapter of VIT Vellore, exploring the field of Signal Processing , ML & IOT.",
-    "links": [
-      {
-        "name": "LinkedIn",
-        "url": "https://www.linkedin.com/company/ieee-sps-vit/"
-      }
-    ]
-  },
-  {
     "name": "TAM-VIT",
     "icon": "/clubs/tam-vit.png",
     "description": "VIT’s club for AI & ML, focused on applied research and innovation in AI and Machine Learning",

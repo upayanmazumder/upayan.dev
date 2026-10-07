@@ -36,7 +36,7 @@ export default function Home() {
         </div>
       </section>
       {/* Clubs Section */}
-      <section id="clubs">
+      <section id="clubs" style={{ minHeight: 0 }}>
         <a className="section-link" href="#clubs">
           <h2 className="section-title">Clubs</h2>
         </a>

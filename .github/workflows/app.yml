@@ -38,9 +38,9 @@ jobs:
           BRANCH_LOWER="${GITHUB_REF_NAME,,}"
 
           if [ "$BRANCH_LOWER" = "master" ]; then
-            echo "TAGS=ghcr.io/$REPO_LOWER/app:latest,ghcr.io/$REPO_LOWER/app:$GITHUB_SHA" >> $GITHUB_OUTPUT
+            echo "TAGS=ghcr.io/$REPO_LOWER/app:latest,ghcr.io/$REPO_LOWER/app:$GITHUB_SHA" >> "$GITHUB_OUTPUT"
           else
-            echo "TAGS=ghcr.io/$REPO_LOWER/app:$BRANCH_LOWER,ghcr.io/$REPO_LOWER/app:$GITHUB_SHA" >> $GITHUB_OUTPUT
+            echo "TAGS=ghcr.io/$REPO_LOWER/app:$BRANCH_LOWER,ghcr.io/$REPO_LOWER/app:$GITHUB_SHA" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build & Push app

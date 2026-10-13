@@ -257,7 +257,7 @@ fn run() -> Result<()> {
     let digest = mac.finalize().into_bytes();
     let mut signature = [0_u8; 64];
     const HEX: &[u8; 16] = b"0123456789abcdef";
-    for (byte, pair) in digest.iter().zip(signature.chunks_exact_mut(2)) {
+    for (byte, pair) in digest.iter().zip(signature.as_chunks_mut::<2>().0) {
         pair[0] = HEX[(byte >> 4) as usize];
         pair[1] = HEX[(byte & 15) as usize];
     }

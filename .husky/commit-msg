@@ -1,0 +1,8 @@
+if [ -n "$(git diff --cached --name-only -- app/)" ]; then
+  case "$1" in
+    /*) message="$1" ;;
+    *) message="$(git rev-parse --show-toplevel)/$1" ;;
+  esac
+  cd app
+  pnpm exec commitlint --edit "$message"
+fi

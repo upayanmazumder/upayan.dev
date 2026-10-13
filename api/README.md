@@ -92,7 +92,7 @@ Playback can be absent while rankings and recent tracks remain available. Time r
 
 ## Website use
 
-Fetch the combined route from the website server or browser. Set the public API URL in the website deployment. Render `spotify`, `discord`, and `pc` separately. Read `errors` before showing an offline or empty state. Use the provider routes if each card refreshes at a different rate. Never send Spotify credentials or the signing key to the website client. The frontend from master is not in this checkout. Its DevJourney component requests `/devjourney?path=...`, which this API preserves.
+Fetch the combined route from the website server or browser. Set the public API URL in the website deployment. Render `spotify`, `discord`, and `pc` separately. Read `errors` before showing an offline or empty state. Use the provider routes if each card refreshes at a different rate. Never send Spotify credentials or the signing key to the website client. The `app/` frontend is an initialized starter and does not yet consume these routes. The master branch website requested `/devjourney?path=...`, which this API preserves.
 
 ## Deploy and check
 

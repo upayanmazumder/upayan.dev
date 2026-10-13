@@ -8,13 +8,14 @@
 
 ## What is this repo about?
 
-This checkout contains a standalone Rust API for Spotify, Discord, and Linux PC stats. It also preserves the master branch DevJourney proxy. The website frontend is not in this checkout.
+This checkout contains a Rust API and an initialized Next.js frontend. The API serves Spotify, Discord, and Linux PC stats. It also preserves the master branch DevJourney proxy. The frontend remains a starter app.
 
 ---
 
 ## Repository structure
 
 - `api/`: Rust HTTP service, DevJourney proxy, and Linux PC client in `api/client/`.
+- `app/`: Next.js frontend starter, ready for the website implementation.
 
 ## Run the stats API
 
@@ -26,6 +27,16 @@ cargo run
 ```
 
 The health route is `http://127.0.0.1:8080/health`. The combined stats route is `http://127.0.0.1:8080/api/stats`.
+
+## Run the frontend starter
+
+```sh
+cd app
+pnpm install --frozen-lockfile
+NEXT_PUBLIC_API_URL=http://127.0.0.1:8080 pnpm dev
+```
+
+The frontend runs at `http://127.0.0.1:3000`. Its initial page is the template screen, not a finished website.
 ---
 
 ## Contributing

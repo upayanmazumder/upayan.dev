@@ -172,7 +172,7 @@ export const projects: Project[] = [
     org: 'IIT Madras',
     summary: 'Frontend and backend features for the IIT Madras BS fest’s web apps.',
     tags: ['Event', 'Full-stack'],
-    links: [],
+    links: [{ label: 'GitHub', href: 'https://github.com/iitm-paradox' }],
   },
   {
     slug: 'kodesphere',

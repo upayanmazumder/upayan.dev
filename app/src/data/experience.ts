@@ -5,6 +5,8 @@ export const work: Organization[] = [
     id: '797th',
     name: '797th LLC',
     location: 'Remote',
+    logo: '/services/797th.webp',
+    href: 'https://797th.com',
     roles: [{ title: 'Junior Software Engineer', start: '2026-10', end: null }],
   },
   {
@@ -12,6 +14,7 @@ export const work: Organization[] = [
     name: 'KalkiNi',
     about: 'AI surveillance startup',
     location: 'Vellore, India',
+    logo: '/services/kalkini.webp',
     href: 'https://www.linkedin.com/company/kalkini-ai-surveillance-system',
     roles: [
       {
@@ -31,6 +34,7 @@ export const work: Organization[] = [
     about: 'Artist community platform',
     location: 'Remote · United States',
     logo: '/media/brands/bbn.webp',
+    href: 'https://bbn.music',
     roles: [
       {
         title: 'Digital Engagement & Junior Developer',
@@ -118,6 +122,7 @@ export const communities: Organization[] = [
     name: 'Paradox, IIT Madras',
     about: 'IIT Madras BS degree fest',
     location: 'Chennai, India',
+    href: 'https://github.com/iitm-paradox',
     roles: [
       {
         title: 'Web Developer',

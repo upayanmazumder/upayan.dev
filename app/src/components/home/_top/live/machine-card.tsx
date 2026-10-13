@@ -22,6 +22,12 @@ function formatUptime(seconds: number) {
 
 const GIB = 1024 ** 3;
 
+/** Physical installed RAM (always power of two, e.g. 13.4 GiB OS memory -> 16 GB physical RAM). */
+function physicalRamGib(totalBytes: number): number {
+  const gib = totalBytes / GIB;
+  if (gib <= 0) return 0;
+  return 2 ** Math.ceil(Math.log2(gib));
+}
 export function MachineCard({ data, loading, className }: MachineCardProps) {
   return (
     <LiveCard
@@ -54,11 +60,17 @@ export function MachineCard({ data, loading, className }: MachineCardProps) {
             value={data.cpuPercent / 100}
             text={`${Math.round(data.cpuPercent)}%`}
           />
-          <Meter
-            label="Memory"
-            value={data.memory.total ? data.memory.used / data.memory.total : 0}
-            text={`${(data.memory.used / GIB).toFixed(1)} / ${(data.memory.total / GIB).toFixed(0)} GB`}
-          />
+          {(() => {
+            const physicalGib = physicalRamGib(data.memory.total);
+            const physicalTotalBytes = physicalGib * GIB;
+            return (
+              <Meter
+                label="Memory"
+                value={physicalTotalBytes ? data.memory.used / physicalTotalBytes : 0}
+                text={`${(data.memory.used / GIB).toFixed(1)} / ${physicalGib} GB`}
+              />
+            );
+          })()}
         </div>
       )}
     </LiveCard>

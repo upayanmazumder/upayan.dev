@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { AnimatePresence, m, type MotionValue } from 'motion/react';
 
 import { EASE } from '@/lib/motion';
+import { cn } from '@/lib/utils';
 
 interface LinkPreviewProps {
   src?: string;
@@ -13,10 +14,12 @@ interface LinkPreviewProps {
 
 /** Floating image card that trails the pointer; images crossfade as the hovered link changes. Hover devices only. */
 export function LinkPreview({ src, x, y }: LinkPreviewProps) {
+  const isGraphic =
+    src && (src.includes('/clubs/') || src.includes('/projects/') || src.includes('/services/'));
   return (
     <m.div
       aria-hidden
-      className="pointer-events-none fixed top-0 left-0 z-10 hidden [@media(hover:hover)]:block"
+      className="pointer-events-none fixed top-0 left-0 z-60 hidden [@media(hover:hover)]:block"
       style={{ x, y }}
     >
       <AnimatePresence>
@@ -32,13 +35,19 @@ export function LinkPreview({ src, x, y }: LinkPreviewProps) {
             <AnimatePresence initial={false}>
               <m.div
                 key={src}
-                className="absolute inset-0"
+                className={cn('absolute inset-0', isGraphic && 'p-6')}
                 initial={{ opacity: 0, scale: 1.12 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.45, ease: EASE.out }}
               >
-                <Image src={encodeURI(src)} alt="" fill sizes="256px" className="object-cover" />
+                <Image
+                  src={encodeURI(src)}
+                  alt=""
+                  fill
+                  sizes="256px"
+                  className={isGraphic ? 'object-contain' : 'object-cover'}
+                />
               </m.div>
             </AnimatePresence>
           </m.div>

@@ -29,12 +29,23 @@ export function Section({ id, index, title, lead, className, children }: Section
       <div className="column py-16 md:py-20">
         {title ? (
           <Reveal as="header" className="mb-10 flex flex-col gap-2">
-            <div className="flex items-baseline gap-3">
-              {index ? <span className="font-mono text-xs text-teal">{index}</span> : null}
-              <h2 data-reveal className="text-2xl font-semibold md:text-3xl">
+            <a
+              href={`#${id}`}
+              className="group/heading inline-flex w-fit items-baseline gap-3 transition-colors hover:text-teal focus-visible:outline-none"
+              aria-label={`Jump to ${title} section`}
+            >
+              {index ? (
+                <span className="font-mono text-xs text-teal transition-transform group-hover/heading:-translate-x-0.5">
+                  {index}
+                </span>
+              ) : null}
+              <h2
+                data-reveal
+                className="text-2xl font-semibold transition-colors group-hover/heading:text-teal md:text-3xl"
+              >
                 {title}
               </h2>
-            </div>
+            </a>
             {lead ? (
               <p data-reveal className="max-w-prose text-muted-foreground">
                 {lead}

@@ -122,6 +122,7 @@ export const communities: Organization[] = [
     name: 'Paradox, IIT Madras',
     about: 'IIT Madras BS degree fest',
     location: 'Chennai, India',
+    logo: '/clubs/paradox.png',
     href: 'https://github.com/iitm-paradox',
     roles: [
       {

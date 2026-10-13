@@ -1,12 +1,12 @@
 # Website stats API
 
-This standalone Rust service reads Spotify Web API data and Discord presence through Lanyard. It also accepts signed Linux PC health reports and proxies DevJourney GitHub contents.
+This standalone Rust service reads Spotify Web API data and Discord presence through Lanyard. It also accepts signed Linux PC health reports, proxies DevJourney GitHub contents, and serves the GitHub contribution calendar.
 
 ## Plan and scope
 
 1. Serve Spotify playback and Discord presence with isolated provider clients.
 2. Serve current Spotify playback, recent tracks, and top artists and tracks for three time ranges. Serve Discord status, public user details, active clients, activities, and linked Spotify presence.
-3. Keep credentials on the server. Limit public output to display fields. Cache Spotify for 60 seconds and Discord for 15 seconds.
+3. Keep credentials on the server. Limit public output to display fields. Cache Spotify for 60 seconds, Discord for 15 seconds, and GitHub contributions for 6 hours.
 4. Return each provider independently. Do not hide failed provider requests as an offline or empty state.
 5. Accept only the selected PC health metrics through signed reports. Run the Linux client from a timer, not a resident daemon.
 6. Preserve the master branch `/devjourney?path=...` contract for the website.
@@ -15,7 +15,7 @@ Spotify does not provide a lifetime play count through these endpoints. Top item
 
 ## Setup
 
-Install Rust 1.97 or later. Copy `.env.example` to `.env` inside `api/`. Configure Spotify, Discord, or PC reporting. Start the service from `api/`:
+Install Rust 1.97 or later. Copy `.env.example` to `.env` inside `api/`. Configure Spotify, Discord, GitHub contributions, or PC reporting. Start the service from `api/`:
 
 ```sh
 cargo run
@@ -74,6 +74,22 @@ Run `systemctl --user daemon-reload`, then `systemctl --user enable --now upayan
 
 `GET /devjourney` and `GET /devjourney?path=folder%2Ffile.md` preserve the master branch response shape. The API returns the GitHub contents object or directory array without an envelope. Set `DEVJOURNEY_REPO_OWNER` and `DEVJOURNEY_REPO_NAME` only if the defaults differ. A dedicated `DEVJOURNEY_GITHUB_TOKEN` can increase the rate limit. Do not configure a token that can read private repository content. The public proxy makes every allowed file in that repository accessible to visitors. The proxy rejects traversal and returns fixed error text without upstream response bodies.
 
+### GitHub contributions
+
+Create a GitHub classic token with the `read:user` scope. Set `GITHUB_TOKEN` to that token. Set `GITHUB_USER` only if the login differs from `upayanmazumder`. The service queries the GraphQL `contributionsCollection` for the last year.
+
+Private contributions count only when the profile setting allows them. On GitHub, open your profile, select **Contribution settings**, and enable **Private contributions**. The counts then include private work. The response contains dates, counts, and levels only. It never contains repository names.
+
+The service caches a successful calendar for 6 hours. Concurrent requests share one upstream call. A failed request is cached for 60 seconds so that a GitHub outage does not cause repeated calls.
+
+`GET /api/github/contributions` returns:
+
+```json
+{"user":"upayanmazumder","total":1234,"weeks":[{"days":[{"date":"2025-10-12","count":3,"level":2}]}],"fetched_at":"2026-10-13T10:00:00Z"}
+```
+
+`weeks` is oldest first. Each week runs Sunday to Saturday. The first and last week can be partial. `level` is 0 to 4 and follows GitHub's quartiles. `fetched_at` is the UTC time of the upstream request. Without `GITHUB_TOKEN` the route returns 503 with `{"error":"github contributions not configured"}`. A GitHub request failure or a GraphQL error returns 502 with a fixed error message.
+
 ## Routes
 
 | Route | Response |
@@ -85,6 +101,7 @@ Run `systemctl --user daemon-reload`, then `systemctl --user enable --now upayan
 | `GET /api/stats/pc` | `{ "online": false, "lastSeen": null, "stats": null }` before the first report. |
 | `POST /api/pc/report` | Requires `X-PC-ID`, `X-Timestamp`, and `X-Signature`. Returns 202 after a valid report. |
 | `GET /devjourney?path=...` | Raw GitHub contents JSON for the configured repository. |
+| `GET /api/github/contributions` | `{ "user": ..., "total": 0, "weeks": [{ "days": [{ "date": ..., "count": 0, "level": 0 }] }], "fetched_at": ... }`. |
 
 Unavailable providers return `null` data with an error. An individual provider route returns 502 for an upstream failure or 503 for missing configuration. The combined route returns 502 when no configured provider succeeds and PC reporting is disabled. A partial result returns 200 with the failed provider in `errors`. Spotify also reports per-endpoint errors within its data when some Spotify requests fail. These errors use fixed messages. They never contain provider response bodies or credentials.
 
@@ -92,7 +109,7 @@ Playback can be absent while rankings and recent tracks remain available. Time r
 
 ## Website use
 
-Fetch the combined route from the website server or browser. Set the public API URL in the website deployment. Render `spotify`, `discord`, and `pc` separately. Read `errors` before showing an offline or empty state. Use the provider routes if each card refreshes at a different rate. Never send Spotify credentials or the signing key to the website client. The `app/` frontend is an initialized starter and does not yet consume these routes. The master branch website requested `/devjourney?path=...`, which this API preserves.
+The `app/` website reads this API on its server only. Set `API_URL` in the website deployment to this service's base URL. The browser polls the website route `/api/live`, which calls `/api/stats` and returns only display fields. The home page reads `/api/github/contributions` with a 6-hour revalidate. The `/devjourney` pages call `/devjourney?path=...`. Without `API_URL`, those sections show an unavailable state. Never send Spotify credentials or the signing key to the website client.
 
 ## Deploy and check
 
@@ -112,4 +129,4 @@ If Spotify token refresh returns HTTP 400, check the client ID, client secret, a
 
 If Lanyard returns HTTP 404 for the Discord user ID, check the ID and join the Lanyard server with that account. A bot token does not register a user with Lanyard. This service uses Lanyard for presence. It does not connect a Discord bot to the gateway.
 
-Sources: [Spotify currently playing](https://developer.spotify.com/documentation/web-api/reference/get-the-users-currently-playing-track), [recent tracks](https://developer.spotify.com/documentation/web-api/reference/get-recently-played), [top items](https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks), [Lanyard REST](https://github.com/Phineas/lanyard#api-docs).
+Sources: [Spotify currently playing](https://developer.spotify.com/documentation/web-api/reference/get-the-users-currently-playing-track), [recent tracks](https://developer.spotify.com/documentation/web-api/reference/get-recently-played), [top items](https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks), [Lanyard REST](https://github.com/Phineas/lanyard#api-docs), [GitHub contributions collection](https://docs.github.com/en/graphql/reference/objects#contributionscollection).

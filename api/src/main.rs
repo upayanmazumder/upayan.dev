@@ -1,5 +1,6 @@
 mod devjourney;
 mod discord;
+mod github;
 mod pc;
 mod spotify;
 
@@ -28,13 +29,27 @@ type CachedValue = Result<Arc<Value>, String>;
 struct Cache {
     value: Mutex<Option<(Instant, CachedValue)>>,
     ttl: Duration,
+    error_ttl: Duration,
 }
 
 impl Cache {
     fn new(ttl: Duration) -> Self {
+        Self::with_error_ttl(ttl, ttl)
+    }
+
+    fn with_error_ttl(ttl: Duration, error_ttl: Duration) -> Self {
         Self {
             value: Mutex::new(None),
             ttl,
+            error_ttl,
+        }
+    }
+
+    fn ttl_for(&self, value: &CachedValue) -> Duration {
+        if value.is_ok() {
+            self.ttl
+        } else {
+            self.error_ttl
         }
     }
 
@@ -46,7 +61,7 @@ impl Cache {
     {
         let mut slot = self.value.lock().await;
         if let Some((at, value)) = slot.as_ref()
-            && at.elapsed() < self.ttl
+            && at.elapsed() < self.ttl_for(value)
         {
             return value.clone();
         }
@@ -63,10 +78,12 @@ impl Cache {
 struct AppState {
     spotify: Option<spotify::Spotify>,
     discord: Option<discord::Discord>,
+    github: Option<github::GitHub>,
     pc: Option<pc::SharedPc>,
     devjourney: Arc<devjourney::DevJourney>,
     spotify_cache: Cache,
     discord_cache: Cache,
+    github_cache: Cache,
 }
 
 type Shared = Arc<AppState>;
@@ -117,6 +134,21 @@ async fn pc_route(State(state): State<Shared>) -> impl IntoResponse {
             .into_response(),
     }
 }
+
+async fn github_route(State(state): State<Shared>) -> axum::response::Response {
+    let Some(provider) = &state.github else {
+        return (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(json!({"error":"github contributions not configured"})),
+        )
+            .into_response();
+    };
+    match state.github_cache.get(|| provider.fetch()).await {
+        Ok(data) => (StatusCode::OK, Json(data)).into_response(),
+        Err(error) => (StatusCode::BAD_GATEWAY, Json(json!({ "error": error }))).into_response(),
+    }
+}
+
 async fn stats(State(state): State<Shared>) -> impl IntoResponse {
     let (spotify, discord) = tokio::join!(spotify_data(&state), discord_data(&state));
     let failed =
@@ -163,6 +195,7 @@ fn router(state: Shared, origin: Option<HeaderValue>) -> Router {
         .route("/api/stats/spotify", get(spotify_route))
         .route("/api/stats/discord", get(discord_route))
         .route("/api/stats/pc", get(pc_route))
+        .route("/api/github/contributions", get(github_route))
         .with_state(state.clone());
     app = app.merge(
         Router::new()
@@ -247,8 +280,26 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     } else {
         Some(Arc::new(pc::Pc::new(pc_id, pc_key)))
     };
-    if spotify.is_none() && discord.is_none() && pc.is_none() {
-        return Err("configure Spotify, Discord, or PC reporting".into());
+    let github_user = env::var("GITHUB_USER")
+        .ok()
+        .filter(|user| !user.is_empty())
+        .unwrap_or_else(|| "upayanmazumder".to_owned());
+    if !github::valid_login(&github_user) {
+        return Err("GITHUB_USER must be 1-39 letters, digits, or hyphens".into());
+    }
+    let github = env::var("GITHUB_TOKEN")
+        .ok()
+        .filter(|token| !token.is_empty())
+        .map(|token| {
+            github::GitHub::new(
+                client.clone(),
+                github_user,
+                token,
+                env::var("GITHUB_API_BASE").unwrap_or_else(|_| "https://api.github.com".to_owned()),
+            )
+        });
+    if spotify.is_none() && discord.is_none() && github.is_none() && pc.is_none() {
+        return Err("configure Spotify, Discord, GitHub contributions, or PC reporting".into());
     }
     let origin = env::var("CORS_ORIGIN")
         .ok()
@@ -278,10 +329,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let state = Arc::new(AppState {
         spotify,
         discord,
+        github,
         pc,
         devjourney,
         spotify_cache: Cache::new(Duration::from_secs(60)),
         discord_cache: Cache::new(Duration::from_secs(15)),
+        github_cache: Cache::with_error_ttl(
+            Duration::from_secs(6 * 60 * 60),
+            Duration::from_secs(60),
+        ),
     });
     let listener = tokio::net::TcpListener::bind(addr).await?;
     println!("stats API listening on {}", listener.local_addr()?);
@@ -343,6 +399,7 @@ mod tests {
                 "123".into(),
                 format!("{base}/v1"),
             )),
+            github: None,
             pc: None,
             devjourney: Arc::new(devjourney::DevJourney::new(
                 client.clone(),
@@ -353,6 +410,7 @@ mod tests {
             )),
             spotify_cache: Cache::new(Duration::from_secs(60)),
             discord_cache: Cache::new(Duration::from_secs(15)),
+            github_cache: Cache::new(Duration::from_secs(60)),
         });
         let url = serve(router(state, None)).await;
         let result: Value = client
@@ -417,6 +475,7 @@ mod tests {
                 "123".into(),
                 format!("{base}/v1"),
             )),
+            github: None,
             pc: None,
             devjourney: Arc::new(devjourney::DevJourney::new(
                 client.clone(),
@@ -427,6 +486,7 @@ mod tests {
             )),
             spotify_cache: Cache::new(Duration::from_secs(60)),
             discord_cache: Cache::new(Duration::from_secs(15)),
+            github_cache: Cache::new(Duration::from_secs(60)),
         });
         let url = serve(router(state, None)).await;
         let response = client.get(format!("{url}/api/stats")).send().await.unwrap();
@@ -449,6 +509,7 @@ mod tests {
         let state = Arc::new(AppState {
             spotify: None,
             discord: None,
+            github: None,
             pc: Some(Arc::new(pc::Pc::new("main".into(), "a".repeat(32)))),
             devjourney: Arc::new(devjourney::DevJourney::new(
                 client.clone(),
@@ -459,6 +520,7 @@ mod tests {
             )),
             spotify_cache: Cache::new(Duration::from_secs(60)),
             discord_cache: Cache::new(Duration::from_secs(15)),
+            github_cache: Cache::new(Duration::from_secs(60)),
         });
         let url = serve(router(state, None)).await;
         let body = json!({"cpu_percent":25.0,"memory_used_bytes":20,"memory_total_bytes":100,
@@ -537,6 +599,7 @@ mod tests {
         let state = Arc::new(AppState {
             spotify: None,
             discord: None,
+            github: None,
             pc: None,
             devjourney: Arc::new(devjourney::DevJourney::new(
                 client.clone(),
@@ -547,6 +610,7 @@ mod tests {
             )),
             spotify_cache: Cache::new(Duration::from_secs(60)),
             discord_cache: Cache::new(Duration::from_secs(15)),
+            github_cache: Cache::new(Duration::from_secs(60)),
         });
         let url = serve(router(state, None)).await;
         let root: Value = client
@@ -581,5 +645,214 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(bad.status(), StatusCode::BAD_REQUEST);
+    }
+
+    fn github_state(github: Option<github::GitHub>) -> Shared {
+        Arc::new(AppState {
+            spotify: None,
+            discord: None,
+            github,
+            pc: None,
+            devjourney: Arc::new(devjourney::DevJourney::new(
+                reqwest::Client::new(),
+                "owner".into(),
+                "repo".into(),
+                None,
+                "http://127.0.0.1:1".into(),
+            )),
+            spotify_cache: Cache::new(Duration::from_secs(60)),
+            discord_cache: Cache::new(Duration::from_secs(15)),
+            github_cache: Cache::with_error_ttl(
+                Duration::from_secs(6 * 60 * 60),
+                Duration::from_secs(60),
+            ),
+        })
+    }
+
+    /// Serves `/graphql` with a fixed status and body and counts the calls.
+    async fn github_upstream(status: StatusCode, body: Value) -> (String, Arc<AtomicUsize>) {
+        let calls = Arc::new(AtomicUsize::new(0));
+        let counter = calls.clone();
+        let upstream = Router::new().route(
+            "/graphql",
+            post(
+                move |headers: axum::http::HeaderMap, Json(request): Json<Value>| {
+                    let counter = counter.clone();
+                    let body = body.clone();
+                    async move {
+                        counter.fetch_add(1, Ordering::SeqCst);
+                        let authorized = headers.get(header::AUTHORIZATION)
+                            == Some(&HeaderValue::from_static("bearer test-token"))
+                            && headers.contains_key(header::USER_AGENT)
+                            && request["variables"]["login"] == "octo"
+                            && request["query"]
+                                .as_str()
+                                .is_some_and(|query| query.contains("contributionCalendar"));
+                        if authorized {
+                            (status, Json(body))
+                        } else {
+                            (
+                                StatusCode::UNAUTHORIZED,
+                                Json(json!({"message":"bad request"})),
+                            )
+                        }
+                    }
+                },
+            ),
+        );
+        (serve(upstream).await, calls)
+    }
+
+    async fn github_service(status: StatusCode, body: Value) -> (String, Arc<AtomicUsize>) {
+        let (base, calls) = github_upstream(status, body).await;
+        let provider = github::GitHub::new(
+            reqwest::Client::new(),
+            "octo".into(),
+            "test-token".into(),
+            format!("{base}/"),
+        );
+        (
+            serve(router(github_state(Some(provider)), None)).await,
+            calls,
+        )
+    }
+
+    fn day(date: &str, count: u64, level: &str) -> Value {
+        json!({"date":date,"contributionCount":count,"contributionLevel":level,
+            "repository":{"name":"secret-repo"}})
+    }
+
+    fn calendar(total: u64, weeks: Vec<Vec<Value>>) -> Value {
+        let weeks: Vec<Value> = weeks
+            .into_iter()
+            .map(|days| json!({"contributionDays":days}))
+            .collect();
+        json!({"data":{"user":{"contributionsCollection":{"contributionCalendar":{
+            "totalContributions":total,"weeks":weeks
+        }}}}})
+    }
+
+    #[tokio::test]
+    async fn github_contributions_map_levels_totals_and_order() {
+        let upstream = calendar(
+            21,
+            vec![
+                vec![
+                    day("2026-10-11", 9, "FOURTH_QUARTILE"),
+                    day("2026-10-12", 0, "NONE"),
+                ],
+                vec![
+                    day("2025-10-12", 1, "FIRST_QUARTILE"),
+                    day("2025-10-13", 3, "SECOND_QUARTILE"),
+                ],
+                vec![
+                    day("2025-10-25", 8, "THIRD_QUARTILE"),
+                    day("2025-10-19", 0, "NONE"),
+                ],
+            ],
+        );
+        let (url, _) = github_service(StatusCode::OK, upstream).await;
+        let response = reqwest::get(format!("{url}/api/github/contributions"))
+            .await
+            .unwrap();
+        assert_eq!(response.status(), StatusCode::OK);
+        let text = response.text().await.unwrap();
+        assert!(!text.contains("secret-repo"));
+        assert!(!text.contains("test-token"));
+        let mut body: Value = serde_json::from_str(&text).unwrap();
+        let fetched_at = body["fetched_at"].take();
+        let fetched_at = fetched_at.as_str().unwrap();
+        assert_eq!(fetched_at.len(), 20);
+        assert!(fetched_at.ends_with('Z') && fetched_at.as_bytes()[10] == b'T');
+        assert_eq!(
+            body,
+            json!({
+                "user": "octo",
+                "total": 21,
+                "weeks": [
+                    {"days": [
+                        {"date": "2025-10-12", "count": 1, "level": 1},
+                        {"date": "2025-10-13", "count": 3, "level": 2}
+                    ]},
+                    {"days": [
+                        {"date": "2025-10-19", "count": 0, "level": 0},
+                        {"date": "2025-10-25", "count": 8, "level": 3}
+                    ]},
+                    {"days": [
+                        {"date": "2026-10-11", "count": 9, "level": 4},
+                        {"date": "2026-10-12", "count": 0, "level": 0}
+                    ]}
+                ],
+                "fetched_at": null
+            })
+        );
+    }
+
+    #[tokio::test]
+    async fn github_contributions_are_cached_and_single_flight() {
+        let upstream = calendar(1, vec![vec![day("2026-10-13", 1, "FIRST_QUARTILE")]]);
+        let (url, calls) = github_service(StatusCode::OK, upstream).await;
+        let route = format!("{url}/api/github/contributions");
+        let (a, b, c) = tokio::join!(
+            reqwest::get(&route),
+            reqwest::get(&route),
+            reqwest::get(&route)
+        );
+        let mut fetched = Vec::new();
+        for response in [a, b, c] {
+            let response = response.unwrap();
+            assert_eq!(response.status(), StatusCode::OK);
+            let body: Value = response.json().await.unwrap();
+            assert_eq!(body["total"], 1);
+            fetched.push(body["fetched_at"].clone());
+        }
+        let later: Value = reqwest::get(&route).await.unwrap().json().await.unwrap();
+        fetched.push(later["fetched_at"].clone());
+        assert!(fetched.iter().all(|at| *at == fetched[0]));
+        assert_eq!(calls.load(Ordering::SeqCst), 1);
+    }
+
+    #[tokio::test]
+    async fn github_contributions_without_token_return_503() {
+        let url = serve(router(github_state(None), None)).await;
+        let response = reqwest::get(format!("{url}/api/github/contributions"))
+            .await
+            .unwrap();
+        assert_eq!(response.status(), StatusCode::SERVICE_UNAVAILABLE);
+        let body: Value = response.json().await.unwrap();
+        assert_eq!(body, json!({"error":"github contributions not configured"}));
+    }
+
+    #[tokio::test]
+    async fn github_upstream_failure_returns_502_without_upstream_body() {
+        let (url, calls) = github_service(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            json!({"message":"upstream-secret-detail"}),
+        )
+        .await;
+        let route = format!("{url}/api/github/contributions");
+        for _ in 0..2 {
+            let response = reqwest::get(&route).await.unwrap();
+            assert_eq!(response.status(), StatusCode::BAD_GATEWAY);
+            let body: Value = response.json().await.unwrap();
+            assert_eq!(body, json!({"error":"GitHub returned an error"}));
+        }
+        // Failures are cached briefly so a GitHub outage is not hammered.
+        assert_eq!(calls.load(Ordering::SeqCst), 1);
+    }
+
+    #[tokio::test]
+    async fn github_graphql_errors_return_502() {
+        let (url, _) = github_service(
+            StatusCode::OK,
+            json!({"data":{"user":null},"errors":[{"message":"Could not resolve upstream-secret-detail"}]}),
+        )
+        .await;
+        let response = reqwest::get(format!("{url}/api/github/contributions"))
+            .await
+            .unwrap();
+        assert_eq!(response.status(), StatusCode::BAD_GATEWAY);
+        let body: Value = response.json().await.unwrap();
+        assert_eq!(body, json!({"error":"GitHub query failed"}));
     }
 }

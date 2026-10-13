@@ -33,4 +33,13 @@ export interface LivePc {
   uptimeSeconds: number;
   cpuPercent: number;
   memory: { used: number; total: number };
+  /** Present only when the PC reports an allowlisted Zed workspace. */
+  zed: LiveZed | null;
+}
+
+export interface LiveZed {
+  workspace: string;
+  file: string;
+  /** Session seconds at `lastSeen`. */
+  activeSeconds: number;
 }

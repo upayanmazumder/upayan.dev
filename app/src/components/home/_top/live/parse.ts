@@ -45,6 +45,10 @@ const pcSchema = z.object({
       memory_used_bytes: z.number(),
       memory_total_bytes: z.number(),
       uptime_seconds: z.number(),
+      zed: z
+        .object({ workspace: z.string(), file: z.string(), active_seconds: z.number() })
+        .nullish()
+        .catch(null),
     })
     .nullable(),
 });
@@ -122,6 +126,13 @@ function toPc(raw: unknown): LivePc | null {
     uptimeSeconds: stats.uptime_seconds,
     cpuPercent: stats.cpu_percent,
     memory: { used: stats.memory_used_bytes, total: stats.memory_total_bytes },
+    zed: stats.zed
+      ? {
+          workspace: stats.zed.workspace,
+          file: stats.zed.file,
+          activeSeconds: stats.zed.active_seconds,
+        }
+      : null,
   };
 }
 

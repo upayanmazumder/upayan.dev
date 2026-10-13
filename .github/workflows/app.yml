@@ -49,7 +49,7 @@ jobs:
           context: ./app
           file: ./app/Dockerfile
           build-args: |
-            NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL || 'https://api.upayan.dev' }}
+            NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL || 'https://upayan.dev' }}
           push: true
           tags: ${{ steps.tags.outputs.TAGS }}
           cache-from: type=gha

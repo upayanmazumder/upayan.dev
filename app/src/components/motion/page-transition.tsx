@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { m } from 'framer-motion';
+import { m } from 'motion/react';
 
 import { defaultTransition, pageVariants } from '@/lib/motion';
 

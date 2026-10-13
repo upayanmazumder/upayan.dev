@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { HTMLMotionProps, Transition } from 'framer-motion';
+import type { HTMLMotionProps, Transition } from 'motion/react';
 
 import { DURATION, EASE } from '@/lib/motion';
 

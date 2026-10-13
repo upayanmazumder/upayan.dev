@@ -1,4 +1,4 @@
-import type { Easing, Transition, Variants } from 'framer-motion';
+import type { Easing, Transition, Variants } from 'motion/react';
 
 type Bezier = [number, number, number, number];
 

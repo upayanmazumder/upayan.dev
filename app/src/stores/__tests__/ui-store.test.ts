@@ -1,29 +1,25 @@
-import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { useUiStore } from '../ui-store';
 
-describe('useUiStore', () => {
+describe('useUiStore overlays', () => {
   beforeEach(() => {
-    useUiStore.setState({ sidebarOpen: false });
+    useUiStore.setState({ overlay: null });
   });
 
-  it('has sidebarOpen false by default', () => {
-    const { result } = renderHook(() => useUiStore.use.sidebarOpen());
-    expect(result.current).toBe(false);
+  it('opening the palette replaces an open menu', () => {
+    useUiStore.getState().open('menu');
+    useUiStore.getState().open('palette');
+    expect(useUiStore.getState().overlay).toBe('palette');
   });
 
-  it('setSidebarOpen sets the value directly', () => {
-    const { result } = renderHook(() => useUiStore.use.sidebarOpen());
-    act(() => useUiStore.getState().setSidebarOpen(true));
-    expect(result.current).toBe(true);
-  });
-
-  it('toggleSidebar flips the value', () => {
-    const { result } = renderHook(() => useUiStore.use.sidebarOpen());
-    act(() => useUiStore.getState().toggleSidebar());
-    expect(result.current).toBe(true);
-    act(() => useUiStore.getState().toggleSidebar());
-    expect(result.current).toBe(false);
+  it('toggle closes the same overlay but switches from a different one', () => {
+    const { toggle } = useUiStore.getState();
+    toggle('menu');
+    toggle('menu');
+    expect(useUiStore.getState().overlay).toBeNull();
+    toggle('menu');
+    toggle('palette');
+    expect(useUiStore.getState().overlay).toBe('palette');
   });
 });

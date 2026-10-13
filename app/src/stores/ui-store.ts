@@ -1,24 +1,20 @@
-import type { StoreApi, UseBoundStore } from 'zustand';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
-import { createSelectors } from './create-selectors';
+/** Which full-screen overlay is open. Only one can be open at a time. */
+export type Overlay = 'menu' | 'palette' | null;
 
 interface UiState {
-  sidebarOpen: boolean;
-  setSidebarOpen: (open: boolean) => void;
-  toggleSidebar: () => void;
+  overlay: Overlay;
+  open: (overlay: Exclude<Overlay, null>) => void;
+  /** Opens the overlay, or closes it if it is already open. */
+  toggle: (overlay: Exclude<Overlay, null>) => void;
+  close: () => void;
 }
 
-const useUiStoreBase = create<UiState>()(
-  persist(
-    set => ({
-      sidebarOpen: false,
-      setSidebarOpen: open => set({ sidebarOpen: open }),
-      toggleSidebar: () => set(state => ({ sidebarOpen: !state.sidebarOpen })),
-    }),
-    { name: 'ui-store' }
-  )
-) as unknown as UseBoundStore<StoreApi<UiState>>;
-
-export const useUiStore = createSelectors(useUiStoreBase);
+/** Read with an inline selector, e.g. `useUiStore(state => state.overlay)`. */
+export const useUiStore = create<UiState>()(set => ({
+  overlay: null,
+  open: overlay => set({ overlay }),
+  toggle: overlay => set(state => ({ overlay: state.overlay === overlay ? null : overlay })),
+  close: () => set({ overlay: null }),
+}));

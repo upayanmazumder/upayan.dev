@@ -2,90 +2,30 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/stargazers) [![Forks](https://img.shields.io/github/forks/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/network) [![Issues](https://img.shields.io/github/issues/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/issues)[![License: MIT](https://img.shields.io/github/license/upayanmazumder/upayan.dev?style=flat-square&color=green)](LICENSE)
 
-[![Build & Push Backend](https://github.com/upayanmazumder/upayan.dev/actions/workflows/deploy-backend.yml/badge.svg?branch=v5)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/deploy-backend.yml)
-[![Build & Push Frontend](https://github.com/upayanmazumder/upayan.dev/actions/workflows/frontend.yml/badge.svg?branch=v5)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/frontend.yml)
+[![Build & Push API](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml/badge.svg?branch=v5)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml)
 
 [Visit on DeepWiki](https://deepwiki.com/upayanmazumder/upayan.dev)
 
 ## What is this repo about?
 
-This repository hosts the source code for my personal portfolio website. It includes:
-
-- A fast, modern frontend with Next.js.
-- A backend API (hosted on my personal VM) for device-status, telemetry, and integrations.
-- Infrastructure for device‑clients (Windows, Android, Raspberry Pi) that report data.
-- A VS Code extension to optionally push real‑time coding activity to the backend.
+This checkout contains a standalone Rust API for Spotify, Discord, and Linux PC stats. It also preserves the master branch DevJourney proxy. The website frontend is not in this checkout.
 
 ---
 
-## Repository Structure
+## Repository structure
 
+- `api/`: Rust HTTP service, DevJourney proxy, and Linux PC client in `api/client/`.
+
+## Run the stats API
+
+Read [the API setup guide](api/README.md). Configure Spotify, Discord, or signed PC reporting in `api/.env`.
+
+```sh
+cd api
+cargo run
 ```
 
-apps/
-  app/         → Next.js frontend (portfolio site)
-  api/         → Backend API services
-  vscode/      → VS Code extension for live coding status
-
-clients/
-  win/         → Windows device‑agent (runs on both laptops)
-  android/     → Android device‑agent (runs on both phones)
-  pi/          → Raspberry Pi agent
-
-packages/
-  types/       → shared TS/Zod types
-  utils/       → helper modules, API clients, config utilities
-
-infra/
-  docker/      → Dockerfiles, compose configs
-  deploy/      → deployment and VM scripts
-
-```
-
----
-
-## Features
-
-- Responsive, fast‑loading portfolio site (Next.js)
-- Real-time device telemetry from multiple devices (laptops, phones, Pi)
-- Unified API + clients architecture — easy to extend
-- Secure per‑device authentication with tokens
-- Modular monorepo setup — clean separation of concerns
-- Supports future integrations: VS Code status, Spotify, device stats, etc.
-
----
-
-## Local Setup (for development)
-
-### Prerequisites
-
-- Docker & Docker Compose
-- Node.js (for local dev & building clients)
-
-### Clone & Run
-
-```bash
-git clone https://github.com/upayanmazumder/upayan.dev.git
-cd upayan.dev
-docker-compose up --build
-```
-
-Once up:
-
-- Frontend: `http://localhost:3000`
-- Backend API: by default `http://localhost:8080`
-
-Note: The backend loads secrets from `./apps/backend/.env`. Copy or populate `apps/backend/.env` from `apps/backend/.env.example` before starting so required API keys are available to the service.
-
-### Development Without Docker
-
-Inside `/apps/app` and `/apps/api`, you can run:
-
-```bash
-npm install
-npm run dev
-```
-
+The health route is `http://127.0.0.1:8080/health`. The combined stats route is `http://127.0.0.1:8080/api/stats`.
 ---
 
 ## Contributing

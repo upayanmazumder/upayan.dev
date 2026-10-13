@@ -19,6 +19,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - name: Check Rust API
+        run: |
+          cargo fmt --manifest-path api/Cargo.toml --check
+          cargo test --manifest-path api/Cargo.toml --locked
+          cargo clippy --manifest-path api/Cargo.toml --locked --all-targets -- -D warnings
+          cargo fmt --manifest-path api/client/Cargo.toml --check
+          cargo clippy --manifest-path api/client/Cargo.toml --locked --all-targets -- -D warnings
       - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
         with:
@@ -32,7 +42,7 @@ jobs:
           REPO_LOWER="${GITHUB_REPOSITORY,,}"
           BRANCH_LOWER="${GITHUB_REF_NAME,,}"
 
-          if [ "$BRANCH_LOWER" = "main" ]; then
+          if [ "$BRANCH_LOWER" = "master" ]; then
             echo "TAGS=ghcr.io/$REPO_LOWER/api:latest,ghcr.io/$REPO_LOWER/api:$GITHUB_SHA" >> $GITHUB_OUTPUT
           else
             echo "TAGS=ghcr.io/$REPO_LOWER/api:$BRANCH_LOWER,ghcr.io/$REPO_LOWER/api:$GITHUB_SHA" >> $GITHUB_OUTPUT
@@ -44,5 +54,5 @@ jobs:
           file: ./api/Dockerfile
           push: true
           tags: ${{ steps.tags.outputs.TAGS }}
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/api:v5
-          cache-to: type=inline
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -6,7 +6,11 @@ import { otherSocials } from '@/data/profile';
 export function Elsewhere() {
   return (
     <Section id="elsewhere" index="12" title="Elsewhere">
-      <Reveal as="ul" stagger={0.04} className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <Reveal
+        as="ul"
+        stagger={0.04}
+        className="grid grid-cols-1 gap-2 min-[440px]:grid-cols-2 sm:grid-cols-3"
+      >
         {otherSocials.map(s => (
           <li key={s.id} data-reveal>
             <a

@@ -34,7 +34,7 @@ export function MenuLinks() {
   return (
     <nav aria-label="Site" className="w-full">
       <ol
-        className="grid gap-x-12 gap-y-2 md:grid-cols-2 md:gap-y-6"
+        className="grid gap-x-12 gap-y-1 md:grid-cols-2 md:gap-y-6"
         onPointerMove={event => {
           pointerX.set(event.clientX);
           pointerY.set(event.clientY);
@@ -63,10 +63,10 @@ export function MenuLinks() {
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <span className="min-w-0">
-                  <span className="block font-display text-[clamp(2.25rem,6.5vw,4.75rem)] leading-[1.02] font-medium tracking-tight transition-transform duration-500 ease-out-expo group-hover/link:translate-x-2 group-focus-visible/link:translate-x-2">
+                  <span className="block font-display text-[clamp(2rem,9vw,4.75rem)] leading-[1.02] font-medium tracking-tight transition-transform duration-500 ease-out-expo group-hover/link:translate-x-2 group-focus-visible/link:translate-x-2 md:text-[clamp(2.25rem,6.5vw,4.75rem)]">
                     {item.label}
                   </span>
-                  <span className="mt-1 block font-ui text-sm text-muted-foreground">
+                  <span className="mt-0.5 block font-ui text-xs text-muted-foreground sm:mt-1 sm:text-sm">
                     {item.hint}
                     {external && <span className="sr-only"> (opens in a new tab)</span>}
                   </span>

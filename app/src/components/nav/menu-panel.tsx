@@ -113,12 +113,12 @@ export function MenuPanel({ id, open, tabRef }: MenuPanelProps) {
       <div
         data-menu-content
         data-lenis-prevent
-        className="invisible relative flex h-full flex-col overflow-y-auto overscroll-contain px-(--gutter) pt-8 pb-8 md:px-16 md:pt-12 md:pr-28"
+        className="invisible relative flex h-full flex-col overflow-y-auto overscroll-contain px-(--gutter) pt-6 pb-6 md:px-16 md:pt-12 md:pr-28 md:pb-8"
       >
-        <p data-menu-fade className="label mb-10 md:mb-0">
+        <p data-menu-fade className="label mb-2 md:mb-0">
           Menu
         </p>
-        <div className="flex flex-1 items-center py-8">
+        <div className="flex flex-1 items-center py-4 md:py-8">
           <MenuLinks />
         </div>
         <MenuFooter />

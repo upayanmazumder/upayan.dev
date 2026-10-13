@@ -20,7 +20,7 @@ export function MenuFooter() {
   const openOverlay = useUiStore(state => state.open);
 
   return (
-    <div className="flex flex-col gap-6 border-t border-line pt-6 lg:flex-row lg:items-end lg:justify-between">
+    <div className="flex flex-col gap-4 border-t border-line pt-4 md:gap-6 md:pt-6 lg:flex-row lg:items-end lg:justify-between">
       <ul data-menu-fade className="flex flex-wrap gap-1" aria-label="Social links">
         {socials.map(social => (
           <li key={social.id}>
@@ -58,7 +58,7 @@ export function MenuFooter() {
           type="button"
           onClick={() => openOverlay('palette')}
           aria-keyshortcuts="Meta+K Control+K"
-          className="inline-flex cursor-pointer items-center gap-2 text-muted-foreground transition-colors hover:text-foreground focus-visible:text-foreground"
+          className="inline-flex cursor-pointer items-center gap-2 text-muted-foreground transition-colors hover:text-foreground focus-visible:text-foreground pointer-coarse:hidden"
         >
           <kbd className="rounded-md border border-line-strong bg-surface-2 px-1.5 py-0.5 font-mono text-[0.6875rem] text-foreground">
             {modKey} K

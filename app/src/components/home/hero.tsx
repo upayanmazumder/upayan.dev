@@ -70,28 +70,30 @@ export function Hero() {
           <HeroMeta />
         </div>
 
-        <div data-intro="item" className="flex flex-wrap gap-3">
+        <div data-intro="item" className="grid gap-3 min-[420px]:grid-cols-2 sm:flex sm:flex-wrap">
           {primarySocials.map(social => (
             <MagneticLink
               key={social.id}
               href={social.href}
               aria-label={`${social.label} ${social.handle ?? ''}`.trim()}
-              className="group items-center gap-3 rounded-xl border border-line-strong bg-surface/80 py-3 pr-4 pl-3.5 backdrop-blur-sm transition-colors hover:border-teal/40 hover:bg-surface-2 focus-visible:border-teal/40"
+              className="group items-center gap-3 rounded-xl border border-line-strong bg-surface/80 py-3 pr-4 pl-3.5 backdrop-blur-sm transition-colors hover:border-teal/40 hover:bg-surface-2 focus-visible:border-teal/40 max-sm:w-full"
             >
               <BrandIcon
                 icon={social.icon}
                 name={social.label}
                 className="size-5 text-foreground"
               />
-              <span className="flex flex-col leading-tight">
+              <span className="flex min-w-0 flex-col leading-tight">
                 <span className="font-ui text-sm font-semibold">{social.label}</span>
                 {social.handle ? (
-                  <span className="font-mono text-xs text-muted-foreground">{social.handle}</span>
+                  <span className="truncate font-mono text-xs text-muted-foreground">
+                    {social.handle}
+                  </span>
                 ) : null}
               </span>
               <ArrowUpRight
                 aria-hidden
-                className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-teal group-focus-visible:text-teal"
+                className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-teal group-focus-visible:text-teal max-sm:ml-auto"
               />
             </MagneticLink>
           ))}

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Search } from 'lucide-react';
 
 import { profile } from '@/data/profile';
 import { cn } from '@/lib/utils';
@@ -51,11 +52,12 @@ export function TopMark({ paletteOpen, paletteId, covered }: TopMarkProps) {
         aria-keyshortcuts="Meta+K Control+K"
         className={cn(
           chip,
-          'cursor-pointer gap-1 px-2.5 font-mono text-[0.6875rem] text-muted-foreground hover:text-foreground'
+          'cursor-pointer gap-1 px-2.5 font-mono text-[0.6875rem] text-muted-foreground hover:text-foreground pointer-coarse:w-9 pointer-coarse:justify-center pointer-coarse:px-0'
         )}
       >
-        <kbd className="font-mono">{modKey}</kbd>
-        <kbd className="font-mono">K</kbd>
+        <Search aria-hidden className="hidden size-4 pointer-coarse:block" />
+        <kbd className="font-mono pointer-coarse:hidden">{modKey}</kbd>
+        <kbd className="font-mono pointer-coarse:hidden">K</kbd>
       </button>
     </div>
   );

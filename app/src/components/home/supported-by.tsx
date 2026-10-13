@@ -1,12 +1,24 @@
 import Image from 'next/image';
+import { ArrowUpRight, Heart } from 'lucide-react';
 
+import PixelCard, { type PixelCardProps } from '@/components/rb/PixelCard';
 import { Reveal } from '@/components/shell/reveal';
 import { Section } from '@/components/shell/section';
 import { profile } from '@/data/profile';
 import { sponsors } from '@/data/site';
 
-const card =
-  'group relative flex items-center gap-4 overflow-hidden rounded-xl border border-line bg-surface p-5 transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-[0_0_40px_-12px_var(--color-teal)] focus-visible:border-line-strong focus-visible:shadow-[0_0_40px_-12px_var(--color-teal)] focus-visible:outline-none';
+// Teal ramp from the design tokens; pixels light up under the pointer on hover.
+const PIXELS = {
+  colors: ['#c6f6e6', '#6fd8bd', '#2f9e86'],
+  glowColor: '#3fbfa0',
+  gap: 6,
+  speed: 30,
+  shape: 'circle',
+  origin: 'pointer',
+  radius: 14,
+  noFocus: true,
+  className: 'h-44 w-full border border-line',
+} satisfies PixelCardProps;
 
 export function SupportedBy() {
   return (
@@ -15,65 +27,71 @@ export function SupportedBy() {
         {sponsors.map(s => {
           const body = (
             <>
-              <Image
-                src={encodeURI(s.logo)}
-                alt=""
-                width={48}
-                height={48}
-                className="size-12 rounded-full border border-line object-cover"
-              />
-              <span className="flex flex-col">
-                <span className="font-ui font-semibold">{s.name}</span>
-                <span className="font-mono text-xs text-muted-foreground">{s.handle}</span>
+              <span className="label">Sponsor</span>
+              <span className="flex items-center gap-4">
+                <Image
+                  src={encodeURI(s.logo)}
+                  alt=""
+                  width={56}
+                  height={56}
+                  className="size-14 rounded-full border border-line-strong object-cover ring-4 ring-background/60"
+                />
+                <span className="flex min-w-0 flex-col">
+                  <span className="truncate font-ui text-lg font-semibold">{s.name}</span>
+                  <span className="truncate font-mono text-xs text-muted-foreground">
+                    {s.handle}
+                  </span>
+                </span>
               </span>
             </>
           );
-          return s.href ? (
-            <a
-              key={s.handle}
-              data-reveal
-              href={s.href}
-              target="_blank"
-              rel="noreferrer"
-              className={card}
-            >
-              {body}
-            </a>
-          ) : (
-            <div key={s.handle} data-reveal className={card}>
-              {body}
+          return (
+            <div key={s.handle} data-reveal>
+              <PixelCard {...PIXELS}>
+                {s.href ? (
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex h-full flex-col justify-between p-5 focus-visible:outline-none"
+                  >
+                    {body}
+                  </a>
+                ) : (
+                  <div className="flex h-full flex-col justify-between p-5">{body}</div>
+                )}
+              </PixelCard>
             </div>
           );
         })}
-        <a
-          data-reveal
-          href={profile.githubSponsors}
-          target="_blank"
-          rel="noreferrer"
-          className={card + ' border-dashed'}
-        >
-          <span className="flex size-12 items-center justify-center rounded-full border border-line-strong text-teal">
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden
-              className="size-5 fill-current group-hover:animate-[heartbeat_1s_ease-in-out_infinite] group-focus-visible:animate-[heartbeat_1s_ease-in-out_infinite] motion-reduce:!animate-none"
+        <div data-reveal>
+          <PixelCard {...PIXELS} className={`${PIXELS.className} border-dashed`}>
+            <a
+              href={profile.githubSponsors}
+              target="_blank"
+              rel="noreferrer"
+              className="group/sponsor flex h-full flex-col justify-between p-5 focus-visible:outline-none"
             >
-              <path d="M12 21s-7.5-4.6-9.6-9.2C1 8.6 3 5 6.6 5c2 0 3.4 1.1 4.2 2.4h2.4C14 6.1 15.4 5 17.4 5 21 5 23 8.6 21.6 11.8 19.5 16.4 12 21 12 21z" />
-            </svg>
-          </span>
-          <span className="flex flex-col">
-            <span className="font-ui font-semibold">Become a sponsor</span>
-            <span className="text-xs text-muted-foreground">Through GitHub Sponsors</span>
-          </span>
-          <span
-            aria-hidden
-            className="ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-teal"
-          >
-            →
-          </span>
-        </a>
+              <span className="flex items-center justify-between">
+                <span className="label">Your name here</span>
+                <ArrowUpRight
+                  aria-hidden
+                  className="size-4 text-muted-foreground transition-transform duration-300 group-hover/sponsor:translate-x-0.5 group-hover/sponsor:-translate-y-0.5 group-hover/sponsor:text-teal group-focus-visible/sponsor:text-teal"
+                />
+              </span>
+              <span className="flex items-center gap-4">
+                <span className="flex size-14 items-center justify-center rounded-full border border-teal/30 bg-teal-dim text-teal">
+                  <Heart aria-hidden className="size-6 fill-current" />
+                </span>
+                <span className="flex flex-col">
+                  <span className="font-ui text-lg font-semibold">Become a sponsor</span>
+                  <span className="text-xs text-muted-foreground">Through GitHub Sponsors</span>
+                </span>
+              </span>
+            </a>
+          </PixelCard>
+        </div>
       </Reveal>
-      <style>{`@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(1)}45%{transform:scale(1.18)}}`}</style>
     </Section>
   );
 }

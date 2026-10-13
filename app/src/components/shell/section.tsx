@@ -23,8 +23,8 @@ export function Section({ id, index, title, lead, className, children }: Section
   return (
     <section id={id} className={cn('relative scroll-mt-16', className)}>
       <div aria-hidden className="relative h-px w-full bg-line">
-        <span className="absolute top-1/2 left-1/2 size-1.5 -translate-x-[calc(var(--column)/2+3px)] -translate-y-1/2 rotate-45 bg-teal/70 max-md:hidden" />
-        <span className="absolute top-1/2 left-1/2 size-1.5 translate-x-[calc(var(--column)/2-3px)] -translate-y-1/2 rotate-45 bg-teal/70 max-md:hidden" />
+        <span className="absolute top-1/2 left-1/2 size-1.5 -translate-x-[calc(var(--column)/2+3px)] -translate-y-1/2 rotate-45 bg-teal/70 max-[50rem]:hidden" />
+        <span className="absolute top-1/2 left-1/2 size-1.5 translate-x-[calc(var(--column)/2-3px)] -translate-y-1/2 rotate-45 bg-teal/70 max-[50rem]:hidden" />
       </div>
       <div className="column py-16 md:py-20">
         {title ? (

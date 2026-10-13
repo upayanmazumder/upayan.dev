@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This repository contains a Rust stats API and a Next.js frontend starter. The frontend does not yet display API data. The API serves Spotify, Discord presence, signed Linux PC health reports, and a DevJourney GitHub contents proxy.
+This repository contains a Rust stats API and the Next.js portfolio website. The API serves Spotify, Discord presence, signed Linux PC health reports, GitHub contributions, and a DevJourney GitHub contents proxy. The website reads the API on its server through `API_URL`.
 
 ## Architecture & Data Flow
 
@@ -11,7 +11,8 @@ This repository contains a Rust stats API and a Next.js frontend starter. The fr
 - `api/src/spotify.rs` refreshes an OAuth token and fetches playback, recent tracks, and top items. `api/src/discord.rs` reads Lanyard presence, not a Discord bot gateway.
 - `api/client/src/main.rs` reads Linux CPU, memory, root disk, and uptime data. It signs one report and exits. `api/src/pc.rs` verifies HMAC-SHA256, rejects stale or repeated timestamps, and holds only the latest report in memory.
 - `api/src/devjourney.rs` proxies a configured GitHub repository's contents. It returns the raw GitHub JSON shape used by the previous website.
-- `app/src/app/` contains the Next.js starter pages. `app/src/api/` provides Axios and Zod request helpers. Providers, TanStack Query, and Zustand exist, but no page consumes the Rust API yet.
+- `app/src/app/` holds the home page, `/projects/[slug]`, `/certificates`, `/devjourney/[[...path]]`, metadata routes, and `/api/live`. Server components fetch `API_URL` directly. The browser polls only same-origin `/api/live`.
+- `app/src/data/*.ts` holds all site copy and content. `app/src/components/shell/` holds the rails backdrop, `Section`, `Reveal`, and Lenis. GSAP comes only from `@/lib/gsap`. Vendored React Bits components live in `app/src/components/rb/`.
 
 ## Key Directories
 
@@ -40,12 +41,12 @@ Run frontend commands from `app/`:
 
 ```sh
 pnpm install --frozen-lockfile
-NEXT_PUBLIC_API_URL=http://127.0.0.1:8080 pnpm dev
+API_URL=http://127.0.0.1:8080 pnpm dev
 pnpm lint
 pnpm format:check
 pnpm type-check
 pnpm test
-NEXT_PUBLIC_API_URL=http://127.0.0.1:8080 pnpm build
+pnpm build
 ```
 
 ## Code Conventions & Common Patterns
@@ -70,7 +71,8 @@ NEXT_PUBLIC_API_URL=http://127.0.0.1:8080 pnpm build
 
 - Use Rust 1.97 or later for both edition-2024 crates. Keep both Cargo lockfiles current. CI uses `cargo fmt`, tests, and Clippy with warnings denied.
 - Use Node 22 and pnpm 11.28.5 for `app/`. There is no root `package.json`. Next.js is 16.2.11.
-- Set `NEXT_PUBLIC_API_URL` to a URL for frontend builds. `SKIP_ENV_VALIDATION=true` is reserved for checks that do not need a real URL.
+- `API_URL` (server only) is optional. `NEXT_PUBLIC_SITE_URL` defaults to `https://upayan.dev`. `SKIP_ENV_VALIDATION=true` is reserved for checks.
+- The React Compiler is on. Read zustand state with inline selectors, not `store.use.x()` helpers. Animate only transform, opacity, filter, and clip-path, and respect `prefers-reduced-motion`.
 - Keep `api/.env`, Spotify credentials, `SIGNING_KEY`, and GitHub tokens out of commits and browser bundles. Use `api/.env.example` for key names. Set `CORS_ORIGIN` only for direct browser requests.
 - Read `app/node_modules/next/dist/docs/` before changing Next.js behavior, as required by `app/AGENTS.md`.
 

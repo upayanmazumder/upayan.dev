@@ -75,8 +75,7 @@ src/
     use-mounted.ts
     use-zod-form.ts     # useZodForm(schema, options) — RHF + zodResolver
   stores/               # Zustand stores
-    create-selectors.ts # createSelectors(store) — auto-generates use.* hooks
-    ui-store.ts         # useUiStore — sidebar state example (persist)
+    ui-store.ts         # useUiStore — which overlay (menu / palette) is open
     index.ts
   schemas/              # Shared Zod schemas
     common.ts           # emailSchema, paginationSchema, paginatedResponseSchema, …
@@ -195,8 +194,8 @@ Blank lines between each group are auto-inserted — do not add them by hand.
 ### State Management (Zustand)
 
 - One store per file in `src/stores/`. Use curried `create<State>()` form.
-- Wrap with `createSelectors` to get `store.use.field()` auto-hooks.
-- For persisted stores, add `persist()` middleware and cast the result as `UseBoundStore<StoreApi<State>>` before passing to `createSelectors`.
+- Read state with an inline selector: `useStore(state => state.field)`. Do not use `store.use.field()` helpers. The React Compiler does not see them as hooks and can call them conditionally, which breaks hook order.
+- For persisted stores, add `persist()` middleware.
 - Server-side hydration: guard with `useMounted()` or call `store.persist.rehydrate()` as needed.
 
 ### Forms

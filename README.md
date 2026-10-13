@@ -8,14 +8,14 @@
 
 ## What is this repo about?
 
-This checkout contains a Rust API and an initialized Next.js frontend. The API serves Spotify, Discord, and Linux PC stats. It also preserves the master branch DevJourney proxy. The frontend remains a starter app.
+This repository holds my personal website and the Rust API behind its live sections. The website is a dark, single-page portfolio with project case studies, certificates, and DevJourney. The API serves Spotify, Discord, Linux PC, and GitHub contribution data, and proxies DevJourney.
 
 ---
 
 ## Repository structure
 
 - `api/`: Rust HTTP service, DevJourney proxy, and Linux PC client in `api/client/`.
-- `app/`: Next.js frontend starter, ready for the website implementation.
+- `app/`: Next.js website. Content lives in `app/src/data/*.ts`.
 
 ## Run the stats API
 
@@ -28,15 +28,15 @@ cargo run
 
 The health route is `http://127.0.0.1:8080/health`. The combined stats route is `http://127.0.0.1:8080/api/stats`.
 
-## Run the frontend starter
+## Run the website
 
 ```sh
 cd app
 pnpm install --frozen-lockfile
-NEXT_PUBLIC_API_URL=http://127.0.0.1:8080 pnpm dev
+API_URL=http://127.0.0.1:8080 pnpm dev
 ```
 
-The frontend runs at `http://127.0.0.1:3000`. Its initial page is the template screen, not a finished website.
+The website runs at `http://127.0.0.1:3000`. `API_URL` is optional and read only on the server. Without it, the live, GitHub activity, and DevJourney sections show an unavailable state. Edit copy, projects, roles, and links in `app/src/data/`. The site deploys to Vercel. Set `API_URL` and `NEXT_PUBLIC_SITE_URL` there.
 ---
 
 ## Contributing

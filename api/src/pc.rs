@@ -19,6 +19,28 @@ type HmacSha256 = Hmac<Sha256>;
 
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+pub struct ZedActivity {
+    pub workspace: String,
+    pub file: String,
+    pub active_seconds: u64,
+}
+
+impl ZedActivity {
+    fn valid(&self) -> bool {
+        [&self.workspace, &self.file].into_iter().all(|name| {
+            !name.is_empty()
+                && name.len() <= 128
+                && name != "."
+                && name != ".."
+                && !name
+                    .chars()
+                    .any(|ch| ch.is_control() || ch == '/' || ch == '\\')
+        }) && self.active_seconds <= 86_400
+    }
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Report {
     pub cpu_percent: f64,
     pub memory_used_bytes: u64,
@@ -26,6 +48,8 @@ pub struct Report {
     pub disk_used_bytes: u64,
     pub disk_total_bytes: u64,
     pub uptime_seconds: u64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub zed: Option<ZedActivity>,
 }
 
 impl Report {
@@ -36,6 +60,7 @@ impl Report {
             && self.memory_used_bytes <= self.memory_total_bytes
             && self.disk_total_bytes > 0
             && self.disk_used_bytes <= self.disk_total_bytes
+            && self.zed.as_ref().is_none_or(ZedActivity::valid)
     }
 }
 
@@ -141,5 +166,26 @@ pub async fn status(State(pc): State<SharedPc>) -> Json<Value> {
             "stats": report.data
         })),
         None => Json(json!({"online":false,"lastSeen":null,"stats":null})),
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn zed_activity_rejects_paths_and_control_characters() {
+        let mut activity = ZedActivity {
+            workspace: "site".into(),
+            file: "main.rs".into(),
+            active_seconds: 42,
+        };
+        assert!(activity.valid());
+        activity.file = "../secret".into();
+        assert!(!activity.valid());
+        activity.file = "secret\n.env".into();
+        assert!(!activity.valid());
+        activity.file = "main.rs".into();
+        activity.active_seconds = 86_401;
+        assert!(!activity.valid());
     }
 }

@@ -33,7 +33,7 @@ Set `DISCORD_USER_ID` to your Discord user ID. Join the [Lanyard server](https:/
 
 ### PC health reporter
 
-The Linux client reads CPU load from `/proc/stat`, memory from `/proc/meminfo`, uptime from `/proc/uptime`, and root disk use from `statvfs`. It does not report file names, process names, active windows, or network addresses. A report is one HTTP request. The client exits after each request.
+The Linux client reads CPU, memory, uptime, and root disk use. It sends one signed report and exits. Zed activity is optional. The client sends no editor data unless you set `ZED_PUBLIC_WORKSPACES`.
 
 Set `SIGNING_KEY` on the server and client to the same random value of at least 32 bytes. The existing `SIGNING_KEY` in your `api/.env` can serve this purpose. Set `PC_ID` on both sides, or use the default `main`. The client takes `API_URL` as the server base URL. It defaults to `http://127.0.0.1:8080`. Use HTTPS for remote reports. Do not publish the signing key or send it in a request body.
 
@@ -70,6 +70,14 @@ WantedBy=timers.target
 
 Run `systemctl --user daemon-reload`, then `systemctl --user enable --now upayan-pc.timer`. The service stores only the latest report in memory. A restart clears it. `online` becomes false after 180 seconds without a report. Signatures cover the timestamp, PC ID, and exact JSON body. The server rejects stale or repeated timestamps within the current process lifetime. Synchronize the PC clock. Do not expose port 8080 without a TLS proxy.
 
+To publish Zed activity, set `ZED_PUBLIC_WORKSPACES` in the client environment. Give it an absolute workspace directory. Separate multiple directories with colons. For example, set `ZED_PUBLIC_WORKSPACES=/home/user/dev/site` in `~/.config/upayan-pc.env`.
+
+Choose only workspaces whose file names can appear on a public website. The client reads Zed's local SQLite database in read-only mode. It sends the workspace name, active file name, and observed session seconds. It never sends full paths or file contents. It excludes hidden files. Keep the allowlist unset to keep file names private.
+
+The database format is private to Zed and can change. The client omits `zed` if the database is absent or its latest workspace state is over two minutes old. It also omits `zed` if the latest workspace is not allowed or lacks an active file. Remote workspaces are not supported.
+
+The timer measures the interval since its first observation of the same file. A file change or an observation gap over two minutes resets the interval. This estimate does not measure keyboard activity. The client stores the observation in `~/.local/state/upayan-pc/zed.json` with restricted permissions.
+
 ### DevJourney proxy
 
 `GET /devjourney` and `GET /devjourney?path=folder%2Ffile.md` preserve the master branch response shape. The API returns the GitHub contents object or directory array without an envelope. Set `DEVJOURNEY_REPO_OWNER` and `DEVJOURNEY_REPO_NAME` only if the defaults differ. A dedicated `DEVJOURNEY_GITHUB_TOKEN` can increase the rate limit. Do not configure a token that can read private repository content. The public proxy makes every allowed file in that repository accessible to visitors. The proxy rejects traversal and returns fixed error text without upstream response bodies.
@@ -98,7 +106,7 @@ The service caches a successful calendar for 6 hours. Concurrent requests share 
 | `GET /api/stats` | `{ "spotify": ..., "discord": ..., "pc": ..., "errors": { "spotify": null, "discord": null }, "timestamp": 0 }`. Timestamp uses Unix seconds. |
 | `GET /api/stats/spotify` | `{ "data": ..., "error": null }` on success. |
 | `GET /api/stats/discord` | `{ "data": ..., "error": null }` on success. |
-| `GET /api/stats/pc` | `{ "online": false, "lastSeen": null, "stats": null }` before the first report. |
+| `GET /api/stats/pc` | `{ "online": false, "lastSeen": null, "stats": null }` before the first report. When enabled, `stats.zed` contains `{ "workspace": "...", "file": "...", "active_seconds": 0 }`. |
 | `POST /api/pc/report` | Requires `X-PC-ID`, `X-Timestamp`, and `X-Signature`. Returns 202 after a valid report. |
 | `GET /devjourney?path=...` | Raw GitHub contents JSON for the configured repository. |
 | `GET /api/github/contributions` | `{ "user": ..., "total": 0, "weeks": [{ "days": [{ "date": ..., "count": 0, "level": 0 }] }], "fetched_at": ... }`. |

@@ -1,5 +1,7 @@
 #![cfg(target_os = "linux")]
 
+mod zed;
+
 use std::env;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
@@ -22,6 +24,8 @@ struct Report {
     disk_used_bytes: u64,
     disk_total_bytes: u64,
     uptime_seconds: u64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    zed: Option<zed::Activity>,
 }
 
 struct Config {
@@ -235,6 +239,7 @@ fn gather_report() -> Result<Report> {
         disk_used_bytes,
         disk_total_bytes,
         uptime_seconds: uptime_seconds()?,
+        zed: zed::collect(),
     })
 }
 

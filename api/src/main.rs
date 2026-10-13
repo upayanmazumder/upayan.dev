@@ -524,7 +524,8 @@ mod tests {
         });
         let url = serve(router(state, None)).await;
         let body = json!({"cpu_percent":25.0,"memory_used_bytes":20,"memory_total_bytes":100,
-            "disk_used_bytes":30,"disk_total_bytes":100,"uptime_seconds":200})
+            "disk_used_bytes":30,"disk_total_bytes":100,"uptime_seconds":200,
+            "zed":{"workspace":"upayan.dev","file":"main.rs","active_seconds":60}})
         .to_string();
         let stamp = SystemTime::now()
             .duration_since(UNIX_EPOCH)
@@ -564,6 +565,9 @@ mod tests {
             .unwrap();
         assert_eq!(stats["pc"]["online"], true);
         assert_eq!(stats["pc"]["stats"]["cpu_percent"], 25.0);
+        assert_eq!(stats["pc"]["stats"]["zed"]["workspace"], "upayan.dev");
+        assert_eq!(stats["pc"]["stats"]["zed"]["file"], "main.rs");
+        assert_eq!(stats["pc"]["stats"]["zed"]["active_seconds"], 60);
         let pc: Value = client
             .get(format!("{url}/api/stats/pc"))
             .send()

@@ -32,7 +32,7 @@ export async function Contributions() {
   const calendar = await fetchContributions();
 
   return (
-    <Section id="activity" index="03" title="GitHub activity">
+    <Section id="activity" index="04" title="GitHub activity">
       {calendar ? (
         <div className="flex flex-col gap-5">
           <Reveal>

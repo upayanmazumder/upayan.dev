@@ -36,9 +36,9 @@ export function ExpandableGrid({ items, initial = 8 }: ExpandableGridProps) {
   };
 
   return (
-    <div ref={root} className="flex flex-col gap-6">
+    <div ref={root} className="flex flex-col gap-4">
       <LayoutGroup>
-        <Reveal as="ul" className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <Reveal as="ul" className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <AnimatePresence initial={false} onExitComplete={() => ScrollTrigger.refresh()}>
             {visible.map((item, i) => (
               <m.li

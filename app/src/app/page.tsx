@@ -44,6 +44,7 @@ export default function HomePage() {
       <Hero />
       <About />
       <LiveNow />
+      <SupportedBy />
       <Contributions />
       <Stack />
       <FeaturedProjects />
@@ -51,7 +52,6 @@ export default function HomePage() {
       <OpenSource />
       <Work />
       <Communities />
-      <SupportedBy />
       <CertificatesPreview />
       <Elsewhere />
     </>

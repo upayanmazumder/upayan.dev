@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { BrandIcon } from '@/components/ui/brand-icon';
 
 import { shortDuration } from './format';
-import { LiveRow, Muted } from './live-row';
+import { LiveRow, Muted, Scramble } from './live-row';
 import type { LivePc } from './types';
 
 interface ZedRowProps {
@@ -37,9 +37,14 @@ export function ZedRow({ pc, loading, receivedAt, index }: ZedRowProps) {
       ) : !zed ? (
         <Muted>Idle</Muted>
       ) : (
-        <p className="truncate">
-          <span className="font-mono text-[0.8rem]">{zed.file}</span>{' '}
-          <span className="text-muted-foreground">{zed.workspace}</span>
+        <p className="flex min-w-0 items-center">
+          <Scramble text={zed.file} className="truncate font-mono text-[0.8rem]" />
+          {/* A blinking caret: this file is open right now. */}
+          <span
+            aria-hidden
+            className="mr-2 ml-0.5 inline-block h-3.5 w-[2px] shrink-0 animate-pulse bg-teal motion-reduce:animate-none"
+          />
+          <span className="truncate text-muted-foreground">{zed.workspace}</span>
         </p>
       )}
     </LiveRow>

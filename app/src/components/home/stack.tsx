@@ -24,7 +24,7 @@ const marquee = [
 
 export function Stack() {
   return (
-    <Section id="stack" index="04" title="Stack" lead="The tools I reach for.">
+    <Section id="stack" index="05" title="Stack" lead="The tools I reach for.">
       <div aria-hidden className="mb-10">
         <LogoLoop
           logos={marquee}

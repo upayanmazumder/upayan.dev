@@ -2,6 +2,7 @@
 export const homeSections = [
   { id: 'about', label: 'About' },
   { id: 'now', label: 'Live now' },
+  { id: 'supported-by', label: 'Supported by' },
   { id: 'activity', label: 'GitHub activity' },
   { id: 'stack', label: 'Stack' },
   { id: 'projects', label: 'Featured projects' },
@@ -9,7 +10,6 @@ export const homeSections = [
   { id: 'open-source', label: 'Open source' },
   { id: 'work', label: 'Work' },
   { id: 'communities', label: 'Communities' },
-  { id: 'supported-by', label: 'Supported by' },
   { id: 'certificates', label: 'Certificates' },
   { id: 'elsewhere', label: 'Elsewhere' },
 ] as const;

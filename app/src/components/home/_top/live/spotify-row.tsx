@@ -4,9 +4,10 @@ import Image from 'next/image';
 import { m } from 'motion/react';
 
 import { BrandIcon } from '@/components/ui/brand-icon';
+import { cn } from '@/lib/utils';
 
 import { shortDuration } from './format';
-import { LiveRow, Muted } from './live-row';
+import { LiveRow, Muted, Scramble } from './live-row';
 import type { LiveSpotify } from './types';
 
 interface SpotifyRowProps {
@@ -19,6 +20,7 @@ interface SpotifyRowProps {
 
 export function SpotifyRow({ data, loading, receivedAt, index }: SpotifyRowProps) {
   const track = data && data.state !== 'idle' ? data.track : null;
+  const playing = data?.state === 'playing';
 
   return (
     <LiveRow
@@ -26,16 +28,30 @@ export function SpotifyRow({ data, loading, receivedAt, index }: SpotifyRowProps
       index={index}
       loading={loading}
       fill={Boolean(track?.art)}
+      round={playing}
+      ambient={track?.art}
       icon={
         track?.art ? (
-          <Image
-            src={track.art}
-            alt=""
-            width={32}
-            height={32}
-            unoptimized
-            className="size-full object-cover"
-          />
+          <>
+            <Image
+              src={track.art}
+              alt=""
+              width={32}
+              height={32}
+              unoptimized
+              className={cn(
+                'size-full object-cover',
+                // A playing track spins like a record.
+                playing && 'animate-spin [animation-duration:5s] motion-reduce:animate-none'
+              )}
+            />
+            {playing ? (
+              <span
+                aria-hidden
+                className="absolute size-1.5 rounded-full border border-line-strong bg-background"
+              />
+            ) : null}
+          </>
         ) : (
           <BrandIcon icon="siSpotify" name="Spotify" />
         )
@@ -61,10 +77,10 @@ export function SpotifyRow({ data, loading, receivedAt, index }: SpotifyRowProps
               rel="noreferrer"
               className="font-ui font-medium underline-offset-4 hover:text-teal hover:underline focus-visible:text-teal"
             >
-              {track.title}
+              <Scramble text={track.title} />
             </a>
           ) : (
-            <span className="font-ui font-medium">{track.title}</span>
+            <Scramble text={track.title} className="font-ui font-medium" />
           )}{' '}
           <span className="text-muted-foreground">{track.artists.join(', ')}</span>
         </p>

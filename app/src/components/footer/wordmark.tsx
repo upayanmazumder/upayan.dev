@@ -22,7 +22,9 @@ export function Wordmark() {
           scrollTrigger: {
             trigger: ref.current,
             start: 'top bottom',
-            end: 'bottom 85%',
+            // The wordmark sits at the page end, so `bottom 85%` can be unreachable on short
+            // viewports and leave the last letters half filled. `max` completes at full scroll.
+            end: 'max',
             scrub: 0.6,
           },
         });

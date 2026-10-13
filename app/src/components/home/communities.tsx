@@ -6,7 +6,7 @@ export function Communities() {
   return (
     <Section
       id="communities"
-      index="09"
+      index="10"
       title="Communities"
       lead="Technical chapters I help run at college."
     >

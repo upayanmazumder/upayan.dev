@@ -1,7 +1,7 @@
 import { BrandIcon } from '@/components/ui/brand-icon';
 import { cn } from '@/lib/utils';
 
-import { LiveRow, Muted } from './live-row';
+import { LiveRow, Muted, Scramble } from './live-row';
 import type { DiscordStatus, LiveDiscord } from './types';
 
 const STATUS: Record<DiscordStatus, { label: string; dot: string }> = {
@@ -41,7 +41,7 @@ export function DiscordRow({ data, loading, index }: DiscordRowProps) {
         <Muted>Unavailable</Muted>
       ) : (
         <p className="truncate">
-          <span className="font-ui font-medium">{status.label}</span>
+          <Scramble text={status.label} className="font-ui font-medium" />
           {data.activity ? (
             <span className="text-muted-foreground">
               {' '}

@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { Cpu } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -66,8 +67,8 @@ function Gauge({ label, value, text }: { label: string; value: number; text: str
         className="relative h-1 flex-1 overflow-hidden rounded-full bg-surface-2"
       >
         <span
-          className="absolute inset-0 origin-left bg-teal/80 transition-transform duration-700 ease-out-expo"
-          style={{ transform: `scaleX(${clamped})` }}
+          className="absolute inset-0 origin-left scale-x-0 rounded-full bg-linear-to-r from-teal/50 to-teal shadow-[0_0_8px_var(--teal)] transition-[scale] delay-[calc(var(--i)*140ms+300ms)] duration-1000 ease-out-expo in-data-[shown=true]:scale-x-(--v) motion-reduce:transition-none"
+          style={{ '--v': clamped } as CSSProperties}
         />
       </span>
     </span>

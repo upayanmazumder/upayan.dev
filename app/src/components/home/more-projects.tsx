@@ -5,9 +5,9 @@ import { projects } from '@/data/projects';
 
 export function MoreProjects() {
   return (
-    <Section id="more" index="06" title="More things I built">
+    <Section id="more" index="07" title="More things I built">
       <ExpandableGrid
-        initial={8}
+        initial={6}
         items={projects.map(project => ({
           id: project.slug,
           node: <ProjectCard project={project} />,

@@ -13,6 +13,7 @@
   --color-teal-dim: var(--teal-dim);
 
   --font-display: var(--font-montserrat-alternates);
+  --font-name: var(--font-bricolage);
   --font-ui: var(--font-montserrat);
   --font-sans: var(--font-red-hat-display);
   --font-mono: var(--font-red-hat-mono);

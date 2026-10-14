@@ -45,7 +45,7 @@ export function ProjectCover({ project, className, size = 'card', priority }: Pr
             width={icon}
             height={icon}
             priority={priority}
-            className="rounded-[22%] border border-line-strong shadow-2xl shadow-black/60"
+            className="object-contain drop-shadow-[0_18px_30px_rgb(0_0_0/0.55)]"
           />
         </span>
       </div>

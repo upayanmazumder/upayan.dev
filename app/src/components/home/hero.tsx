@@ -53,7 +53,7 @@ export function Hero() {
 
         <h1
           data-intro="name"
-          className="text-[clamp(3rem,11vw,5.75rem)] leading-[0.92] font-semibold tracking-[-0.035em]"
+          className="font-name text-[clamp(3.25rem,12vw,6.25rem)] leading-[0.88] font-extrabold tracking-[-0.045em]"
         >
           <span className="block">{first}</span>{' '}
           <span className="block text-muted-foreground">{rest.join(' ')}</span>

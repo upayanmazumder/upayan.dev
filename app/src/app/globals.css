@@ -173,4 +173,50 @@
       visibility: visible;
     }
   }
+
+  /* Hero intro: pure CSS on server-rendered markup, so it starts with the first paint. */
+  .intro-photo {
+    animation: intro-photo 1.3s var(--ease-out-expo) both;
+  }
+
+  .intro-char {
+    display: inline-block;
+    animation: intro-char 1.15s var(--ease-out-expo) both;
+    animation-delay: calc(0.12s + var(--c, 0) * 32ms);
+  }
+
+  .intro-item {
+    animation: intro-item 0.95s var(--ease-out-expo) both;
+    animation-delay: calc(0.45s + var(--i, 0) * 75ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .intro-photo,
+    .intro-char,
+    .intro-item {
+      animation: none;
+    }
+  }
+}
+
+@keyframes intro-photo {
+  from {
+    opacity: 0;
+    transform: scale(0.72);
+    filter: blur(10px);
+  }
+}
+
+@keyframes intro-char {
+  from {
+    transform: translateY(115%);
+  }
+}
+
+@keyframes intro-item {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(6px);
+  }
 }

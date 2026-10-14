@@ -1,30 +1,56 @@
+import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
 
 import { BrandIcon } from '@/components/ui/brand-icon';
 import { primarySocials, profile } from '@/data/profile';
+import { cn } from '@/lib/utils';
 
 import { Currently } from './_top/hero/currently';
 import { Decrypt } from './_top/hero/decrypt';
 import { HeroBackdrop } from './_top/hero/hero-backdrop';
-import { HeroIntro } from './_top/hero/hero-intro';
 import { HeroMeta } from './_top/hero/hero-meta';
 import { MagneticLink } from './_top/hero/magnetic-link';
 import { ScrollCue } from './_top/hero/scroll-cue';
 
-/** Full-height intro inside the rails: photo, name, one sentence, status, contact, and primary socials. */
+/** Characters of one name line, each delayed by its position across the whole name. */
+function NameLine({
+  text,
+  offset,
+  className,
+}: {
+  text: string;
+  offset: number;
+  className?: string;
+}) {
+  return (
+    <span aria-hidden className={cn('-mb-[0.1em] block overflow-hidden pb-[0.1em]', className)}>
+      {[...text].map((char, i) => (
+        <span key={i} className="intro-char" style={{ '--c': offset + i } as CSSProperties}>
+          {char}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+const step = (i: number) => ({ '--i': i }) as CSSProperties;
+
+/**
+ * Full-height intro inside the rails: photo, name, one sentence, contact, and primary socials.
+ * The intro animation is pure CSS on server-rendered markup, so the hero paints with the first
+ * HTML instead of waiting for hydration or web fonts.
+ */
 export function Hero() {
-  const [first, ...rest] = profile.name.split(' ');
+  const [first = '', ...rest] = profile.name.split(' ');
+  const last = rest.join(' ');
 
   return (
     <section id="hero" aria-label="Intro" className="relative isolate flex min-h-svh flex-col">
       <HeroBackdrop />
-      <HeroIntro className="column flex flex-1 flex-col justify-center gap-6 pt-24 pb-28 sm:gap-7 md:pt-28 md:pb-36">
+      <div className="column flex flex-1 flex-col justify-center gap-6 pt-24 pb-28 sm:gap-7 md:pt-28 md:pb-36">
         <div className="flex items-center gap-5">
-          <div
-            data-intro="photo"
-            className="relative size-20 shrink-0 overflow-hidden rounded-2xl p-px md:size-24"
-          >
+          <div className="intro-photo relative size-20 shrink-0 overflow-hidden rounded-2xl p-px md:size-24">
             <span
               aria-hidden
               className="absolute -inset-1/2 animate-spin bg-[conic-gradient(from_0deg,transparent_0deg,var(--teal)_70deg,transparent_140deg)] opacity-80 [animation-duration:9s] motion-reduce:animate-none"
@@ -39,38 +65,32 @@ export function Hero() {
               className="relative size-full rounded-[calc(var(--radius-2xl)-1px)] bg-surface object-cover"
             />
           </div>
-          <div data-intro="item" className="flex flex-col items-start gap-2.5">
-            <span className="inline-flex items-center gap-2 rounded-full border border-teal/25 bg-teal-dim px-2.5 py-1 font-ui text-xs font-medium text-teal">
-              <span aria-hidden className="relative flex size-2">
-                <span className="absolute inset-0 animate-ping rounded-full bg-teal opacity-60 motion-reduce:animate-none" />
-                <span className="relative size-2 rounded-full bg-teal" />
-              </span>
-              {profile.status}
-            </span>
-            <span className="label">{profile.role}</span>
-          </div>
+          <span className="intro-item label" style={step(0)}>
+            {profile.role}
+          </span>
         </div>
 
-        <h1
-          data-intro="name"
-          className="font-name text-[clamp(3.25rem,12vw,6.25rem)] leading-[0.88] font-extrabold tracking-[-0.045em]"
-        >
-          <span className="block">{first}</span>{' '}
-          <span className="block text-muted-foreground">{rest.join(' ')}</span>
+        <h1 className="font-name text-[clamp(3.25rem,12vw,6.25rem)] leading-[0.88] font-extrabold tracking-[-0.045em]">
+          <span className="sr-only">{profile.name}</span>
+          <NameLine text={first} offset={0} />
+          <NameLine text={last} offset={first.length} className="text-muted-foreground" />
         </h1>
 
-        <div data-intro="item" className="flex flex-col gap-4">
+        <div className="intro-item flex flex-col gap-4" style={step(1)}>
           <p className="max-w-xl text-xl leading-snug text-foreground/90 md:text-2xl">
             <Decrypt text={profile.sentence} />
           </p>
           <Currently items={profile.currently} />
         </div>
 
-        <div data-intro="item">
+        <div className="intro-item" style={step(2)}>
           <HeroMeta />
         </div>
 
-        <div data-intro="item" className="grid gap-3 min-[420px]:grid-cols-2 sm:flex sm:flex-wrap">
+        <div
+          className="intro-item grid gap-3 min-[420px]:grid-cols-2 sm:flex sm:flex-wrap"
+          style={step(3)}
+        >
           {primarySocials.map(social => (
             <MagneticLink
               key={social.id}
@@ -98,7 +118,7 @@ export function Hero() {
             </MagneticLink>
           ))}
         </div>
-      </HeroIntro>
+      </div>
       <ScrollCue />
     </section>
   );

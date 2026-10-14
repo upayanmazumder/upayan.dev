@@ -1,4 +1,3 @@
-import { Reveal } from '@/components/shell/reveal';
 import { Section } from '@/components/shell/section';
 
 import { LivePanel } from './_top/live/live-panel';
@@ -13,9 +12,7 @@ export function LiveNow() {
       // The panel's outer glow reaches past the gutter on phones.
       className="overflow-x-clip"
     >
-      <Reveal>
-        <LivePanel />
-      </Reveal>
+      <LivePanel />
     </Section>
   );
 }

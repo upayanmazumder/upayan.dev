@@ -70,7 +70,7 @@ WantedBy=timers.target
 
 Run `systemctl --user daemon-reload`, then `systemctl --user enable --now upayan-pc.timer`. The service stores only the latest report in memory. A restart clears it. `online` becomes false after 180 seconds without a report. Signatures cover the timestamp, PC ID, and exact JSON body. The server rejects stale or repeated timestamps within the current process lifetime. Synchronize the PC clock. Do not expose port 8080 without a TLS proxy.
 
-To publish Zed activity, set `ZED_PUBLIC_WORKSPACES` in the client environment. Give it an absolute workspace directory. Separate multiple directories with colons. For example, set `ZED_PUBLIC_WORKSPACES=/home/user/dev/site` in `~/.config/upayan-pc.env`.
+To publish Zed activity, set `ZED_PUBLIC_WORKSPACES` in the client environment. Give it an absolute directory. The directory covers itself and every workspace below it. Separate multiple directories with colons. For example, set `ZED_PUBLIC_WORKSPACES=/home/user/dev/personal` in `~/.config/upayan-pc.env`.
 
 Choose only workspaces whose file names can appear on a public website. The client reads Zed's local SQLite database in read-only mode. It sends the workspace name, active file name, and observed session seconds. It never sends full paths or file contents. It excludes hidden files. Keep the allowlist unset to keep file names private.
 

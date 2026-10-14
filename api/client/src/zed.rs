@@ -50,10 +50,13 @@ fn sample(connection: &Connection, now: u64, allowed: &[PathBuf]) -> Option<(Str
              )
              SELECT w.paths, e.path, CAST(strftime('%s', w.timestamp) AS INTEGER)
              FROM current_workspace w
-             JOIN panes p ON p.workspace_id = w.workspace_id AND p.active = 1
+             JOIN panes p ON p.workspace_id = w.workspace_id
              JOIN items i ON i.workspace_id = p.workspace_id AND i.pane_id = p.pane_id AND i.active = 1
              JOIN editors e ON e.workspace_id = i.workspace_id AND e.item_id = i.item_id
-             WHERE e.path IS NOT NULL",
+             WHERE e.path IS NOT NULL
+             -- Focus can sit in a dock (terminal, agent), leaving no active pane; prefer the
+             -- focused pane, else the active editor of any pane.
+             ORDER BY p.active DESC, p.pane_id LIMIT 1",
             [],
             |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
         )
@@ -62,7 +65,11 @@ fn sample(connection: &Connection, now: u64, allowed: &[PathBuf]) -> Option<(Str
     if now.saturating_sub(saved_at) > MAX_GAP_SECONDS || saved_at > now + 30 {
         return None;
     }
-    if !allowed.iter().any(|dir| dir == Path::new(&workspace)) {
+    // An allowlisted directory covers itself and every workspace below it (component-wise).
+    if !allowed
+        .iter()
+        .any(|dir| Path::new(&workspace).starts_with(dir))
+    {
         return None;
     }
     let file_path = std::str::from_utf8(&path).ok()?;
@@ -185,6 +192,18 @@ mod tests {
         assert_eq!(
             sample(&connection, 1000, &[PathBuf::from("/work/other")]),
             None
+        );
+        assert_eq!(
+            sample(&connection, 1000, &[PathBuf::from("/work")]),
+            Some(("site".into(), "main.rs".into()))
+        );
+        assert_eq!(sample(&connection, 1000, &[PathBuf::from("/wo")]), None);
+        connection
+            .execute("UPDATE panes SET active = 0", [])
+            .unwrap();
+        assert_eq!(
+            sample(&connection, 1000, &[PathBuf::from("/work/site")]),
+            Some(("site".into(), "main.rs".into()))
         );
         connection
             .execute("UPDATE editors SET path = ?1", params![b"/work/site/.env"])

@@ -20,7 +20,7 @@ This repository contains a Rust stats API and the Next.js portfolio website. The
 - `api/client/`: Separate Linux reporter crate with its own `Cargo.lock`. It is not part of the API image or a Cargo workspace.
 - `app/src/app/`: App Router pages and root layout.
 - `app/src/api/`, `app/src/components/`, `app/src/lib/`, `app/src/stores/`: Frontend HTTP, UI, shared utilities, and client state.
-- `.github/workflows/`: Path-scoped API and frontend checks and container builds. `.husky/` holds hooks for staged `app/` changes.
+- `.github/workflows/`: Path-scoped API and frontend checks, and the API container build. Vercel builds the website. `.husky/` holds hooks for staged `app/` changes.
 
 ## Development Commands
 
@@ -65,7 +65,7 @@ pnpm build
 - `api/src/devjourney.rs`: path validation and GitHub proxy contract.
 - `api/.env.example` and `api/README.md`: server settings, OAuth scopes, route shapes, and PC timer setup.
 - `app/src/env.ts`, `app/src/api/client.ts`, `app/src/app/layout.tsx`: frontend environment, HTTP client, and provider composition.
-- `app/AGENTS.md`: detailed frontend conventions. `app/next.config.ts` enables standalone output for `app/Dockerfile`.
+- `app/AGENTS.md`: detailed frontend conventions. The website deploys to Vercel (project `upayan-dev`, root directory `app`).
 
 ## Runtime/Tooling Preferences
 

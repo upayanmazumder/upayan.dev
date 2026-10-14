@@ -26,9 +26,21 @@ export function SmartLink({
   );
 }
 
+const BRANDS = { 'github.com': siGithub, 'pypi.org': siPypi } as const;
+
+/** Hostname without `www.`; `null` for relative or malformed URLs. */
+function hostOf(href: string): string | null {
+  try {
+    return new URL(href).hostname.replace(/^www\./, '');
+  } catch {
+    return null;
+  }
+}
+
 /** Brand glyph for known hosts; a globe for everything else. Named icon imports keep client bundles small. */
 export function LinkGlyph({ href, className }: { href: string; className?: string }) {
-  const brand = href.includes('github.com') ? siGithub : href.includes('pypi.org') ? siPypi : null;
+  const host = hostOf(href);
+  const brand = host && host in BRANDS ? BRANDS[host as keyof typeof BRANDS] : null;
   if (!brand) return <Globe aria-hidden className={cn('size-4 shrink-0', className)} />;
   return (
     <svg

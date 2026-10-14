@@ -4,7 +4,6 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
-  output: 'standalone',
   images: { formats: ['image/avif', 'image/webp'] },
   // Routes from the previous site that no longer exist.
   async redirects() {

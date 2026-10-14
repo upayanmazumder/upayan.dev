@@ -176,7 +176,7 @@ Blank lines between each group are auto-inserted — do not add them by hand.
 ### Environment Variables
 
 - Never read `process.env` directly. Import from `@/env` to get type-safe, validated values.
-- Set `SKIP_ENV_VALIDATION=true` in CI or Docker builds to bypass validation without supplying real secrets.
+- Set `SKIP_ENV_VALIDATION=true` in CI to bypass validation without supplying real secrets.
 
 ### HTTP / API
 
@@ -275,7 +275,6 @@ The active workflows live at the repository root in `.github/workflows/`.
 | File                 | Trigger                        | Checks                                             |
 | -------------------- | ------------------------------ | -------------------------------------------------- |
 | `frontend-check.yml` | Push or PR that changes `app/` | Install, lint, format, type-check, test, and build |
-| `app.yml`            | Push that changes `app/`       | Build and publish the frontend container           |
 
 The root `.husky/pre-commit` hook formats staged frontend files. Other repository files do not use frontend hooks. CI uses `SKIP_ENV_VALIDATION=true` and does not install Husky hooks.
 

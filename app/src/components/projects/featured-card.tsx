@@ -56,13 +56,16 @@ export function FeaturedCard({ project, index, className }: FeaturedCardProps) {
         <span className="pointer-events-none absolute inset-0 rounded-t-xl opacity-0 ring-2 ring-teal ring-inset group-focus-visible/cover:opacity-100" />
       </Link>
 
-      <div className="flex flex-col gap-4 p-6 md:p-7">
+      <div className="flex flex-col gap-4 p-5 sm:p-6 md:p-7">
         <p className="label">
           {project.org ? `${project.org} · ` : null}
           {project.role}
         </p>
         <div className="flex flex-col gap-2">
-          <RollingTitle text={project.name} className="text-3xl font-semibold md:text-4xl" />
+          <RollingTitle
+            text={project.name}
+            className="text-2xl font-semibold sm:text-3xl md:text-4xl"
+          />
           <p className="max-w-prose text-muted-foreground">{project.summary}</p>
         </div>
         <MetricRow metrics={project.metrics} />

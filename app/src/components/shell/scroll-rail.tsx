@@ -159,7 +159,7 @@ export function ScrollRail() {
       aria-hidden
       data-busy={busy}
       className={cn(
-        'group/rail fixed top-24 bottom-24 left-2 z-30 w-5 transition-opacity duration-500 max-md:top-20 max-md:bottom-28 max-md:left-1 pointer-coarse:pointer-events-none',
+        'group/rail fixed top-24 bottom-24 left-2 z-30 w-5 transition-opacity duration-500 max-lg:hidden pointer-coarse:pointer-events-none',
         scrollable ? 'opacity-100' : 'pointer-events-none opacity-0'
       )}
     >

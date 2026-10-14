@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -14,9 +13,8 @@ import { gsap, useGSAP } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
 
 import { describeDay, layoutCalendar, LEVEL_CLASS, type Day } from './calendar';
+import { WEEK_GAP as GAP, useFitWeeks } from './use-fit-weeks';
 
-const CELL = 10;
-const GAP = 3;
 const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
 const KEY_STEP: Record<string, number> = {
   ArrowLeft: -7,
@@ -38,15 +36,12 @@ interface HeatmapProps {
 /** Year grid, newest week on the right. Cells fill column by column on scroll-in; hover or arrow keys show the day. */
 export function Heatmap({ weeks }: HeatmapProps) {
   const { slots, weekCount, months } = useMemo(() => layoutCalendar(weeks), [weeks]);
-  const scrollerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const [tip, setTip] = useState<Tip | null>(null);
   const [focusSlot, setFocusSlot] = useState(() => slots.findLastIndex(Boolean));
-
-  useEffect(() => {
-    const scroller = scrollerRef.current;
-    if (scroller) scroller.scrollLeft = scroller.scrollWidth;
-  }, []);
+  const { cell, start } = useFitWeeks(containerRef, weekCount);
+  const visibleWeeks = weekCount - start;
 
   useGSAP(
     () => {
@@ -70,7 +65,7 @@ export function Heatmap({ weeks }: HeatmapProps) {
 
   const showFor = (el: HTMLElement) => {
     const slot = Number(el.dataset.slot);
-    setTip({ slot, x: el.offsetLeft + CELL / 2, y: el.offsetTop });
+    setTip({ slot, x: el.offsetLeft + cell / 2, y: el.offsetTop });
   };
 
   const onPointerOver = (event: PointerEvent<HTMLDivElement>) => {
@@ -90,46 +85,46 @@ export function Heatmap({ weeks }: HeatmapProps) {
     if (!step) return;
     event.preventDefault();
     let next = focusSlot + step;
-    while (next >= 0 && next < slots.length && !slots[next]) next += step;
-    if (next < 0 || next >= slots.length) return;
+    while (next >= start * 7 && next < slots.length && !slots[next]) next += step;
+    if (next < start * 7 || next >= slots.length) return;
     gridRef.current?.querySelector<HTMLElement>(`[data-slot="${next}"]`)?.focus();
   };
 
   const tipDay = tip ? slots[tip.slot] : null;
   const tipBelow = tip ? tip.slot % 7 < 3 : false;
-  const tipEdge = tip ? Math.floor(tip.slot / 7) / Math.max(1, weekCount - 1) : 0;
+  const tipEdge = tip ? (Math.floor(tip.slot / 7) - start) / Math.max(1, visibleWeeks - 1) : 0;
+  const firstSlot = start * 7;
 
   return (
-    <div
-      ref={scrollerRef}
-      className="-mx-(--gutter) [scrollbar-width:thin] overflow-x-auto px-(--gutter) pb-2"
-    >
-      <div className="relative inline-flex gap-2">
+    <div ref={containerRef} className="w-full">
+      <div className="relative flex gap-2">
         <div
           aria-hidden
-          className="mt-5 grid font-mono text-[0.625rem] text-muted-foreground"
-          style={{ gridTemplateRows: `repeat(7, ${CELL}px)`, rowGap: GAP }}
+          className="mt-5 grid w-[22px] shrink-0 font-mono text-[0.625rem] text-muted-foreground"
+          style={{ gridTemplateRows: `repeat(7, ${cell}px)`, rowGap: GAP }}
         >
           {DAY_LABELS.map((label, i) => (
-            <span key={i} className="leading-[10px]">
+            <span key={i} className="self-center leading-none">
               {label}
             </span>
           ))}
         </div>
-        <div className="relative">
+        <div className="relative min-w-0">
           <div
             aria-hidden
             className="relative mb-2 h-3 font-mono text-[0.625rem] text-muted-foreground"
           >
-            {months.map(month => (
-              <span
-                key={`${month.label}-${month.week}`}
-                className="absolute top-0 leading-3 whitespace-nowrap"
-                style={{ left: month.week * (CELL + GAP) }}
-              >
-                {month.label}
-              </span>
-            ))}
+            {months
+              .filter(month => month.week >= start)
+              .map(month => (
+                <span
+                  key={`${month.label}-${month.week}`}
+                  className="absolute top-0 leading-3 whitespace-nowrap"
+                  style={{ left: (month.week - start) * (cell + GAP) }}
+                >
+                  {month.label}
+                </span>
+              ))}
           </div>
           <div
             ref={gridRef}
@@ -137,8 +132,8 @@ export function Heatmap({ weeks }: HeatmapProps) {
             aria-label="Contribution calendar. Use arrow keys to move between days."
             className="relative grid grid-flow-col"
             style={{
-              gridTemplateRows: `repeat(7, ${CELL}px)`,
-              gridAutoColumns: `${CELL}px`,
+              gridTemplateRows: `repeat(7, ${cell}px)`,
+              gridAutoColumns: `${cell}px`,
               gap: GAP,
             }}
             onPointerOver={onPointerOver}
@@ -148,7 +143,7 @@ export function Heatmap({ weeks }: HeatmapProps) {
             onKeyDown={onKeyDown}
           >
             {slots.map((day, slot) =>
-              day ? (
+              slot < firstSlot ? null : day ? (
                 <span
                   key={day.date}
                   data-slot={slot}
@@ -171,7 +166,7 @@ export function Heatmap({ weeks }: HeatmapProps) {
               className="pointer-events-none absolute z-10 rounded-md border border-line-strong bg-surface-2 px-2 py-1 font-mono text-[0.7rem] whitespace-nowrap text-foreground shadow-lg"
               style={{
                 left: tip.x,
-                top: tip.y + (tipBelow ? CELL + 6 : -6) + 20,
+                top: tip.y + (tipBelow ? cell + 6 : -6) + 20,
                 transform: `translate(${-tipEdge * 100}%, ${tipBelow ? 0 : -100}%)`,
               }}
             >

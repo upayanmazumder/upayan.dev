@@ -9,7 +9,7 @@ export const profile = {
   status: 'Open to internships',
   location: 'India',
   timeZone: 'Asia/Kolkata',
-  email: 'upayanm3@gmail.com',
+  email: 'mail@upayan.dev',
   phone: '+91 85097 01939',
   phoneHref: 'tel:+918509701939',
   resume: '/Upayan_Mazumder_Resume.pdf',

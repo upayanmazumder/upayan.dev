@@ -1,9 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 
-import { api } from '@/api';
 import BorderGlow from '@/components/rb/BorderGlow';
 import { cn } from '@/lib/utils';
 
@@ -12,27 +10,37 @@ import { DiscordRow } from './discord-row';
 import { shortDuration } from './format';
 import { MachineRow } from './machine-row';
 import { SpotifyRow } from './spotify-row';
-import type { LiveResponse } from './types';
 import { useAfterIntro } from './use-after-intro';
+import { useLive } from './use-live';
 import { ZedRow } from './zed-row';
 
-const POLL_MS = 30_000;
+type PanelState = 'connecting' | 'live' | 'reconnecting' | 'offline';
+
+const STATE_LABEL: Record<PanelState, string> = {
+  connecting: 'Connecting',
+  live: 'Live',
+  reconnecting: 'Reconnecting',
+  offline: 'Offline',
+};
 
 /**
- * Compact live panel. Polls the same-origin `/api/live` proxy once the hero has settled.
- * A teal glow then sweeps the border while the rows fade in one by one, and the edge glow
- * follows the pointer. A failed request marks every row unavailable.
+ * Compact live panel. Polls once the hero has settled. A teal glow then sweeps the border
+ * while the rows fade in one by one, and the edge glow follows the pointer. A failed poll
+ * keeps the last good data and shows "Reconnecting"; with no data at all the rows read
+ * unavailable.
  */
 export function LivePanel({ className }: { className?: string }) {
   const started = useAfterIntro();
   const reduced = useReducedMotion();
-  const { data, isPending, isError, dataUpdatedAt } = useQuery({
-    queryKey: ['live'],
-    queryFn: async () => (await api.get<LiveResponse>('/live')).data,
-    refetchInterval: POLL_MS,
-    staleTime: POLL_MS,
-    enabled: started,
-  });
+  const { data, isPending, isError, dataUpdatedAt } = useLive(started);
+  const loading = isPending && !isError;
+  const state: PanelState = !data
+    ? isError
+      ? 'offline'
+      : 'connecting'
+    : isError
+      ? 'reconnecting'
+      : 'live';
 
   return (
     <BorderGlow
@@ -48,49 +56,42 @@ export function LivePanel({ className }: { className?: string }) {
       className={cn('w-full', className)}
     >
       <div data-shown={started}>
-        <PanelHeader pending={isPending} failed={isError} updatedAt={dataUpdatedAt} />
+        <PanelHeader state={state} updatedAt={dataUpdatedAt} />
         <ul className="divide-y divide-line border-t border-line">
-          <SpotifyRow
-            data={data?.spotify}
-            loading={isPending}
-            receivedAt={dataUpdatedAt}
-            index={0}
-          />
-          <ZedRow pc={data?.pc} loading={isPending} receivedAt={dataUpdatedAt} index={1} />
-          <DiscordRow data={data?.discord} loading={isPending} index={2} />
-          <MachineRow data={data?.pc} loading={isPending} index={3} />
+          <SpotifyRow data={data?.spotify} loading={loading} receivedAt={dataUpdatedAt} index={0} />
+          <ZedRow pc={data?.pc} loading={loading} receivedAt={dataUpdatedAt} index={1} />
+          <DiscordRow data={data?.discord} loading={loading} index={2} />
+          <MachineRow data={data?.pc} loading={loading} index={3} />
         </ul>
       </div>
     </BorderGlow>
   );
 }
 
-function PanelHeader({
-  pending,
-  failed,
-  updatedAt,
-}: {
-  pending: boolean;
-  failed: boolean;
-  updatedAt: number;
-}) {
+function PanelHeader({ state, updatedAt }: { state: PanelState; updatedAt: number }) {
   return (
-    <div className="flex items-center justify-between px-3.5 py-2.5 font-mono text-[0.65rem] tracking-[0.18em] text-muted-foreground uppercase">
-      <span className="flex items-center gap-2">
+    <div className="flex items-center justify-between gap-3 px-3.5 py-2.5 font-mono text-[0.65rem] tracking-[0.18em] text-muted-foreground uppercase">
+      <span role="status" className="flex items-center gap-2">
         <span aria-hidden className="relative flex size-1.5">
-          {!pending && !failed ? (
-            <span className="absolute inset-0 animate-ping rounded-full bg-teal opacity-70 motion-reduce:animate-none" />
+          {state === 'live' || state === 'reconnecting' ? (
+            <span
+              className={cn(
+                'absolute inset-0 animate-ping rounded-full opacity-70 motion-reduce:animate-none',
+                state === 'live' ? 'bg-teal' : 'bg-amber-400'
+              )}
+            />
           ) : null}
           <span
             className={cn(
               'relative size-1.5 rounded-full',
-              failed ? 'bg-destructive' : pending ? 'bg-muted-foreground/50' : 'bg-teal'
+              state === 'live' && 'bg-teal',
+              state === 'reconnecting' && 'bg-amber-400',
+              state === 'offline' && 'bg-destructive',
+              state === 'connecting' && 'bg-muted-foreground/50'
             )}
           />
         </span>
-        <span className={cn(!pending && !failed && 'text-teal')}>
-          {failed ? 'Offline' : pending ? 'Connecting' : 'Live'}
-        </span>
+        <span className={cn(state === 'live' && 'text-teal')}>{STATE_LABEL[state]}</span>
       </span>
       {updatedAt ? <Synced at={updatedAt} /> : null}
     </div>
@@ -106,7 +107,7 @@ function Synced({ at }: { at: number }) {
   }, [at]);
 
   return (
-    <span className="tracking-normal normal-case tabular-nums">
+    <span className="truncate tracking-normal normal-case tabular-nums">
       synced {shortDuration((now - at) / 1000)} ago
     </span>
   );

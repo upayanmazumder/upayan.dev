@@ -26,9 +26,9 @@ export function Section({ id, index, title, lead, className, children }: Section
         <span className="absolute top-1/2 left-1/2 size-1.5 -translate-x-[calc(var(--column)/2+3px)] -translate-y-1/2 rotate-45 bg-teal/70 max-[50rem]:hidden" />
         <span className="absolute top-1/2 left-1/2 size-1.5 translate-x-[calc(var(--column)/2-3px)] -translate-y-1/2 rotate-45 bg-teal/70 max-[50rem]:hidden" />
       </div>
-      <div className="column py-16 md:py-20">
+      <div className="column py-14 md:py-20">
         {title ? (
-          <Reveal as="header" className="mb-10 flex flex-col gap-2">
+          <Reveal as="header" className="mb-8 flex flex-col gap-2 md:mb-10">
             <a
               href={`#${id}`}
               className="group/heading inline-flex w-fit items-baseline gap-3 transition-colors hover:text-teal focus-visible:outline-none"

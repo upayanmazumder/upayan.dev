@@ -7,7 +7,8 @@ import { toApiError } from './errors';
 export function createApiClient(baseURL: string) {
   const client = axios.create({
     baseURL,
-    headers: { 'Content-Type': 'application/json' },
+    // Axios sets Content-Type itself when a request has a body.
+    headers: { Accept: 'application/json' },
     timeout: API_TIMEOUT_MS,
   });
 

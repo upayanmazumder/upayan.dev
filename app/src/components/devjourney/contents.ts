@@ -1,7 +1,7 @@
 import { cache } from 'react';
 import * as z from 'zod';
 
-import { env } from '@/env';
+import { statsApi } from '@/api/stats';
 
 const entrySchema = z.object({
   name: z.string(),
@@ -33,28 +33,21 @@ const REVALIDATE_SECONDS = 3600;
 
 /** Reads a repo path through the Rust DevJourney proxy. Cached per request and revalidated hourly. */
 export const getContents = cache(async (path: string): Promise<Contents> => {
-  if (!env.API_URL) return { status: 'unavailable', reason: 'config' };
-
-  const url = new URL(`${env.API_URL.replace(/\/+$/, '')}/devjourney`);
-  if (path) url.searchParams.set('path', path);
-
-  let response: Response;
-  try {
-    response = await fetch(url, { next: { revalidate: REVALIDATE_SECONDS } });
-  } catch {
-    return { status: 'unavailable', reason: 'upstream' };
+  const result = await statsApi.get('/devjourney', {
+    schema: responseSchema,
+    params: { path },
+    cache: { revalidate: REVALIDATE_SECONDS },
+  });
+  if (!result.ok) {
+    // The proxy answers 400 for malformed paths and forwards GitHub's 404.
+    if (result.reason === 'status' && (result.status === 404 || result.status === 400)) {
+      return { status: 'missing' };
+    }
+    return { status: 'unavailable', reason: result.reason === 'config' ? 'config' : 'upstream' };
   }
-
-  // The proxy answers 400 for malformed paths and forwards GitHub's 404.
-  if (response.status === 404 || response.status === 400) return { status: 'missing' };
-  if (!response.ok) return { status: 'unavailable', reason: 'upstream' };
-
-  const parsed = responseSchema.safeParse(await response.json().catch(() => null));
-  if (!parsed.success) return { status: 'unavailable', reason: 'upstream' };
-
-  return Array.isArray(parsed.data)
-    ? { status: 'dir', entries: sortEntries(parsed.data) }
-    : { status: 'file', file: parsed.data };
+  return Array.isArray(result.data)
+    ? { status: 'dir', entries: sortEntries(result.data) }
+    : { status: 'file', file: result.data };
 });
 
 function sortEntries(entries: RepoEntry[]): RepoEntry[] {

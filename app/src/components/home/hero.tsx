@@ -19,7 +19,7 @@ export function Hero() {
   return (
     <section id="hero" aria-label="Intro" className="relative isolate flex min-h-svh flex-col">
       <HeroBackdrop />
-      <HeroIntro className="column flex flex-1 flex-col justify-center gap-7 pt-28 pb-36">
+      <HeroIntro className="column flex flex-1 flex-col justify-center gap-6 pt-24 pb-28 sm:gap-7 md:pt-28 md:pb-36">
         <div className="flex items-center gap-5">
           <div
             data-intro="photo"

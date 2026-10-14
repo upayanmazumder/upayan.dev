@@ -39,26 +39,29 @@ fn safe_name(path: &str) -> Option<String> {
     Some(name.to_owned())
 }
 
+/// Shown instead of a file name while the git diff view is the active tab.
+pub const REVIEWING_CHANGES: &str = "Reviewing changes";
+
 fn sample(connection: &Connection, now: u64, allowed: &[PathBuf]) -> Option<(String, String)> {
     // Zed's private database schema can change. A failed query means no activity.
     // Select the latest workspace first, then check its exact path against the allowlist.
-    let (workspace, path, saved_at): (String, Vec<u8>, i64) = connection
+    let (workspace, kind, path, saved_at): (String, String, Option<Vec<u8>>, i64) = connection
         .query_row(
             "WITH current_workspace AS (
                  SELECT workspace_id, paths, timestamp FROM workspaces
                  WHERE remote_connection_id IS NULL ORDER BY timestamp DESC LIMIT 1
              )
-             SELECT w.paths, e.path, CAST(strftime('%s', w.timestamp) AS INTEGER)
+             SELECT w.paths, i.kind, e.path, CAST(strftime('%s', w.timestamp) AS INTEGER)
              FROM current_workspace w
              JOIN panes p ON p.workspace_id = w.workspace_id
              JOIN items i ON i.workspace_id = p.workspace_id AND i.pane_id = p.pane_id AND i.active = 1
-             JOIN editors e ON e.workspace_id = i.workspace_id AND e.item_id = i.item_id
-             WHERE e.path IS NOT NULL
+             LEFT JOIN editors e ON e.workspace_id = i.workspace_id AND e.item_id = i.item_id
+             WHERE e.path IS NOT NULL OR i.kind = 'ProjectDiff'
              -- Focus can sit in a dock (terminal, agent), leaving no active pane; prefer the
-             -- focused pane, else the active editor of any pane.
-             ORDER BY p.active DESC, p.pane_id LIMIT 1",
+             -- focused pane, then a real file over the diff view.
+             ORDER BY p.active DESC, e.path IS NULL, p.pane_id LIMIT 1",
             [],
-            |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
+            |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?)),
         )
         .ok()?;
     let saved_at = u64::try_from(saved_at).ok()?;
@@ -72,11 +75,15 @@ fn sample(connection: &Connection, now: u64, allowed: &[PathBuf]) -> Option<(Str
     {
         return None;
     }
+    let workspace_name = safe_name(&workspace)?;
+    let Some(path) = path else {
+        return (kind == "ProjectDiff").then(|| (workspace_name, REVIEWING_CHANGES.to_owned()));
+    };
     let file_path = std::str::from_utf8(&path).ok()?;
     if !Path::new(file_path).starts_with(&workspace) {
         return None;
     }
-    Some((safe_name(&workspace)?, safe_name(file_path)?))
+    Some((workspace_name, safe_name(file_path)?))
 }
 
 fn state_path() -> Option<PathBuf> {
@@ -166,14 +173,17 @@ mod tests {
         let connection = Connection::open_in_memory().unwrap();
         connection.execute_batch("CREATE TABLE workspaces (workspace_id INTEGER, paths TEXT, timestamp TEXT, remote_connection_id INTEGER);
             CREATE TABLE panes (workspace_id INTEGER, pane_id INTEGER, active INTEGER);
-            CREATE TABLE items (workspace_id INTEGER, pane_id INTEGER, item_id INTEGER, active INTEGER);
+            CREATE TABLE items (workspace_id INTEGER, pane_id INTEGER, item_id INTEGER, active INTEGER, kind TEXT DEFAULT 'Editor');
             CREATE TABLE editors (workspace_id INTEGER, item_id INTEGER, path BLOB);").unwrap();
         connection.execute("INSERT INTO workspaces VALUES (1, '/work/site', datetime(1000, 'unixepoch'), NULL)", []).unwrap();
         connection
             .execute("INSERT INTO panes VALUES (1, 1, 1)", [])
             .unwrap();
         connection
-            .execute("INSERT INTO items VALUES (1, 1, 1, 1)", [])
+            .execute(
+                "INSERT INTO items (workspace_id, pane_id, item_id, active) VALUES (1, 1, 1, 1)",
+                [],
+            )
             .unwrap();
         connection
             .execute(
@@ -218,12 +228,26 @@ mod tests {
                 params![b"/work/site/src/main.rs"],
             )
             .unwrap();
+        // The git diff view is the active tab: report the workspace, not a stale file.
+        connection
+            .execute("UPDATE items SET active = 0", [])
+            .unwrap();
+        connection
+            .execute("INSERT INTO items VALUES (1, 1, 9, 1, 'ProjectDiff')", [])
+            .unwrap();
+        assert_eq!(
+            sample(&connection, 1000, &[PathBuf::from("/work/site")]),
+            Some(("site".into(), REVIEWING_CHANGES.into()))
+        );
         connection.execute("INSERT INTO workspaces VALUES (2, '/work/private', datetime(1001, 'unixepoch'), NULL)", []).unwrap();
         connection
             .execute("INSERT INTO panes VALUES (2, 2, 1)", [])
             .unwrap();
         connection
-            .execute("INSERT INTO items VALUES (2, 2, 2, 1)", [])
+            .execute(
+                "INSERT INTO items (workspace_id, pane_id, item_id, active) VALUES (2, 2, 2, 1)",
+                [],
+            )
             .unwrap();
         connection
             .execute(

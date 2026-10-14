@@ -72,7 +72,7 @@ Run `systemctl --user daemon-reload`, then `systemctl --user enable --now upayan
 
 To publish Zed activity, set `ZED_PUBLIC_WORKSPACES` in the client environment. Give it an absolute directory. The directory covers itself and every workspace below it. Separate multiple directories with colons. For example, set `ZED_PUBLIC_WORKSPACES=/home/user/dev/personal` in `~/.config/upayan-pc.env`.
 
-Choose only workspaces whose file names can appear on a public website. The client reads Zed's local SQLite database in read-only mode. It sends the workspace name, active file name, and observed session seconds. It never sends full paths or file contents. It excludes hidden files. Keep the allowlist unset to keep file names private.
+Choose only workspaces whose file names can appear on a public website. The client reads Zed's local SQLite database in read-only mode. It sends the workspace name, active file name, and observed session seconds. While the git diff view is the active tab, it sends "Reviewing changes" instead of a file name. It never sends full paths or file contents. It excludes hidden files. Keep the allowlist unset to keep file names private.
 
 The database format is private to Zed and can change. The client omits `zed` if the database is absent or its latest workspace state is over two minutes old. It also omits `zed` if the latest workspace is not allowed or lacks an active file. Remote workspaces are not supported.
 

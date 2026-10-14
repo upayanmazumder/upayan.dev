@@ -243,17 +243,16 @@ fn gather_report() -> Result<Report> {
     })
 }
 
-fn run() -> Result<()> {
-    let config = Config::from_env()?;
-    let report = gather_report()?;
-    let body = serde_json::to_string(&report).map_err(|_| "cannot encode report")?;
+/// Signs `body` as `timestamp\nPC_ID\nbody` and POSTs it. The error names the failure so the
+/// journal shows whether it was a rejection or a network problem.
+fn send(config: &Config, body: &str) -> std::result::Result<(), String> {
     let timestamp = SystemTime::now()
         .duration_since(UNIX_EPOCH)
-        .map_err(|_| "system clock is before Unix epoch")?
+        .map_err(|_| "system clock is before Unix epoch".to_owned())?
         .as_secs()
         .to_string();
     let mut mac = Hmac::<Sha256>::new_from_slice(config.signing_key.as_bytes())
-        .map_err(|_| "cannot initialize signature")?;
+        .map_err(|_| "cannot initialize signature".to_owned())?;
     mac.update(timestamp.as_bytes());
     mac.update(b"\n");
     mac.update(config.pc_id.as_bytes());
@@ -266,24 +265,42 @@ fn run() -> Result<()> {
         pair[0] = HEX[(byte >> 4) as usize];
         pair[1] = HEX[(byte & 15) as usize];
     }
-    let signature = std::str::from_utf8(&signature).map_err(|_| "cannot encode signature")?;
+    let signature =
+        std::str::from_utf8(&signature).map_err(|_| "cannot encode signature".to_owned())?;
     let agent = ureq::AgentBuilder::new()
         .timeout_connect(Duration::from_secs(10))
         .timeout(Duration::from_secs(20))
         .redirects(0)
         .build();
-    let response = agent
+    match agent
         .post(config.url.as_str())
         .set("Content-Type", "application/json")
         .set("X-PC-ID", &config.pc_id)
         .set("X-Timestamp", &timestamp)
         .set("X-Signature", signature)
-        .send_string(&body)
-        .map_err(|_| "report POST failed (HTTP or transport error)")?;
-    if !(200..300).contains(&response.status()) {
-        return Err("report POST failed (unexpected HTTP status)");
+        .send_string(body)
+    {
+        Ok(response) if (200..300).contains(&response.status()) => Ok(()),
+        Ok(response) => Err(format!("report rejected with HTTP {}", response.status())),
+        Err(ureq::Error::Status(code, _)) => Err(format!("report rejected with HTTP {code}")),
+        Err(ureq::Error::Transport(error)) => Err(format!("report transport error: {error}")),
     }
-    Ok(())
+}
+
+fn run() -> Result<(), String> {
+    let config = Config::from_env().map_err(str::to_owned)?;
+    let report = gather_report().map_err(str::to_owned)?;
+    let body = serde_json::to_string(&report).map_err(|_| "cannot encode report".to_owned())?;
+    match send(&config, &body) {
+        // One retry for a transient network failure. Waiting 2 s gives the retry a newer
+        // timestamp, so the server's replay check accepts it even if the first POST landed.
+        Err(error) if error.starts_with("report transport error") => {
+            eprintln!("pc-report-client: {error}; retrying once");
+            thread::sleep(Duration::from_secs(2));
+            send(&config, &body)
+        }
+        result => result,
+    }
 }
 
 fn main() {

@@ -101,6 +101,17 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: 'kodesphere',
+    name: 'Kodesphere',
+    summary: 'Deploy smarter, not harder.',
+    icon: '/projects/kodesphere.webp',
+    tags: ['Deployment', 'Docker'],
+    links: [
+      { label: 'Visit', href: 'https://ks.upayan.dev' },
+      { label: 'Source', href: 'https://github.com/upayanmazumder/kodesphere' },
+    ],
+  },
+  {
     slug: 'devsoc-26',
     name: 'DevSoc ’26',
     org: 'CodeChef-VIT',
@@ -114,13 +125,13 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: 'clueminati-26',
-    name: 'Clueminati ’26',
-    org: 'CodeChef-VIT',
-    summary: 'Led the frontend and backend for CodeChef-VIT’s puzzle hunt.',
-    icon: '/projects/clueminati-26.webp',
+    slug: 'paradox-26',
+    name: 'Paradox ’26',
+    org: 'IIT Madras',
+    summary: 'Frontend and backend features for the IIT Madras BS fest’s web apps.',
+    icon: '/projects/paradox-26.webp',
     tags: ['Event', 'Full-stack'],
-    links: [],
+    links: [{ label: 'GitHub', href: 'https://github.com/iitm-paradox' }],
   },
   {
     slug: 'cookoff-11',
@@ -129,6 +140,15 @@ export const projects: Project[] = [
     summary: 'Led the frontend and backend for the chapter’s coding contest.',
     icon: '/projects/cookoff-11.webp',
     tags: ['Event', 'Full-stack'],
+    links: [],
+  },
+  {
+    slug: 'github-org-manager',
+    name: 'GitHub Org Manager',
+    org: 'CodeChef-VIT',
+    summary:
+      'Internal tool that manages members and repositories for the chapter’s GitHub organization.',
+    tags: ['Internal tool'],
     links: [],
   },
   {
@@ -142,15 +162,6 @@ export const projects: Project[] = [
       { label: 'Visit', href: 'https://cookoff25.codechefvit.com' },
       { label: 'Source', href: 'https://github.com/CodeChefVIT/cookoff-portal-10.0' },
     ],
-  },
-  {
-    slug: 'github-org-manager',
-    name: 'GitHub Org Manager',
-    org: 'CodeChef-VIT',
-    summary:
-      'Internal tool that manages members and repositories for the chapter’s GitHub organization.',
-    tags: ['Internal tool'],
-    links: [],
   },
   {
     slug: 'internal-portal',
@@ -169,26 +180,6 @@ export const projects: Project[] = [
     links: [],
   },
   {
-    slug: 'paradox-26',
-    name: 'Paradox ’26',
-    org: 'IIT Madras',
-    summary: 'Frontend and backend features for the IIT Madras BS fest’s web apps.',
-    icon: '/projects/paradox-26.webp',
-    tags: ['Event', 'Full-stack'],
-    links: [{ label: 'GitHub', href: 'https://github.com/iitm-paradox' }],
-  },
-  {
-    slug: 'kodesphere',
-    name: 'Kodesphere',
-    summary: 'Deploy smarter, not harder.',
-    icon: '/projects/kodesphere.webp',
-    tags: ['Deployment', 'Docker'],
-    links: [
-      { label: 'Visit', href: 'https://ks.upayan.dev' },
-      { label: 'Source', href: 'https://github.com/upayanmazumder/kodesphere' },
-    ],
-  },
-  {
     slug: 'traffic-control-system',
     name: 'Traffic Control System',
     summary: 'Smarter traffic signals for city road networks.',
@@ -200,28 +191,6 @@ export const projects: Project[] = [
         label: 'Source',
         href: 'https://github.com/upayanmazumder/Advanced-Traffic-Control-System-for-Urban-Road-Network',
       },
-    ],
-  },
-  {
-    slug: 'scamzap',
-    name: 'ScamZap',
-    summary: 'Find and report scams in a few taps.',
-    icon: '/projects/scamzap.webp',
-    tags: ['Web app'],
-    links: [
-      { label: 'Visit', href: 'https://scamzap.upayan.dev' },
-      { label: 'Source', href: 'https://github.com/upayanmazumder/scamzap' },
-    ],
-  },
-  {
-    slug: 'bandit',
-    name: 'Bandit',
-    summary: 'Find people to start a music band with.',
-    icon: '/projects/bandit.webp',
-    tags: ['Web app'],
-    links: [
-      { label: 'Visit', href: 'https://bandit.upayan.dev' },
-      { label: 'Source', href: 'https://github.com/upayanmazumder/bandit' },
     ],
   },
   {
@@ -266,6 +235,26 @@ export const projects: Project[] = [
       { label: 'Browse', href: '/devjourney' },
       { label: 'Source', href: 'https://github.com/upayanmazumder/DevJourney' },
     ],
+  },
+  {
+    slug: 'scamzap',
+    name: 'ScamZap',
+    summary: 'Find and report scams in a few taps.',
+    icon: '/projects/scamzap.webp',
+    tags: ['Web app'],
+    links: [
+      { label: 'Visit', href: 'https://scamzap.upayan.dev' },
+      { label: 'Source', href: 'https://github.com/upayanmazumder/scamzap' },
+    ],
+  },
+  {
+    slug: 'clueminati-26',
+    name: 'Clueminati ’26',
+    org: 'CodeChef-VIT',
+    summary: 'Led the frontend and backend for CodeChef-VIT’s puzzle hunt.',
+    icon: '/projects/clueminati-26.webp',
+    tags: ['Event', 'Full-stack'],
+    links: [],
   },
 ];
 

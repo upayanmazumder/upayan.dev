@@ -24,7 +24,7 @@ const personJsonLd = {
   jobTitle: work[0]?.roles[0]?.title,
   worksFor: work[0] ? { '@type': 'Organization', name: work[0].name } : undefined,
   description: profile.sentence,
-  address: { '@type': 'PostalAddress', addressLocality: 'Vellore', addressCountry: 'IN' },
+  address: { '@type': 'PostalAddress', addressCountry: 'IN' },
   alumniOf: [
     { '@type': 'CollegeOrUniversity', name: 'Vellore Institute of Technology' },
     { '@type': 'CollegeOrUniversity', name: 'Indian Institute of Technology Madras' },
@@ -48,8 +48,8 @@ export default function HomePage() {
       <Contributions />
       <Stack />
       <FeaturedProjects />
-      <MoreProjects />
       <OpenSource />
+      <MoreProjects />
       <Work />
       <Communities />
       <CertificatesPreview />

@@ -5,9 +5,12 @@ import { m, useMotionValue, useSpring } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 
-const SPRING = { stiffness: 220, damping: 16, mass: 0.4 };
-// Fraction of the cursor offset the button follows.
-const PULL = 0.28;
+// Critically damped and small: the button leans a few pixels toward the cursor without wobbling.
+const SPRING = { stiffness: 320, damping: 34, mass: 0.5 };
+// Fraction of the cursor offset the button follows, capped at MAX_PX.
+const PULL = 0.08;
+const MAX_PX = 4;
+const lean = (offset: number) => Math.max(-MAX_PX, Math.min(MAX_PX, offset * PULL));
 
 interface MagneticLinkProps {
   href: string;
@@ -31,8 +34,8 @@ export function MagneticLink({
   const onPointerMove = (event: PointerEvent<HTMLAnchorElement>) => {
     if (event.pointerType !== 'mouse') return;
     const rect = event.currentTarget.getBoundingClientRect();
-    x.set((event.clientX - rect.left - rect.width / 2) * PULL);
-    y.set((event.clientY - rect.top - rect.height / 2) * PULL);
+    x.set(lean(event.clientX - rect.left - rect.width / 2));
+    y.set(lean(event.clientY - rect.top - rect.height / 2));
   };
 
   const reset = () => {

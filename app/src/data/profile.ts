@@ -7,7 +7,7 @@ export const profile = {
   sentence: 'I build web tools people actually use.',
   currently: ['Junior Software Engineer at 797th LLC'],
   status: 'Open to internships',
-  location: 'Vellore, India',
+  location: 'India',
   timeZone: 'Asia/Kolkata',
   email: 'upayanm3@gmail.com',
   phone: '+91 85097 01939',

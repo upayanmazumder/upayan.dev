@@ -66,7 +66,7 @@ export function MenuFooter() {
           Search
         </button>
         <p className="font-mono text-xs text-muted-foreground tabular-nums">
-          Vellore · IST <span className="text-foreground">{time || '--:--'}</span>
+          India · IST <span className="text-foreground">{time || '--:--'}</span>
         </p>
       </div>
     </div>

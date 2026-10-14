@@ -13,7 +13,7 @@ export const work: Organization[] = [
     id: 'kalkini',
     name: 'KalkiNi',
     about: 'AI surveillance startup',
-    location: 'Vellore, India',
+    location: 'India',
     logo: '/services/kalkini.webp',
     href: 'https://www.linkedin.com/company/kalkini-ai-surveillance-system',
     roles: [
@@ -54,7 +54,7 @@ export const communities: Organization[] = [
     id: 'gdg',
     name: 'GDG on Campus VIT',
     about: 'Google Developer Group chapter',
-    location: 'Vellore, India',
+    location: 'India',
     logo: '/clubs/gdsc-vit.png',
     href: 'https://dscvit.com',
     roles: [
@@ -74,7 +74,7 @@ export const communities: Organization[] = [
     id: 'codechef',
     name: 'CodeChef-VIT',
     about: 'Programming and software chapter',
-    location: 'Vellore, India',
+    location: 'India',
     logo: '/clubs/codechef-vit.png',
     href: 'https://www.codechefvit.com',
     roles: [
@@ -109,7 +109,7 @@ export const communities: Organization[] = [
     id: 'tam',
     name: 'TAM-VIT',
     about: 'AI and machine learning club',
-    location: 'Vellore, India',
+    location: 'India',
     logo: '/clubs/tam-vit.png',
     href: 'https://www.linkedin.com/company/tam-vit',
     roles: [

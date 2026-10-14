@@ -10,6 +10,7 @@ import { MotionProvider } from '@/components/motion';
 import { SiteNav } from '@/components/nav/site-nav';
 import { QueryProvider } from '@/components/providers';
 import { Backdrop } from '@/components/shell/backdrop';
+import { ScrollRail } from '@/components/shell/scroll-rail';
 import { SmoothScroll } from '@/components/shell/smooth-scroll';
 import { Toaster } from '@/components/ui/sonner';
 import { profile } from '@/data/profile';
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <SmoothScroll>
                 <Backdrop />
                 <SiteNav />
+                <ScrollRail />
                 <main id="main">{children}</main>
                 <SiteFooter />
               </SmoothScroll>

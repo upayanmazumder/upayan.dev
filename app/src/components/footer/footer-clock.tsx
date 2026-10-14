@@ -6,7 +6,7 @@ export function FooterClock() {
   const time = useLocalTime();
   return (
     <span className="font-mono text-xs text-muted-foreground">
-      Vellore · IST <time suppressHydrationWarning>{time || '--:--'}</time>
+      India · IST <time suppressHydrationWarning>{time || '--:--'}</time>
     </span>
   );
 }

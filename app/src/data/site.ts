@@ -15,13 +15,13 @@ export const navItems: NavItem[] = [
     label: 'Work',
     href: '/#work',
     hint: 'Jobs and communities',
-    preview: '/clubs/codechef-vit.png',
+    preview: '/services/797th.webp',
   },
   {
     label: 'Projects',
     href: '/#projects',
     hint: 'What I built',
-    preview: '/projects/papers-codechef.webp',
+    preview: '/projects/vcap.webp',
   },
   {
     label: 'Certificates',
@@ -33,7 +33,6 @@ export const navItems: NavItem[] = [
     label: 'DevJourney',
     href: '/devjourney',
     hint: 'Code I wrote while learning',
-    preview: '/projects/devjourney.webp',
   },
   { label: 'Resume', href: '/Upayan_Mazumder_Resume.pdf', hint: 'One-page PDF' },
 ];

@@ -1,8 +1,0 @@
-services:
-  web:
-    image: ghcr.io/upayanmazumder/upayan.dev:latest
-    ports:
-      - "3000:3000"
-      - "4000:4000"
-    env_file:
-      - .env

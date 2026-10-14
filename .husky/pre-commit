@@ -1,0 +1,4 @@
+if [ -n "$(git diff --cached --name-only -- app/)" ]; then
+  cd app
+  pnpm exec lint-staged
+fi

@@ -1,0 +1,11 @@
+import { FeaturedStack } from '@/components/projects/featured-stack';
+import { Section } from '@/components/shell/section';
+import { featuredProjects } from '@/data/projects';
+
+export function FeaturedProjects() {
+  return (
+    <Section id="projects" index="06" title="Selected work" lead="Three projects I’m proudest of.">
+      <FeaturedStack projects={featuredProjects} />
+    </Section>
+  );
+}

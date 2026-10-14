@@ -1,21 +1,17 @@
-import dotenv from "dotenv";
-import path from "path";
-import type { NextConfig } from "next";
+import './src/env';
 
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
-      },
-    ],
-  },
-  reactStrictMode: true,
-  env: {
-    NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
+  reactCompiler: true,
+  images: { formats: ['image/avif', 'image/webp'] },
+  // Routes from the previous site that no longer exist.
+  async redirects() {
+    return [
+      { source: '/p', destination: '/#projects', permanent: true },
+      { source: '/p/:path*', destination: '/#projects', permanent: true },
+      { source: '/contact', destination: '/#elsewhere', permanent: true },
+    ];
   },
 };
 

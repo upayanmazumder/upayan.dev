@@ -1,146 +1,51 @@
 # upayan.dev
 
-![GitHub stars](https://img.shields.io/github/stars/upayanmazumder/upayan.dev?style=social)
-![GitHub forks](https://img.shields.io/github/forks/upayanmazumder/upayan.dev?style=social)
-![License](https://img.shields.io/badge/license-MIT-green)
+[![GitHub stars](https://img.shields.io/github/stars/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/stargazers) [![Forks](https://img.shields.io/github/forks/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/network) [![Issues](https://img.shields.io/github/issues/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/issues)[![License: MIT](https://img.shields.io/github/license/upayanmazumder/upayan.dev?style=flat-square&color=green)](LICENSE)
 
-Monorepo for my personal website and API. This repository contains a Next.js frontend (`app/`) and a TypeScript + Express API (`api/`). The project is containerized for production (multi-stage Dockerfile + PM2) and supports a convenient local development workflow using `concurrently`.
+[![Build & Push API](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml/badge.svg?branch=v5)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml)
 
-## Table of contents
+[Visit on DeepWiki](https://deepwiki.com/upayanmazumder/upayan.dev)
 
-- [Repository layout](#repository-layout)
-- [Tech stack](#tech-stack)
-- [Quick start (development)](#quick-start-development)
-- [Build & production](#build--production)
-- [Docker](#docker)
-- [Environment variables](#environment-variables)
-- [Contributing](#contributing)
-- [License](#license)
+## What is this repo about?
 
-## Repository layout
+This repository holds my personal website and the Rust API behind its live sections. The website is a dark, single-page portfolio with project case studies, certificates, and DevJourney. The API serves Spotify, Discord, Linux PC, and GitHub contribution data, and proxies DevJourney.
 
-- `app/` – Next.js 16 frontend (React 19). See `app/package.json` for scripts.
-- `api/` – TypeScript + Express backend (src in `api/src`). See `api/package.json` for scripts.
-- `Dockerfile` – multi-stage build producing a runtime image that runs both services via PM2.
-- `docker-compose.yml` – simple compose file used for local/container runs (image: `ghcr.io/upayanmazumder/upayan.dev:latest`).
-- `ecosystem.config.js` – PM2 configuration used by the container runtime.
-- `example.env` – example environment variables.
+---
 
-## Tech stack
+## Repository structure
 
-- Frontend: Next.js 16, React 19
-- Backend: Node.js, TypeScript, Express
-- Runtime: PM2 (production image), locally uses `concurrently` to run both services in dev
-- Containerization: Docker, Docker Compose
+- `api/`: Rust HTTP service, DevJourney proxy, and Linux PC client in `api/client/`.
+- `app/`: Next.js website. Content lives in `app/src/data/*.ts`.
 
-## Quick start (development)
+## Run the stats API
 
-Prerequisites:
+Read [the API setup guide](api/README.md). Configure Spotify, Discord, or signed PC reporting in `api/.env`.
 
-- Node.js (recommend 18+; Dockerfile uses `node:23-alpine`)
-- npm or a compatible package manager
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/upayanmazumder/upayan.dev.git
-cd upayan.dev
+```sh
+cd api
+cargo run
 ```
 
-2. Install dependencies:
+The health route is `http://127.0.0.1:8080/health`. The combined stats route is `http://127.0.0.1:8080/api/stats`.
 
-```bash
-# install root dev tools
-npm install
+## Run the website
 
-# install frontend and backend dependencies
-cd app && npm install
-cd ../api && npm install
-cd ..
+```sh
+cd app
+pnpm install --frozen-lockfile
+API_URL=http://127.0.0.1:8080 pnpm dev
 ```
 
-3. Start development servers (from repo root):
-
-```bash
-npm run dev
-```
-
-This runs both the frontend and backend concurrently. By default:
-
-- Frontend (Next dev): http://localhost:3000
-- Backend (ts-node dev server): http://localhost:4000
-
-You can also run each service individually:
-
-```bash
-cd app && npm run dev
-# in another terminal
-cd api && npm run dev
-```
-
-## Build & production
-
-- Build frontend (Next):
-
-```bash
-npm run build    # runs `cd app && next build`
-```
-
-- Build backend (TypeScript -> JS):
-
-```bash
-cd api && npm run build
-```
-
-The repository's `Dockerfile` performs both these steps in a multi-stage build and then starts both services with PM2 in the runtime image.
-
-## Docker
-
-Quick start with Docker Compose (recommended for production-like testing):
-
-```bash
-docker-compose up --build
-```
-
-The compose file references the image `ghcr.io/upayanmazumder/upayan.dev:latest`. You can also build and run locally:
-
-```bash
-docker build -t upayan.dev .
-docker run -p 3000:3000 -p 4000:4000 --env-file .env upayan.dev
-```
-
-The container uses `ecosystem.config.js` and `pm2-runtime` to start both the frontend and backend.
-
-## Environment variables
-
-Copy `example.env` to `.env` and fill in the required values:
-
-```bash
-cp example.env .env
-# edit .env
-```
-
-Key variables found in `example.env`:
-
-- `BOT_TOKEN` – (optional) bot token used by integrations
-- `CONTACT_WEBHOOK_URL` – (optional) contact webhook URL
-- `GITHUB_TOKEN` – (optional) GitHub token for API calls
-- `NEXT_PUBLIC_ENV` – `development`, `staging` or `production`
-
-Only provide the secrets you need for local testing or production.
+The website runs at `http://127.0.0.1:3000`. `API_URL` is optional and read only on the server. Without it, the live, GitHub activity, and DevJourney sections show an unavailable state. Edit copy, projects, roles, and links in `app/src/data/`. The site deploys to Vercel. Set `API_URL` and `NEXT_PUBLIC_SITE_URL` there.
+---
 
 ## Contributing
 
-Contributions are welcome. Recommended workflow:
+Feel free to open issues or submit pull requests if you find bugs or want to add new features.
+Make sure to follow the existing code style and add tests/validation for new endpoints or clients.
 
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature/your-feature`.
-3. Make changes and run the relevant dev server(s) locally.
-4. Lint or format if necessary (`cd app && npm run lint`).
-5. Push your branch and open a PR.
-
-Please follow the `CODE_OF_CONDUCT.md` and `SECURITY.md` in the repo.
+---
 
 ## License
 
-This project is licensed under the MIT License — see the [LICENSE](https://github.com/upayanmazumder/upayan.dev/blob/master/LICENSE) file for details.
+This project is licensed under the **MIT License** — see `LICENSE` for full details.

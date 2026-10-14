@@ -1,134 +1,65 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import Sidebar from "../components/sidebar/Sidebar";
-import Footer from "../components/footer/Footer";
-import { ThemeProvider } from "../components/theme/Theme";
-import ServiceWorkerRegister from "../components/serviceworkerregister/ServiceWorkerRegister";
-import { Analytics } from "@vercel/analytics/next";
+import type { Metadata, Viewport } from 'next';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
+
+import './globals.css';
+
+import { SiteFooter } from '@/components/footer/site-footer';
+import { MotionProvider } from '@/components/motion';
+import { SiteNav } from '@/components/nav/site-nav';
+import { QueryProvider } from '@/components/providers';
+import { Backdrop } from '@/components/shell/backdrop';
+import { ScrollRail } from '@/components/shell/scroll-rail';
+import { SmoothScroll } from '@/components/shell/smooth-scroll';
+import { Toaster } from '@/components/ui/sonner';
+import { profile } from '@/data/profile';
+import { env } from '@/env';
+import { fontVariables } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-	title: "Upayan",
-	description: "Upayan | Portfolio",
-	icons: {
-		icon: "/upayan.svg",
-		apple: "/upayan.svg",
-		shortcut: "/upayan.svg",
-	},
-	openGraph: {
-		title: "Upayan",
-		description: "Upayan | Portfolio",
-		url: "https://upayan.dev",
-		siteName: "Upayan",
-		images: [
-			{
-				url: "/icon.svg",
-				width: 144,
-				height: 144,
-				alt: "Upayan Icon",
-			},
-		],
-		locale: "en_US",
-		type: "website",
-	},
-	twitter: {
-		card: "summary",
-		title: "Upayan",
-		description: "Upayan | Portfolio",
-		images: ["/icon.svg"],
-		creator: "@upayanmazumder",
-	},
-	manifest: "/manifest.webmanifest",
-	robots: {
-		index: true,
-		follow: true,
-		googleBot: {
-			index: true,
-			follow: true,
-		},
-	},
-	appleWebApp: {
-		capable: true,
-		title: "Upayan",
-		statusBarStyle: "default",
-	},
-	formatDetection: {
-		telephone: false,
-		address: false,
-		email: false,
-	},
-	metadataBase: new URL("https://upayan.dev"),
-	alternates: {
-		canonical: "https://upayan.dev",
-		types: {
-			"application/rss+xml": "/feed.xml",
-			"application/atom+xml": "/feed.atom",
-		},
-		languages: {
-			"en-US": "/",
-			"en-GB": "/gb",
-			"fr-FR": "/fr",
-			"es-ES": "/es",
-			"de-DE": "/de",
-		},
-	},
-	keywords: [
-		"upayan",
-		"Upayan Mazumder",
-		"developer",
-		"programmer",
-		"software engineer",
-		"web developer",
-		"portfolio",
-		"personal website",
-		"upayan.dev",
-	],
-	authors: [
-		{
-			name: "Upayan Mazumder",
-			url: "https://upayan.dev",
-		},
-	],
-	creator: "Upayan Mazumder",
-	applicationName: "Upayan",
-	publisher: "Upayan Mazumder",
-	category: "Portfolio",
+  metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
+  title: { default: `${profile.name} · ${profile.role}`, template: `%s · ${profile.name}` },
+  description: `${profile.sentence} ${profile.about[2]}`,
+  authors: [{ name: profile.name, url: profile.site }],
+  creator: profile.name,
+  openGraph: { type: 'website', siteName: profile.name, locale: 'en_IN' },
+  twitter: { card: 'summary_large_image' },
 };
 
-export const viewport = {
-	themeColor: "#C",
+export const viewport: Viewport = {
+  themeColor: '#0b0d0e',
+  colorScheme: 'dark',
 };
 
-export default function RootLayout({
-	children,
-}: Readonly<{
-	children: React.ReactNode;
-}>) {
-	return (
-		<html lang="en">
-			<head>
-				<meta name="apple-mobile-web-app-capable" content="yes" />
-				<meta
-					name="apple-mobile-web-app-status-bar-style"
-					content="black-translucent"
-				/>
-				<meta property="og:title" content="Upayan" />
-				<meta
-					property="og:description"
-					content="Welcome to my portfolio website!"
-				/>
-				<meta property="og:image" content="/icons/icon-512x512.webp" />
-				<meta property="og:url" content="https://upayan.dev" />
-				<meta property="og:type" content="website" />
-			</head>
-			<body>
-				<ThemeProvider>
-					<Sidebar />
-					{children}
-					<Analytics />
-					<ServiceWorkerRegister />
-					<Footer />
-				</ThemeProvider>
-			</body>
-		</html>
-	);
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="en" suppressHydrationWarning className={cn('dark antialiased', fontVariables)}>
+      <head>
+        {/* Marks JS as available before paint so `.reveal` content can wait for its animation. */}
+        <script
+          dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
+        />
+      </head>
+      <body className="min-h-dvh overflow-x-clip">
+        <QueryProvider>
+          <NuqsAdapter>
+            <MotionProvider>
+              <SmoothScroll>
+                <Backdrop />
+                <SiteNav />
+                <ScrollRail />
+                <main id="main">{children}</main>
+                <SiteFooter />
+              </SmoothScroll>
+            </MotionProvider>
+          </NuqsAdapter>
+        </QueryProvider>
+        <Toaster />
+        <Analytics />
+        <SpeedInsights />
+      </body>
+    </html>
+  );
 }

@@ -74,9 +74,9 @@ To publish Zed activity, set `ZED_PUBLIC_WORKSPACES` in the client environment. 
 
 Choose only workspaces whose file names can appear on a public website. The client reads Zed's local SQLite database in read-only mode. It sends the workspace name, active file name, and observed session seconds. While the git diff view is the active tab, it sends "Reviewing changes" instead of a file name. It never sends full paths or file contents. It excludes hidden files. Keep the allowlist unset to keep file names private.
 
-The database format is private to Zed and can change. The client omits `zed` if the database is absent or its latest workspace state is over two minutes old. It also omits `zed` if the latest workspace is not allowed or lacks an active file. Remote workspaces are not supported.
+The database format is private to Zed and can change. The client omits `zed` if the database is absent or its latest workspace state is over five minutes old. It also omits `zed` if the latest workspace is not allowed or lacks an active file. Remote workspaces are not supported.
 
-The timer measures the interval since its first observation of the same file. A file change or an observation gap over two minutes resets the interval. This estimate does not measure keyboard activity. The client stores the observation in `~/.local/state/upayan-pc/zed.json` with restricted permissions.
+The timer measures the interval since its first observation of the same file. A file change or an observation gap over five minutes resets the interval. This estimate does not measure keyboard activity. The client stores the observation in `~/.local/state/upayan-pc/zed.json` with restricted permissions.
 
 ### DevJourney proxy
 

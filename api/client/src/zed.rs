@@ -8,7 +8,7 @@ use std::{
 use rusqlite::{Connection, OpenFlags};
 use serde::{Deserialize, Serialize};
 
-const MAX_GAP_SECONDS: u64 = 120;
+const MAX_GAP_SECONDS: u64 = 300;
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Activity {
@@ -196,7 +196,7 @@ mod tests {
             Some(("site".into(), "main.rs".into()))
         );
         assert_eq!(
-            sample(&connection, 1121, &[PathBuf::from("/work/site")]),
+            sample(&connection, 1301, &[PathBuf::from("/work/site")]),
             None
         );
         assert_eq!(
@@ -292,7 +292,7 @@ mod tests {
             0
         );
         assert_eq!(
-            update_session(&state, observation(), 1220)
+            update_session(&state, observation(), 1400)
                 .unwrap()
                 .active_seconds,
             0

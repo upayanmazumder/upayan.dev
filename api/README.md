@@ -9,7 +9,7 @@ This standalone Rust service reads Spotify Web API data and Discord presence thr
 3. Keep credentials on the server. Limit public output to display fields. Cache Spotify for 60 seconds, Discord for 15 seconds, and GitHub contributions for 6 hours.
 4. Return each provider independently. Do not hide failed provider requests as an offline or empty state.
 5. Accept only the selected PC health metrics through signed reports. Run the Linux client from a timer, not a resident daemon.
-6. Preserve the master branch `/devjourney?path=...` contract for the website.
+6. Preserve the previous website's `/devjourney?path=...` contract.
 
 Spotify does not provide a lifetime play count through these endpoints. Top items are affinity rankings, not play counts. Recent tracks exclude podcast episodes. Lanyard provides current presence, not a historical Discord activity total. The API does not expose private Spotify profile fields, device names, Discord session IDs, or Lanyard KV values.
 
@@ -80,7 +80,7 @@ The timer measures the interval since its first observation of the same file. A 
 
 ### DevJourney proxy
 
-`GET /devjourney` and `GET /devjourney?path=folder%2Ffile.md` preserve the master branch response shape. The API returns the GitHub contents object or directory array without an envelope. Set `DEVJOURNEY_REPO_OWNER` and `DEVJOURNEY_REPO_NAME` only if the defaults differ. A dedicated `DEVJOURNEY_GITHUB_TOKEN` can increase the rate limit. Do not configure a token that can read private repository content. The public proxy makes every allowed file in that repository accessible to visitors. The proxy rejects traversal and returns fixed error text without upstream response bodies.
+`GET /devjourney` and `GET /devjourney?path=folder%2Ffile.md` preserve the previous website's response shape. The API returns the GitHub contents object or directory array without an envelope. Set `DEVJOURNEY_REPO_OWNER` and `DEVJOURNEY_REPO_NAME` only if the defaults differ. A dedicated `DEVJOURNEY_GITHUB_TOKEN` can increase the rate limit. Do not configure a token that can read private repository content. The public proxy makes every allowed file in that repository accessible to visitors. The proxy rejects traversal and returns fixed error text without upstream response bodies.
 
 ### GitHub contributions
 
@@ -130,6 +130,10 @@ curl -i http://127.0.0.1:8080/api/stats
 ```
 
 Build the included Dockerfile from `api/` with `docker build -t upayan-stats-api .`. Supply environment variables at runtime. Do not copy `.env` into the image. The container listens on port 8080.
+
+## Production
+
+The API runs in the `upayan-v5` namespace of the k3s cluster at `https://api.upayan.dev`. Manifests live in the `upayanmazumder/cluster` repository under `k8s/apps/upayan-v5`. ArgoCD deploys them. The image updater follows the `api:latest` digest that `.github/workflows/api.yml` publishes from `main`. Secrets live in that repository as SOPS-encrypted `secrets.sops.yaml`. The Deployment runs one replica without scale-to-zero, because the latest PC report and the caches live in memory. The website runs on Vercel at `https://upayan.dev` with `API_URL=https://api.upayan.dev`. Point the PC reporter at the same URL.
 
 ## Provider access problems
 

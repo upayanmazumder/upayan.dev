@@ -18,11 +18,16 @@ use tokio::sync::Mutex;
 type HmacSha256 = Hmac<Sha256>;
 
 #[derive(Clone, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
 pub struct ZedActivity {
     pub workspace: String,
     pub file: String,
     pub active_seconds: u64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub last_active_at: Option<u64>,
+    #[serde(default)]
+    pub is_active: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub repo: Option<String>,
 }
 
 impl ZedActivity {
@@ -36,11 +41,22 @@ impl ZedActivity {
                     .chars()
                     .any(|ch| ch.is_control() || ch == '/' || ch == '\\')
         }) && self.active_seconds <= 86_400
+            && self.repo.as_ref().is_none_or(|r| {
+                !r.is_empty()
+                    && r.len() <= 128
+                    && r.chars().all(|ch| {
+                        ch.is_ascii_alphanumeric()
+                            || ch == '-'
+                            || ch == '_'
+                            || ch == '.'
+                            || ch == '/'
+                    })
+                    && r.split('/').count() == 2
+            })
     }
 }
 
 #[derive(Clone, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
 pub struct Report {
     pub cpu_percent: f64,
     pub memory_used_bytes: u64,
@@ -178,8 +194,14 @@ mod tests {
             workspace: "site".into(),
             file: "main.rs".into(),
             active_seconds: 42,
+            last_active_at: Some(1000),
+            is_active: true,
+            repo: Some("owner/repo".into()),
         };
         assert!(activity.valid());
+        activity.repo = Some("invalid/repo/extra".into());
+        assert!(!activity.valid());
+        activity.repo = Some("owner/repo".into());
         activity.file = "../secret".into();
         assert!(!activity.valid());
         activity.file = "secret\n.env".into();

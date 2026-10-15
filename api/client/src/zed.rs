@@ -10,19 +10,34 @@ use serde::{Deserialize, Serialize};
 
 const MAX_GAP_SECONDS: u64 = 300;
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct Activity {
     pub workspace: String,
     pub file: String,
     pub active_seconds: u64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub last_active_at: Option<u64>,
+    #[serde(default)]
+    pub is_active: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub repo: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 struct Session {
     workspace: String,
     file: String,
-    since: u64,
-    observed_at: u64,
+    session_start: u64,
+    last_active_at: u64,
+    #[serde(default)]
+    repo: Option<String>,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+struct Observation {
+    workspace: String,
+    file: String,
+    repo: Option<String>,
 }
 
 fn safe_name(path: &str) -> Option<String> {
@@ -42,7 +57,66 @@ fn safe_name(path: &str) -> Option<String> {
 /// Shown instead of a file name while the git diff view is the active tab.
 pub const REVIEWING_CHANGES: &str = "Reviewing changes";
 
-fn sample(connection: &Connection, now: u64, allowed: &[PathBuf]) -> Option<(String, String)> {
+fn detect_github_repo(dir: &Path) -> Option<String> {
+    let git_entry = dir.join(".git");
+    let mut config_path = git_entry.join("config");
+    if git_entry.is_file() {
+        #[allow(clippy::collapsible_if)]
+        if let Ok(content) = fs::read_to_string(&git_entry) {
+            for line in content.lines() {
+                if let Some(target) = line.strip_prefix("gitdir:") {
+                    let target_path = target.trim();
+                    let resolved = if Path::new(target_path).is_absolute() {
+                        PathBuf::from(target_path)
+                    } else {
+                        dir.join(target_path)
+                    };
+                    config_path = resolved.join("config");
+                    break;
+                }
+            }
+        }
+    }
+    let config = fs::read_to_string(config_path).ok()?;
+    parse_github_slug(&config)
+}
+
+fn parse_github_slug(config: &str) -> Option<String> {
+    for line in config.lines() {
+        let trimmed = line.trim();
+        if let Some(rest) = trimmed.strip_prefix("url = ") {
+            let url = rest.trim();
+            let path_part = if let Some(p) = url
+                .strip_prefix("https://github.com/")
+                .or_else(|| url.strip_prefix("http://github.com/"))
+                .or_else(|| url.strip_prefix("git@github.com:"))
+                .or_else(|| url.strip_prefix("ssh://git@github.com/"))
+            {
+                p.trim_end_matches(".git").trim_matches('/')
+            } else {
+                continue;
+            };
+            let parts: Vec<&str> = path_part.split('/').collect();
+            if parts.len() == 2 {
+                let owner = parts[0];
+                let repo = parts[1];
+                let valid = |s: &str| {
+                    !s.is_empty()
+                        && s.len() <= 100
+                        && s.chars().all(|ch| {
+                            ch.is_ascii_alphanumeric() || ch == '-' || ch == '_' || ch == '.'
+                        })
+                };
+                if valid(owner) && valid(repo) {
+                    return Some(format!("{owner}/{repo}"));
+                }
+            }
+        }
+    }
+    None
+}
+
+fn sample(connection: &Connection, now: u64, allowed: &[PathBuf]) -> Option<Observation> {
     // Zed's private database schema can change. A failed query means no activity.
     // Select the latest workspace first, then check its exact path against the allowlist.
     let (workspace, kind, path, saved_at): (String, String, Option<Vec<u8>>, i64) = connection
@@ -76,14 +150,23 @@ fn sample(connection: &Connection, now: u64, allowed: &[PathBuf]) -> Option<(Str
         return None;
     }
     let workspace_name = safe_name(&workspace)?;
+    let repo = detect_github_repo(Path::new(&workspace));
     let Some(path) = path else {
-        return (kind == "ProjectDiff").then(|| (workspace_name, REVIEWING_CHANGES.to_owned()));
+        return (kind == "ProjectDiff").then(|| Observation {
+            workspace: workspace_name,
+            file: REVIEWING_CHANGES.to_owned(),
+            repo,
+        });
     };
     let file_path = std::str::from_utf8(&path).ok()?;
     if !Path::new(file_path).starts_with(&workspace) {
         return None;
     }
-    Some((workspace_name, safe_name(file_path)?))
+    Some(Observation {
+        workspace: workspace_name,
+        file: safe_name(file_path)?,
+        repo,
+    })
 }
 
 fn state_path() -> Option<PathBuf> {
@@ -93,49 +176,75 @@ fn state_path() -> Option<PathBuf> {
     Some(base.join("upayan-pc/zed.json"))
 }
 
-fn update_session(
-    path: &Path,
-    observation: Option<(String, String)>,
-    now: u64,
-) -> Option<Activity> {
+fn update_session(path: &Path, observation: Option<Observation>, now: u64) -> Option<Activity> {
     let old = fs::read(path)
         .ok()
         .and_then(|bytes| serde_json::from_slice::<Session>(&bytes).ok());
-    let (workspace, file) = observation?;
-    let since = match &old {
-        Some(previous)
-            if previous.workspace == workspace
-                && previous.file == file
-                && now >= previous.observed_at
-                && now - previous.observed_at <= MAX_GAP_SECONDS =>
-        {
-            previous.since
+
+    match observation {
+        Some(current) => {
+            // Actively editing. Keep the continuous session start timestamp across files and
+            // workspaces if active within MAX_GAP_SECONDS.
+            let session_start = match &old {
+                Some(prev)
+                    if now >= prev.last_active_at
+                        && now - prev.last_active_at <= MAX_GAP_SECONDS =>
+                {
+                    prev.session_start
+                }
+                _ => now,
+            };
+
+            let session = Session {
+                workspace: current.workspace.clone(),
+                file: current.file.clone(),
+                session_start,
+                last_active_at: now,
+                repo: current.repo.clone(),
+            };
+
+            if let Some(parent) = path.parent() {
+                fs::create_dir_all(parent).ok()?;
+                fs::set_permissions(parent, std::os::unix::fs::PermissionsExt::from_mode(0o700))
+                    .ok()?;
+            }
+            let temporary = path.with_extension("tmp");
+            if let Ok(bytes) = serde_json::to_vec(&session) {
+                let mut options = fs::OpenOptions::new();
+                options.write(true).create(true).truncate(true).mode(0o600);
+                if let Ok(mut handle) = options.open(&temporary) {
+                    use std::io::Write;
+                    let _ = handle.write_all(&bytes);
+                    let _ = fs::rename(temporary, path);
+                }
+            }
+
+            Some(Activity {
+                workspace: current.workspace,
+                file: current.file,
+                active_seconds: now.saturating_sub(session_start).min(86_400),
+                last_active_at: Some(now),
+                is_active: true,
+                repo: current.repo,
+            })
         }
-        _ => now,
-    };
-    let session = Session {
-        workspace: workspace.clone(),
-        file: file.clone(),
-        since,
-        observed_at: now,
-    };
-    if let Some(parent) = path.parent() {
-        fs::create_dir_all(parent).ok()?;
-        fs::set_permissions(parent, std::os::unix::fs::PermissionsExt::from_mode(0o700)).ok()?;
+        None => {
+            // Stepped away, closed editor, or idle for > 5 min.
+            // Keep the last session so the website can show "Last active" rather than a blank offline state.
+            let prev = old?;
+            Some(Activity {
+                workspace: prev.workspace,
+                file: prev.file,
+                active_seconds: prev
+                    .last_active_at
+                    .saturating_sub(prev.session_start)
+                    .min(86_400),
+                last_active_at: Some(prev.last_active_at),
+                is_active: false,
+                repo: prev.repo,
+            })
+        }
     }
-    let temporary = path.with_extension("tmp");
-    let bytes = serde_json::to_vec(&session).ok()?;
-    let mut options = fs::OpenOptions::new();
-    options.write(true).create(true).truncate(true).mode(0o600);
-    let mut file_handle = options.open(&temporary).ok()?;
-    use std::io::Write;
-    file_handle.write_all(&bytes).ok()?;
-    fs::rename(temporary, path).ok()?;
-    Some(Activity {
-        workspace,
-        file,
-        active_seconds: now.saturating_sub(since).min(86_400),
-    })
 }
 
 pub fn collect() -> Option<Activity> {
@@ -156,10 +265,6 @@ pub fn collect() -> Option<Activity> {
     let observation = Connection::open_with_flags(db, OpenFlags::SQLITE_OPEN_READ_ONLY)
         .ok()
         .and_then(|connection| sample(&connection, now, &allowed));
-    if observation.is_none() {
-        let _ = fs::remove_file(state);
-        return None;
-    }
     update_session(&state, observation, now)
 }
 
@@ -167,6 +272,22 @@ pub fn collect() -> Option<Activity> {
 mod tests {
     use super::*;
     use rusqlite::params;
+
+    #[test]
+    fn parses_github_slugs() {
+        assert_eq!(
+            parse_github_slug("url = https://github.com/upayanmazumder/upayan.dev.git\n"),
+            Some("upayanmazumder/upayan.dev".into())
+        );
+        assert_eq!(
+            parse_github_slug("url = git@github.com:797th/AI_Blog_Agent.git\n"),
+            Some("797th/AI_Blog_Agent".into())
+        );
+        assert_eq!(
+            parse_github_slug("url = https://gitlab.com/other/repo.git\n"),
+            None
+        );
+    }
 
     #[test]
     fn reads_only_recent_allowlisted_active_file() {
@@ -191,9 +312,16 @@ mod tests {
                 params![b"/work/site/src/main.rs"],
             )
             .unwrap();
+        let obs = |f: &str| {
+            Some(Observation {
+                workspace: "site".into(),
+                file: f.into(),
+                repo: None,
+            })
+        };
         assert_eq!(
             sample(&connection, 1000, &[PathBuf::from("/work/site")]),
-            Some(("site".into(), "main.rs".into()))
+            obs("main.rs")
         );
         assert_eq!(
             sample(&connection, 1301, &[PathBuf::from("/work/site")]),
@@ -205,7 +333,7 @@ mod tests {
         );
         assert_eq!(
             sample(&connection, 1000, &[PathBuf::from("/work")]),
-            Some(("site".into(), "main.rs".into()))
+            obs("main.rs")
         );
         assert_eq!(sample(&connection, 1000, &[PathBuf::from("/wo")]), None);
         connection
@@ -213,7 +341,7 @@ mod tests {
             .unwrap();
         assert_eq!(
             sample(&connection, 1000, &[PathBuf::from("/work/site")]),
-            Some(("site".into(), "main.rs".into()))
+            obs("main.rs")
         );
         connection
             .execute("UPDATE editors SET path = ?1", params![b"/work/site/.env"])
@@ -237,7 +365,7 @@ mod tests {
             .unwrap();
         assert_eq!(
             sample(&connection, 1000, &[PathBuf::from("/work/site")]),
-            Some(("site".into(), REVIEWING_CHANGES.into()))
+            obs(REVIEWING_CHANGES)
         );
         connection.execute("INSERT INTO workspaces VALUES (2, '/work/private', datetime(1001, 'unixepoch'), NULL)", []).unwrap();
         connection
@@ -262,7 +390,7 @@ mod tests {
     }
 
     #[test]
-    fn session_duration_resets_after_file_change_or_gap() {
+    fn session_duration_accumulates_across_files_and_preserves_last_active() {
         let dir = env::temp_dir().join(format!(
             "zed-test-{}-{}",
             std::process::id(),
@@ -272,31 +400,43 @@ mod tests {
                 .as_nanos()
         ));
         let state = dir.join("zed.json");
-        let observation = || Some(("site".into(), "main.rs".into()));
-        assert_eq!(
-            update_session(&state, observation(), 1000)
-                .unwrap()
-                .active_seconds,
-            0
-        );
-        assert_eq!(
-            update_session(&state, observation(), 1060)
-                .unwrap()
-                .active_seconds,
-            60
-        );
-        assert_eq!(
-            update_session(&state, Some(("site".into(), "lib.rs".into())), 1090)
-                .unwrap()
-                .active_seconds,
-            0
-        );
-        assert_eq!(
-            update_session(&state, observation(), 1400)
-                .unwrap()
-                .active_seconds,
-            0
-        );
+        let obs = |f: &str| {
+            Some(Observation {
+                workspace: "site".into(),
+                file: f.into(),
+                repo: Some("owner/repo".into()),
+            })
+        };
+
+        // First file opened: session starts at 1000
+        let first = update_session(&state, obs("main.rs"), 1000).unwrap();
+        assert_eq!(first.active_seconds, 0);
+        assert!(first.is_active);
+        assert_eq!(first.repo.as_deref(), Some("owner/repo"));
+
+        // Still editing 60s later: session duration is 60s
+        let second = update_session(&state, obs("main.rs"), 1060).unwrap();
+        assert_eq!(second.active_seconds, 60);
+        assert!(second.is_active);
+
+        // User switches to lib.rs 30s later: session CONTINUES (active_seconds = 90s)
+        let switched = update_session(&state, obs("lib.rs"), 1090).unwrap();
+        assert_eq!(switched.file, "lib.rs");
+        assert_eq!(switched.active_seconds, 90);
+        assert!(switched.is_active);
+
+        // User closes editor or steps away (observation is None) 60s later:
+        // State is NOT wiped. It reports the last active session with is_active: false!
+        let inactive = update_session(&state, None, 1150).unwrap();
+        assert_eq!(inactive.file, "lib.rs");
+        assert_eq!(inactive.active_seconds, 90);
+        assert!(!inactive.is_active);
+        assert_eq!(inactive.last_active_at, Some(1090));
+
+        // A new session after a gap > MAX_GAP_SECONDS (300s): starts at 1500
+        let restart = update_session(&state, obs("main.rs"), 1500).unwrap();
+        assert_eq!(restart.active_seconds, 0);
+        assert!(restart.is_active);
         fs::remove_dir_all(dir).unwrap();
     }
 }

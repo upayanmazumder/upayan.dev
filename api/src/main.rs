@@ -332,7 +332,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         github,
         pc,
         devjourney,
-        spotify_cache: Cache::new(Duration::from_secs(60)),
+        spotify_cache: Cache::new(Duration::from_secs(10)),
         discord_cache: Cache::new(Duration::from_secs(15)),
         github_cache: Cache::with_error_ttl(
             Duration::from_secs(6 * 60 * 60),
@@ -525,7 +525,7 @@ mod tests {
         let url = serve(router(state, None)).await;
         let body = json!({"cpu_percent":25.0,"memory_used_bytes":20,"memory_total_bytes":100,
             "disk_used_bytes":30,"disk_total_bytes":100,"uptime_seconds":200,
-            "zed":{"workspace":"upayan.dev","file":"main.rs","active_seconds":60}})
+            "zed":{"workspace":"upayan.dev","file":"main.rs","active_seconds":60,"last_active_at":1000,"is_active":true,"repo":"upayanmazumder/upayan.dev"}})
         .to_string();
         let stamp = SystemTime::now()
             .duration_since(UNIX_EPOCH)
@@ -568,6 +568,12 @@ mod tests {
         assert_eq!(stats["pc"]["stats"]["zed"]["workspace"], "upayan.dev");
         assert_eq!(stats["pc"]["stats"]["zed"]["file"], "main.rs");
         assert_eq!(stats["pc"]["stats"]["zed"]["active_seconds"], 60);
+        assert_eq!(stats["pc"]["stats"]["zed"]["last_active_at"], 1000);
+        assert_eq!(stats["pc"]["stats"]["zed"]["is_active"], true);
+        assert_eq!(
+            stats["pc"]["stats"]["zed"]["repo"],
+            "upayanmazumder/upayan.dev"
+        );
         let pc: Value = client
             .get(format!("{url}/api/stats/pc"))
             .send()

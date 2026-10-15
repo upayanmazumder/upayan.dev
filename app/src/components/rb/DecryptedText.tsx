@@ -389,15 +389,48 @@ export default function DecryptedText({
       </span>
 
       <span aria-hidden="true">
-        {displayText.split('').map((char, index) => {
-          const isRevealedOrDone = revealedIndices.has(index) || (!isAnimating && isDecrypted);
+        {(() => {
+          const parts = text.split(/(\s+)/);
+          let currentOffset = 0;
+          const tokens: { word: string; start: number; key: number }[] = [];
+          for (let i = 0; i < parts.length; i++) {
+            const word = parts[i]!;
+            tokens.push({ word, start: currentOffset, key: i });
+            currentOffset += word.length;
+          }
 
-          return (
-            <span key={index} className={isRevealedOrDone ? className : encryptedClassName}>
-              {char}
-            </span>
-          );
-        })}
+          return tokens.map(({ word, start, key }) => {
+            if (/^\s+$/.test(word)) {
+              return word;
+            }
+            return (
+              <span key={key} className="inline-block whitespace-nowrap">
+                {[...word].map((originalChar, charOffset) => {
+                  const index = start + charOffset;
+                  const isRevealedOrDone =
+                    revealedIndices.has(index) || (!isAnimating && isDecrypted);
+                  const char = isRevealedOrDone
+                    ? originalChar
+                    : (displayText[index] ?? originalChar);
+                  return (
+                    <span key={charOffset} className="relative inline-block">
+                      <span className="invisible select-none" aria-hidden="true">
+                        {originalChar}
+                      </span>
+                      <span
+                        className={`absolute inset-0 flex items-center justify-center ${
+                          isRevealedOrDone ? className : encryptedClassName
+                        }`}
+                      >
+                        {char}
+                      </span>
+                    </span>
+                  );
+                })}
+              </span>
+            );
+          });
+        })()}
       </span>
     </motion.span>
   );

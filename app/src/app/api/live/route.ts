@@ -6,8 +6,8 @@ import type { LiveResponse } from '@/components/home/_top/live/types';
 
 export const dynamic = 'force-dynamic';
 
-// A short shared cache: many visitors polling at once cause one upstream call per 10 s.
-const LIVE_CACHE = 'public, max-age=0, s-maxage=10, stale-while-revalidate=20';
+// A short shared cache: many visitors polling at once cause one upstream call per 5 s.
+const LIVE_CACHE = 'public, max-age=0, s-maxage=5, stale-while-revalidate=10';
 const NO_STORE = 'no-store';
 
 /** Error body in the shape `toApiError` reads: `message` for people, `code` for retry decisions. */

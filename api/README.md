@@ -59,10 +59,10 @@ ExecStart=%h/.local/bin/pc-report-client
 ```ini
 # ~/.config/systemd/user/upayan-pc.timer
 [Unit]
-Description=Send PC health every minute
+Description=Send PC health and Zed activity every 10 seconds
 [Timer]
-OnBootSec=1min
-OnUnitActiveSec=1min
+OnBootSec=10s
+OnUnitActiveSec=10s
 Unit=upayan-pc.service
 [Install]
 WantedBy=timers.target

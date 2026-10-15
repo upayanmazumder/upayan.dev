@@ -6,7 +6,7 @@ import { api, isApiError } from '@/api';
 
 import type { LiveResponse } from './types';
 
-const POLL_MS = 30_000;
+const POLL_MS = 10_000;
 
 /**
  * Polls the same-origin `/api/live` proxy while the tab is visible.

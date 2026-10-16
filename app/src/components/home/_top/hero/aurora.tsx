@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 const VERTEX = `
 attribute vec2 aPosition;
@@ -108,7 +108,7 @@ export function Aurora({ base, sheen, paused, className }: AuroraProps) {
     if (!paused) resumeRef.current?.();
   }, [paused]);
 
-  useEffect(() => {
+  const createRenderer = useCallback(() => {
     const canvas = canvasRef.current;
     const gl = canvas?.getContext('webgl', {
       antialias: false,
@@ -211,6 +211,32 @@ export function Aurora({ base, sheen, paused, className }: AuroraProps) {
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, [base, sheen]);
+  useEffect(() => {
+    let disposed = false;
+    let initialized = false;
+    let ready = false;
+    let cleanup: (() => void) | undefined;
+    // Shader compilation can block first paint, so wait until the browser has idle time.
+    const initialize = () => {
+      if (!ready || disposed || initialized || pausedRef.current) return;
+      initialized = true;
+      cleanup = createRenderer();
+    };
+    resumeRef.current = initialize;
+    const onIdle = () => {
+      ready = true;
+      initialize();
+    };
+    const idle = window.requestIdleCallback?.(onIdle, { timeout: 1200 });
+    const timer = idle === undefined ? window.setTimeout(onIdle, 200) : undefined;
+    return () => {
+      disposed = true;
+      if (idle !== undefined) window.cancelIdleCallback(idle);
+      if (timer !== undefined) window.clearTimeout(timer);
+      if (resumeRef.current === initialize) resumeRef.current = null;
+      cleanup?.();
+    };
+  }, [createRenderer]);
 
   return <canvas ref={canvasRef} className={className} />;
 }

@@ -115,8 +115,41 @@ fn parse_github_slug(config: &str) -> Option<String> {
     }
     None
 }
+fn zed_process_running() -> bool {
+    // Checks whether zed is running on the host via /proc.
+    // When the screen is locked or running in the background, keyboard events pause
+    // but Zed is still actively running.
+    let Ok(entries) = fs::read_dir("/proc") else {
+        return false;
+    };
+    for entry in entries.flatten() {
+        let name = entry.file_name();
+        if name
+            .to_str()
+            .is_some_and(|s| s.bytes().all(|b| b.is_ascii_digit()))
+        {
+            let comm_path = entry.path().join("comm");
+            if let Ok(comm) = fs::read_to_string(comm_path) {
+                let trimmed = comm.trim();
+                if trimmed == "zed-editor" || trimmed == "zed" {
+                    return true;
+                }
+            }
+        }
+    }
+    false
+}
 
 fn sample(connection: &Connection, now: u64, allowed: &[PathBuf]) -> Option<Observation> {
+    sample_inner(connection, now, allowed, zed_process_running())
+}
+
+fn sample_inner(
+    connection: &Connection,
+    now: u64,
+    allowed: &[PathBuf],
+    running: bool,
+) -> Option<Observation> {
     // Zed's private database schema can change. A failed query means no activity.
     // Select the latest workspace first, then check its exact path against the allowlist.
     let (workspace, kind, path, saved_at): (String, String, Option<Vec<u8>>, i64) = connection
@@ -139,7 +172,10 @@ fn sample(connection: &Connection, now: u64, allowed: &[PathBuf]) -> Option<Obse
         )
         .ok()?;
     let saved_at = u64::try_from(saved_at).ok()?;
-    if now.saturating_sub(saved_at) > MAX_GAP_SECONDS || saved_at > now + 30 {
+    // When Zed is running (even in background or with screen locked), allow up to 12 hours.
+    // When Zed is closed / not running, only allow up to MAX_GAP_SECONDS.
+    let max_gap = if running { 43_200 } else { MAX_GAP_SECONDS };
+    if now.saturating_sub(saved_at) > max_gap || saved_at > now + 30 {
         return None;
     }
     // An allowlisted directory covers itself and every workspace below it (component-wise).
@@ -319,37 +355,28 @@ mod tests {
                 repo: None,
             })
         };
+        let test_sample = |now, path: &str| {
+            let allowed = [PathBuf::from(path)];
+            sample_inner(&connection, now, &allowed, false)
+        };
+        assert_eq!(test_sample(1000, "/work/site"), obs("main.rs"));
+        assert_eq!(test_sample(1301, "/work/site"), None);
+        // When Zed process is running, 1301s (> 300s) is still active (e.g. background/locked PC):
         assert_eq!(
-            sample(&connection, 1000, &[PathBuf::from("/work/site")]),
+            sample_inner(&connection, 1301, &[PathBuf::from("/work/site")], true),
             obs("main.rs")
         );
-        assert_eq!(
-            sample(&connection, 1301, &[PathBuf::from("/work/site")]),
-            None
-        );
-        assert_eq!(
-            sample(&connection, 1000, &[PathBuf::from("/work/other")]),
-            None
-        );
-        assert_eq!(
-            sample(&connection, 1000, &[PathBuf::from("/work")]),
-            obs("main.rs")
-        );
-        assert_eq!(sample(&connection, 1000, &[PathBuf::from("/wo")]), None);
+        assert_eq!(test_sample(1000, "/work/other"), None);
+        assert_eq!(test_sample(1000, "/work"), obs("main.rs"));
+        assert_eq!(test_sample(1000, "/wo"), None);
         connection
             .execute("UPDATE panes SET active = 0", [])
             .unwrap();
-        assert_eq!(
-            sample(&connection, 1000, &[PathBuf::from("/work/site")]),
-            obs("main.rs")
-        );
+        assert_eq!(test_sample(1000, "/work/site"), obs("main.rs"));
         connection
             .execute("UPDATE editors SET path = ?1", params![b"/work/site/.env"])
             .unwrap();
-        assert_eq!(
-            sample(&connection, 1000, &[PathBuf::from("/work/site")]),
-            None
-        );
+        assert_eq!(test_sample(1000, "/work/site"), None);
         connection
             .execute(
                 "UPDATE editors SET path = ?1",
@@ -363,11 +390,13 @@ mod tests {
         connection
             .execute("INSERT INTO items VALUES (1, 1, 9, 1, 'ProjectDiff')", [])
             .unwrap();
-        assert_eq!(
-            sample(&connection, 1000, &[PathBuf::from("/work/site")]),
-            obs(REVIEWING_CHANGES)
-        );
-        connection.execute("INSERT INTO workspaces VALUES (2, '/work/private', datetime(1001, 'unixepoch'), NULL)", []).unwrap();
+        assert_eq!(test_sample(1000, "/work/site"), obs(REVIEWING_CHANGES));
+        connection
+            .execute(
+                "INSERT INTO workspaces VALUES (2, '/work/private', datetime(1001, 'unixepoch'), NULL)",
+                [],
+            )
+            .unwrap();
         connection
             .execute("INSERT INTO panes VALUES (2, 2, 1)", [])
             .unwrap();
@@ -383,10 +412,7 @@ mod tests {
                 params![b"/work/private/key.txt"],
             )
             .unwrap();
-        assert_eq!(
-            sample(&connection, 1002, &[PathBuf::from("/work/site")]),
-            None
-        );
+        assert_eq!(test_sample(1002, "/work/site"), None);
     }
 
     #[test]

@@ -10,6 +10,7 @@ const OrgTimeline = lazy(() =>
   import('@/components/experience/org-timeline').then(module => ({ default: module.OrgTimeline }))
 );
 
+/** Deferred work timeline loaded near the viewport with server fallback. */
 export function WorkTimeline({ orgs, fallback }: { orgs: Organization[]; fallback: ReactNode }) {
   return (
     <NearWidget fallback={fallback}>

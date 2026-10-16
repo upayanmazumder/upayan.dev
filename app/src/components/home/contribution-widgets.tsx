@@ -12,6 +12,7 @@ const Total = lazy(() =>
   import('./_top/contributions/total').then(module => ({ default: module.Total }))
 );
 
+/** Deferred contribution calendar heatmap loaded near the viewport. */
 export function ContributionCalendar({ weeks }: { weeks: { days: Day[] }[] }) {
   return (
     <NearWidget
@@ -29,6 +30,7 @@ export function ContributionCalendar({ weeks }: { weeks: { days: Day[] }[] }) {
   );
 }
 
+/** Deferred animated counter for total contributions loaded near the viewport. */
 export function ContributionTotal({ value }: { value: number }) {
   return (
     <NearWidget

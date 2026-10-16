@@ -11,6 +11,7 @@ import { ContributionCalendar, ContributionTotal } from './contribution-widgets'
 
 const github = primarySocials.find(social => social.id === 'github');
 
+/** Link to the profile owner's GitHub profile. */
 function ProfileLink() {
   if (!github) return null;
   return (
@@ -27,6 +28,7 @@ function ProfileLink() {
   );
 }
 
+/** Section displaying recent GitHub contribution counts and activity calendar. */
 export async function Contributions() {
   const calendar = await fetchContributions();
 

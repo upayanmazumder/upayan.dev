@@ -8,6 +8,7 @@ const Tilt = lazy(() =>
   import('@/components/certificates/tilt').then(module => ({ default: module.Tilt }))
 );
 
+/** Renders a certificate card with interactive tilt near the viewport. */
 export function CertificateCard({ children }: { children: ReactNode }) {
   return (
     <NearWidget

@@ -15,6 +15,7 @@ interface SponsorCardProps extends PixelCardProps {
 const cardStyle =
   'group relative isolate w-full overflow-hidden rounded-[24px] border border-line bg-surface shadow-[0_24px_48px_-24px_rgba(0,0,0,0.85),0_8px_18px_-10px_rgba(0,0,0,0.6)]';
 
+/** Renders a sponsor tile with interactive pixel canvas near the viewport. */
 export function SponsorCard({ children, ...settings }: SponsorCardProps) {
   return (
     <NearWidget

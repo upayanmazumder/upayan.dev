@@ -39,6 +39,7 @@ API_URL=http://127.0.0.1:8080 pnpm dev
 The website runs at `http://127.0.0.1:3000`. `API_URL` is optional and read only on the server. Without it, the live, GitHub activity, and DevJourney sections show an unavailable state. Edit copy, projects, roles, and links in `app/src/data/`. The site deploys to Vercel. Set `API_URL` and `NEXT_PUBLIC_SITE_URL` there.
 
 The home page keeps section text and links in server-rendered HTML. Interactive widgets load near the viewport. The GitHub calendar uses a canvas. Focus it and use arrow keys to inspect daily counts. The aurora waits for idle time before it starts WebGL.
+
 ---
 
 ## Contributing

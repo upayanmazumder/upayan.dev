@@ -10,6 +10,7 @@ import { CertificateCard } from './certificate-card';
 
 const latest = [...certificates].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 6);
 
+/** Grid of recent certificate cards with tilt effect and link to all certificates. */
 export function CertificatesPreview() {
   return (
     <Section id="certificates" index="11" title="Certificates">

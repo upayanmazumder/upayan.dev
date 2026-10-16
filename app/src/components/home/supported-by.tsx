@@ -22,6 +22,7 @@ const PIXELS = {
   className: 'w-full border border-line',
 } satisfies PixelCardProps;
 
+/** Section highlighting financial sponsors with interactive cards and GitHub sponsorship link. */
 export function SupportedBy() {
   return (
     <Section id="supported-by" index="03" title="Supported by">

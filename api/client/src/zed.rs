@@ -116,9 +116,7 @@ fn parse_github_slug(config: &str) -> Option<String> {
     None
 }
 fn zed_process_running() -> bool {
-    // Checks whether zed is running on the host via /proc.
-    // When the screen is locked or running in the background, keyboard events pause
-    // but Zed is still actively running.
+    // Zed keeps its workspace open when the screen is locked or another app has focus.
     let Ok(entries) = fs::read_dir("/proc") else {
         return false;
     };
@@ -172,10 +170,8 @@ fn sample_inner(
         )
         .ok()?;
     let saved_at = u64::try_from(saved_at).ok()?;
-    // When Zed is running (even in background or with screen locked), allow up to 12 hours.
-    // When Zed is closed / not running, only allow up to MAX_GAP_SECONDS.
-    let max_gap = if running { 43_200 } else { MAX_GAP_SECONDS };
-    if now.saturating_sub(saved_at) > max_gap || saved_at > now + 30 {
+    // The database timestamp tracks workspace changes, not whether Zed remains open.
+    if !running || saved_at > now.saturating_add(30) {
         return None;
     }
     // An allowlisted directory covers itself and every workspace below it (component-wise).
@@ -258,7 +254,7 @@ fn update_session(path: &Path, observation: Option<Observation>, now: u64) -> Op
             Some(Activity {
                 workspace: current.workspace,
                 file: current.file,
-                active_seconds: now.saturating_sub(session_start).min(86_400),
+                active_seconds: now.saturating_sub(session_start),
                 last_active_at: Some(now),
                 is_active: true,
                 repo: current.repo,
@@ -271,10 +267,7 @@ fn update_session(path: &Path, observation: Option<Observation>, now: u64) -> Op
             Some(Activity {
                 workspace: prev.workspace,
                 file: prev.file,
-                active_seconds: prev
-                    .last_active_at
-                    .saturating_sub(prev.session_start)
-                    .min(86_400),
+                active_seconds: prev.last_active_at.saturating_sub(prev.session_start),
                 last_active_at: Some(prev.last_active_at),
                 is_active: false,
                 repo: prev.repo,
@@ -357,14 +350,13 @@ mod tests {
         };
         let test_sample = |now, path: &str| {
             let allowed = [PathBuf::from(path)];
-            sample_inner(&connection, now, &allowed, false)
+            sample_inner(&connection, now, &allowed, true)
         };
         assert_eq!(test_sample(1000, "/work/site"), obs("main.rs"));
-        assert_eq!(test_sample(1301, "/work/site"), None);
-        // When Zed process is running, 1301s (> 300s) is still active (e.g. background/locked PC):
+        assert_eq!(test_sample(1000 + 86_400, "/work/site"), obs("main.rs"));
         assert_eq!(
-            sample_inner(&connection, 1301, &[PathBuf::from("/work/site")], true),
-            obs("main.rs")
+            sample_inner(&connection, 1001, &[PathBuf::from("/work/site")], false),
+            None
         );
         assert_eq!(test_sample(1000, "/work/other"), None);
         assert_eq!(test_sample(1000, "/work"), obs("main.rs"));
@@ -463,6 +455,18 @@ mod tests {
         let restart = update_session(&state, obs("main.rs"), 1500).unwrap();
         assert_eq!(restart.active_seconds, 0);
         assert!(restart.is_active);
+        // A long-running editor session must not freeze at 24 hours.
+        let long_session = Session {
+            workspace: "site".into(),
+            file: "main.rs".into(),
+            session_start: 1500,
+            last_active_at: 1500 + 86_400,
+            repo: Some("owner/repo".into()),
+        };
+        fs::write(&state, serde_json::to_vec(&long_session).unwrap()).unwrap();
+        let continued = update_session(&state, obs("main.rs"), 1500 + 86_410).unwrap();
+        assert_eq!(continued.active_seconds, 86_410);
+        assert!(continued.is_active);
         fs::remove_dir_all(dir).unwrap();
     }
 }

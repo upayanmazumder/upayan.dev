@@ -6,7 +6,7 @@ This standalone Rust service reads Spotify Web API data and Discord presence thr
 
 1. Serve Spotify playback and Discord presence with isolated provider clients.
 2. Serve current Spotify playback, recent tracks, and top artists and tracks for three time ranges. Serve Discord status, public user details, active clients, activities, and linked Spotify presence.
-3. Keep credentials on the server. Limit public output to display fields. Cache Spotify for 60 seconds, Discord for 15 seconds, and GitHub contributions for 6 hours.
+3. Keep credentials on the server. Limit public output to display fields. Cache Spotify for 10 seconds, Discord for 15 seconds, and GitHub contributions for 6 hours.
 4. Return each provider independently. Do not hide failed provider requests as an offline or empty state.
 5. Accept only the selected PC health metrics through signed reports. Run the Linux client from a timer, not a resident daemon.
 6. Preserve the previous website's `/devjourney?path=...` contract.
@@ -72,11 +72,11 @@ Run `systemctl --user daemon-reload`, then `systemctl --user enable --now upayan
 
 To publish Zed activity, set `ZED_PUBLIC_WORKSPACES` in the client environment. Give it an absolute directory. The directory covers itself and every workspace below it. Separate multiple directories with colons. For example, set `ZED_PUBLIC_WORKSPACES=/home/user/dev/personal` in `~/.config/upayan-pc.env`.
 
-Choose only workspaces whose file names can appear on a public website. The client reads Zed's local SQLite database in read-only mode. It sends the workspace name, active file name, and observed session seconds. While the git diff view is the active tab, it sends "Reviewing changes" instead of a file name. It never sends full paths or file contents. It excludes hidden files. Keep the allowlist unset to keep file names private.
+Choose only workspaces whose file names can appear on a public website. The client reads Zed's local SQLite database in read-only mode. It sends the workspace name, active file name, session seconds, and GitHub repository slug when available. It never sends full paths or file contents. It excludes hidden files. Keep the allowlist unset to keep file names private.
 
-The database format is private to Zed and can change. The client omits `zed` if the database is absent or its latest workspace state is over five minutes old. It also omits `zed` if the latest workspace is not allowed or lacks an active file. Remote workspaces are not supported.
+The database format is private to Zed and can change. The client reports the last selected allowlisted workspace while the Zed process runs, even when the screen is locked or Zed is in the background. A workspace timestamp does not measure keyboard activity. When Zed closes, the client retains the last session with `is_active: false`. It also retains that session when the latest workspace is not allowed or lacks an active file. Remote workspaces are not supported.
 
-The timer measures the interval since its first observation of the same file. A file change or an observation gap over five minutes resets the interval. This estimate does not measure keyboard activity. The client stores the observation in `~/.local/state/upayan-pc/zed.json` with restricted permissions.
+The timer measures the interval since its first observation of a session. A file or workspace change does not reset the interval. An observation gap over five minutes starts a new session. The client stores the observation in `~/.local/state/upayan-pc/zed.json` with restricted permissions.
 
 ### DevJourney proxy
 
@@ -106,7 +106,7 @@ The service caches a successful calendar for 6 hours. Concurrent requests share 
 | `GET /api/stats` | `{ "spotify": ..., "discord": ..., "pc": ..., "errors": { "spotify": null, "discord": null }, "timestamp": 0 }`. Timestamp uses Unix seconds. |
 | `GET /api/stats/spotify` | `{ "data": ..., "error": null }` on success. |
 | `GET /api/stats/discord` | `{ "data": ..., "error": null }` on success. |
-| `GET /api/stats/pc` | `{ "online": false, "lastSeen": null, "stats": null }` before the first report. When enabled, `stats.zed` contains `{ "workspace": "...", "file": "...", "active_seconds": 0 }`. |
+| `GET /api/stats/pc` | `{ "online": false, "lastSeen": null, "stats": null }` before the first report. When enabled, `stats.zed` contains a workspace, file, `active_seconds`, `last_active_at`, `is_active`, and an optional GitHub `repo` slug. |
 | `POST /api/pc/report` | Requires `X-PC-ID`, `X-Timestamp`, and `X-Signature`. Returns 202 after a valid report. |
 | `GET /devjourney?path=...` | Raw GitHub contents JSON for the configured repository. |
 | `GET /api/github/contributions` | `{ "user": ..., "total": 0, "weeks": [{ "days": [{ "date": ..., "count": 0, "level": 0 }] }], "fetched_at": ... }`. |

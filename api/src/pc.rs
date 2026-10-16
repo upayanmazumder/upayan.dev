@@ -40,19 +40,14 @@ impl ZedActivity {
                 && !name
                     .chars()
                     .any(|ch| ch.is_control() || ch == '/' || ch == '\\')
-        }) && self.active_seconds <= 86_400
-            && self.repo.as_ref().is_none_or(|r| {
-                !r.is_empty()
-                    && r.len() <= 128
-                    && r.chars().all(|ch| {
-                        ch.is_ascii_alphanumeric()
-                            || ch == '-'
-                            || ch == '_'
-                            || ch == '.'
-                            || ch == '/'
-                    })
-                    && r.split('/').count() == 2
-            })
+        }) && self.repo.as_ref().is_none_or(|r| {
+            !r.is_empty()
+                && r.len() <= 128
+                && r.chars().all(|ch| {
+                    ch.is_ascii_alphanumeric() || ch == '-' || ch == '_' || ch == '.' || ch == '/'
+                })
+                && r.split('/').count() == 2
+        })
     }
 }
 
@@ -208,6 +203,6 @@ mod tests {
         assert!(!activity.valid());
         activity.file = "main.rs".into();
         activity.active_seconds = 86_401;
-        assert!(!activity.valid());
+        assert!(activity.valid());
     }
 }

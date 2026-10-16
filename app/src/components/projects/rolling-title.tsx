@@ -20,8 +20,8 @@ export function RollingTitle({ text, as: Tag = 'h3', className }: RollingTitlePr
         {Array.from(text).map((char, i) => (
           <span
             key={`${char}-${i}`}
-            style={{ transitionDelay: `${i * 22}ms` }}
-            className="relative inline-block transition-transform duration-500 ease-out-expo group-hover:-translate-y-full group-has-[:focus-visible]:-translate-y-full motion-reduce:transition-none"
+            style={{ transitionDelay: `${i * 12}ms` }}
+            className="relative inline-block transition-transform duration-300 ease-out-expo group-hover:-translate-y-full group-has-[:focus-visible]:-translate-y-full motion-reduce:transition-none"
           >
             <span className="block whitespace-pre">{char}</span>
             <span className="absolute top-full left-0 block whitespace-pre text-teal">{char}</span>

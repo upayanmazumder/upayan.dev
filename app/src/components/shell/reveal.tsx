@@ -17,13 +17,13 @@ interface RevealProps {
 
 /**
  * Reveals `[data-reveal]` descendants (or the wrapper itself if none) on scroll.
- * Elements rise from a blurred, masked state. Reduced motion skips the tween and shows content.
+ * Elements fade up a short distance once. Reduced motion skips the tween and shows content.
  */
 export function Reveal({
   as: Tag = 'div',
   className,
   children,
-  stagger = 0.08,
+  stagger = 0.05,
   start = 'top 85%',
 }: RevealProps) {
   const ref = useRef<HTMLElement>(null);
@@ -40,11 +40,9 @@ export function Reveal({
       mm.add('(prefers-reduced-motion: no-preference)', () => {
         gsap.from(targets, {
           autoAlpha: 0,
-          y: 28,
-          filter: 'blur(8px)',
-          duration: 1.1,
+          y: 12,
+          duration: 0.6,
           stagger,
-          clearProps: 'filter',
           scrollTrigger: { trigger: root, start, once: true },
         });
       });

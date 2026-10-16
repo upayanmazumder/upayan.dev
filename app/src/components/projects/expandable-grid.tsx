@@ -6,8 +6,9 @@ import { AnimatePresence, LayoutGroup, m } from 'motion/react';
 
 import { Reveal } from '@/components/shell/reveal';
 import { useLenis } from '@/components/shell/smooth-scroll';
-import { ScrollTrigger } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
+
+import { scheduleRefresh } from './schedule-refresh';
 
 interface ExpandableGridProps {
   /** Server-rendered cards, keyed by id. */
@@ -30,8 +31,8 @@ export function ExpandableGrid({ items, initial = 8 }: ExpandableGridProps) {
         else root.current.scrollIntoView({ block: 'start' });
       }
     }
-    // Page height changes; later sections' triggers must re-measure. Collapse refreshes after exits finish.
-    if (!expanded) requestAnimationFrame(() => ScrollTrigger.refresh());
+    // Expanding grows the page on commit; collapsing shrinks it only after exits, so onExitComplete refreshes.
+    if (!expanded) scheduleRefresh();
     setExpanded(!expanded);
   };
 
@@ -39,19 +40,19 @@ export function ExpandableGrid({ items, initial = 8 }: ExpandableGridProps) {
     <div ref={root} className="flex flex-col gap-4">
       <LayoutGroup>
         <Reveal as="ul" className="grid grid-cols-1 gap-2 md:grid-cols-2">
-          <AnimatePresence initial={false} onExitComplete={() => ScrollTrigger.refresh()}>
+          <AnimatePresence initial={false} onExitComplete={() => scheduleRefresh()}>
             {visible.map((item, i) => (
               <m.li
                 key={item.id}
                 layout
-                initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, filter: 'blur(6px)', transition: { duration: 0.18 } }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, transition: { duration: 0.15 } }}
                 transition={{
                   layout: { type: 'spring', stiffness: 260, damping: 30 },
                   default: {
-                    duration: 0.5,
-                    delay: i >= initial ? (i - initial) * 0.04 : 0,
+                    duration: 0.35,
+                    delay: i >= initial ? (i - initial) * 0.03 : 0,
                     ease: [0.16, 1, 0.3, 1],
                   },
                 }}

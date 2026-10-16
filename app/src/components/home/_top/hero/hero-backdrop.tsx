@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import dynamic from 'next/dynamic';
 
-import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
+import { useActive } from '@/hooks/use-active';
+import { gsap, useGSAP } from '@/lib/gsap';
 
 import { useReducedMotion } from '../use-reduced-motion';
 
@@ -14,39 +15,32 @@ const MASK =
   'radial-gradient(120% 85% at 50% 30%, black 25%, transparent 78%), linear-gradient(to bottom, black 55%, transparent)';
 
 /**
- * Teal aurora shader behind the hero only. Fades and blurs out on scroll, pauses offscreen.
- * Reduced motion keeps just the static glow.
+ * Teal aurora shader behind the hero only. Fades out on scroll; the shader runs only while the
+ * hero is on screen and the tab is visible. Reduced motion keeps just the static glow.
  */
 export function HeroBackdrop() {
   const ref = useRef<HTMLDivElement>(null);
   const shaderRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
-  const [paused, setPaused] = useState(false);
+  const active = useActive(ref, '0px');
 
   useGSAP(
     () => {
-      const root = ref.current;
       const shader = shaderRef.current;
-      const hero = root?.parentElement;
-      if (!root || !shader || !hero) return;
+      const hero = ref.current?.parentElement;
+      if (!shader || !hero) return;
 
+      // Opacity and transform only: a scrubbed blur over a full-viewport canvas repaints every frame.
       gsap.fromTo(
         shader,
-        { autoAlpha: 0.85, filter: 'blur(0px)' },
+        { autoAlpha: 0.85 },
         {
           autoAlpha: 0,
-          filter: 'blur(16px)',
-          scale: 1.06,
+          scale: 1.04,
           ease: 'none',
           scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
         }
       );
-      ScrollTrigger.create({
-        trigger: hero,
-        start: 'top bottom',
-        end: 'bottom top',
-        onToggle: self => setPaused(!self.isActive),
-      });
     },
     { scope: ref, dependencies: [reduced], revertOnUpdate: true }
   );
@@ -61,14 +55,14 @@ export function HeroBackdrop() {
       {reduced ? null : (
         <div
           ref={shaderRef}
-          className="absolute inset-0 will-change-[opacity,filter]"
+          className="absolute inset-0 will-change-[opacity,transform]"
           style={{
             maskImage: MASK,
             WebkitMaskImage: MASK,
             maskComposite: 'intersect',
           }}
         >
-          <Aurora base="#0a1716" sheen="#5fd4b4" paused={paused} className="h-full w-full" />
+          <Aurora base="#0a1716" sheen="#5fd4b4" paused={!active} className="h-full w-full" />
         </div>
       )}
     </div>

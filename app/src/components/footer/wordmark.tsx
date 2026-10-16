@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 
-import { gsap, useGSAP } from '@/lib/gsap';
+import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 
 const LETTERS = 'UPAYAN'.split('');
 
@@ -22,19 +22,20 @@ export function Wordmark() {
           scrollTrigger: {
             trigger: ref.current,
             start: 'top bottom',
-            // The wordmark sits at the page end, so `bottom 85%` can be unreachable on short
-            // viewports and leave the last letters half filled. `max` completes at full scroll.
-            end: 'max',
-            scrub: 0.6,
+            // Bounded to the stretch where the wordmark enters view. Clamped to the page end because the
+            // wordmark sits at the bottom, and a short viewport could otherwise leave the letters half filled.
+            end: self =>
+              Math.min(self.start + window.innerHeight * 0.6, ScrollTrigger.maxScroll(window)),
+            scrub: 0.5,
           },
         });
-        tl.from('[data-letter]', { yPercent: 105, stagger: 0.08, duration: 0.6 })
+        tl.from('[data-letter]', { yPercent: 105, stagger: 0.05, duration: 0.6 })
           .from(
             '[data-solid]',
-            { clipPath: 'inset(0% 0% 100% 0%)', stagger: 0.08, duration: 0.5 },
-            0.35
+            { clipPath: 'inset(0% 0% 100% 0%)', stagger: 0.05, duration: 0.5 },
+            0.3
           )
-          .from('[data-reflection]', { autoAlpha: 0, duration: 0.4 }, 0.6);
+          .from('[data-reflection]', { autoAlpha: 0, duration: 0.4 }, 0.5);
       });
     },
     { scope: ref }

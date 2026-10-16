@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -13,7 +13,6 @@ export type SpotlightCardProps = React.HTMLAttributes<HTMLDivElement> & {
   softness?: number;
   shape?: SpotlightShape;
   borderGlow?: number;
-  proximity?: number;
   smoothing?: number;
   ambient?: boolean;
   flare?: boolean;
@@ -37,7 +36,6 @@ type Settings = {
   size: number;
   intensity: number;
   borderGlow: number;
-  proximity: number;
   smoothing: number;
   ambient: boolean;
   flare: boolean;
@@ -94,12 +92,11 @@ const SpotlightCard = ({
   className = '',
   style,
   spotlightColor,
-  intensity = 0.15,
+  intensity = 0.1,
   spotlightSize = 240,
   softness = 0.7,
   shape = 'circle',
-  borderGlow = 0.6,
-  proximity = 80,
+  borderGlow = 0.45,
   smoothing = 0.3,
   ambient = false,
   flare = true,
@@ -115,27 +112,39 @@ const SpotlightCard = ({
   const palette = THEMES[theme] ?? THEMES.dark;
   const color = spotlightColor ?? palette.light;
   const form = SHAPES.includes(shape) ? shape : 'circle';
-  const settings: Settings = {
-    shape: form,
-    fill: falloff(color, softness),
-    edge: falloff(color, 1),
-    size: Math.max(20, spotlightSize),
-    intensity: clamp(intensity, 0, 1) * palette.fill,
-    borderGlow: clamp(borderGlow, 0, 1) * palette.edge,
-    proximity: Math.max(0, proximity),
-    smoothing: clamp(smoothing, 0, 1),
-    ambient,
-    flare,
-    grain: clamp(grain, 0, 1),
-  };
+  const settings = useMemo<Settings>(
+    () => ({
+      shape: form,
+      fill: falloff(color, softness),
+      edge: falloff(color, 1),
+      size: Math.max(20, spotlightSize),
+      intensity: clamp(intensity, 0, 1) * palette.fill,
+      borderGlow: clamp(borderGlow, 0, 1) * palette.edge,
+      smoothing: clamp(smoothing, 0, 1),
+      ambient,
+      flare,
+      grain: clamp(grain, 0, 1),
+    }),
+    [
+      form,
+      color,
+      softness,
+      spotlightSize,
+      intensity,
+      palette,
+      borderGlow,
+      smoothing,
+      ambient,
+      flare,
+      grain,
+    ]
+  );
   const settingsRef = useRef(settings);
+  // Repaint only when the look actually changes, not on every parent render.
   useLayoutEffect(() => {
     settingsRef.current = settings;
-  });
-
-  useEffect(() => {
     wakeRef.current?.();
-  });
+  }, [settings]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -152,7 +161,7 @@ const SpotlightCard = ({
       flare: 0,
       time: Math.random() * 60,
       pressed: false,
-      visible: true,
+      visible: false,
     };
     const pointer = { x: 0, y: 0, active: false };
     const drawn = { light: '', edge: '', noise: '' };
@@ -170,8 +179,8 @@ const SpotlightCard = ({
     };
 
     const paint = (s: Settings) => {
-      const size = s.size * (1 + 0.2 * state.flare);
-      const boost = 1 + 0.7 * state.flare;
+      const size = s.size * (1 + 0.1 * state.flare);
+      const boost = 1 + 0.35 * state.flare;
       const fill = gradient(s, size, state.x, state.y, s.fill);
       const rim = gradient(s, size * 0.6, state.x, s.shape === 'beam' ? 0 : state.y, s.edge);
       if (fill !== drawn.light) {
@@ -212,12 +221,7 @@ const SpotlightCard = ({
       } else if (pointer.active) {
         tx = pointer.x - rect.left;
         ty = pointer.y - rect.top;
-        const gap = Math.hypot(
-          Math.max(0, -tx, tx - rect.width),
-          Math.max(0, -ty, ty - rect.height)
-        );
-        if (gap === 0) target = 1;
-        else if (s.proximity > 0) target = Math.max(0, 1 - gap / s.proximity) ** 2;
+        if (tx >= 0 && ty >= 0 && tx <= rect.width && ty <= rect.height) target = 1;
       }
       if (target < 0.6 && s.ambient && state.visible) {
         if (!reduce) state.time += dt;
@@ -253,32 +257,37 @@ const SpotlightCard = ({
     };
     wakeRef.current = wake;
 
+    // Scrolling moves the card under a still pointer; only listen while the pointer is on it.
+    let tracking = false;
+    const track = (on: boolean) => {
+      if (on === tracking) return;
+      tracking = on;
+      if (on) window.addEventListener('scroll', wake, { passive: true });
+      else window.removeEventListener('scroll', wake);
+    };
+
     const onMove = (event: PointerEvent) => {
       pointer.x = event.clientX;
       pointer.y = event.clientY;
       pointer.active = true;
-      if (
-        state.presence > 0 ||
-        settingsRef.current.proximity > 0 ||
-        root.contains(event.target as Node | null)
-      )
-        wake();
+      track(true);
+      wake();
     };
-    const onOut = (event: PointerEvent) => {
-      if (event.relatedTarget) return;
+    const onLeave = () => {
       pointer.active = false;
+      state.pressed = false;
+      track(false);
       wake();
     };
     const onDown = (event: PointerEvent) => {
-      pointer.x = event.clientX;
-      pointer.y = event.clientY;
-      pointer.active = true;
+      onMove(event);
       state.pressed = true;
-      wake();
     };
     const onUp = (event: PointerEvent) => {
-      if (event.pointerType !== 'mouse') pointer.active = false;
-      if (!state.pressed && event.pointerType === 'mouse') return;
+      if (event.pointerType !== 'mouse') {
+        pointer.active = false;
+        track(false);
+      }
       state.pressed = false;
       wake();
     };
@@ -292,21 +301,28 @@ const SpotlightCard = ({
       focus = null;
       wake();
     };
-    const onScroll = () => {
-      if (pointer.active || state.presence > 0) wake();
-    };
 
-    const observer = new IntersectionObserver(entries => {
-      state.visible = entries.some(entry => entry.isIntersecting);
+    // The ambient drift is the only self-sustaining loop, so only it needs viewport and tab gating.
+    let observer: IntersectionObserver | null = null;
+    let inView = false;
+    const sync = () => {
+      state.visible = inView && !document.hidden;
       if (state.visible) wake();
-    });
-    observer.observe(root);
-    window.addEventListener('pointermove', onMove);
-    window.addEventListener('pointerup', onUp);
-    window.addEventListener('pointercancel', onUp);
-    window.addEventListener('scroll', onScroll, { capture: true, passive: true });
-    document.addEventListener('pointerout', onOut);
+    };
+    if (ambient) {
+      observer = new IntersectionObserver(entries => {
+        inView = entries.some(entry => entry.isIntersecting);
+        sync();
+      });
+      observer.observe(root);
+      document.addEventListener('visibilitychange', sync);
+    }
+    root.addEventListener('pointerenter', onMove);
+    root.addEventListener('pointermove', onMove);
+    root.addEventListener('pointerleave', onLeave);
     root.addEventListener('pointerdown', onDown);
+    root.addEventListener('pointerup', onUp);
+    root.addEventListener('pointercancel', onUp);
     root.addEventListener('focusin', onFocusIn);
     root.addEventListener('focusout', onFocusOut);
     wake();
@@ -314,18 +330,20 @@ const SpotlightCard = ({
     return () => {
       alive = false;
       cancelAnimationFrame(raf);
-      observer.disconnect();
-      window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('pointerup', onUp);
-      window.removeEventListener('pointercancel', onUp);
-      window.removeEventListener('scroll', onScroll, { capture: true });
-      document.removeEventListener('pointerout', onOut);
+      track(false);
+      observer?.disconnect();
+      document.removeEventListener('visibilitychange', sync);
+      root.removeEventListener('pointerenter', onMove);
+      root.removeEventListener('pointermove', onMove);
+      root.removeEventListener('pointerleave', onLeave);
       root.removeEventListener('pointerdown', onDown);
+      root.removeEventListener('pointerup', onUp);
+      root.removeEventListener('pointercancel', onUp);
       root.removeEventListener('focusin', onFocusIn);
       root.removeEventListener('focusout', onFocusOut);
       wakeRef.current = null;
     };
-  }, []);
+  }, [ambient]);
 
   return (
     <div

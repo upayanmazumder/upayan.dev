@@ -1,13 +1,12 @@
 'use client';
 
-import { useRef } from 'react';
 import { m } from 'motion/react';
 
 import TiltedCard from '@/components/rb/TiltedCard';
 import { BrandIcon } from '@/components/ui/brand-icon';
-import { gsap, useGSAP } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
 
+import { useReducedMotion } from '../use-reduced-motion';
 import { shortDuration } from './format';
 import { LiveTile, Scramble, TileSkeleton, TileUnavailable } from './live-tile';
 import type { LiveSpotify } from './types';
@@ -18,10 +17,12 @@ interface SpotifyTileProps {
   loading: boolean;
   /** Epoch ms when `data` arrived; progress ticks forward from here between polls. */
   receivedAt: number;
+  /** Panel on screen and tab visible; loops and the progress clock run only then. */
+  active: boolean;
   className?: string;
 }
 
-export function SpotifyTile({ data, loading, receivedAt, className }: SpotifyTileProps) {
+export function SpotifyTile({ data, loading, receivedAt, active, className }: SpotifyTileProps) {
   const track = data && data.state !== 'idle' ? data.track : null;
   const playing = data?.state === 'playing';
 
@@ -32,14 +33,14 @@ export function SpotifyTile({ data, loading, receivedAt, className }: SpotifyTil
       aside={
         playing ? (
           <span className="flex items-center gap-2 text-teal">
-            <Equalizer />
+            <Equalizer active={active} />
             Now playing
           </span>
         ) : data?.state === 'recent' ? (
           'Last played'
         ) : null
       }
-      backdrop={track?.art ? <Ambient art={track.art} playing={playing} /> : null}
+      backdrop={track?.art ? <Ambient art={track.art} spin={playing && active} /> : null}
       className={className}
     >
       {loading ? (
@@ -59,8 +60,8 @@ export function SpotifyTile({ data, loading, receivedAt, className }: SpotifyTil
                 containerWidth="100%"
                 imageHeight="100%"
                 imageWidth="100%"
-                rotateAmplitude={12}
-                scaleOnHover={1.06}
+                rotateAmplitude={6}
+                scaleOnHover={1.03}
                 showMobileWarning={false}
                 showTooltip={false}
               />
@@ -93,6 +94,7 @@ export function SpotifyTile({ data, loading, receivedAt, className }: SpotifyTil
                 progressMs={data.progressMs}
                 durationMs={track.durationMs}
                 since={receivedAt}
+                active={active}
               />
             ) : data.state === 'recent' && data.playedAt ? (
               <p className="mt-2 font-mono text-xs text-muted-foreground">
@@ -106,33 +108,16 @@ export function SpotifyTile({ data, loading, receivedAt, className }: SpotifyTil
   );
 }
 
-/** The cover, blown up and blurred, drifting slowly behind the tile while a track plays. */
-function Ambient({ art, playing }: { art: string; playing: boolean }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      if (!playing) return;
-      const mm = gsap.matchMedia();
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.to(ref.current, { rotate: 360, duration: 60, ease: 'none', repeat: -1 });
-        gsap.to(ref.current, {
-          scale: 1.9,
-          duration: 9,
-          ease: 'sine.inOut',
-          repeat: -1,
-          yoyo: true,
-        });
-      });
-    },
-    { dependencies: [playing, art], revertOnUpdate: true }
-  );
-
+/**
+ * The cover, blown up and blurred, turning slowly behind the tile while a track plays. A CSS spin on
+ * its own layer: the blur rasterises once and the compositor rotates it, paused while inactive.
+ */
+function Ambient({ art, spin }: { art: string; spin: boolean }) {
   return (
     <>
       <div
-        ref={ref}
-        className="absolute inset-[-40%] scale-150 bg-cover bg-center opacity-35 blur-3xl saturate-150"
+        data-spin={spin}
+        className="absolute inset-[-40%] scale-150 animate-spin bg-cover bg-center opacity-30 blur-2xl saturate-125 will-change-transform [animation-duration:90s] data-[spin=false]:[animation-play-state:paused] motion-reduce:animate-none"
         style={{ backgroundImage: `url("${art}")` }}
       />
       <div className="absolute inset-0 bg-linear-to-t from-surface via-surface/70 to-surface/20" />
@@ -142,7 +127,10 @@ function Ambient({ art, playing }: { art: string; playing: boolean }) {
 
 const BARS = [0.55, 1, 0.7, 0.85];
 
-function Equalizer() {
+/** Bouncing bars beside "Now playing". Static bars while the panel is inactive or motion is reduced. */
+function Equalizer({ active }: { active: boolean }) {
+  const reduced = useReducedMotion();
+  const live = active && !reduced;
   return (
     <span aria-hidden className="flex h-3 items-end gap-[2px]">
       {BARS.map((peak, i) => (
@@ -150,8 +138,12 @@ function Equalizer() {
           key={i}
           className="h-full w-[2px] origin-bottom rounded-full bg-teal"
           initial={{ scaleY: 0.3 }}
-          animate={{ scaleY: [0.3, peak, 0.45, peak * 0.8, 0.3] }}
-          transition={{ duration: 1.1 + i * 0.17, repeat: Infinity, ease: 'easeInOut' }}
+          animate={live ? { scaleY: [0.3, peak, 0.45, peak * 0.8, 0.3] } : { scaleY: peak * 0.6 }}
+          transition={
+            live
+              ? { duration: 1.4 + i * 0.17, repeat: Infinity, ease: 'easeInOut' }
+              : { duration: 0.3 }
+          }
         />
       ))}
     </span>
@@ -167,12 +159,14 @@ function Progress({
   progressMs,
   durationMs,
   since,
+  active,
 }: {
   progressMs: number;
   durationMs: number;
   since: number;
+  active: boolean;
 }) {
-  const now = useNow(since);
+  const now = useNow(since, 1000, active);
   const elapsed = Math.min(durationMs, progressMs + (now - since));
   return (
     <div className="mt-2 flex items-center gap-3 font-mono text-[0.7rem] text-muted-foreground tabular-nums">

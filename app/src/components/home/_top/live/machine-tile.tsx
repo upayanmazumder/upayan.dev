@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { Cpu } from 'lucide-react';
 
 import Counter from '@/components/rb/Counter';
-import { gsap, useGSAP } from '@/lib/gsap';
+import { gsap, prefersReducedMotion, useGSAP } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
 
 import { shortDuration } from './format';
@@ -27,10 +27,12 @@ interface MachineTileProps {
   loading: boolean;
   /** Epoch ms when `data` arrived; uptime ticks forward from here. */
   receivedAt: number;
+  /** Panel on screen and tab visible; uptime ticks and digits roll only then. */
+  active: boolean;
   className?: string;
 }
 
-export function MachineTile({ data, loading, receivedAt, className }: MachineTileProps) {
+export function MachineTile({ data, loading, receivedAt, active, className }: MachineTileProps) {
   const ramGib = data ? physicalRamGib(data.memory.total) : 0;
   const usedGib = data ? data.memory.used / GIB : 0;
 
@@ -41,7 +43,7 @@ export function MachineTile({ data, loading, receivedAt, className }: MachineTil
       aside={
         data ? (
           data.online ? (
-            <Uptime seconds={data.uptimeSeconds} since={receivedAt} />
+            <Uptime seconds={data.uptimeSeconds} since={receivedAt} active={active} />
           ) : (
             'offline'
           )
@@ -64,6 +66,7 @@ export function MachineTile({ data, loading, receivedAt, className }: MachineTil
             <Counter
               value={Math.round(data.cpuPercent)}
               places={data.cpuPercent >= 9.5 ? [10, 1] : [1]}
+              animate={active}
               fontSize={15}
               gap={0}
               horizontalPadding={0}
@@ -80,6 +83,7 @@ export function MachineTile({ data, loading, receivedAt, className }: MachineTil
             <Counter
               value={Math.round(usedGib * 10) / 10}
               places={usedGib >= 9.95 ? [10, 1, '.', 0.1] : [1, '.', 0.1]}
+              animate={active}
               fontSize={13}
               gap={0}
               horizontalPadding={0}
@@ -94,12 +98,12 @@ export function MachineTile({ data, loading, receivedAt, className }: MachineTil
   );
 }
 
-function Uptime({ seconds, since }: { seconds: number; since: number }) {
-  const now = useNow(since, 30_000);
+function Uptime({ seconds, since, active }: { seconds: number; since: number; active: boolean }) {
+  const now = useNow(since, 30_000, active);
   return <span>up {shortDuration(seconds + (now - since) / 1000)}</span>;
 }
 
-/** Radial gauge. The arc sweeps to each new reading with GSAP. */
+/** Radial gauge. The arc eases to each new reading with GSAP; reduced motion jumps straight there. */
 function Ring({
   label,
   value,
@@ -118,8 +122,8 @@ function Ring({
     () => {
       gsap.to(ref.current, {
         strokeDashoffset: CIRCUMFERENCE * (1 - clamped),
-        duration: 1.4,
-        ease: 'expo.out',
+        duration: prefersReducedMotion() ? 0 : 0.6,
+        ease: 'power3.out',
       });
     },
     { dependencies: [clamped] }

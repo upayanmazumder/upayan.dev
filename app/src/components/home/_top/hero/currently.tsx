@@ -1,30 +1,52 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, m } from 'motion/react';
+
+import { useActive } from '@/hooks/use-active';
 
 import { Decrypt } from './decrypt';
 
-const ROTATE_MS = 4000;
+const ROTATE_MS = 5000;
 
-/** Cycles through the "currently" lines with a decrypt swap. Screen readers get the full list once. */
+/**
+ * Cycles through the "currently" lines while the hero is on screen. The first line decrypts once
+ * with the intro; later swaps are a short fade. Screen readers get the full list once.
+ */
 export function Currently({ items }: { items: readonly string[] }) {
-  const [index, setIndex] = useState(0);
+  const ref = useRef<HTMLParagraphElement>(null);
+  const active = useActive(ref);
+  // Counts every swap; the item is `step % items.length`, and only step 0 decrypts.
+  const [step, setStep] = useState(0);
 
   useEffect(() => {
-    if (items.length < 2) return;
-    const id = window.setInterval(() => {
-      if (document.visibilityState === 'visible') setIndex(i => (i + 1) % items.length);
-    }, ROTATE_MS);
+    if (!active || items.length < 2) return;
+    const id = window.setInterval(() => setStep(s => s + 1), ROTATE_MS);
     return () => window.clearInterval(id);
-  }, [items.length]);
+  }, [active, items.length]);
+
+  const text = items[step % Math.max(items.length, 1)] ?? '';
 
   return (
-    <p className="flex flex-wrap items-baseline gap-x-2 text-sm text-muted-foreground md:text-base">
+    <p
+      ref={ref}
+      className="flex flex-wrap items-baseline gap-x-2 text-sm text-muted-foreground md:text-base"
+    >
       <span className="label text-teal">Currently</span>
       <span className="sr-only">{items.join('; ')}</span>
-      <span aria-hidden className="font-medium text-foreground">
-        <Decrypt key={index} text={items[index] ?? ''} />
-      </span>
+      <AnimatePresence mode="wait" initial={false}>
+        <m.span
+          key={step}
+          aria-hidden
+          className="font-medium text-foreground"
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -4 }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+        >
+          {step === 0 ? <Decrypt text={text} /> : text}
+        </m.span>
+      </AnimatePresence>
     </p>
   );
 }

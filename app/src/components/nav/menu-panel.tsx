@@ -13,10 +13,12 @@ interface MenuPanelProps {
   open: boolean;
   /** The edge tab; the flood starts from its bulge. */
   tabRef: RefObject<HTMLButtonElement | null>;
+  /** Called once the panel is fully closed, so the parent can unmount it. */
+  onClosed: () => void;
 }
 
 /** Full-screen menu. A liquid wave floods from the edge tab, then links stagger in; closing reverses it. */
-export function MenuPanel({ id, open, tabRef }: MenuPanelProps) {
+export function MenuPanel({ id, open, tabRef, onClosed }: MenuPanelProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const timeline = useRef<gsap.core.Timeline | null>(null);
 
@@ -34,10 +36,14 @@ export function MenuPanel({ id, open, tabRef }: MenuPanelProps) {
           current?.kill();
           timeline.current = null;
           gsap.set(root, { autoAlpha: 0 });
+          onClosed();
           return;
         }
-        current.eventCallback('onReverseComplete', () => gsap.set(root, { autoAlpha: 0 }));
-        current.timeScale(1.7).reverse();
+        current.eventCallback('onReverseComplete', () => {
+          gsap.set(root, { autoAlpha: 0 });
+          onClosed();
+        });
+        current.timeScale(1.6).reverse();
         return;
       }
 
@@ -71,16 +77,17 @@ export function MenuPanel({ id, open, tabRef }: MenuPanelProps) {
         return;
       }
 
+      // About 0.85s in total: the flood takes 0.4s and the links start rising before it settles.
       timeline.current = gsap
         .timeline()
         .set(paths, { attr: { d: frames.closed } })
         .set(content, { autoAlpha: 1 })
-        .set(items, { yPercent: 115 })
-        .set(fades, { opacity: 0, y: 16 })
-        .to(paths, { attr: { d: frames.wave }, duration: 0.42, ease: 'power3.in' })
-        .to(paths, { attr: { d: frames.full }, duration: 0.55, ease: 'expo.out' })
-        .to(items, { yPercent: 0, duration: 0.95, stagger: 0.06, ease: 'expo.out' }, '-=0.35')
-        .to(fades, { opacity: 1, y: 0, duration: 0.7, stagger: 0.06, ease: 'expo.out' }, '<0.2');
+        .set(items, { yPercent: 105 })
+        .set(fades, { opacity: 0, y: 12 })
+        .to(paths, { attr: { d: frames.wave }, duration: 0.16, ease: 'power2.in' })
+        .to(paths, { attr: { d: frames.full }, duration: 0.24, ease: 'power3.out' })
+        .to(items, { yPercent: 0, duration: 0.45, stagger: 0.03, ease: 'power3.out' }, '-=0.15')
+        .to(fades, { opacity: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out' }, '<0.1');
       firstLink?.focus({ preventScroll: true });
     },
     { dependencies: [open], scope: rootRef }

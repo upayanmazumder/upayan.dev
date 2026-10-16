@@ -29,7 +29,7 @@ float noise(vec2 p) {
 float fbm(vec2 p) {
   float v = 0.0;
   float a = 0.5;
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < 4; i++) {
     v += a * noise(p);
     p = p * 2.03 + vec2(1.7, 9.2);
     a *= 0.5;
@@ -83,14 +83,20 @@ interface AuroraProps {
   base: string;
   /** Ridge highlight color, hex. */
   sheen: string;
-  /** Stops the render loop while true (e.g. hero scrolled away). */
+  /** Stops the render loop and the pointer listener while true (hero offscreen or tab hidden). */
   paused: boolean;
   className?: string;
 }
 
+// The field drifts slowly, so 30 fps reads the same as 60 at half the fragment cost.
+const FRAME_MS = 1000 / 30;
+// Render scale per CSS pixel, and the cap on the longest canvas side; the image is soft and upscales cleanly.
+const RENDER_SCALE = 0.4;
+const MAX_SIDE = 800;
+
 /**
- * Full-bleed WebGL backdrop. Renders at reduced resolution (the image is soft anyway) and
- * stops drawing while paused or when the tab is hidden. Renders nothing if WebGL is unavailable.
+ * Full-bleed WebGL backdrop. Renders at reduced resolution and frame rate, and stops drawing
+ * (and listening to the pointer) while paused. Renders nothing if WebGL is unavailable.
  */
 export function Aurora({ base, sheen, paused, className }: AuroraProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -104,7 +110,12 @@ export function Aurora({ base, sheen, paused, className }: AuroraProps) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const gl = canvas?.getContext('webgl', { antialias: false, alpha: false, depth: false });
+    const gl = canvas?.getContext('webgl', {
+      antialias: false,
+      alpha: false,
+      depth: false,
+      powerPreference: 'low-power',
+    });
     if (!canvas || !gl) return;
 
     const vertex = compile(gl, gl.VERTEX_SHADER, VERTEX);
@@ -130,11 +141,11 @@ export function Aurora({ base, sheen, paused, className }: AuroraProps) {
     gl.uniform3fv(gl.getUniformLocation(program, 'uBase'), hexToRgb(base));
     gl.uniform3fv(gl.getUniformLocation(program, 'uSheen'), hexToRgb(sheen));
 
-    // Half resolution: the field is soft, and this keeps the fragment cost low on laptops.
-    const scale = Math.min(window.devicePixelRatio, 2) * 0.5;
+    const scale = Math.min(window.devicePixelRatio, 1.5) * RENDER_SCALE;
     const resize = () => {
-      canvas.width = Math.max(1, Math.round(canvas.clientWidth * scale));
-      canvas.height = Math.max(1, Math.round(canvas.clientHeight * scale));
+      const fit = Math.min(1, MAX_SIDE / Math.max(canvas.clientWidth * scale, 1));
+      canvas.width = Math.max(1, Math.round(canvas.clientWidth * scale * fit));
+      canvas.height = Math.max(1, Math.round(canvas.clientHeight * scale * fit));
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.uniform2f(uView, canvas.width, canvas.height);
     };
@@ -148,50 +159,56 @@ export function Aurora({ base, sheen, paused, className }: AuroraProps) {
       pointer.tx = (event.clientX - rect.left) / rect.width;
       pointer.ty = 1 - (event.clientY - rect.top) / rect.height;
     };
-    window.addEventListener('pointermove', onPointer, { passive: true });
 
     let frame = 0;
+    let timer = 0;
     let running = false;
     // Start mid-way so the first frame is already a developed pattern.
     let elapsed = 40;
     let last = performance.now();
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+      window.removeEventListener('pointermove', onPointer);
+    };
     const draw = (now: number) => {
-      if (pausedRef.current || document.hidden) {
-        running = false;
+      if (pausedRef.current) {
+        stop();
         return;
       }
-      elapsed += Math.min(now - last, 64) / 1000;
+      elapsed += Math.min(now - last, 100) / 1000;
       last = now;
-      pointer.x += (pointer.tx - pointer.x) * 0.04;
-      pointer.y += (pointer.ty - pointer.y) * 0.04;
+      pointer.x += (pointer.tx - pointer.x) * 0.08;
+      pointer.y += (pointer.ty - pointer.y) * 0.08;
       gl.uniform1f(uTime, elapsed);
       gl.uniform2f(uPointer, pointer.x, pointer.y);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
-      frame = requestAnimationFrame(draw);
+      // Sleep most of the frame budget, then let rAF land the next draw on a vsync (every other one at 60 Hz).
+      timer = window.setTimeout(() => {
+        frame = requestAnimationFrame(draw);
+      }, FRAME_MS - 10);
     };
     const start = () => {
-      if (running) return;
+      if (running || pausedRef.current) return;
       running = true;
       last = performance.now();
+      window.addEventListener('pointermove', onPointer, { passive: true });
       frame = requestAnimationFrame(draw);
     };
     resumeRef.current = start;
-    const onVisibility = () => {
-      if (!document.hidden) start();
-    };
-    document.addEventListener('visibilitychange', onVisibility);
     start();
 
     return () => {
-      cancelAnimationFrame(frame);
+      stop();
       resumeRef.current = null;
       observer.disconnect();
-      window.removeEventListener('pointermove', onPointer);
-      document.removeEventListener('visibilitychange', onVisibility);
       gl.deleteProgram(program);
       gl.deleteShader(vertex);
       gl.deleteShader(fragment);
       gl.deleteBuffer(buffer);
+      // Free the context slot now; browsers cap live WebGL contexts per page.
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, [base, sheen]);
 

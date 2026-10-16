@@ -3,8 +3,8 @@
 import {
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
-  useState,
   type CSSProperties,
   type FocusEvent,
   type ReactNode,
@@ -137,8 +137,9 @@ const smoothstep = (edge0: number, edge1: number, value: number) => {
   return t * t * (3 - 2 * t);
 };
 
+// Overshoot kept at 1.4 so pixels pop in without a visible bounce.
 const easeOutBack = (t: number) => {
-  const c = 1.9;
+  const c = 1.4;
   const u = t - 1;
   return 1 + (c + 1) * u * u * u + c * u * u;
 };
@@ -197,36 +198,61 @@ export default function PixelCard({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<Engine | null>(null);
   const settingsRef = useRef<Settings>(null as unknown as Settings);
-  const [active, setActive] = useState(false);
 
   const tone: Tone = theme === 'light' ? 'light' : 'dark';
   const preset = VARIANTS[variant] || VARIANTS.default;
-  const palette = colors ? toList(colors) : preset.colors[tone];
+  // A stable key, so a fresh array from the parent does not count as a settings change.
+  const colorKey = Array.isArray(colors) ? colors.join(',') : (colors ?? '');
   const focusOff = noFocus ?? preset.noFocus;
 
-  const settings: Settings = {
-    colors: palette.length ? palette : preset.colors[tone],
-    gap: Math.max(2, Number(gap ?? preset.gap) || preset.gap),
-    speed: clamp(Number(speed ?? preset.speed) || 0, 0, 100),
-    pixelSize: Math.max(0.5, pixelSize),
-    shape: SHAPES[shape] ?? 0,
+  const glowSource = glowColor || preset.glow[tone];
+  const settings = useMemo<Settings>(() => {
+    const palette = colorKey ? toList(colorKey) : preset.colors[tone];
+    return {
+      colors: palette.length ? palette : preset.colors[tone],
+      gap: Math.max(2, Number(gap ?? preset.gap) || preset.gap),
+      speed: clamp(Number(speed ?? preset.speed) || 0, 0, 100),
+      pixelSize: Math.max(0.5, pixelSize),
+      shape: SHAPES[shape] ?? 0,
+      origin,
+      revealDuration: Math.max(50, revealDuration),
+      spotlight: clamp(spotlight, 0, 1),
+      glow: clamp(glow, 0, 1),
+      glowColor: toRgb(glowSource),
+      opacity: clamp(opacity, 0, 1),
+      fade: clamp(fade, 0, 1),
+      trigger: TRIGGERS.includes(trigger) ? trigger : 'hover',
+      clickPulse,
+      intro,
+      introDelay: Math.max(0, introDelay),
+    };
+  }, [
+    colorKey,
+    preset,
+    tone,
+    gap,
+    speed,
+    pixelSize,
+    shape,
     origin,
-    revealDuration: Math.max(50, revealDuration),
-    spotlight: clamp(spotlight, 0, 1),
-    glow: clamp(glow, 0, 1),
-    glowColor: toRgb(glowColor || preset.glow[tone]),
-    opacity: clamp(opacity, 0, 1),
-    fade: clamp(fade, 0, 1),
-    trigger: TRIGGERS.includes(trigger) ? trigger : 'hover',
+    revealDuration,
+    spotlight,
+    glow,
+    glowSource,
+    opacity,
+    fade,
+    trigger,
     clickPulse,
     intro,
-    introDelay: Math.max(0, introDelay),
-  };
+    introDelay,
+  ]);
 
-  // Local change: the React Compiler forbids writing refs during render, so sync before effects run.
+  // The React Compiler forbids writing refs during render; sync here and re-arm the engine only when settings change.
   useLayoutEffect(() => {
     settingsRef.current = settings;
-  });
+    engineRef.current?.sync();
+    engineRef.current?.wake();
+  }, [settings]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -241,7 +267,7 @@ export default function PixelCard({
       raf: 0,
       last: 0,
       time: 0,
-      visible: true,
+      visible: false,
       width: 0,
       height: 0,
       ratio: 1,
@@ -343,6 +369,7 @@ export default function PixelCard({
       }
     };
 
+    // Only click mode needs to hear clicks outside the card, and only while it is open.
     const setActiveState = (value: boolean, x?: number, y?: number) => {
       if (state.active === value) return;
       const s = settingsRef.current;
@@ -354,7 +381,10 @@ export default function PixelCard({
         state.originY = usePointer ? y : state.height / 2;
       }
       schedule();
-      setActive(value);
+      // DOM attribute, not React state: this runs inside the rAF loop.
+      container.toggleAttribute('data-active', value);
+      if (value && state.mode === 'click') document.addEventListener('pointerdown', onOutside);
+      else document.removeEventListener('pointerdown', onOutside);
       wake();
     };
 
@@ -429,12 +459,12 @@ export default function PixelCard({
           }
           size *= easeOutBack(presence);
           const flash = presence < 1 && state.active ? Math.sin(presence * Math.PI) : 0;
-          size *= 1 + flash * 0.9;
-          alpha += flash * 0.6;
+          size *= 1 + flash * 0.5;
+          alpha += flash * 0.4;
           if (spotStrength > 0.001) {
             const near = smoothstep(spotRadius, 0, Math.hypot(x - state.spotX, y - state.spotY));
-            size *= 1 + spotStrength * near * near * 2.4;
-            alpha += spotStrength * near * 0.45;
+            size *= 1 + spotStrength * near * near * 1.6;
+            alpha += spotStrength * near * 0.35;
           }
           alpha = Math.min(1, alpha) * state.mask[i] * s.opacity;
           if (alpha <= 0.004) continue;
@@ -442,7 +472,7 @@ export default function PixelCard({
             const pulse = pulses[p];
             const band = (Math.hypot(x - pulse.x, y - pulse.y) - pulse.radius) / 26;
             const wave = Math.exp(-band * band) * pulse.power;
-            size *= 1 + wave * 1.4;
+            size *= 1 + wave * 0.9;
             alpha = Math.min(1, alpha + wave * 0.5);
           }
           if (size <= 0.05) continue;
@@ -625,7 +655,6 @@ export default function PixelCard({
     container.addEventListener('pointerleave', onLeave);
     container.addEventListener('pointerdown', onDown);
     container.addEventListener('keydown', onKey);
-    document.addEventListener('pointerdown', onOutside);
 
     const resizeObserver = new ResizeObserver(() => {
       build();
@@ -633,9 +662,11 @@ export default function PixelCard({
     });
     resizeObserver.observe(container);
 
+    // Frames run only while the card is on screen and the tab is visible.
     let introStarted = false;
-    const visibility = new IntersectionObserver(entries => {
-      state.visible = entries.some(entry => entry.isIntersecting);
+    let inView = false;
+    const onVisibility = () => {
+      state.visible = inView && !document.hidden;
       const s = settingsRef.current;
       if (state.visible && !introStarted && (s.trigger === 'always' || (s.intro && !reduce))) {
         introStarted = true;
@@ -643,8 +674,13 @@ export default function PixelCard({
         state.introAt = state.time + s.introDelay / 1000;
       }
       if (state.visible) wake();
+    };
+    const visibility = new IntersectionObserver(entries => {
+      inView = entries.some(entry => entry.isIntersecting);
+      onVisibility();
     });
     visibility.observe(container);
+    document.addEventListener('visibilitychange', onVisibility);
 
     engineRef.current = { onFocus, onBlur, wake, sync };
     state.mode = settingsRef.current.trigger;
@@ -661,6 +697,7 @@ export default function PixelCard({
       cancelAnimationFrame(state.raf);
       resizeObserver.disconnect();
       visibility.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
       container.removeEventListener('pointerenter', onEnter);
       container.removeEventListener('pointermove', onMove);
       container.removeEventListener('pointerleave', onLeave);
@@ -671,17 +708,11 @@ export default function PixelCard({
     };
   }, []);
 
-  useEffect(() => {
-    engineRef.current?.sync();
-    engineRef.current?.wake();
-  });
-
   return (
     <div
       ref={containerRef}
       className={`${CARD} ${SURFACE[tone]} ${className}`.trim()}
       data-theme={tone}
-      data-active={active || undefined}
       style={{ '--pixel-card-radius': `${radius}px`, ...style } as CSSProperties}
       onFocus={focusOff ? undefined : event => engineRef.current?.onFocus(event)}
       onBlur={focusOff ? undefined : event => engineRef.current?.onBlur(event)}

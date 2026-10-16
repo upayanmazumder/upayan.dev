@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import type { HTMLMotionProps } from 'motion/react';
 
 const styles = {
@@ -24,6 +24,8 @@ interface DecryptedTextProps extends HTMLMotionProps<'span'> {
   speed?: number;
   maxIterations?: number;
   sequential?: boolean;
+  /** Local change: characters revealed per tick in sequential forward mode, so long text stays short. */
+  revealPerTick?: number;
   revealDirection?: 'start' | 'end' | 'center';
   useOriginalCharsOnly?: boolean;
   characters?: string;
@@ -41,6 +43,7 @@ export default function DecryptedText({
   speed = 50,
   maxIterations = 10,
   sequential = false,
+  revealPerTick = 1,
   revealDirection = 'start',
   useOriginalCharsOnly = false,
   characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+',
@@ -186,19 +189,21 @@ export default function DecryptedText({
       }
     };
 
-    intervalRef.current = setInterval(() => {
+    // Local change: the effect owns its timer id, so a re-run can never orphan the previous interval.
+    const id = setInterval(() => {
       setRevealedIndices(prevRevealed => {
         if (sequential) {
           // Forward
           if (direction === 'forward') {
             if (prevRevealed.size < text.length) {
-              const nextIndex = getNextIndex(prevRevealed);
               const newRevealed = new Set(prevRevealed);
-              newRevealed.add(nextIndex);
+              for (let i = 0; i < revealPerTick && newRevealed.size < text.length; i++) {
+                newRevealed.add(getNextIndex(newRevealed));
+              }
               setDisplayText(shuffleText(text, newRevealed));
               return newRevealed;
             } else {
-              clearInterval(intervalRef.current ?? undefined);
+              clearInterval(id);
               setIsAnimating(false);
               setIsDecrypted(true);
               return prevRevealed;
@@ -212,13 +217,13 @@ export default function DecryptedText({
               newRevealed.delete(idxToRemove);
               setDisplayText(shuffleText(text, newRevealed));
               if (newRevealed.size === 0) {
-                clearInterval(intervalRef.current ?? undefined);
+                clearInterval(id);
                 setIsAnimating(false);
                 setIsDecrypted(false);
               }
               return newRevealed;
             } else {
-              clearInterval(intervalRef.current ?? undefined);
+              clearInterval(id);
               setIsAnimating(false);
               setIsDecrypted(false);
               return prevRevealed;
@@ -230,7 +235,7 @@ export default function DecryptedText({
             setDisplayText(shuffleText(text, prevRevealed));
             currentIteration++;
             if (currentIteration >= maxIterations) {
-              clearInterval(intervalRef.current ?? undefined);
+              clearInterval(id);
               setIsAnimating(false);
               setDisplayText(text);
               setIsDecrypted(true);
@@ -249,7 +254,7 @@ export default function DecryptedText({
             setDisplayText(shuffleText(text, nextSet));
             currentIteration++;
             if (nextSet.size === 0 || currentIteration >= maxIterations) {
-              clearInterval(intervalRef.current ?? undefined);
+              clearInterval(id);
               setIsAnimating(false);
               setIsDecrypted(false);
               // ensure final scrambled state
@@ -262,11 +267,13 @@ export default function DecryptedText({
         return prevRevealed;
       });
     }, speed);
-    return () => clearInterval(intervalRef.current ?? undefined);
+    intervalRef.current = id;
+    return () => clearInterval(id);
   }, [
     isAnimating,
     text,
     speed,
+    revealPerTick,
     maxIterations,
     sequential,
     revealDirection,
@@ -321,12 +328,16 @@ export default function DecryptedText({
   /* View Observer */
   useEffect(() => {
     if (animateOn !== 'view' && animateOn !== 'inViewHover') return;
+    // Local change: view mode plays once; never observe again after it has.
+    if (animateOn === 'view' && hasAnimated) return;
 
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+    const observerCallback = (entries: IntersectionObserverEntry[], self: IntersectionObserver) => {
       entries.forEach(entry => {
         if (entry.isIntersecting && !hasAnimated) {
           triggerDecrypt();
           setHasAnimated(true);
+          // Local change: view mode plays once, so stop observing as soon as it fires.
+          if (animateOn === 'view') self.disconnect();
         }
       });
     };
@@ -343,9 +354,7 @@ export default function DecryptedText({
       observer.observe(currentRef);
     }
 
-    return () => {
-      if (currentRef) observer.unobserve(currentRef);
-    };
+    return () => observer.disconnect();
   }, [animateOn, hasAnimated, triggerDecrypt]);
 
   // Reset when the text or mode changes (and on first render), using React's "adjust state during render" pattern.
@@ -378,7 +387,7 @@ export default function DecryptedText({
         : {};
 
   return (
-    <motion.span
+    <m.span
       ref={containerRef}
       className={`inline-block whitespace-pre-wrap ${parentClassName}`}
       {...animateProps}
@@ -432,6 +441,6 @@ export default function DecryptedText({
           });
         })()}
       </span>
-    </motion.span>
+    </m.span>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
-import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
+import { AnimatePresence, LayoutGroup, m } from 'motion/react';
 import { parseAsStringLiteral, useQueryState } from 'nuqs';
 
 import { useLenis } from '@/components/shell/smooth-scroll';
@@ -65,10 +65,10 @@ export function CertificatesGallery() {
               )}
             >
               {selected ? (
-                <motion.span
+                <m.span
                   layoutId="cert-chip"
                   className="absolute inset-0 rounded-full bg-teal"
-                  transition={{ type: 'spring', stiffness: 400, damping: 34 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
                 />
               ) : null}
               <span className="relative">{g ?? 'All'}</span>
@@ -77,13 +77,13 @@ export function CertificatesGallery() {
         })}
       </div>
 
-      <AnimatePresence mode="popLayout" initial={false}>
-        <motion.div
+      <AnimatePresence mode="wait" initial={false}>
+        <m.div
           key={group ?? 'all'}
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.35 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
           className="flex flex-col gap-12"
         >
           {sections.map(([heading, list]) => (
@@ -96,12 +96,11 @@ export function CertificatesGallery() {
               )}
               <ul className="columns-1 gap-4 sm:columns-2 md:columns-3">
                 {list.map((cert, i) => (
-                  <motion.li
+                  <m.li
                     key={cert.slug}
-                    layout
-                    initial={{ opacity: 0, scale: 0.96 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: i * 0.03 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.25, delay: Math.min(i, 8) * 0.03 }}
                     className="mb-4 break-inside-avoid"
                   >
                     <button
@@ -110,7 +109,7 @@ export function CertificatesGallery() {
                       aria-label={`Open ${cert.title}`}
                       className="group block w-full overflow-hidden rounded-xl border border-line bg-surface text-left transition-colors hover:border-line-strong focus-visible:border-teal focus-visible:outline-none"
                     >
-                      <motion.div
+                      <m.div
                         layoutId={`cert-${cert.slug}`}
                         className="overflow-hidden bg-surface-2"
                       >
@@ -122,7 +121,7 @@ export function CertificatesGallery() {
                           sizes="(min-width: 768px) 16rem, (min-width: 640px) 50vw, 100vw"
                           className="h-auto w-full transition-transform duration-500 group-hover:scale-[1.03] group-focus-visible:scale-[1.03]"
                         />
-                      </motion.div>
+                      </m.div>
                       <span className="flex flex-col gap-1 p-3">
                         <span className="font-ui text-sm font-semibold">{cert.title}</span>
                         <span className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
@@ -133,12 +132,12 @@ export function CertificatesGallery() {
                         </span>
                       </span>
                     </button>
-                  </motion.li>
+                  </m.li>
                 ))}
               </ul>
             </section>
           ))}
-        </motion.div>
+        </m.div>
       </AnimatePresence>
 
       <AnimatePresence>
@@ -211,18 +210,18 @@ function Lightbox({ list, index, onIndex, onClose }: LightboxProps) {
       onKeyDown={onKeyDown}
       className="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-10"
     >
-      <motion.div
+      <m.div
         aria-hidden
         onClick={onClose}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="absolute inset-0 bg-background/85 backdrop-blur-md"
+        className="absolute inset-0 bg-background/90 backdrop-blur-sm"
       />
       <div className="relative flex max-h-full w-full max-w-4xl flex-col gap-4">
-        <motion.div
+        <m.div
           layoutId={`cert-${cert.slug}`}
-          transition={{ type: 'spring', stiffness: 260, damping: 30 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           className="relative min-h-0 overflow-hidden rounded-xl border border-line-strong bg-surface-2"
         >
           <Image
@@ -234,8 +233,8 @@ function Lightbox({ list, index, onIndex, onClose }: LightboxProps) {
             priority
             className="mx-auto h-auto max-h-[70dvh] w-auto object-contain"
           />
-        </motion.div>
-        <motion.div
+        </m.div>
+        <m.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 8 }}
@@ -278,7 +277,7 @@ function Lightbox({ list, index, onIndex, onClose }: LightboxProps) {
               ×
             </LightboxButton>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   );

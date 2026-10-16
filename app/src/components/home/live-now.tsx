@@ -8,7 +8,7 @@ export function LiveNow() {
       id="now"
       index="02"
       title="Right now"
-      lead="What I'm listening to and doing, live."
+      lead="Live status from Spotify, Discord, my machine, and my editor."
       // The panel's outer glow reaches past the gutter on phones.
       className="overflow-x-clip"
     >

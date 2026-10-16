@@ -2,6 +2,8 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { useActive } from '@/hooks/use-active';
+
 export type LogoItem =
   | {
       node: React.ReactNode;
@@ -122,9 +124,10 @@ const useAnimationLoop = (
   targetVelocity: number,
   seqWidth: number,
   seqHeight: number,
-  isHovered: boolean,
+  hoveredRef: React.RefObject<boolean>,
   hoverSpeed: number | undefined,
-  isVertical: boolean
+  isVertical: boolean,
+  active: boolean
 ) => {
   const rafRef = useRef<number | null>(null);
   const lastTimestampRef = useRef<number | null>(null);
@@ -150,8 +153,9 @@ const useAnimationLoop = (
       track.style.transform = transformValue;
     }
 
-    if (prefersReduced) {
-      track.style.transform = isVertical ? 'translate3d(0, 0, 0)' : 'translate3d(0, 0, 0)';
+    // Offscreen or hidden tab: hold the current offset and keep no frame scheduled.
+    if (prefersReduced || !active) {
+      if (prefersReduced) track.style.transform = 'translate3d(0, 0, 0)';
       return () => {
         lastTimestampRef.current = null;
       };
@@ -165,7 +169,7 @@ const useAnimationLoop = (
       const deltaTime = Math.max(0, timestamp - lastTimestampRef.current) / 1000;
       lastTimestampRef.current = timestamp;
 
-      const target = isHovered && hoverSpeed !== undefined ? hoverSpeed : targetVelocity;
+      const target = hoveredRef.current && hoverSpeed !== undefined ? hoverSpeed : targetVelocity;
 
       const easingFactor = 1 - Math.exp(-deltaTime / ANIMATION_CONFIG.SMOOTH_TAU);
       velocityRef.current += (target - velocityRef.current) * easingFactor;
@@ -193,7 +197,7 @@ const useAnimationLoop = (
       }
       lastTimestampRef.current = null;
     };
-  }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical]);
+  }, [targetVelocity, seqWidth, seqHeight, hoverSpeed, isVertical, active, trackRef, hoveredRef]);
 };
 
 export const LogoLoop = React.memo<LogoLoopProps>(
@@ -221,7 +225,9 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     const [seqWidth, setSeqWidth] = useState<number>(0);
     const [seqHeight, setSeqHeight] = useState<number>(0);
     const [copyCount, setCopyCount] = useState<number>(ANIMATION_CONFIG.MIN_COPIES);
-    const [isHovered, setIsHovered] = useState<boolean>(false);
+    // A ref, not state: hovering only retargets the eased velocity inside the running loop.
+    const hoveredRef = useRef(false);
+    const active = useActive(containerRef);
 
     const effectiveHoverSpeed = useMemo(() => {
       if (hoverSpeed !== undefined) return hoverSpeed;
@@ -284,9 +290,10 @@ export const LogoLoop = React.memo<LogoLoopProps>(
       targetVelocity,
       seqWidth,
       seqHeight,
-      isHovered,
+      hoveredRef,
       effectiveHoverSpeed,
-      isVertical
+      isVertical,
+      active
     );
 
     const cssVariables = useMemo(
@@ -315,11 +322,11 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     );
 
     const handleMouseEnter = useCallback(() => {
-      if (effectiveHoverSpeed !== undefined) setIsHovered(true);
-    }, [effectiveHoverSpeed]);
+      hoveredRef.current = true;
+    }, []);
     const handleMouseLeave = useCallback(() => {
-      if (effectiveHoverSpeed !== undefined) setIsHovered(false);
-    }, [effectiveHoverSpeed]);
+      hoveredRef.current = false;
+    }, []);
 
     const renderLogoItem = useCallback(
       (item: LogoItem, key: React.Key) => {

@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
+import { m, useMotionValue, useSpring, useTransform } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 
@@ -11,7 +11,7 @@ const spring = { stiffness: 220, damping: 22, mass: 0.6 };
 export function Tilt({
   children,
   className,
-  amplitude = 6,
+  amplitude = 4,
 }: {
   children: ReactNode;
   className?: string;
@@ -24,7 +24,7 @@ export function Tilt({
 
   return (
     <div className={cn('[perspective:900px]', className)}>
-      <motion.div
+      <m.div
         style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
         onPointerMove={e => {
           if (e.pointerType !== 'mouse') return;
@@ -39,7 +39,7 @@ export function Tilt({
         className="h-full"
       >
         {children}
-      </motion.div>
+      </m.div>
     </div>
   );
 }

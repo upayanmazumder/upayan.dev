@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { AnimatePresence, m } from 'motion/react';
 import { toast } from 'sonner';
@@ -17,12 +17,21 @@ interface CopyButtonProps {
 
 export function CopyButton({ text, className }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>(null);
+  // Avoid setting state after unmount when navigating away mid-feedback.
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    []
+  );
 
   async function copy() {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), 1600);
     } catch {
       toast.error('Could not copy. Select the code instead.');
     }

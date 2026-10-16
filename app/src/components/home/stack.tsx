@@ -24,7 +24,12 @@ const marquee = [
 
 export function Stack() {
   return (
-    <Section id="stack" index="05" title="Stack" lead="The tools I reach for.">
+    <Section
+      id="stack"
+      index="05"
+      title="Stack"
+      lead="Languages, frameworks, and infrastructure I use in production."
+    >
       <div aria-hidden className="mb-10">
         <LogoLoop
           logos={marquee}
@@ -48,7 +53,7 @@ export function Stack() {
                 <li
                   key={item.name}
                   data-reveal
-                  className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3 py-1.5 font-ui text-sm text-foreground/90 transition-[border-color,color,box-shadow] duration-300 hover:border-teal/40 hover:text-foreground hover:shadow-[0_0_20px_-6px_var(--teal)]"
+                  className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3 py-1.5 font-ui text-sm text-foreground/90 transition-[border-color,color,box-shadow] duration-300 hover:border-teal/40 hover:text-foreground hover:shadow-[0_0_16px_-8px_var(--teal)]"
                 >
                   <BrandIcon
                     icon={item.icon}

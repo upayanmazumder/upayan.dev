@@ -22,11 +22,12 @@ export function CaseTitle({ text, className }: { text: string; className?: strin
           autoSplit: true,
           onSplit: self =>
             gsap.from(self.chars, {
-              yPercent: 115,
-              duration: 1.2,
-              stagger: 0.04,
+              yPercent: 100,
+              duration: 0.6,
+              // Long names share a 0.3s sweep so the whole title lands within ~0.9s.
+              stagger: { amount: Math.min(0.3, (self.chars.length - 1) * 0.025) },
               ease: 'expo.out',
-              delay: 0.15,
+              delay: 0.1,
             }),
         });
         return () => split.revert();

@@ -2,7 +2,10 @@
 
 import type React from 'react';
 import { useEffect } from 'react';
-import { motion, useSpring, useTransform, type MotionValue } from 'motion/react';
+import { m, useReducedMotion, useSpring, useTransform, type MotionValue } from 'motion/react';
+
+// Local change: near-critically damped, so a digit rolls into place in ~0.4s without wobbling.
+const SPRING = { stiffness: 260, damping: 32 };
 
 type PlaceValue = number | '.';
 
@@ -31,7 +34,7 @@ function DigitFace({ mv, number, height }: NumberProps) {
     justifyContent: 'center',
   };
 
-  return <motion.span style={{ ...baseStyle, y }}>{number}</motion.span>;
+  return <m.span style={{ ...baseStyle, y }}>{number}</m.span>;
 }
 
 function normalizeNearInteger(num: number): number {
@@ -49,17 +52,21 @@ interface DigitProps {
   place: PlaceValue;
   value: number;
   height: number;
+  animate: boolean;
   digitStyle?: React.CSSProperties;
 }
 
-function Digit({ place, value, height, digitStyle }: DigitProps) {
+function Digit({ place, value, height, animate, digitStyle }: DigitProps) {
   // Local change: hooks run before the decimal-point return so their order never changes.
   const valueRoundedToPlace = place === '.' ? 0 : getValueRoundedToPlace(value, place);
-  const animatedValue = useSpring(valueRoundedToPlace);
+  const animatedValue = useSpring(valueRoundedToPlace, SPRING);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
-    animatedValue.set(valueRoundedToPlace);
-  }, [animatedValue, valueRoundedToPlace]);
+    // Local change: jump instead of rolling while offscreen or under reduced motion.
+    if (animate && !reduced) animatedValue.set(valueRoundedToPlace);
+    else animatedValue.jump(valueRoundedToPlace);
+  }, [animatedValue, valueRoundedToPlace, animate, reduced]);
 
   // Decimal point digit
   if (place === '.') {
@@ -96,6 +103,8 @@ interface CounterProps {
   value: number;
   fontSize?: number;
   padding?: number;
+  /** Local change: roll digits to new values; `false` jumps (e.g. while offscreen). Default true. */
+  animate?: boolean;
   /**
    * An array of place values that determines which digit positions
    * should be displayed. For decimal places, use "." to represent
@@ -120,6 +129,7 @@ interface CounterProps {
 
 export default function Counter({
   value,
+  animate = true,
   fontSize = 100,
   padding = 0,
   places = [...value.toString()].map((ch, i, a) => {
@@ -196,7 +206,14 @@ export default function Counter({
     <span style={{ ...defaultContainerStyle, ...containerStyle }}>
       <span style={{ ...defaultCounterStyle, ...counterStyle }}>
         {places.map(place => (
-          <Digit key={place} place={place} value={value} height={height} digitStyle={digitStyle} />
+          <Digit
+            key={place}
+            place={place}
+            value={value}
+            height={height}
+            animate={animate}
+            digitStyle={digitStyle}
+          />
         ))}
       </span>
       <span style={gradientContainerStyle}>

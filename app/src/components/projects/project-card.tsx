@@ -19,8 +19,8 @@ export function ProjectCard({ project }: { project: Project }) {
   return (
     <SpotlightCard
       spotlightColor="var(--teal)"
-      intensity={0.1}
-      borderGlow={0.4}
+      intensity={0.07}
+      borderGlow={0.3}
       spotlightSize={180}
       className="group flex h-full items-center gap-3 rounded-xl px-3.5 py-3"
       style={surface}

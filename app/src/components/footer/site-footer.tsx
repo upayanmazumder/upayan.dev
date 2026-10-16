@@ -48,7 +48,7 @@ export function SiteFooter() {
             <FooterClock />
             <span className="flex items-center gap-2 font-ui text-xs text-muted-foreground">
               <span aria-hidden className="relative flex size-2">
-                <span className="absolute inset-0 animate-ping rounded-full bg-teal/60 motion-reduce:hidden" />
+                <span className="absolute inset-0 animate-ping rounded-full bg-teal/60 motion-reduce:animate-none" />
                 <span className="relative size-2 rounded-full bg-teal" />
               </span>
               {profile.status}

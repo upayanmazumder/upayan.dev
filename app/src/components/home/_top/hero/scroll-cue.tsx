@@ -5,12 +5,13 @@ import { useRef, type MouseEvent } from 'react';
 import { useLenis } from '@/components/shell/smooth-scroll';
 import { gsap, prefersReducedMotion, SplitText, useGSAP } from '@/lib/gsap';
 
-const DELAY_S = 3;
+const DELAY_S = 1.6;
 const TEXT = 'scroll';
 
 /**
- * Quiet hint at the bottom of the hero. It waits 3 s, then the letters drift in one by one and a
- * soft shimmer runs across them. It fades away for good once the visitor starts scrolling.
+ * Quiet hint at the bottom of the hero. After the intro the letters fade in and a single soft
+ * shimmer passes over them; the tick keeps dripping until the visitor scrolls, then the hint
+ * fades away and its loop is killed for good.
  */
 export function ScrollCue() {
   const lenis = useLenis();
@@ -24,9 +25,21 @@ export function ScrollCue() {
       const tick = root.querySelector('[data-tick]');
       if (!word || !tick) return;
 
+      // Only loop in the cue; killed once the hint hides so nothing runs after the user scrolls past.
+      let drip: gsap.core.Tween | null = null;
+
       // contextSafe records tweens made after setup, so unmount reverts them with the rest.
       const hide = contextSafe(() => {
-        gsap.to(root, { autoAlpha: 0, y: 6, duration: 0.6, ease: 'power2.out' });
+        gsap.to(root, {
+          autoAlpha: 0,
+          y: 6,
+          duration: 0.4,
+          ease: 'power2.out',
+          onComplete: () => {
+            drip?.kill();
+            drip = null;
+          },
+        });
       });
       const onScroll = () => {
         if (window.scrollY > 40) {
@@ -58,32 +71,38 @@ export function ScrollCue() {
         })
         .from(split.chars, {
           autoAlpha: 0,
-          y: 8,
-          filter: 'blur(4px)',
-          stagger: 0.07,
-          duration: 0.8,
-          ease: 'expo.out',
+          y: 6,
+          stagger: 0.04,
+          duration: 0.5,
+          ease: 'power3.out',
         })
-        .from(tick, { scaleY: 0, transformOrigin: 'top', duration: 0.6, ease: 'expo.out' }, '-=0.4')
+        .from(
+          tick,
+          { scaleY: 0, transformOrigin: 'top', duration: 0.5, ease: 'power3.out' },
+          '-=0.3'
+        )
+        .to(split.chars, {
+          color: 'var(--teal)',
+          stagger: { each: 0.05, yoyo: true, repeat: 1 },
+          duration: 0.3,
+          ease: 'sine.inOut',
+        })
         .add(
           contextSafe(() => {
-            // Idle loop: a shimmer passes over the letters while the tick drips downward.
-            gsap.to(split.chars, {
-              color: 'var(--teal)',
-              stagger: { each: 0.08, repeat: -1, yoyo: true, repeatDelay: 1.6 },
-              duration: 0.5,
-              ease: 'sine.inOut',
-            });
-            gsap.fromTo(
+            // rAF stops in hidden tabs, so this loop also idles while the tab is in the background.
+            drip = gsap.fromTo(
               tick,
               { yPercent: -100 },
-              { yPercent: 100, duration: 1.6, ease: 'power2.inOut', repeat: -1, repeatDelay: 0.6 }
+              { yPercent: 100, duration: 1.8, ease: 'power2.inOut', repeat: -1, repeatDelay: 1.2 }
             );
             window.addEventListener('scroll', onScroll, { passive: true });
+            // The visitor may have scrolled during the intro; hide at once instead of waiting.
+            onScroll();
           })
         );
       return () => {
         tl.kill();
+        drip?.kill();
         split.revert();
         window.removeEventListener('scroll', onScroll);
       };

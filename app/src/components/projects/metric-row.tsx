@@ -19,7 +19,7 @@ export function MetricRow({ metrics, className, size = 'md' }: MetricRowProps) {
           <dd
             className={cn(
               'font-mono leading-none font-medium tracking-tight text-foreground tabular-nums',
-              size === 'lg' ? 'text-5xl md:text-6xl' : 'text-3xl md:text-4xl'
+              size === 'lg' ? 'text-4xl md:text-5xl' : 'text-3xl md:text-4xl'
             )}
           >
             <span className="sr-only">
@@ -27,7 +27,7 @@ export function MetricRow({ metrics, className, size = 'md' }: MetricRowProps) {
               {metric.suffix}
             </span>
             <span aria-hidden>
-              <CountUp to={metric.value} duration={1.6} />
+              <CountUp to={metric.value} duration={1} />
               {metric.suffix ? <span className="text-teal">{metric.suffix}</span> : null}
             </span>
           </dd>

@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  memo,
   useMemo,
   useRef,
   useState,
@@ -33,6 +34,33 @@ interface HeatmapProps {
   weeks: { days: Day[] }[];
 }
 
+interface CellsProps {
+  slots: (Day | null)[];
+  firstSlot: number;
+  focusSlot: number;
+}
+
+// Memoised so hovering (which moves the tooltip) does not re-render ~365 cells.
+const Cells = memo(function Cells({ slots, firstSlot, focusSlot }: CellsProps) {
+  return slots.map((day, slot) =>
+    slot < firstSlot ? null : day ? (
+      <span
+        key={day.date}
+        data-slot={slot}
+        role="img"
+        aria-label={describeDay(day)}
+        tabIndex={slot === focusSlot ? 0 : -1}
+        className={cn(
+          'rounded-[2px] outline-offset-1 transition-[filter] hover:brightness-150 focus-visible:outline-1',
+          LEVEL_CLASS[day.level]
+        )}
+      />
+    ) : (
+      <span key={`empty-${slot}`} aria-hidden />
+    )
+  );
+});
+
 /** Year grid, newest week on the right. Cells fill column by column on scroll-in; hover or arrow keys show the day. */
 export function Heatmap({ weeks }: HeatmapProps) {
   const { slots, weekCount, months } = useMemo(() => layoutCalendar(weeks), [weeks]);
@@ -49,13 +77,14 @@ export function Heatmap({ weeks }: HeatmapProps) {
       if (!grid) return;
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
+        // Total sweep stays under ~0.8s: 53 columns x 7ms + 6 rows x 10ms + 0.35s per cell.
         gsap.from(grid.querySelectorAll<HTMLElement>('[data-slot]'), {
-          scale: 0,
+          scale: 0.5,
           autoAlpha: 0,
-          duration: 0.55,
-          ease: 'back.out(2.2)',
+          duration: 0.35,
+          ease: 'power2.out',
           stagger: (_: number, el: HTMLElement) =>
-            Math.floor(Number(el.dataset.slot) / 7) * 0.016 + (Number(el.dataset.slot) % 7) * 0.02,
+            Math.floor(Number(el.dataset.slot) / 7) * 0.007 + (Number(el.dataset.slot) % 7) * 0.01,
           scrollTrigger: { trigger: grid, start: 'top 85%', once: true },
         });
       });
@@ -65,6 +94,7 @@ export function Heatmap({ weeks }: HeatmapProps) {
 
   const showFor = (el: HTMLElement) => {
     const slot = Number(el.dataset.slot);
+    if (tip?.slot === slot) return;
     setTip({ slot, x: el.offsetLeft + cell / 2, y: el.offsetTop });
   };
 
@@ -142,23 +172,7 @@ export function Heatmap({ weeks }: HeatmapProps) {
             onBlur={() => setTip(null)}
             onKeyDown={onKeyDown}
           >
-            {slots.map((day, slot) =>
-              slot < firstSlot ? null : day ? (
-                <span
-                  key={day.date}
-                  data-slot={slot}
-                  role="img"
-                  aria-label={describeDay(day)}
-                  tabIndex={slot === focusSlot ? 0 : -1}
-                  className={cn(
-                    'rounded-[2px] outline-offset-1 transition-[filter] hover:brightness-150 focus-visible:outline-1',
-                    LEVEL_CLASS[day.level]
-                  )}
-                />
-              ) : (
-                <span key={`empty-${slot}`} aria-hidden />
-              )
-            )}
+            <Cells slots={slots} firstSlot={firstSlot} focusSlot={focusSlot} />
           </div>
           {tip && tipDay ? (
             <div

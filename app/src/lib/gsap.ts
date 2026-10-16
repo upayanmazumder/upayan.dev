@@ -7,7 +7,7 @@ import { SplitText } from 'gsap/SplitText';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
-gsap.defaults({ ease: 'expo.out', duration: 1 });
+gsap.defaults({ ease: 'power3.out', duration: 0.6 });
 
 export const prefersReducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

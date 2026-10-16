@@ -13,7 +13,7 @@ export function SplitHeading({ text, className }: { text: string; className?: st
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
         const split = SplitText.create(ref.current!, { type: 'chars', mask: 'chars' });
-        gsap.from(split.chars, { yPercent: 110, duration: 1.1, stagger: 0.035, ease: 'expo.out' });
+        gsap.from(split.chars, { yPercent: 100, duration: 0.6, stagger: 0.02, ease: 'expo.out' });
         return () => split.revert();
       });
     },

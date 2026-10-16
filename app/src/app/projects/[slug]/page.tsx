@@ -82,7 +82,7 @@ export default async function ProjectPage({ params }: Props) {
           {project.org ? ' · ' : null}
           {formatPeriod(project.period.start, project.period.end)}
         </p>
-        <CaseTitle text={project.name} className="text-5xl font-semibold md:text-7xl" />
+        <CaseTitle text={project.name} className="text-4xl font-semibold md:text-6xl" />
         <p className="max-w-prose text-lg text-muted-foreground md:text-xl">{project.summary}</p>
       </header>
 

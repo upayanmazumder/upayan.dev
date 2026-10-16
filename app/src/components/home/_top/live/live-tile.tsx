@@ -19,16 +19,16 @@ interface LiveTileProps {
 /** Bento tile for the live section. The border glows toward the pointer (React Bits BorderGlow). */
 export function LiveTile({ label, icon, aside, backdrop, className, children }: LiveTileProps) {
   return (
-    <article data-tile className={cn('min-w-0 [transform-style:preserve-3d]', className)}>
+    <article data-tile className={cn('min-w-0', className)}>
       <BorderGlow
         backgroundColor="var(--surface)"
         borderRadius={16}
         glowColor="165 55 55"
         colors={['#6fd8bd', '#3fbfa0', '#c6f6e6']}
-        glowRadius={24}
-        glowIntensity={0.6}
+        glowRadius={20}
+        glowIntensity={0.4}
         edgeSensitivity={25}
-        fillOpacity={0.25}
+        fillOpacity={0.15}
         className="h-full w-full"
       >
         <div className="relative isolate flex h-full flex-col gap-3 overflow-hidden rounded-[15px] p-4">
@@ -82,7 +82,7 @@ export function TileSkeleton({ lines = 2 }: { lines?: number }) {
   );
 }
 
-/** Live value that scrambles into place on arrival and again whenever it changes. */
+/** Live value that scrambles into place once on first view; later polls swap the text in plainly. */
 export function Scramble({ text, className }: { text: string; className?: string }) {
-  return <Decrypt key={text} text={text} className={className} />;
+  return <Decrypt text={text} className={className} />;
 }

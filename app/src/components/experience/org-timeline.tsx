@@ -1,7 +1,7 @@
 'use client';
 
 import { useId, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, m } from 'motion/react';
 
 import { Logo } from '@/components/ui/brand-icon';
 import type { Organization, Role } from '@/data/types';
@@ -49,16 +49,16 @@ export function OrgTimeline({ orgs }: { orgs: Organization[] }) {
           }
           gsap.from(nodes, {
             scale: 0,
-            duration: 0.7,
-            ease: 'back.out(3)',
-            stagger: 0.12,
+            duration: 0.4,
+            ease: 'back.out(1.4)',
+            stagger: 0.05,
             scrollTrigger: { trigger: org, start: 'top 78%', once: true },
           });
           gsap.from(roles, {
             autoAlpha: 0,
-            x: -12,
-            duration: 0.9,
-            stagger: 0.12,
+            x: -8,
+            duration: 0.45,
+            stagger: 0.05,
             scrollTrigger: { trigger: org, start: 'top 78%', once: true },
           });
         });
@@ -145,7 +145,7 @@ function RoleItem({ role, defaultOpen }: { role: Role; defaultOpen: boolean }) {
         {current ? (
           <>
             <span className="absolute inset-0 rounded-full bg-teal" />
-            <span className="absolute inset-0 animate-ping rounded-full bg-teal/60 motion-reduce:hidden" />
+            <span className="absolute inset-0 animate-ping rounded-full bg-teal/30 [animation-duration:2.5s] motion-reduce:hidden motion-reduce:animate-none" />
           </>
         ) : null}
       </span>
@@ -177,16 +177,16 @@ function RoleItem({ role, defaultOpen }: { role: Role; defaultOpen: boolean }) {
         <div id={panelId}>
           <AnimatePresence initial={false}>
             {open ? (
-              <motion.div
+              <m.div
                 key="points"
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ type: 'spring', stiffness: 260, damping: 32 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
                 className="overflow-hidden"
               >
                 <Points points={role.points!} />
-              </motion.div>
+              </m.div>
             ) : (
               // Hidden once JS runs; stays readable without JS.
               <div key="nojs" className="hidden [html:not(.js)_&]:block">

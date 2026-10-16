@@ -8,6 +8,7 @@ import { AnimatePresence, m } from 'motion/react';
 import { BrandIcon } from '@/components/ui/brand-icon';
 import { profile } from '@/data/profile';
 import { useCopyEmail } from '@/hooks/use-copy-email';
+import { EASE } from '@/lib/motion';
 import { useUiStore } from '@/stores/ui-store';
 
 import { paletteGroups } from './palette-entries';
@@ -55,7 +56,7 @@ export function CommandPalette({ open, id, ref }: CommandPaletteProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.18 }}
         >
           <div
             aria-hidden
@@ -69,10 +70,10 @@ export function CommandPalette({ open, id, ref }: CommandPaletteProps) {
             aria-modal="true"
             aria-label="Command palette"
             className="relative w-full max-w-xl overflow-hidden rounded-xl border border-line-strong bg-surface-2 shadow-2xl shadow-black/60"
-            initial={{ opacity: 0, scale: 0.94, y: -8, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 0.97, y: -4, filter: 'blur(6px)' }}
-            transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: EASE.out }}
           >
             <Command label="Command palette" loop className="flex max-h-[min(32rem,70vh)] flex-col">
               <div className="flex items-center gap-3 border-b border-line px-4">

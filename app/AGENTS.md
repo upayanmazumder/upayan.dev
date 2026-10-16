@@ -233,11 +233,21 @@ Dark mode is class-based (`@custom-variant dark (&:is(.dark *))`). `next-themes`
 
 ## Motion
 
-All animation components use `LazyMotion + domAnimation` (tree-shaken, ~16 kB). Use the `m.*` namespace; never import from `motion/*` directly in components.
+`MotionProvider` wraps the app with `LazyMotion features={loadFeatures} strict` plus `MotionConfig reducedMotion="user"`. The features module (`components/motion/features.ts`) re-exports `domMax` and is loaded lazily, so the layout and gesture code stays out of the initial chunk. `strict` mode throws at runtime if any component renders `motion.*` elements. Use `m.*` (`m.div`, `m.span`, etc.) instead. Hooks like `useSpring`, `useMotionValue`, `useTransform`, `useInView`, and wrapper components like `AnimatePresence` and `LayoutGroup` are unaffected.
 
-Shared variants and transition presets live in `src/lib/motion.ts` — add new ones there, not inline in components.
+Shared variants and transition presets live in `src/lib/motion.ts`. Add new ones there, not inline.
 
----
+Import brand icons through `src/components/ui/brand-paths.ts` (curated named imports from `simple-icons`). Never `import * as` from `simple-icons`.
+
+### Activity gating
+
+Loops, intervals, rAF callbacks, pointer listeners, and polling must stop when offscreen or the tab is hidden. Use the hooks in `src/hooks/use-active.ts`:
+
+- `usePageVisible()` — true when `document.visibilityState` is `'visible'`.
+- `useInViewport(ref, rootMargin?)` — true when the element is near the viewport (default 200 px margin).
+- `useActive(ref, rootMargin?)` — both conditions combined.
+
+For GSAP infinite tweens, pause and resume the tween or timeline rather than recreating it. `useNow(since, intervalMs, enabled)` in `components/home/_top/live/use-now.ts` already accepts an `enabled` flag driven by `useActive`.
 
 ## Testing
 

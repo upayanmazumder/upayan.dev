@@ -35,10 +35,11 @@ export function ProjectCover({ project, className, size = 'card', priority }: Pr
       </span>
       <div
         data-cover-zoom
-        className="absolute inset-0 flex items-center justify-center transition-transform duration-700 ease-out-expo"
+        className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out-expo"
       >
         <span className="relative">
-          <span className="absolute inset-0 -z-10 scale-150 rounded-full bg-teal/20 blur-3xl" />
+          {/* A radial gradient in place of a blur-3xl layer: same halo, no blur re-raster while the cover zooms. */}
+          <span className="absolute -inset-[125%] -z-10 bg-[radial-gradient(closest-side,color-mix(in_oklab,var(--teal)_13%,transparent),color-mix(in_oklab,var(--teal)_6%,transparent)_45%,transparent)]" />
           <Image
             src={encodeURI(project.image)}
             alt=""

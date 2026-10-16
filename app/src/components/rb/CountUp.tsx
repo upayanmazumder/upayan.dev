@@ -1,7 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
-import { useInView, useMotionValue, useSpring } from 'motion/react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useInView } from 'motion/react';
 
 interface CountUpProps {
   to: number;
@@ -21,7 +21,7 @@ export default function CountUp({
   from = 0,
   direction = 'up',
   delay = 0,
-  duration = 2,
+  duration = 1,
   className = '',
   startWhen = true,
   separator = '',
@@ -29,15 +29,6 @@ export default function CountUp({
   onEnd,
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const motionValue = useMotionValue(direction === 'down' ? to : from);
-
-  const damping = 20 + 40 * (1 / duration);
-  const stiffness = 100 * (1 / duration);
-
-  const springValue = useSpring(motionValue, {
-    damping,
-    stiffness,
-  });
 
   const isInView = useInView(ref, { once: true, margin: '0px' });
 
@@ -54,21 +45,22 @@ export default function CountUp({
 
   const maxDecimals = Math.max(getDecimalPlaces(from), getDecimalPlaces(to));
 
+  const formatter = useMemo(
+    () =>
+      new Intl.NumberFormat('en-US', {
+        useGrouping: !!separator,
+        minimumFractionDigits: maxDecimals,
+        maximumFractionDigits: maxDecimals,
+      }),
+    [maxDecimals, separator]
+  );
+
   const formatValue = useCallback(
     (latest: number) => {
-      const hasDecimals = maxDecimals > 0;
-
-      const options: Intl.NumberFormatOptions = {
-        useGrouping: !!separator,
-        minimumFractionDigits: hasDecimals ? maxDecimals : 0,
-        maximumFractionDigits: hasDecimals ? maxDecimals : 0,
-      };
-
-      const formattedNumber = Intl.NumberFormat('en-US', options).format(latest);
-
+      const formattedNumber = formatter.format(latest);
       return separator ? formattedNumber.replace(/,/g, separator) : formattedNumber;
     },
-    [maxDecimals, separator]
+    [formatter, separator]
   );
 
   useEffect(() => {
@@ -77,41 +69,34 @@ export default function CountUp({
     }
   }, [from, to, direction, formatValue]);
 
+  // A fixed-length ease-out tween: unlike a spring it ends exactly at `duration` with no long tail.
   useEffect(() => {
-    if (isInView && startWhen) {
-      if (typeof onStart === 'function') {
-        onStart();
-      }
+    const el = ref.current;
+    if (!el || !isInView || !startWhen) return;
+    const start = direction === 'down' ? to : from;
+    const end = direction === 'down' ? from : to;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let raf = 0;
+    let startedAt = 0;
 
-      const timeoutId = setTimeout(() => {
-        motionValue.set(direction === 'down' ? from : to);
-      }, delay * 1000);
+    const step = (now: number) => {
+      startedAt ||= now;
+      const progress = reduce ? 1 : Math.min(1, (now - startedAt) / (duration * 1000));
+      el.textContent = formatValue(start + (end - start) * (1 - (1 - progress) ** 3));
+      if (progress < 1) raf = requestAnimationFrame(step);
+      else onEnd?.();
+    };
 
-      const durationTimeoutId = setTimeout(
-        () => {
-          if (typeof onEnd === 'function') {
-            onEnd();
-          }
-        },
-        delay * 1000 + duration * 1000
-      );
+    onStart?.();
+    const timeoutId = setTimeout(() => {
+      raf = requestAnimationFrame(step);
+    }, delay * 1000);
 
-      return () => {
-        clearTimeout(timeoutId);
-        clearTimeout(durationTimeoutId);
-      };
-    }
-  }, [isInView, startWhen, motionValue, direction, from, to, delay, onStart, onEnd, duration]);
-
-  useEffect(() => {
-    const unsubscribe = springValue.on('change', (latest: number) => {
-      if (ref.current) {
-        ref.current.textContent = formatValue(latest);
-      }
-    });
-
-    return () => unsubscribe();
-  }, [springValue, formatValue]);
+    return () => {
+      clearTimeout(timeoutId);
+      cancelAnimationFrame(raf);
+    };
+  }, [isInView, startWhen, direction, from, to, delay, onStart, onEnd, duration, formatValue]);
 
   return <span className={className} ref={ref} />;
 }

@@ -1,13 +1,12 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 import { useUiStore, type Overlay } from '@/stores/ui-store';
 
-import { CommandPalette } from './command-palette';
 import { EdgeTab } from './edge-tab';
-import { MenuPanel } from './menu-panel';
+import { CommandPalette, MenuPanel, preloadPalette } from './lazy-overlays';
 import { TopMark } from './top-mark';
 import { useOverlayLock } from './use-overlay-lock';
 
@@ -20,18 +19,29 @@ export function SiteNav() {
   const toggle = useUiStore(state => state.toggle);
   const close = useUiStore(state => state.close);
   const pathname = usePathname();
+  const menuOpen = overlay === 'menu';
+  const paletteOpen = overlay === 'palette';
+
+  // The menu stays mounted from open until its close animation reports back, then its whole subtree goes.
+  const [menuMounted, setMenuMounted] = useState(menuOpen);
+  if (menuOpen && !menuMounted) setMenuMounted(true);
+  // The palette renders nothing while closed (AnimatePresence handles its exit), so once loaded it can stay.
+  const [paletteLoaded, setPaletteLoaded] = useState(paletteOpen);
+  if (paletteOpen && !paletteLoaded) setPaletteLoaded(true);
 
   const rootRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const paletteRef = useRef<HTMLDivElement>(null);
   const tabRef = useRef<HTMLButtonElement>(null);
 
-  useOverlayLock(overlay === 'menu', rootRef, menuRef);
-  useOverlayLock(overlay === 'palette', rootRef, paletteRef);
+  useOverlayLock(menuOpen, rootRef, menuRef);
+  useOverlayLock(paletteOpen, rootRef, paletteRef);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      // Holding the modifier is intent for Cmd/Ctrl+K: fetch the palette before K lands.
+      if (event.key === 'Meta' || event.key === 'Control') preloadPalette();
+      else if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault();
         toggle('palette');
       } else if (event.key === 'Escape' && useUiStore.getState().overlay) {
@@ -74,21 +84,24 @@ export function SiteNav() {
 
   return (
     <div ref={rootRef} data-site-nav>
-      <TopMark
-        paletteOpen={overlay === 'palette'}
-        paletteId={PALETTE_ID}
-        covered={overlay === 'menu'}
-      />
+      <TopMark paletteOpen={paletteOpen} paletteId={PALETTE_ID} covered={menuOpen} />
       <div ref={menuRef}>
-        <MenuPanel id={MENU_ID} open={overlay === 'menu'} tabRef={tabRef} />
+        {menuMounted && (
+          <MenuPanel
+            id={MENU_ID}
+            open={menuOpen}
+            tabRef={tabRef}
+            onClosed={() => setMenuMounted(false)}
+          />
+        )}
         <EdgeTab
           ref={tabRef}
-          open={overlay === 'menu'}
-          controls={MENU_ID}
+          open={menuOpen}
+          controls={menuMounted ? MENU_ID : undefined}
           onToggle={() => toggle('menu')}
         />
       </div>
-      <CommandPalette ref={paletteRef} id={PALETTE_ID} open={overlay === 'palette'} />
+      {paletteLoaded && <CommandPalette ref={paletteRef} id={PALETTE_ID} open={paletteOpen} />}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { m, useMotionValue, useSpring, useTransform } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 
+import { preloadMenu } from './lazy-overlays';
 import { tabPath } from './liquid-path';
 import { useMediaQuery } from './use-media-query';
 import { useWindowHeight } from './use-window-height';
@@ -16,13 +17,14 @@ const REACH = 220;
 const FOLLOW = 300;
 
 const SHAPES = {
-  desktop: { depth: 30, half: 72, swell: 24, stretch: 40, inset: 24 },
+  desktop: { depth: 30, half: 72, swell: 16, stretch: 24, inset: 24 },
   compact: { depth: 22, half: 46, swell: 0, stretch: 0, inset: 76 },
 };
 
 interface EdgeTabProps {
   open: boolean;
-  controls: string;
+  /** Id of the menu panel, while it is mounted. */
+  controls?: string;
   onToggle: () => void;
   ref?: Ref<HTMLButtonElement>;
 }
@@ -39,10 +41,10 @@ export function EdgeTab({ open, controls, onToggle, ref }: EdgeTabProps) {
   const targetDepth = useMotionValue(shape.depth);
   const targetHalf = useMotionValue(shape.half);
   // The base lags behind the tip, which stretches the bulge toward the cursor like a drop of liquid.
-  const baseY = useSpring(targetY, { stiffness: 130, damping: 20, mass: 0.9 });
-  const tipY = useSpring(targetY, { stiffness: 320, damping: 26 });
-  const depth = useSpring(targetDepth, { stiffness: 260, damping: 17 });
-  const half = useSpring(targetHalf, { stiffness: 220, damping: 20 });
+  const baseY = useSpring(targetY, { stiffness: 120, damping: 22, mass: 0.9 });
+  const tipY = useSpring(targetY, { stiffness: 260, damping: 28 });
+  const depth = useSpring(targetDepth, { stiffness: 240, damping: 24 });
+  const half = useSpring(targetHalf, { stiffness: 200, damping: 24 });
 
   const d = useTransform([baseY, tipY, depth, half], ([b, t, dp, h]: number[]) =>
     tabPath(STRIP, b!, t!, dp!, h!)
@@ -66,25 +68,34 @@ export function EdgeTab({ open, controls, onToggle, ref }: EdgeTabProps) {
   useEffect(() => {
     if (!height || compact || !finePointer || open) return;
     const margin = shape.half + shape.stretch + 16;
-    const onMove = (event: PointerEvent) => {
-      const fromEdge = window.innerWidth - event.clientX;
-      const near = Math.min(Math.max(1 - fromEdge / REACH, 0), 1);
-      targetDepth.set(shape.depth + near * shape.swell);
-      targetHalf.set(shape.half + near * shape.stretch);
-      targetY.set(
-        fromEdge < FOLLOW ? Math.min(Math.max(event.clientY, margin), height - margin) : restY
-      );
-    };
-    const onLeave = () => {
+    // Far from the edge the targets sit at rest, so moves there return early and never wake the springs.
+    // Starts unsettled so the first far move resets a bulge left over from before the menu opened.
+    let resting = false;
+    const rest = () => {
+      resting = true;
       targetDepth.set(shape.depth);
       targetHalf.set(shape.half);
       targetY.set(restY);
     };
+    const onMove = (event: PointerEvent) => {
+      const fromEdge = window.innerWidth - event.clientX;
+      if (fromEdge >= FOLLOW) {
+        if (!resting) rest();
+        return;
+      }
+      resting = false;
+      // Close to the edge is intent to open: fetch the menu before the click.
+      if (fromEdge < REACH) preloadMenu();
+      const near = Math.min(Math.max(1 - fromEdge / REACH, 0), 1);
+      targetDepth.set(shape.depth + near * shape.swell);
+      targetHalf.set(shape.half + near * shape.stretch);
+      targetY.set(Math.min(Math.max(event.clientY, margin), height - margin));
+    };
     window.addEventListener('pointermove', onMove, { passive: true });
-    document.documentElement.addEventListener('pointerleave', onLeave);
+    document.documentElement.addEventListener('pointerleave', rest);
     return () => {
       window.removeEventListener('pointermove', onMove);
-      document.documentElement.removeEventListener('pointerleave', onLeave);
+      document.documentElement.removeEventListener('pointerleave', rest);
     };
   }, [height, compact, finePointer, open, restY, shape, targetY, targetDepth, targetHalf]);
 
@@ -96,7 +107,7 @@ export function EdgeTab({ open, controls, onToggle, ref }: EdgeTabProps) {
   return (
     <div
       className={cn(
-        'pointer-events-none fixed inset-y-0 right-0 z-60 transition-opacity duration-500',
+        'pointer-events-none fixed inset-y-0 right-0 z-60 transition-opacity duration-300',
         height ? 'opacity-100' : 'opacity-0'
       )}
       style={{ width: STRIP }}
@@ -104,7 +115,7 @@ export function EdgeTab({ open, controls, onToggle, ref }: EdgeTabProps) {
       {height > 0 && (
         <svg
           aria-hidden
-          className="absolute inset-0 h-full w-full overflow-visible drop-shadow-[0_0_18px_var(--teal-dim)]"
+          className="absolute inset-0 h-full w-full overflow-visible drop-shadow-[0_0_8px_var(--teal-dim)]"
           viewBox={`0 0 ${STRIP} ${height}`}
           preserveAspectRatio="none"
         >
@@ -118,7 +129,11 @@ export function EdgeTab({ open, controls, onToggle, ref }: EdgeTabProps) {
         aria-expanded={open}
         aria-controls={controls}
         onClick={onToggle}
-        onFocus={() => swell(true)}
+        onPointerEnter={preloadMenu}
+        onFocus={() => {
+          preloadMenu();
+          swell(true);
+        }}
         onBlur={() => swell(false)}
         className={cn(
           'pointer-events-auto absolute top-0 right-0 cursor-pointer rounded-l-full text-foreground outline-offset-[-6px] transition-colors hover:text-teal focus-visible:text-teal',

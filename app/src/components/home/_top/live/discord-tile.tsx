@@ -1,9 +1,4 @@
-'use client';
-
-import { useRef } from 'react';
-
 import { BrandIcon } from '@/components/ui/brand-icon';
-import { gsap, useGSAP } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
 
 import { LiveTile, Scramble, TileSkeleton, TileUnavailable } from './live-tile';
@@ -19,10 +14,12 @@ const STATUS: Record<DiscordStatus, { label: string; dot: string; ring: string }
 interface DiscordTileProps {
   data: LiveDiscord | null | undefined;
   loading: boolean;
+  /** Panel on screen and tab visible; the status ripple runs only then. */
+  active: boolean;
   className?: string;
 }
 
-export function DiscordTile({ data, loading, className }: DiscordTileProps) {
+export function DiscordTile({ data, loading, active, className }: DiscordTileProps) {
   const status = data ? STATUS[data.status] : null;
 
   return (
@@ -37,7 +34,7 @@ export function DiscordTile({ data, loading, className }: DiscordTileProps) {
         <TileUnavailable what="Discord" />
       ) : (
         <div className="mt-auto flex items-center gap-4">
-          <Orb dot={status.dot} ring={status.ring} pulse={data.status !== 'offline'} />
+          <Orb dot={status.dot} ring={status.ring} pulse={data.status !== 'offline' && active} />
           <div className="flex min-w-0 flex-col gap-0.5">
             <Scramble text={status.label} className="font-ui text-lg font-semibold" />
             <p className="truncate text-xs text-muted-foreground">
@@ -57,39 +54,19 @@ export function DiscordTile({ data, loading, className }: DiscordTileProps) {
   );
 }
 
-/** Status dot with rings that ripple outward while the account is active. */
+/** Status dot with one slow ripple while the account is active. A compositor-only CSS ping. */
 function Orb({ dot, ring, pulse }: { dot: string; ring: string; pulse: boolean }) {
-  const ref = useRef<HTMLSpanElement>(null);
-
-  useGSAP(
-    () => {
-      if (!pulse) return;
-      const mm = gsap.matchMedia();
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.fromTo(
-          '[data-ring]',
-          { scale: 0.6, autoAlpha: 0.7 },
-          { scale: 1.8, autoAlpha: 0, duration: 2.4, ease: 'power2.out', stagger: 0.8, repeat: -1 }
-        );
-      });
-    },
-    { scope: ref, dependencies: [pulse], revertOnUpdate: true }
-  );
-
   return (
-    <span
-      ref={ref}
-      aria-hidden
-      className="relative ml-2 flex size-10 shrink-0 items-center justify-center"
-    >
-      {[0, 1, 2].map(i => (
+    <span aria-hidden className="relative ml-2 flex size-10 shrink-0 items-center justify-center">
+      {pulse ? (
         <span
-          key={i}
-          data-ring
-          className={cn('absolute inset-0 rounded-full border opacity-0', ring)}
+          className={cn(
+            'absolute inset-1 animate-ping rounded-full border opacity-60 [animation-duration:2.8s] motion-reduce:hidden',
+            ring
+          )}
         />
-      ))}
-      <span className={cn('relative size-4 rounded-full shadow-[0_0_16px_currentColor]', dot)} />
+      ) : null}
+      <span className={cn('relative size-4 rounded-full shadow-[0_0_12px_currentColor]', dot)} />
     </span>
   );
 }

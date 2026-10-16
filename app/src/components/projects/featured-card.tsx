@@ -29,14 +29,14 @@ export function FeaturedCard({ project, index, className }: FeaturedCardProps) {
     <article
       data-stack-card
       className={cn(
-        'group relative flex origin-top flex-col overflow-hidden rounded-xl border border-line bg-surface transition-colors duration-500 hover:border-line-strong',
+        'group relative flex origin-top flex-col overflow-hidden rounded-xl border border-line bg-surface transition-colors duration-300 hover:border-line-strong',
         className
       )}
     >
       <Link
         href={href}
         aria-label={`Read the ${project.name} case study`}
-        className="group/cover relative block aspect-[16/9] overflow-hidden outline-none md:aspect-auto md:min-h-0 md:flex-1 [&_[data-cover-zoom]]:group-hover:scale-[1.06] [&_[data-cover-zoom]]:group-focus-visible/cover:scale-[1.06]"
+        className="group/cover relative block aspect-[16/9] overflow-hidden outline-none md:aspect-auto md:min-h-0 md:flex-1 [&_[data-cover-zoom]]:group-hover:scale-[1.03] [&_[data-cover-zoom]]:group-focus-visible/cover:scale-[1.03]"
         {...handlers}
       >
         <ProjectCover project={project} className="absolute inset-0" />
@@ -48,7 +48,7 @@ export function FeaturedCard({ project, index, className }: FeaturedCardProps) {
           style={{ x, y }}
           className="pointer-events-none absolute top-0 left-0 z-10 [@media(hover:none)]:hidden"
         >
-          <span className="flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-full bg-teal px-4 py-2 font-ui text-xs font-semibold whitespace-nowrap text-background shadow-lg shadow-black/40 transition-[clip-path] duration-500 ease-out-expo [clip-path:circle(0%_at_50%_50%)] group-hover/cover:[clip-path:circle(75%_at_50%_50%)] group-focus-visible/cover:[clip-path:circle(75%_at_50%_50%)]">
+          <span className="flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-full bg-teal px-4 py-2 font-ui text-xs font-semibold whitespace-nowrap text-background shadow-lg shadow-black/40 transition-[clip-path] duration-300 ease-out-expo [clip-path:circle(0%_at_50%_50%)] group-hover/cover:[clip-path:circle(75%_at_50%_50%)] group-focus-visible/cover:[clip-path:circle(75%_at_50%_50%)]">
             View case study
             <ArrowRight className="size-3.5" />
           </span>

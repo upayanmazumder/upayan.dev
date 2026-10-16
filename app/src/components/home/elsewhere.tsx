@@ -17,7 +17,7 @@ export function Elsewhere() {
               href={s.href}
               target="_blank"
               rel="noreferrer"
-              className="group flex items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3 transition-[transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-line-strong focus-visible:-translate-y-0.5 focus-visible:border-teal focus-visible:outline-none"
+              className="group flex items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3 transition-[transform,border-color] duration-200 hover:-translate-y-px hover:border-line-strong focus-visible:-translate-y-px focus-visible:border-teal focus-visible:outline-none"
             >
               <BrandIcon
                 icon={s.icon}

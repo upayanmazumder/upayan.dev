@@ -73,7 +73,7 @@ export function SupportedBy() {
         >
           <Heart
             aria-hidden
-            className="size-3.5 fill-current text-teal transition-transform duration-300 group-hover:scale-125 motion-reduce:transition-none"
+            className="size-3.5 fill-current text-teal transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none"
           />
           Sponsor me on GitHub
           <ArrowUpRight

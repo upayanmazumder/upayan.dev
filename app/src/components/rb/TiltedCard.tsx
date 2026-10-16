@@ -1,8 +1,8 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import type { SpringOptions } from 'motion/react';
-import { motion, useMotionValue, useSpring } from 'motion/react';
+import { m, useMotionValue, useSpring } from 'motion/react';
 
 interface TiltedCardProps {
   imageSrc: React.ComponentProps<'img'>['src'];
@@ -20,10 +20,11 @@ interface TiltedCardProps {
   displayOverlayContent?: boolean;
 }
 
+// Local change: lighter and stiffer than upstream, so the tilt settles within ~300ms.
 const springValues: SpringOptions = {
-  damping: 30,
-  stiffness: 100,
-  mass: 2,
+  damping: 26,
+  stiffness: 220,
+  mass: 1,
 };
 
 export default function TiltedCard({
@@ -34,8 +35,8 @@ export default function TiltedCard({
   containerWidth = '100%',
   imageHeight = '300px',
   imageWidth = '300px',
-  scaleOnHover = 1.1,
-  rotateAmplitude = 14,
+  scaleOnHover = 1.03,
+  rotateAmplitude = 6,
   showMobileWarning = true,
   showTooltip = true,
   overlayContent = null,
@@ -54,7 +55,8 @@ export default function TiltedCard({
     mass: 1,
   });
 
-  const [lastY, setLastY] = useState(0);
+  // Local change: a ref, not state; the caption velocity must not re-render the card on every move.
+  const lastY = useRef(0);
 
   function handleMouse(e: React.MouseEvent<HTMLElement>) {
     if (!ref.current) return;
@@ -72,9 +74,9 @@ export default function TiltedCard({
     x.set(e.clientX - rect.left);
     y.set(e.clientY - rect.top);
 
-    const velocityY = offsetY - lastY;
+    const velocityY = offsetY - lastY.current;
     rotateFigcaption.set(-velocityY * 0.6);
-    setLastY(offsetY);
+    lastY.current = offsetY;
   }
 
   function handleMouseEnter() {
@@ -108,7 +110,7 @@ export default function TiltedCard({
         </div>
       )}
 
-      <motion.div
+      <m.div
         className="relative [transform-style:preserve-3d]"
         style={{
           width: imageWidth,
@@ -118,7 +120,7 @@ export default function TiltedCard({
           scale,
         }}
       >
-        <motion.img
+        <m.img
           src={imageSrc}
           alt={altText}
           className="absolute top-0 left-0 [transform:translateZ(0)] rounded-[15px] object-cover will-change-transform"
@@ -129,14 +131,14 @@ export default function TiltedCard({
         />
 
         {displayOverlayContent && overlayContent && (
-          <motion.div className="absolute top-0 left-0 z-[2] [transform:translateZ(30px)] will-change-transform">
+          <m.div className="absolute top-0 left-0 z-[2] [transform:translateZ(30px)] will-change-transform">
             {overlayContent}
-          </motion.div>
+          </m.div>
         )}
-      </motion.div>
+      </m.div>
 
       {showTooltip && (
-        <motion.figcaption
+        <m.figcaption
           className="pointer-events-none absolute top-0 left-0 z-[3] hidden rounded-[4px] bg-white px-[10px] py-[4px] text-[10px] text-[#2d2d2d] opacity-0 sm:block"
           style={{
             x,
@@ -146,7 +148,7 @@ export default function TiltedCard({
           }}
         >
           {captionText}
-        </motion.figcaption>
+        </m.figcaption>
       )}
     </figure>
   );

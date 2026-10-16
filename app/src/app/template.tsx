@@ -28,7 +28,7 @@ export default function Template({ children }: { children: ReactNode }) {
       const scrolled = Math.max(0, -page.getBoundingClientRect().top);
       gsap
         .timeline({
-          defaults: { duration: 0.62, ease: 'expo.inOut' },
+          defaults: { duration: 0.45, ease: 'power3.inOut' },
           onComplete: () => {
             pendingWipe = null;
           },
@@ -39,7 +39,7 @@ export default function Template({ children }: { children: ReactNode }) {
           { clipPath: `inset(${scrolled}px 0px 0px 0px)`, clearProps: 'clipPath' }
         )
         .fromTo(edgeRef.current, { y: height, autoAlpha: 1 }, { y: 0 }, 0)
-        .to(edgeRef.current, { autoAlpha: 0, duration: 0.2, ease: 'power1.out' });
+        .to(edgeRef.current, { autoAlpha: 0, duration: 0.15, ease: 'power1.out' });
     },
     { dependencies: [pathname] }
   );
@@ -50,7 +50,7 @@ export default function Template({ children }: { children: ReactNode }) {
       <div
         ref={edgeRef}
         aria-hidden
-        className="pointer-events-none invisible fixed inset-x-0 top-0 z-30 h-px bg-teal shadow-[0_0_24px_2px_var(--teal)]"
+        className="pointer-events-none invisible fixed inset-x-0 top-0 z-30 h-px bg-teal/80 shadow-[0_0_10px_var(--teal-dim)]"
       />
     </>
   );

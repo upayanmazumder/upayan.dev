@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 
+import { useActive } from '@/hooks/use-active';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
 
@@ -14,14 +15,16 @@ import { ZedTile } from './zed-tile';
 
 /**
  * Bento of live tiles: Spotify and Discord on top, the machine and the Zed editor below.
- * Polling starts once the hero has settled. When the section scrolls in, the tiles rise and
- * unfold in 3D one after another (GSAP). Every tile's border glows toward the pointer.
- * A failed poll keeps the last good data; with no data at all the tiles read unavailable.
+ * The first poll starts once the hero has settled; after that it polls only while the panel is
+ * within a screen of the viewport. Clocks and loops inside the tiles run only while it is on
+ * screen. A failed poll keeps the last good data; with no data at all the tiles read unavailable.
  */
 export function LivePanel({ className }: { className?: string }) {
   const started = useAfterIntro();
   const ref = useRef<HTMLDivElement>(null);
-  const { data, isPending, isError, dataUpdatedAt } = useLive(started);
+  const near = useActive(ref, '100% 0px');
+  const active = useActive(ref);
+  const { data, isPending, isError, dataUpdatedAt } = useLive(started, near);
   const loading = isPending && !isError;
 
   useGSAP(
@@ -30,17 +33,12 @@ export function LivePanel({ className }: { className?: string }) {
       mm.add('(prefers-reduced-motion: no-preference)', () => {
         gsap.from('[data-tile]', {
           autoAlpha: 0,
-          y: 40,
-          rotateX: -12,
-          scale: 0.97,
-          filter: 'blur(8px)',
-          transformPerspective: 900,
-          transformOrigin: '50% 100%',
-          duration: 1.1,
-          ease: 'expo.out',
-          stagger: 0.1,
-          clearProps: 'filter,transform',
-          scrollTrigger: { trigger: ref.current, start: 'top 80%', once: true },
+          y: 16,
+          duration: 0.6,
+          ease: 'power3.out',
+          stagger: 0.05,
+          clearProps: 'transform',
+          scrollTrigger: { trigger: ref.current, start: 'top 85%', once: true },
         });
       });
     },
@@ -53,19 +51,27 @@ export function LivePanel({ className }: { className?: string }) {
         data={data?.spotify}
         loading={loading}
         receivedAt={dataUpdatedAt}
+        active={active}
         className="md:col-span-4"
       />
-      <DiscordTile data={data?.discord} loading={loading} className="md:col-span-2" />
+      <DiscordTile
+        data={data?.discord}
+        loading={loading}
+        active={active}
+        className="md:col-span-2"
+      />
       <MachineTile
         data={data?.pc}
         loading={loading}
         receivedAt={dataUpdatedAt}
+        active={active}
         className="md:col-span-2"
       />
       <ZedTile
         pc={data?.pc}
         loading={loading}
         receivedAt={dataUpdatedAt}
+        active={active}
         className="md:col-span-4"
       />
     </div>

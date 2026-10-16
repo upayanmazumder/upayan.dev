@@ -30,7 +30,7 @@ export function OpenSource() {
               />
               <span
                 aria-hidden
-                className="pointer-events-none absolute inset-x-0 -bottom-px h-px origin-left scale-x-0 bg-teal transition-transform duration-700 ease-out-expo group-hover:scale-x-100 group-focus-visible:scale-x-100"
+                className="pointer-events-none absolute inset-x-0 -bottom-px h-px origin-left scale-x-0 bg-teal transition-transform duration-300 ease-out-expo group-hover:scale-x-100 group-focus-visible:scale-x-100"
               />
             </a>
           </li>

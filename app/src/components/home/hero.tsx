@@ -11,6 +11,7 @@ import { Decrypt } from './_top/hero/decrypt';
 import { HeroBackdrop } from './_top/hero/hero-backdrop';
 import { HeroMeta } from './_top/hero/hero-meta';
 import { MagneticLink } from './_top/hero/magnetic-link';
+import { PortraitRing } from './_top/hero/portrait-ring';
 import { ScrollCue } from './_top/hero/scroll-cue';
 
 /** Characters of one name line, each delayed by its position across the whole name. */
@@ -51,10 +52,7 @@ export function Hero() {
       <div className="column flex flex-1 flex-col justify-center gap-6 pt-24 pb-28 sm:gap-7 md:pt-28 md:pb-36">
         <div className="flex items-center gap-5">
           <div className="intro-photo relative size-20 shrink-0 overflow-hidden rounded-2xl p-px md:size-24">
-            <span
-              aria-hidden
-              className="absolute -inset-1/2 animate-spin bg-[conic-gradient(from_0deg,transparent_0deg,var(--teal)_70deg,transparent_140deg)] opacity-80 [animation-duration:9s] motion-reduce:animate-none"
-            />
+            <PortraitRing />
             <span aria-hidden className="absolute inset-0 rounded-2xl border border-line-strong" />
             <Image
               src={profile.photo}
@@ -70,7 +68,7 @@ export function Hero() {
           </span>
         </div>
 
-        <h1 className="font-name text-[clamp(3.25rem,12vw,6.25rem)] leading-[0.88] font-extrabold tracking-[-0.045em]">
+        <h1 className="font-name text-[clamp(2.75rem,10vw,5.25rem)] leading-[0.88] font-extrabold tracking-[-0.04em]">
           <span className="sr-only">{profile.name}</span>
           <NameLine text={first} offset={0} />
           <NameLine text={last} offset={first.length} className="text-muted-foreground" />

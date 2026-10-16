@@ -4,7 +4,7 @@ export const profile = {
   name: 'Upayan Mazumder',
   firstName: 'Upayan',
   role: 'Full-stack & platform engineer',
-  sentence: 'I build web tools people actually use.',
+  sentence: 'I build web products and the infrastructure that runs them.',
   currently: ['Junior Software Engineer at 797th LLC'],
   status: 'Open to internships',
   location: 'India',

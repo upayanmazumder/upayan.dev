@@ -25,6 +25,19 @@ interface Mark {
 
 const maxScroll = () => Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
 
+/** Brightens the rail. Written to the DOM directly so scrolling never re-renders React. */
+function markBusy(root: HTMLElement, busy: boolean) {
+  const value = String(busy);
+  if (root.dataset.busy !== value) root.dataset.busy = value;
+}
+
+function sameMarks(a: Mark[], b: Mark[]) {
+  return (
+    a.length === b.length &&
+    a.every((mark, i) => mark.id === b[i]!.id && Math.abs(mark.at - b[i]!.at) < 0.001)
+  );
+}
+
 /**
  * Custom scrollbar on the left edge; the right edge belongs to the liquid nav tab.
  * A teal thumb tracks progress and stretches with scroll velocity. Dots mark each section,
@@ -34,87 +47,90 @@ const maxScroll = () => Math.max(1, document.documentElement.scrollHeight - wind
 export function ScrollRail() {
   const lenis = useLenis();
   const pathname = usePathname();
+  const rootRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
   const [marks, setMarks] = useState<Mark[]>([]);
   const [active, setActive] = useState<string | null>(null);
   const [scrollable, setScrollable] = useState(false);
-  const [busy, setBusy] = useState(false);
   const dragging = useRef<{ offset: number } | null>(null);
 
-  // Measure section positions; re-measure when the page height changes (expand, lazy content).
+  // Layout is measured on resize and cached, so a scroll frame only does arithmetic and a transform write.
+  // React state changes only when the section in view or the measured marks actually change.
   useEffect(() => {
-    const measure = () => {
-      const max = maxScroll();
-      setScrollable(document.documentElement.scrollHeight > window.innerHeight + 4);
-      setMarks(
-        [...document.querySelectorAll<HTMLElement>('main section[id]')]
-          .filter(el => LABELS.has(el.id))
-          .map(el => ({
-            id: el.id,
-            label: LABELS.get(el.id)!,
-            at: Math.min(1, (el.getBoundingClientRect().top + window.scrollY) / max),
-          }))
-      );
-    };
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(document.body);
-    window.addEventListener('resize', measure);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('resize', measure);
-    };
-  }, [pathname]);
-
-  // Per-frame thumb motion runs outside React through GSAP setters.
-  useEffect(() => {
+    const root = rootRef.current;
     const rail = railRef.current;
     const thumb = thumbRef.current;
-    if (!rail || !thumb) return;
+    if (!root || !rail || !thumb) return;
     const reduced = prefersReducedMotion();
     const setY = gsap.quickSetter(thumb, 'y', 'px');
     // Only the pill stretches; the label beside it keeps its shape.
     const pill = thumb.querySelector('[data-pill]');
-    const stretch = gsap.quickTo(pill, 'scaleY', { duration: 0.5, ease: 'power3.out' });
+    const stretch = gsap.quickTo(pill, 'scaleY', { duration: 0.4, ease: 'power3.out' });
+    let max = 1;
+    let track = 0;
+    let size = MIN_THUMB;
+    let sections: { id: string; top: number }[] = [];
+    let current: string | null = null;
     let idle = 0;
 
     const update = (velocity = 0) => {
-      const track = rail.clientHeight;
-      const ratio = window.innerHeight / document.documentElement.scrollHeight;
-      const size = Math.max(MIN_THUMB, track * ratio);
-      thumb.style.height = `${size}px`;
-      const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll()));
+      const progress = Math.min(1, Math.max(0, window.scrollY / max));
       setY(progress * (track - size));
-      if (!reduced) stretch(1 + Math.min(0.6, Math.abs(velocity) / 60));
+      if (!reduced) stretch(1 + Math.min(0.4, Math.abs(velocity) / 60));
 
       const probe = window.scrollY + window.innerHeight * 0.35;
-      let current: string | null = null;
-      for (const el of document.querySelectorAll<HTMLElement>('main section[id]')) {
-        if (LABELS.has(el.id) && el.getBoundingClientRect().top + window.scrollY <= probe) {
-          current = el.id;
-        }
+      let next: string | null = null;
+      for (const section of sections) if (section.top <= probe) next = section.id;
+      if (next !== current) {
+        current = next;
+        setActive(next);
       }
-      setActive(current);
-      setBusy(true);
+    };
+
+    const measure = () => {
+      const doc = document.documentElement;
+      max = maxScroll();
+      track = rail.clientHeight;
+      size = Math.max(MIN_THUMB, (track * window.innerHeight) / doc.scrollHeight);
+      thumb.style.height = `${size}px`;
+      sections = [...document.querySelectorAll<HTMLElement>('main section[id]')]
+        .filter(el => LABELS.has(el.id))
+        .map(el => ({ id: el.id, top: el.getBoundingClientRect().top + window.scrollY }));
+      const nextMarks = sections.map(section => ({
+        id: section.id,
+        label: LABELS.get(section.id)!,
+        at: Math.min(1, section.top / max),
+      }));
+      setMarks(previous => (sameMarks(previous, nextMarks) ? previous : nextMarks));
+      setScrollable(doc.scrollHeight > window.innerHeight + 4);
+      update();
+    };
+
+    const onScroll = (velocity = 0) => {
+      update(velocity);
+      markBusy(root, true);
       window.clearTimeout(idle);
       idle = window.setTimeout(() => {
-        if (!dragging.current) setBusy(false);
+        if (!dragging.current) markBusy(root, false);
         stretch(1);
       }, IDLE_MS);
     };
+    const onLenis = (instance: { velocity: number }) => onScroll(instance.velocity);
+    const onWindow = () => onScroll();
 
-    const onLenis = (instance: { velocity: number }) => update(instance.velocity);
-    const onWindow = () => update();
+    measure();
+    // Re-measure when the page height changes (expand, lazy content) or the viewport resizes.
+    const observer = new ResizeObserver(measure);
+    observer.observe(document.body);
+    window.addEventListener('resize', measure);
     if (lenis) lenis.on('scroll', onLenis);
     else window.addEventListener('scroll', onWindow, { passive: true });
-    window.addEventListener('resize', onWindow);
-    update();
-    setBusy(false);
     return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
       if (lenis) lenis.off('scroll', onLenis);
       else window.removeEventListener('scroll', onWindow);
-      window.removeEventListener('resize', onWindow);
       window.clearTimeout(idle);
     };
   }, [lenis, pathname]);
@@ -138,7 +154,7 @@ export function ScrollRail() {
     event.stopPropagation();
     event.currentTarget.setPointerCapture(event.pointerId);
     dragging.current = { offset: event.clientY - event.currentTarget.getBoundingClientRect().top };
-    setBusy(true);
+    if (rootRef.current) markBusy(rootRef.current, true);
   };
   const onThumbMove = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (!dragging.current) return;
@@ -146,6 +162,7 @@ export function ScrollRail() {
   };
   const onThumbUp = () => {
     dragging.current = null;
+    if (rootRef.current) markBusy(rootRef.current, false);
   };
   const onTrackDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     const thumb = thumbRef.current!;
@@ -156,8 +173,8 @@ export function ScrollRail() {
 
   return (
     <div
+      ref={rootRef}
       aria-hidden
-      data-busy={busy}
       className={cn(
         'group/rail fixed top-24 bottom-24 left-2 z-30 w-5 transition-opacity duration-500 max-lg:hidden pointer-coarse:pointer-events-none',
         scrollable ? 'opacity-100' : 'pointer-events-none opacity-0'

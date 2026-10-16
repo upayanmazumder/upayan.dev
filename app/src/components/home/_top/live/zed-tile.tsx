@@ -13,10 +13,12 @@ interface ZedTileProps {
   loading: boolean;
   /** Epoch ms when `pc` arrived; the session timer ticks forward from here. */
   receivedAt: number;
+  /** Panel on screen and tab visible; the session timer and caret run only then. */
+  active: boolean;
   className?: string;
 }
 
-export function ZedTile({ pc, loading, receivedAt, className }: ZedTileProps) {
+export function ZedTile({ pc, loading, receivedAt, active, className }: ZedTileProps) {
   const zed = pc?.online ? pc.zed : null;
 
   return (
@@ -38,31 +40,39 @@ export function ZedTile({ pc, loading, receivedAt, className }: ZedTileProps) {
               <Scramble text={zed.file} className="truncate" />
               <span
                 aria-hidden
-                className="ml-1 inline-block h-5 w-[2px] shrink-0 animate-pulse bg-teal motion-reduce:animate-none"
+                data-active={active}
+                className="ml-1 inline-block h-5 w-[2px] shrink-0 animate-pulse bg-teal data-[active=false]:animate-none motion-reduce:animate-none"
               />
             </p>
             <p className="truncate text-sm text-muted-foreground">
               in <span className="text-foreground/85">{zed.workspace}</span>
             </p>
           </div>
-          <Session activeSeconds={zed.activeSeconds} lastSeen={pc.lastSeen} since={receivedAt} />
+          <Session
+            activeSeconds={zed.activeSeconds}
+            lastSeen={pc.lastSeen}
+            since={receivedAt}
+            active={active}
+          />
         </div>
       )}
     </LiveTile>
   );
 }
 
-/** Session timer with rolling digits (React Bits Counter), ticking every second. */
+/** Session timer with rolling digits (React Bits Counter), ticking every second while active. */
 function Session({
   activeSeconds,
   lastSeen,
   since,
+  active,
 }: {
   activeSeconds: number;
   lastSeen: number;
   since: number;
+  active: boolean;
 }) {
-  const now = useNow(since);
+  const now = useNow(since, 1000, active);
   // `activeSeconds` was measured when the report was signed; add the time since then.
   const total = Math.max(0, Math.floor(activeSeconds + now / 1000 - lastSeen));
   const hours = Math.floor(total / 3600);
@@ -79,13 +89,18 @@ function Session({
       <span aria-hidden className="flex items-center">
         {hours > 0 ? (
           <>
-            <Counter value={hours} places={hours >= 10 ? [10, 1] : [1]} {...digits} />
+            <Counter
+              value={hours}
+              places={hours >= 10 ? [10, 1] : [1]}
+              animate={active}
+              {...digits}
+            />
             <span className="px-0.5 text-lg text-muted-foreground">:</span>
           </>
         ) : null}
-        <Counter value={minutes} places={[10, 1]} {...digits} />
+        <Counter value={minutes} places={[10, 1]} animate={active} {...digits} />
         <span className="px-0.5 text-lg text-muted-foreground">:</span>
-        <Counter value={seconds} places={[10, 1]} {...digits} />
+        <Counter value={seconds} places={[10, 1]} animate={active} {...digits} />
       </span>
     </span>
   );

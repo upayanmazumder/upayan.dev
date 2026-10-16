@@ -6,7 +6,7 @@ export const featuredProjects: FeaturedProject[] = [
     slug: 'papers',
     name: 'Papers',
     org: 'CodeChef-VIT',
-    summary: 'Past exam papers for every VIT student, in one place, in seconds.',
+    summary: 'Past exam papers for VIT students, searchable in one place.',
     role: 'Maintainer',
     period: { start: '2025-04', end: '2026-09' },
     metrics: [
@@ -103,7 +103,7 @@ export const projects: Project[] = [
   {
     slug: 'kodesphere',
     name: 'Kodesphere',
-    summary: 'Deploy smarter, not harder.',
+    summary: 'A deployment platform for containerised apps.',
     icon: '/projects/kodesphere.webp',
     tags: ['Deployment', 'Docker'],
     links: [
@@ -182,7 +182,7 @@ export const projects: Project[] = [
   {
     slug: 'traffic-control-system',
     name: 'Traffic Control System',
-    summary: 'Smarter traffic signals for city road networks.',
+    summary: 'Adaptive traffic signal timing for city road networks.',
     icon: '/projects/traffic-control-system.webp',
     tags: ['Simulation', 'Docker'],
     links: [

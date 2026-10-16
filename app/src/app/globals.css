@@ -156,7 +156,7 @@
   }
 
   .label {
-    @apply font-ui text-[0.6875rem] font-medium tracking-[0.18em] text-muted-foreground uppercase;
+    @apply font-ui text-[0.6875rem] font-medium tracking-[0.14em] text-muted-foreground uppercase;
   }
 
   .grain {
@@ -176,18 +176,18 @@
 
   /* Hero intro: pure CSS on server-rendered markup, so it starts with the first paint. */
   .intro-photo {
-    animation: intro-photo 1.3s var(--ease-out-expo) both;
+    animation: intro-photo 0.7s var(--ease-out-expo) both;
   }
 
   .intro-char {
     display: inline-block;
-    animation: intro-char 1.15s var(--ease-out-expo) both;
-    animation-delay: calc(0.12s + var(--c, 0) * 32ms);
+    animation: intro-char 0.7s var(--ease-out-expo) both;
+    animation-delay: calc(0.05s + var(--c, 0) * 18ms);
   }
 
   .intro-item {
-    animation: intro-item 0.95s var(--ease-out-expo) both;
-    animation-delay: calc(0.45s + var(--i, 0) * 75ms);
+    animation: intro-item 0.6s var(--ease-out-expo) both;
+    animation-delay: calc(0.3s + var(--i, 0) * 50ms);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -202,21 +202,19 @@
 @keyframes intro-photo {
   from {
     opacity: 0;
-    transform: scale(0.72);
-    filter: blur(10px);
+    transform: scale(0.94);
   }
 }
 
 @keyframes intro-char {
   from {
-    transform: translateY(115%);
+    transform: translateY(100%);
   }
 }
 
 @keyframes intro-item {
   from {
     opacity: 0;
-    transform: translateY(22px);
-    filter: blur(6px);
+    transform: translateY(10px);
   }
 }

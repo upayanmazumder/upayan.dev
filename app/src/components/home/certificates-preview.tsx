@@ -2,20 +2,22 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { formatCertDate } from '@/components/certificates/format';
-import { Tilt } from '@/components/certificates/tilt';
 import { Reveal } from '@/components/shell/reveal';
 import { Section } from '@/components/shell/section';
 import { certificates } from '@/data/certificates';
 
+import { CertificateCard } from './certificate-card';
+
 const latest = [...certificates].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 6);
 
+/** Grid of recent certificate cards with tilt effect and link to all certificates. */
 export function CertificatesPreview() {
   return (
     <Section id="certificates" index="11" title="Certificates">
       <Reveal as="ul" stagger={0.06} className="grid grid-cols-2 gap-4 md:grid-cols-3">
         {latest.map(cert => (
           <li key={cert.slug} data-reveal>
-            <Tilt>
+            <CertificateCard>
               <Link
                 href={`/certificates?group=${encodeURIComponent(cert.group)}`}
                 className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface transition-colors hover:border-line-strong focus-visible:border-teal focus-visible:outline-none"
@@ -40,7 +42,7 @@ export function CertificatesPreview() {
                   </time>
                 </div>
               </Link>
-            </Tilt>
+            </CertificateCard>
           </li>
         ))}
       </Reveal>

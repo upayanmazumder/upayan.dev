@@ -4,19 +4,11 @@
 
 <!-- BEGIN:nextjs-agent-rules -->
 
-## Next.js: ALWAYS read docs before coding
+## This is NOT the Next.js you know
 
-Before any Next.js work, find and read the relevant doc in `node_modules/next/dist/docs/`. Your training data is outdated — the docs are the source of truth.
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 
-```
-node_modules/next/dist/docs/
-  index.md                        ← start here for orientation
-  01-app/
-    01-getting-started/           ← routing, layouts, data fetching, caching
-    02-guides/                    ← auth, forms, streaming, ISR, self-hosting …
-    03-api-reference/             ← file conventions, functions, config options
-  02-pages/                       ← Pages Router (avoid for new code)
-```
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
 
@@ -248,6 +240,8 @@ Loops, intervals, rAF callbacks, pointer listeners, and polling must stop when o
 - `useActive(ref, rootMargin?)` — both conditions combined.
 
 For GSAP infinite tweens, pause and resume the tween or timeline rather than recreating it. `useNow(since, intervalMs, enabled)` in `components/home/_top/live/use-now.ts` already accepts an `enabled` flag driven by `useActive`.
+
+SplitText loads through `@/lib/gsap-split` only when a text effect needs it. Keep `ScrollTrigger` in the shared GSAP module because the layout scroll controller uses it immediately. Below-the-fold widgets use `NearWidget` to retain server-rendered text and links until interaction code loads. Keep each fallback the same height as its interactive view.
 
 ## Testing
 

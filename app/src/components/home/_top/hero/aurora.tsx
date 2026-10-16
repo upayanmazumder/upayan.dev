@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 const VERTEX = `
 attribute vec2 aPosition;
@@ -61,6 +61,7 @@ void main() {
 }
 `;
 
+/** Compiles a WebGL shader from GLSL source code. */
 function compile(gl: WebGLRenderingContext, type: number, source: string) {
   const shader = gl.createShader(type);
   if (!shader) return null;
@@ -73,6 +74,7 @@ function compile(gl: WebGLRenderingContext, type: number, source: string) {
   return shader;
 }
 
+/** Converts a hex color string to normalized RGB float components. */
 function hexToRgb(hex: string): [number, number, number] {
   const value = Number.parseInt(hex.replace('#', ''), 16);
   return [((value >> 16) & 255) / 255, ((value >> 8) & 255) / 255, (value & 255) / 255];
@@ -108,7 +110,7 @@ export function Aurora({ base, sheen, paused, className }: AuroraProps) {
     if (!paused) resumeRef.current?.();
   }, [paused]);
 
-  useEffect(() => {
+  const createRenderer = useCallback(() => {
     const canvas = canvasRef.current;
     const gl = canvas?.getContext('webgl', {
       antialias: false,
@@ -211,6 +213,32 @@ export function Aurora({ base, sheen, paused, className }: AuroraProps) {
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, [base, sheen]);
+  useEffect(() => {
+    let disposed = false;
+    let initialized = false;
+    let ready = false;
+    let cleanup: (() => void) | undefined;
+    // Shader compilation can block first paint, so wait until the browser has idle time.
+    const initialize = () => {
+      if (!ready || disposed || initialized || pausedRef.current) return;
+      initialized = true;
+      cleanup = createRenderer();
+    };
+    resumeRef.current = initialize;
+    const onIdle = () => {
+      ready = true;
+      initialize();
+    };
+    const idle = window.requestIdleCallback?.(onIdle, { timeout: 1200 });
+    const timer = idle === undefined ? window.setTimeout(onIdle, 200) : undefined;
+    return () => {
+      disposed = true;
+      if (idle !== undefined) window.cancelIdleCallback(idle);
+      if (timer !== undefined) window.clearTimeout(timer);
+      if (resumeRef.current === initialize) resumeRef.current = null;
+      cleanup?.();
+    };
+  }, [createRenderer]);
 
   return <canvas ref={canvasRef} className={className} />;
 }

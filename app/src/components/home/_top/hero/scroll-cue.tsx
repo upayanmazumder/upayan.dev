@@ -3,7 +3,8 @@
 import { useRef, type MouseEvent } from 'react';
 
 import { useLenis } from '@/components/shell/smooth-scroll';
-import { gsap, prefersReducedMotion, SplitText, useGSAP } from '@/lib/gsap';
+import { gsap, prefersReducedMotion, useGSAP } from '@/lib/gsap';
+import { loadSplitText, type SplitTextPlugin } from '@/lib/gsap-split';
 
 const DELAY_S = 1.6;
 const TEXT = 'scroll';
@@ -59,51 +60,83 @@ export function ScrollCue() {
         };
       }
 
-      const split = SplitText.create(word, { type: 'chars' });
-      const tl = gsap
-        .timeline({
-          delay: DELAY_S,
-          onStart: () => {
-            // Already past the hero: the hint has nothing left to teach.
-            if (window.scrollY > 40) tl.kill();
-            else gsap.set(root, { autoAlpha: 1 });
-          },
-        })
-        .from(split.chars, {
-          autoAlpha: 0,
-          y: 6,
-          stagger: 0.04,
-          duration: 0.5,
-          ease: 'power3.out',
-        })
-        .from(
-          tick,
-          { scaleY: 0, transformOrigin: 'top', duration: 0.5, ease: 'power3.out' },
-          '-=0.3'
-        )
-        .to(split.chars, {
-          color: 'var(--teal)',
-          stagger: { each: 0.05, yoyo: true, repeat: 1 },
-          duration: 0.3,
-          ease: 'sine.inOut',
-        })
-        .add(
-          contextSafe(() => {
-            // rAF stops in hidden tabs, so this loop also idles while the tab is in the background.
-            drip = gsap.fromTo(
-              tick,
-              { yPercent: -100 },
-              { yPercent: 100, duration: 1.8, ease: 'power2.inOut', repeat: -1, repeatDelay: 1.2 }
-            );
+      let cancelled = false;
+      let timeline: gsap.core.Timeline | null = null;
+      let cleanupSplit = () => {};
+      const load = () => {
+        if (cancelled) return;
+        void loadSplitText()
+          .then(
+            contextSafe((SplitText: SplitTextPlugin) => {
+              if (cancelled) return;
+              const split = SplitText.create(word, { type: 'chars' });
+              cleanupSplit = () => split.revert();
+              const tl = gsap
+                .timeline({
+                  delay: DELAY_S,
+                  onStart: () => {
+                    // Already past the hero: the hint has nothing left to teach.
+                    if (window.scrollY > 40) tl.kill();
+                    else gsap.set(root, { autoAlpha: 1 });
+                  },
+                })
+                .from(split.chars, {
+                  autoAlpha: 0,
+                  y: 6,
+                  stagger: 0.04,
+                  duration: 0.5,
+                  ease: 'power3.out',
+                })
+                .from(
+                  tick,
+                  { scaleY: 0, transformOrigin: 'top', duration: 0.5, ease: 'power3.out' },
+                  '-=0.3'
+                )
+                .to(split.chars, {
+                  color: 'var(--teal)',
+                  stagger: { each: 0.05, yoyo: true, repeat: 1 },
+                  duration: 0.3,
+                  ease: 'sine.inOut',
+                })
+                .add(
+                  contextSafe(() => {
+                    // rAF stops in hidden tabs, so this loop also idles while the tab is in the background.
+                    drip = gsap.fromTo(
+                      tick,
+                      { yPercent: -100 },
+                      {
+                        yPercent: 100,
+                        duration: 1.8,
+                        ease: 'power2.inOut',
+                        repeat: -1,
+                        repeatDelay: 1.2,
+                      }
+                    );
+                    window.addEventListener('scroll', onScroll, { passive: true });
+                    // The visitor may have scrolled during the intro; hide at once instead of waiting.
+                    onScroll();
+                  })
+                );
+              timeline = tl;
+            })
+          )
+          .catch(() => {
+            if (cancelled) return;
+            // Keep the anchor usable if the decorative text plugin cannot load.
+            gsap.set(root, { autoAlpha: 1 });
             window.addEventListener('scroll', onScroll, { passive: true });
-            // The visitor may have scrolled during the intro; hide at once instead of waiting.
             onScroll();
-          })
-        );
+          });
+      };
+      const idle = window.requestIdleCallback?.(load, { timeout: 1200 });
+      const timer = idle === undefined ? window.setTimeout(load, 300) : undefined;
       return () => {
-        tl.kill();
+        if (idle !== undefined) window.cancelIdleCallback(idle);
+        if (timer !== undefined) window.clearTimeout(timer);
+        cancelled = true;
+        timeline?.kill();
         drip?.kill();
-        split.revert();
+        cleanupSplit();
         window.removeEventListener('scroll', onScroll);
       };
     },

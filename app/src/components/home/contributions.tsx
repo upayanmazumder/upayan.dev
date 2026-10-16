@@ -5,13 +5,13 @@ import { Section } from '@/components/shell/section';
 import { BrandIcon } from '@/components/ui/brand-icon';
 import { primarySocials } from '@/data/profile';
 
-import { LEVEL_CLASS } from './_top/contributions/calendar';
+import { describeDay, LEVEL_CLASS } from './_top/contributions/calendar';
 import { fetchContributions } from './_top/contributions/fetch-contributions';
-import { Heatmap } from './_top/contributions/heatmap';
-import { Total } from './_top/contributions/total';
+import { ContributionCalendar, ContributionTotal } from './contribution-widgets';
 
 const github = primarySocials.find(social => social.id === 'github');
 
+/** Link to the profile owner's GitHub profile. */
 function ProfileLink() {
   if (!github) return null;
   return (
@@ -28,6 +28,7 @@ function ProfileLink() {
   );
 }
 
+/** Section displaying recent GitHub contribution counts and activity calendar. */
 export async function Contributions() {
   const calendar = await fetchContributions();
 
@@ -37,10 +38,21 @@ export async function Contributions() {
         <div className="flex flex-col gap-5">
           <Reveal>
             <p className="text-muted-foreground">
-              <Total value={calendar.total} /> contributions in the last year
+              <ContributionTotal value={calendar.total} /> contributions in the last year
             </p>
           </Reveal>
-          <Heatmap weeks={calendar.weeks} />
+          <ContributionCalendar weeks={calendar.weeks} />
+          <noscript className="hidden [@media(scripting:none)]:block">
+            <details>
+              <summary>Daily contributions</summary>
+              <p>
+                {calendar.weeks
+                  .flatMap(week => week.days)
+                  .map(describeDay)
+                  .join('; ')}
+              </p>
+            </details>
+          </noscript>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <ProfileLink />
             <div className="flex items-center gap-1.5 font-mono text-[0.625rem] text-muted-foreground">

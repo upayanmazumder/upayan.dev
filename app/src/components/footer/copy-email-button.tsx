@@ -10,7 +10,7 @@ export function CopyEmailButton() {
       type="button"
       onClick={() => void copy()}
       aria-label={`Copy email ${profile.email}`}
-      className="font-mono text-xs text-muted-foreground transition-colors hover:text-teal focus-visible:text-teal focus-visible:outline-none"
+      className="cursor-pointer transition-colors hover:text-teal focus-visible:text-teal"
     >
       {profile.email}
     </button>

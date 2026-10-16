@@ -23,7 +23,7 @@ async function loadGoogleFont(family: string, weight: number): Promise<ArrayBuff
 
 export async function loadOgFonts() {
   const [display, body, mono] = await Promise.all([
-    loadGoogleFont('Montserrat Alternates', 600),
+    loadGoogleFont('Red Hat Display', 600),
     loadGoogleFont('Red Hat Display', 400),
     loadGoogleFont('Red Hat Mono', 400),
   ]);

@@ -72,13 +72,13 @@ export function ProjectLinks({ links, className, context, children }: ProjectLin
           <SmartLink
             href={link.href}
             aria-label={context ? `${context}: ${link.label}` : undefined}
-            className="group/link inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 font-ui text-xs font-medium text-muted-foreground transition-colors hover:border-line-strong hover:text-foreground focus-visible:border-line-strong focus-visible:text-foreground"
+            className="group/link inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-line-strong hover:text-foreground focus-visible:border-line-strong focus-visible:text-foreground"
           >
             <LinkGlyph href={link.href} className="size-3.5" />
             {link.label}
             <ArrowUpRight
               aria-hidden
-              className="size-3 transition-transform duration-300 ease-out-expo group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 group-focus-visible/link:translate-x-0.5 group-focus-visible/link:-translate-y-0.5"
+              className="size-3 transition-transform duration-150 ease-out group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 group-focus-visible/link:translate-x-0.5 group-focus-visible/link:-translate-y-0.5 motion-reduce:transition-none"
             />
           </SmartLink>
         </li>

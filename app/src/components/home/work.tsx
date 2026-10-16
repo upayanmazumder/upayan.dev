@@ -4,7 +4,7 @@ import { work } from '@/data/experience';
 
 export function Work() {
   return (
-    <Section id="work" index="09" title="Work">
+    <Section id="work" title="Work">
       <OrgTimeline orgs={work} />
     </Section>
   );

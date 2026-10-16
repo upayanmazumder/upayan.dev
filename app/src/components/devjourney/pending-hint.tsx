@@ -13,7 +13,7 @@ interface PendingHintProps {
 export function PendingHint({ children }: PendingHintProps) {
   const { pending } = useLinkStatus();
   return pending ? (
-    <LoaderCircle aria-hidden className="size-4 shrink-0 animate-spin text-teal" />
+    <LoaderCircle aria-hidden className="size-4 shrink-0 animate-spin text-muted-foreground" />
   ) : (
     children
   );

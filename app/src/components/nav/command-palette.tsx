@@ -20,7 +20,7 @@ interface CommandPaletteProps {
 }
 
 const itemClass =
-  'group/item flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors data-[selected=true]:bg-teal-dim data-[selected=true]:text-foreground';
+  'group/item flex cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground transition-colors data-[selected=true]:bg-surface-2 data-[selected=true]:text-foreground';
 
 function Row({ icon, label, hint }: { icon: ReactNode; label: string; hint: string }) {
   return (
@@ -28,10 +28,8 @@ function Row({ icon, label, hint }: { icon: ReactNode; label: string; hint: stri
       <span className="grid size-4 shrink-0 place-items-center text-muted-foreground group-data-[selected=true]/item:text-teal">
         {icon}
       </span>
-      <span className="min-w-0 flex-1 truncate font-ui text-foreground">{label}</span>
-      <span className="shrink-0 truncate font-mono text-[0.6875rem] text-muted-foreground">
-        {hint}
-      </span>
+      <span className="min-w-0 flex-1 truncate text-foreground">{label}</span>
+      <span className="shrink-0 truncate font-mono text-xs text-muted-foreground">{hint}</span>
     </>
   );
 }
@@ -55,24 +53,20 @@ export function CommandPalette({ open, id, ref }: CommandPaletteProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.15 }}
         >
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-background/70 backdrop-blur-sm"
-            onClick={close}
-          />
+          <div aria-hidden className="absolute inset-0 bg-background/80" onClick={close} />
           <m.div
             ref={ref}
             id={id}
             role="dialog"
             aria-modal="true"
             aria-label="Command palette"
-            className="relative w-full max-w-xl overflow-hidden rounded-xl border border-line-strong bg-surface-2 shadow-2xl shadow-black/60"
-            initial={{ opacity: 0, scale: 0.94, y: -8, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 0.97, y: -4, filter: 'blur(6px)' }}
-            transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+            className="relative w-full max-w-xl overflow-hidden rounded-lg border border-line-strong bg-surface"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.15, ease: 'easeOut' }}
           >
             <Command label="Command palette" loop className="flex max-h-[min(32rem,70vh)] flex-col">
               <div className="flex items-center gap-3 border-b border-line px-4">
@@ -80,13 +74,13 @@ export function CommandPalette({ open, id, ref }: CommandPaletteProps) {
                 <Command.Input
                   autoFocus
                   placeholder="Search pages, projects, links…"
-                  className="h-12 w-full bg-transparent font-ui text-sm text-foreground outline-none placeholder:text-muted-foreground"
+                  className="h-12 w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
                 />
-                <kbd className="shrink-0 rounded-md border border-line-strong px-1.5 py-0.5 font-mono text-[0.625rem] text-muted-foreground">
+                <kbd className="shrink-0 rounded-md border border-line px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
                   esc
                 </kbd>
               </div>
-              <Command.List data-lenis-prevent className="overflow-y-auto overscroll-contain p-2">
+              <Command.List className="overflow-y-auto overscroll-contain p-2">
                 <Command.Empty className="px-3 py-8 text-center text-sm text-muted-foreground">
                   Nothing matches that.
                 </Command.Empty>
@@ -167,7 +161,7 @@ export function CommandPalette({ open, id, ref }: CommandPaletteProps) {
               </Command.List>
               <div
                 aria-hidden
-                className="flex items-center gap-4 border-t border-line px-4 py-2.5 font-mono text-[0.625rem] text-muted-foreground"
+                className="flex items-center gap-4 border-t border-line px-4 py-2.5 font-mono text-xs text-muted-foreground"
               >
                 <span>↑↓ move</span>
                 <span>↵ open</span>

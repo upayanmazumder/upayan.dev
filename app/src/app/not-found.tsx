@@ -3,28 +3,25 @@ import Link from 'next/link';
 
 export const metadata: Metadata = { title: 'Not found' };
 
+const linkClass =
+  'text-foreground underline decoration-line-strong underline-offset-4 transition-colors hover:text-teal hover:decoration-teal focus-visible:text-teal';
+
 export default function NotFound() {
   return (
-    <section className="column flex min-h-[80dvh] flex-col justify-center gap-6 py-24">
-      <p className="font-mono text-sm text-teal">404</p>
-      <h1 className="text-4xl font-semibold md:text-6xl">This page does not exist.</h1>
+    <section className="column flex min-h-[60dvh] flex-col justify-center gap-4 py-24">
+      <p className="label">404</p>
+      <h1 className="text-3xl md:text-4xl">This page does not exist.</h1>
       <p className="max-w-prose text-muted-foreground">
         The link may be old, or the page moved during the redesign.
       </p>
-      <div className="flex flex-wrap gap-3 font-ui text-sm">
-        <Link
-          href="/"
-          className="rounded-full border border-line-strong px-4 py-2 transition-colors hover:border-teal hover:text-teal"
-        >
+      <p className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+        <Link href="/" className={linkClass}>
           Go home
         </Link>
-        <Link
-          href="/#projects"
-          className="rounded-full px-4 py-2 text-muted-foreground transition-colors hover:text-foreground"
-        >
+        <Link href="/#projects" className={linkClass}>
           See projects
         </Link>
-      </div>
+      </p>
     </section>
   );
 }

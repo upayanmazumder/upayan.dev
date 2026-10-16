@@ -17,7 +17,7 @@ export interface Social {
 }
 
 export interface Metric {
-  /** Numeric part, animated with CountUp. */
+  /** Numeric part. */
   value: number;
   /** Appended after the number, e.g. "K+" or "M+". */
   suffix?: string;

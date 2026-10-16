@@ -48,10 +48,10 @@ export const paletteGroups: PaletteGroup[] = [
   },
   {
     heading: 'Sections',
-    entries: homeSections.map((section, index) => ({
+    entries: homeSections.map(section => ({
       value: `section ${section.id}`,
       label: section.label,
-      hint: String(index + 1).padStart(2, '0'),
+      hint: `#${section.id}`,
       href: `/#${section.id}`,
       Icon: Hash,
       keywords: [section.label],

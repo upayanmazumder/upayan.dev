@@ -12,7 +12,7 @@ This repository contains a Rust stats API and the Next.js portfolio website. The
 - `api/client/src/main.rs` reads Linux CPU, memory, root disk, and uptime data. It signs one report and exits. `api/src/pc.rs` verifies HMAC-SHA256, rejects stale or repeated timestamps, and holds only the latest report in memory.
 - `api/src/devjourney.rs` proxies a configured GitHub repository's contents. It returns the raw GitHub JSON shape used by the previous website.
 - `app/src/app/` holds the home page, `/projects/[slug]`, `/certificates`, `/devjourney/[[...path]]`, metadata routes, and `/api/live`. Server components fetch `API_URL` directly. The browser polls only same-origin `/api/live`.
-- `app/src/data/*.ts` holds all site copy and content. `app/src/components/shell/` holds the rails backdrop, `Section`, `Reveal`, and Lenis. GSAP comes only from `@/lib/gsap`. Vendored React Bits components live in `app/src/components/rb/`.
+- `app/src/data/*.ts` holds all site copy and content. `app/src/components/shell/section.tsx` holds the shared home-page `Section`. The site uses no GSAP, Lenis, or scroll-triggered effects. Motion uses `m.*` from `motion/react` only for overlays and expand/collapse.
 
 ## Key Directories
 

@@ -1,11 +1,10 @@
 'use client';
 
-import { useId, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import { useId, useState } from 'react';
+import { AnimatePresence, m } from 'motion/react';
 
 import { Logo } from '@/components/ui/brand-icon';
 import type { Organization, Role } from '@/data/types';
-import { gsap, useGSAP } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
 import { formatPeriod } from '@/utils';
 
@@ -21,58 +20,14 @@ function orgSpan(roles: Role[]): { start: string; end: string | null } {
   return { start, end };
 }
 
-/**
- * Organizations with a vertical role timeline. The rail draws on scroll and the nodes pop in.
- * Without JS every role and its points stay visible.
- */
+/** Organizations with a vertical role timeline. Without JS every role and its points stay visible. */
 export function OrgTimeline({ orgs }: { orgs: Organization[] }) {
-  const ref = useRef<HTMLOListElement>(null);
-
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia();
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.utils.toArray<HTMLElement>('[data-org]').forEach(org => {
-          const rail = org.querySelector('[data-rail]');
-          const nodes = org.querySelectorAll('[data-node]');
-          const roles = org.querySelectorAll('[data-role]');
-          if (rail) {
-            gsap.fromTo(
-              rail,
-              { scaleY: 0 },
-              {
-                scaleY: 1,
-                ease: 'none',
-                scrollTrigger: { trigger: org, start: 'top 80%', end: 'bottom 60%', scrub: true },
-              }
-            );
-          }
-          gsap.from(nodes, {
-            scale: 0,
-            duration: 0.7,
-            ease: 'back.out(3)',
-            stagger: 0.12,
-            scrollTrigger: { trigger: org, start: 'top 78%', once: true },
-          });
-          gsap.from(roles, {
-            autoAlpha: 0,
-            x: -12,
-            duration: 0.9,
-            stagger: 0.12,
-            scrollTrigger: { trigger: org, start: 'top 78%', once: true },
-          });
-        });
-      });
-    },
-    { scope: ref }
-  );
-
   return (
-    <ol ref={ref} className="flex flex-col gap-12">
+    <ol className="flex flex-col gap-12">
       {orgs.map(org => {
         const span = org.roles.length > 1 ? orgSpan(org.roles) : null;
         return (
-          <li key={org.id} data-org className="flex flex-col gap-6">
+          <li key={org.id} className="flex flex-col gap-6">
             <header className="flex items-start gap-4">
               <Logo name={org.name} src={org.logo} size={44} className="size-11" />
               <div className="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -82,7 +37,7 @@ export function OrgTimeline({ orgs }: { orgs: Organization[] }) {
                       href={org.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="decoration-teal/60 underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+                      className="transition-colors hover:text-teal focus-visible:text-teal"
                     >
                       {org.name}
                     </a>
@@ -102,11 +57,7 @@ export function OrgTimeline({ orgs }: { orgs: Organization[] }) {
             </header>
 
             <div className="relative ml-5 pl-7">
-              <span
-                aria-hidden
-                data-rail
-                className="absolute top-2 bottom-2 left-0 w-px origin-top bg-gradient-to-b from-teal/60 via-line-strong to-line"
-              />
+              <span aria-hidden className="absolute top-2 bottom-2 left-0 w-px bg-line" />
               <ol className="flex flex-col gap-6">
                 {org.roles.map((role, i) => (
                   <RoleItem key={`${role.title}-${role.start}`} role={role} defaultOpen={i === 0} />
@@ -128,7 +79,7 @@ function RoleItem({ role, defaultOpen }: { role: Role; defaultOpen: boolean }) {
 
   const heading = (
     <>
-      <span className="font-ui text-sm font-semibold text-foreground">{role.title}</span>
+      <span className="text-sm font-semibold text-foreground">{role.title}</span>
       <span className="font-mono text-xs text-muted-foreground">
         {formatPeriod(role.start, role.end)}
       </span>
@@ -136,19 +87,14 @@ function RoleItem({ role, defaultOpen }: { role: Role; defaultOpen: boolean }) {
   );
 
   return (
-    <li data-role className="relative">
+    <li className="relative">
       <span
         aria-hidden
-        data-node
-        className="absolute top-1.5 -left-7 size-2.5 -translate-x-1/2 rounded-full border border-teal bg-background"
-      >
-        {current ? (
-          <>
-            <span className="absolute inset-0 rounded-full bg-teal" />
-            <span className="absolute inset-0 animate-ping rounded-full bg-teal/60 motion-reduce:hidden" />
-          </>
-        ) : null}
-      </span>
+        className={cn(
+          'absolute top-1.5 -left-7 size-2.5 -translate-x-1/2 rounded-full border',
+          current ? 'border-teal bg-teal' : 'border-line-strong bg-background'
+        )}
+      />
 
       {hasPoints ? (
         <button
@@ -156,13 +102,13 @@ function RoleItem({ role, defaultOpen }: { role: Role; defaultOpen: boolean }) {
           aria-expanded={open}
           aria-controls={panelId}
           onClick={() => setOpen(o => !o)}
-          className="group flex w-full items-start justify-between gap-3 rounded-md text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal"
+          className="group flex w-full items-start justify-between gap-3 rounded-md text-left"
         >
           <span className="flex flex-col gap-0.5">{heading}</span>
           <span
             aria-hidden
             className={cn(
-              'mt-0.5 font-mono text-sm text-muted-foreground transition-transform duration-300 group-hover:text-teal',
+              'mt-0.5 font-mono text-sm text-muted-foreground transition-[color,rotate] duration-150 group-hover:text-foreground motion-reduce:transition-none',
               open && 'rotate-45'
             )}
           >
@@ -177,16 +123,16 @@ function RoleItem({ role, defaultOpen }: { role: Role; defaultOpen: boolean }) {
         <div id={panelId}>
           <AnimatePresence initial={false}>
             {open ? (
-              <motion.div
+              <m.div
                 key="points"
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ type: 'spring', stiffness: 260, damping: 32 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
                 className="overflow-hidden"
               >
                 <Points points={role.points!} />
-              </motion.div>
+              </m.div>
             ) : (
               // Hidden once JS runs; stays readable without JS.
               <div key="nojs" className="hidden [html:not(.js)_&]:block">

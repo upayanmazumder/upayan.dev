@@ -4,12 +4,7 @@ import { communities } from '@/data/experience';
 
 export function Communities() {
   return (
-    <Section
-      id="communities"
-      index="10"
-      title="Communities"
-      lead="Technical chapters I help run at college."
-    >
+    <Section id="communities" title="Communities" lead="Technical chapters I help run at college.">
       <OrgTimeline orgs={communities} />
     </Section>
   );

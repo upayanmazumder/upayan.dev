@@ -12,12 +12,9 @@
   --color-teal: var(--teal);
   --color-teal-dim: var(--teal-dim);
 
-  --font-display: var(--font-montserrat-alternates);
-  --font-name: var(--font-bricolage);
-  --font-ui: var(--font-montserrat);
   --font-sans: var(--font-red-hat-display);
   --font-mono: var(--font-red-hat-mono);
-  --font-heading: var(--font-montserrat-alternates);
+  --font-heading: var(--font-red-hat-display);
 
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -43,11 +40,10 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Dark only. One accent: muted teal. */
+/* Dark only. One accent: muted teal, reserved for links, focus, and live state. */
 :root {
   color-scheme: dark;
 
@@ -89,22 +85,20 @@
 
   html {
     background: var(--background);
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    scrollbar-color: var(--line-strong) transparent;
+    scroll-padding-top: 4.5rem;
   }
 
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar,
-  *::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {
     @apply bg-background font-sans text-foreground;
-    font-feature-settings: 'ss01', 'cv11';
-    text-rendering: optimizeLegibility;
+    font-feature-settings: 'ss01';
   }
 
   h1,
@@ -113,7 +107,7 @@
   h4,
   h5,
   h6 {
-    @apply font-display tracking-tight text-balance;
+    @apply font-semibold tracking-tight text-balance;
   }
 
   code,
@@ -133,17 +127,8 @@
     outline-offset: 3px;
   }
 
-  html.lenis,
-  html.lenis body {
-    height: auto;
-  }
-
-  .lenis.lenis-smooth {
-    scroll-behavior: auto !important;
-  }
-
-  .lenis.lenis-stopped {
-    overflow: clip;
+  p {
+    text-wrap: pretty;
   }
 }
 
@@ -156,67 +141,6 @@
   }
 
   .label {
-    @apply font-ui text-[0.6875rem] font-medium tracking-[0.18em] text-muted-foreground uppercase;
-  }
-
-  .grain {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
-  }
-
-  /* Hide-until-animated. A head script adds .js; GSAP reveals set visibility. No-JS and reduced motion show content. */
-  .js .reveal {
-    visibility: hidden;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .js .reveal {
-      visibility: visible;
-    }
-  }
-
-  /* Hero intro: pure CSS on server-rendered markup, so it starts with the first paint. */
-  .intro-photo {
-    animation: intro-photo 1.3s var(--ease-out-expo) both;
-  }
-
-  .intro-char {
-    display: inline-block;
-    animation: intro-char 1.15s var(--ease-out-expo) both;
-    animation-delay: calc(0.12s + var(--c, 0) * 32ms);
-  }
-
-  .intro-item {
-    animation: intro-item 0.95s var(--ease-out-expo) both;
-    animation-delay: calc(0.45s + var(--i, 0) * 75ms);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .intro-photo,
-    .intro-char,
-    .intro-item {
-      animation: none;
-    }
-  }
-}
-
-@keyframes intro-photo {
-  from {
-    opacity: 0;
-    transform: scale(0.72);
-    filter: blur(10px);
-  }
-}
-
-@keyframes intro-char {
-  from {
-    transform: translateY(115%);
-  }
-}
-
-@keyframes intro-item {
-  from {
-    opacity: 0;
-    transform: translateY(22px);
-    filter: blur(6px);
+    @apply font-mono text-xs text-muted-foreground;
   }
 }

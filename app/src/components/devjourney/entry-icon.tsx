@@ -85,7 +85,7 @@ export function EntryIcon({ entry, className }: EntryIconProps) {
       aria-hidden
       className={cn(
         'size-4 shrink-0',
-        entry.type === 'dir' ? 'text-teal' : 'text-muted-foreground',
+        entry.type === 'dir' ? 'text-foreground' : 'text-muted-foreground',
         className
       )}
     />

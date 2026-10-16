@@ -15,8 +15,8 @@ export function TagChips({ items, className, size = 'sm', label = 'Stack' }: Tag
         <li
           key={item}
           className={cn(
-            'rounded-full border border-line bg-surface-2/60 font-ui text-muted-foreground',
-            size === 'xs' ? 'px-2 py-0.5 text-[0.625rem]' : 'px-2.5 py-1 text-xs'
+            'rounded-md border border-line font-mono text-muted-foreground',
+            size === 'xs' ? 'px-1.5 py-0.5 text-[0.6875rem]' : 'px-2 py-0.5 text-xs'
           )}
         >
           {item}

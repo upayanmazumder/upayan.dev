@@ -6,7 +6,6 @@ import { DirectoryList } from './directory-list';
 import { FileTree } from './file-tree';
 import { FileView } from './file-view';
 import { MarkdownView } from './markdown-view';
-import { PaneReveal } from './pane-reveal';
 import { parentOf } from './paths';
 import { Unavailable } from './unavailable';
 
@@ -33,7 +32,7 @@ async function DirectoryReadme({ entries }: { entries: RepoEntry[] }) {
   return (
     <section
       aria-label={entry.name}
-      className="mt-6 overflow-hidden rounded-xl border border-line bg-surface"
+      className="mt-6 overflow-hidden rounded-lg border border-line bg-surface"
     >
       <p className="label border-b border-line px-5 py-3">{entry.name}</p>
       <MarkdownView
@@ -54,7 +53,7 @@ export async function Explorer({ path, contents }: ExplorerProps) {
     <div className="mx-auto w-full max-w-6xl px-(--gutter) pt-24 pb-24 md:pt-32">
       <header className="mb-8 flex flex-col gap-3">
         <p className="label">
-          <span className="text-teal">DevJourney</span> · code I wrote while learning
+          <span className="text-foreground">DevJourney</span> · code I wrote while learning
         </p>
         <Breadcrumb path={path} />
       </header>
@@ -68,17 +67,16 @@ export async function Explorer({ path, contents }: ExplorerProps) {
         {siblings ? (
           <aside
             className={cn(
-              'max-md:order-last md:sticky md:top-8 md:max-h-[calc(100dvh-4rem)] md:self-start md:overflow-y-auto',
+              'max-md:order-last md:sticky md:top-20 md:max-h-[calc(100dvh-6rem)] md:self-start md:overflow-y-auto',
               isDir && 'max-md:hidden'
             )}
-            data-lenis-prevent
           >
             <FileTree directory={parentOf(path)} entries={siblings} activePath={path} />
           </aside>
         ) : null}
 
-        <PaneReveal key={path} className="min-w-0">
-          <div className="overflow-hidden rounded-xl border border-line bg-surface">
+        <div className="min-w-0">
+          <div className="overflow-hidden rounded-lg border border-line bg-surface">
             {contents.status === 'unavailable' ? (
               <Unavailable reason={contents.reason} path={path} />
             ) : null}
@@ -98,7 +96,7 @@ export async function Explorer({ path, contents }: ExplorerProps) {
             ) : null}
           </div>
           {contents.status === 'dir' ? <DirectoryReadme entries={contents.entries} /> : null}
-        </PaneReveal>
+        </div>
       </div>
     </div>
   );

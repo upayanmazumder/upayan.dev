@@ -52,7 +52,7 @@ function buildComponents(path: string, downloadUrl: string | null): Components {
     a: ({ href = '', children }) => {
       const link = resolveLink(href, path);
       const className =
-        'text-teal underline decoration-teal/40 underline-offset-4 transition-colors hover:decoration-teal';
+        'underline decoration-line-strong underline-offset-4 transition-colors hover:text-teal hover:decoration-teal';
       return link.external ? (
         <a href={link.href} target="_blank" rel="noreferrer" className={className}>
           {children}
@@ -79,7 +79,7 @@ function buildComponents(path: string, downloadUrl: string | null): Components {
       );
     },
     ul: ({ children }) => (
-      <ul className="my-4 list-disc space-y-1.5 pl-6 marker:text-teal/70">{children}</ul>
+      <ul className="my-4 list-disc space-y-1.5 pl-6 marker:text-muted-foreground">{children}</ul>
     ),
     ol: ({ children }) => (
       <ol className="my-4 list-decimal space-y-1.5 pl-6 marker:font-mono marker:text-muted-foreground">
@@ -88,7 +88,7 @@ function buildComponents(path: string, downloadUrl: string | null): Components {
     ),
     li: ({ children }) => <li className="leading-7 text-foreground/85">{children}</li>,
     blockquote: ({ children }) => (
-      <blockquote className="my-6 border-l-2 border-teal/60 pl-4 text-muted-foreground">
+      <blockquote className="my-6 border-l-2 border-line-strong pl-4 text-muted-foreground">
         {children}
       </blockquote>
     ),
@@ -99,7 +99,7 @@ function buildComponents(path: string, downloadUrl: string | null): Components {
       </div>
     ),
     th: ({ children }) => (
-      <th className="border-b border-line bg-surface-2 px-3 py-2 text-left font-ui font-semibold">
+      <th className="border-b border-line bg-surface-2 px-3 py-2 text-left font-semibold">
         {children}
       </th>
     ),
@@ -107,7 +107,7 @@ function buildComponents(path: string, downloadUrl: string | null): Components {
     pre: ({ children }) => {
       const { code, language } = codeChild(children);
       return (
-        <div className="my-6 overflow-hidden rounded-xl border border-line bg-background/60">
+        <div className="my-6 overflow-hidden rounded-lg border border-line bg-background/60">
           <CodeBlock code={code} language={language} lineNumbers={false} />
         </div>
       );

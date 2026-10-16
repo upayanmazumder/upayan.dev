@@ -51,13 +51,12 @@ src/
   app/                  # Next.js App Router pages and layouts
     layout.tsx          # Root layout — providers live here
     page.tsx            # Home page
-    motion/             # /motion demo route
   components/
     providers/          # Client-side React context providers
       query-provider.tsx
       theme-provider.tsx
       index.ts          # Barrel export
-    motion/             # Framer Motion wrapper components
+    motion/             # MotionProvider (LazyMotion + MotionConfig)
       index.ts
     ui/                 # shadcn-style primitive components
       button.tsx
@@ -69,7 +68,6 @@ src/
     index.ts            # Barrel export
   lib/                  # Cross-cutting utilities (no side effects, tree-shakeable)
     utils.ts            # cn() — clsx + tailwind-merge
-    motion.ts           # Shared animation variants and constants
     query.ts            # makeQueryClient(), getQueryClient(), createQueryKeys()
   hooks/                # Cross-cutting use* hooks (≥3 consumers or truly shared)
     use-mounted.ts
@@ -233,9 +231,9 @@ Dark mode is class-based (`@custom-variant dark (&:is(.dark *))`). `next-themes`
 
 ## Motion
 
-All animation components use `LazyMotion + domAnimation` (tree-shaken, ~16 kB). Use the `m.*` namespace; never import from `motion/*` directly in components.
+`MotionProvider` wraps the app in `LazyMotion + domAnimation`. Use the `m.*` namespace only for overlay open/close and height expand/collapse, at 200 ms or less. Use CSS `transition-colors` for everything else.
 
-Shared variants and transition presets live in `src/lib/motion.ts` — add new ones there, not inline in components.
+Do not add scroll-triggered animation, text effects, glows, gradients, or count-up numbers. Use only two fonts: `font-sans` (Red Hat Display) and `font-mono` (Red Hat Mono). Import brand icons through `src/components/ui/brand-paths.ts` with named `simple-icons` imports. Never use `import * as` from `simple-icons`: it ships about 2 MB of JavaScript.
 
 ---
 

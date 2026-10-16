@@ -3,13 +3,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 
-import { CaseTitle } from '@/components/projects/case-title';
 import { MetricRow } from '@/components/projects/metric-row';
 import { NextProject } from '@/components/projects/next-project';
-import { ProjectCover } from '@/components/projects/project-cover';
 import { ProjectLinks } from '@/components/projects/project-link';
 import { TagChips } from '@/components/projects/tag-chips';
-import { Reveal } from '@/components/shell/reveal';
+import { Logo } from '@/components/ui/brand-icon';
 import { featuredProjects } from '@/data/projects';
 import { formatPeriod } from '@/utils';
 
@@ -50,12 +48,9 @@ export default async function ProjectPage({ params }: Props) {
     {
       title: 'What I built',
       body: (
-        <ul className="flex flex-col gap-3">
+        <ul className="flex list-disc flex-col gap-3 pl-5 marker:text-muted-foreground">
           {caseStudy.built.map(item => (
-            <li key={item} className="flex gap-3">
-              <span aria-hidden className="mt-[0.6em] size-1.5 shrink-0 rotate-45 bg-teal/80" />
-              <span>{item}</span>
-            </li>
+            <li key={item}>{item}</li>
           ))}
         </ul>
       ),
@@ -64,87 +59,65 @@ export default async function ProjectPage({ params }: Props) {
   ];
 
   return (
-    <article className="column pt-28 pb-24 md:pt-36">
+    <article className="column pt-12 pb-24 md:pt-16">
       <Link
         href="/#projects"
-        className="group inline-flex items-center gap-2 font-ui text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+        className="group inline-flex min-h-10 items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft
           aria-hidden
-          className="size-3.5 transition-transform duration-300 ease-out-expo group-hover:-translate-x-1 group-focus-visible:-translate-x-1"
+          className="size-4 transition-transform duration-150 ease-out group-hover:-translate-x-0.5 group-focus-visible:-translate-x-0.5 motion-reduce:transition-none"
         />
         All projects
       </Link>
 
-      <header className="mt-10 flex flex-col gap-4">
-        <p className="font-mono text-xs text-muted-foreground">
-          {project.org ? <span className="text-teal">{project.org}</span> : null}
-          {project.org ? ' · ' : null}
+      <header className="mt-8 flex flex-col gap-4">
+        <Logo name={project.name} src={project.image} size={48} className="size-12" />
+        <p className="label">
+          {project.org ? `${project.org} · ` : null}
           {formatPeriod(project.period.start, project.period.end)}
         </p>
-        <CaseTitle text={project.name} className="text-5xl font-semibold md:text-7xl" />
-        <p className="max-w-prose text-lg text-muted-foreground md:text-xl">{project.summary}</p>
+        <h1 className="text-4xl md:text-5xl">{project.name}</h1>
+        <p className="max-w-prose text-lg text-muted-foreground">{project.summary}</p>
       </header>
 
-      <Reveal className="mt-10">
-        <ProjectCover
-          project={project}
-          size="hero"
-          priority
-          className="aspect-[16/9] rounded-xl border border-line"
-        />
-      </Reveal>
-
-      <Reveal className="mt-12 grid gap-10 border-y border-line py-10 md:grid-cols-[1fr_auto]">
-        {project.metrics.length > 0 ? (
-          <div data-reveal>
-            <MetricRow metrics={project.metrics} size="lg" />
-          </div>
-        ) : null}
-        <div data-reveal className="flex flex-col gap-2 md:max-w-60">
+      <div className="mt-10 grid gap-8 border-y border-line py-8 md:grid-cols-[1fr_auto]">
+        <MetricRow metrics={project.metrics} size="lg" />
+        <div className="flex flex-col gap-1 md:max-w-60">
           <p className="label">Role</p>
-          <p className="font-ui text-base font-medium text-foreground">{project.role}</p>
+          <p className="font-medium text-foreground">{project.role}</p>
         </div>
-      </Reveal>
+      </div>
 
-      <ol className="mt-4">
-        {chapters.map((chapter, i) => (
-          <li key={chapter.title} className="border-b border-line py-12">
-            <Reveal className="grid gap-4 md:grid-cols-[8rem_1fr] md:gap-8">
-              <div data-reveal className="flex items-baseline gap-3 md:flex-col md:gap-2">
-                <span className="font-mono text-xs text-teal">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <h2 className="text-xl font-semibold md:text-2xl">{chapter.title}</h2>
-              </div>
-              <div
-                data-reveal
-                className="max-w-prose text-base leading-relaxed text-foreground/85 md:text-lg"
-              >
-                {chapter.body}
-              </div>
-            </Reveal>
-          </li>
+      <div className="divide-y divide-line">
+        {chapters.map(chapter => (
+          <section
+            key={chapter.title}
+            className="grid gap-3 py-10 md:grid-cols-[10rem_1fr] md:gap-8"
+          >
+            <h2 className="text-lg md:text-xl">{chapter.title}</h2>
+            <div className="max-w-prose leading-relaxed text-foreground/85">{chapter.body}</div>
+          </section>
         ))}
-      </ol>
+      </div>
 
-      <Reveal className="mt-12 grid gap-8 md:grid-cols-2">
-        <div data-reveal className="flex flex-col gap-3">
+      <div className="grid gap-8 border-t border-line pt-10 md:grid-cols-2">
+        <div className="flex flex-col gap-3">
           <p className="label">Stack</p>
           <TagChips items={project.stack} />
         </div>
         {project.links.length > 0 ? (
-          <div data-reveal className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3">
             <p className="label">Links</p>
             <ProjectLinks links={project.links} context={project.name} />
           </div>
         ) : null}
-      </Reveal>
+      </div>
 
       {next.slug !== project.slug ? (
-        <Reveal className="mt-20">
+        <nav aria-label="More case studies" className="mt-16">
           <NextProject project={next} />
-        </Reveal>
+        </nav>
       ) : null}
     </article>
   );

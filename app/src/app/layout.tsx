@@ -9,9 +9,6 @@ import { SiteFooter } from '@/components/footer/site-footer';
 import { MotionProvider } from '@/components/motion';
 import { SiteNav } from '@/components/nav/site-nav';
 import { QueryProvider } from '@/components/providers';
-import { Backdrop } from '@/components/shell/backdrop';
-import { ScrollRail } from '@/components/shell/scroll-rail';
-import { SmoothScroll } from '@/components/shell/smooth-scroll';
 import { Toaster } from '@/components/ui/sonner';
 import { profile } from '@/data/profile';
 import { env } from '@/env';
@@ -36,23 +33,19 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning className={cn('dark antialiased', fontVariables)}>
-      <head>
-        {/* Marks JS as available before paint so `.reveal` content can wait for its animation. */}
-        <script
-          dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
-        />
-      </head>
       <body className="min-h-dvh overflow-x-clip">
+        <a
+          href="#main"
+          className="sr-only z-50 rounded-md bg-foreground px-3 py-2 text-sm text-background focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+        >
+          Skip to content
+        </a>
         <QueryProvider>
           <NuqsAdapter>
             <MotionProvider>
-              <SmoothScroll>
-                <Backdrop />
-                <SiteNav />
-                <ScrollRail />
-                <main id="main">{children}</main>
-                <SiteFooter />
-              </SmoothScroll>
+              <SiteNav />
+              <main id="main">{children}</main>
+              <SiteFooter />
             </MotionProvider>
           </NuqsAdapter>
         </QueryProvider>

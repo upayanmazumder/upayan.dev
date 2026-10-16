@@ -3,7 +3,6 @@
 import type { MouseEvent } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
-import { useLenis } from '@/components/shell/smooth-scroll';
 import { useUiStore } from '@/stores/ui-store';
 
 type LinkKind = 'external' | 'scheme' | 'anchor' | 'route';
@@ -19,17 +18,16 @@ export function linkKind(href: string): LinkKind {
 export function useNavAction() {
   const router = useRouter();
   const pathname = usePathname();
-  const lenis = useLenis();
   const close = useUiStore(state => state.close);
 
   const scrollTo = (href: string) => {
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? 'auto'
+      : 'smooth';
     const hash = href.slice(1);
-    if (lenis) {
-      lenis.scrollTo(hash || 0, { offset: -24 });
-      return;
-    }
-    if (hash) document.querySelector(hash)?.scrollIntoView();
-    else window.scrollTo({ top: 0 });
+    // `scroll-padding-top` on <html> keeps the target clear of the sticky header.
+    if (hash) document.querySelector(hash)?.scrollIntoView({ behavior });
+    else window.scrollTo({ top: 0, behavior });
   };
 
   const onHome = pathname === '/';
@@ -44,7 +42,7 @@ export function useNavAction() {
         window.location.assign(href);
         return;
       case 'anchor':
-        // Two frames let the overlay cleanup restart Lenis and unlock scrolling first.
+        // Two frames let the overlay cleanup unlock page scrolling first.
         if (onHome) requestAnimationFrame(() => requestAnimationFrame(() => scrollTo(href)));
         else router.push(href);
         return;

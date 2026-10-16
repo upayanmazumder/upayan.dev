@@ -9,7 +9,7 @@ export function Toaster(props: ComponentProps<typeof SonnerToaster>) {
       theme="dark"
       position="bottom-center"
       className="toaster group"
-      toastOptions={{ className: 'font-ui' }}
+      toastOptions={{ className: '' }}
       {...props}
     />
   );

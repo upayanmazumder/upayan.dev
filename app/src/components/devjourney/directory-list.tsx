@@ -1,10 +1,4 @@
-'use client';
-
 import { ArrowUpRight, ChevronRight } from 'lucide-react';
-import { m } from 'motion/react';
-
-import { staggerContainer, staggerItemVariants } from '@/lib/motion';
-import { cn } from '@/lib/utils';
 
 import type { RepoEntry } from './contents';
 import { EntryIcon } from './entry-icon';
@@ -31,30 +25,17 @@ export function DirectoryList({ entries }: DirectoryListProps) {
   }
 
   return (
-    <m.ul
-      variants={staggerContainer(0.03, 0.05)}
-      initial="hidden"
-      animate="visible"
-      className="divide-y divide-line"
-      aria-label="Folder contents"
-    >
+    <ul className="divide-y divide-line" aria-label="Folder contents">
       {entries.map(entry => (
-        <m.li key={entry.path} variants={staggerItemVariants}>
+        <li key={entry.path}>
           <EntryLink
             entry={entry}
-            className={cn(
-              'group relative grid grid-cols-[auto_1fr_auto] items-center gap-x-3 px-5 py-3 transition-colors sm:grid-cols-[auto_1fr_6rem_5rem_auto]',
-              'hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-offset-[-2px]'
-            )}
+            className="group grid grid-cols-[auto_1fr_auto] items-center gap-x-3 px-5 py-3 transition-colors hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-offset-[-2px] sm:grid-cols-[auto_1fr_6rem_5rem_auto]"
           >
-            <span
-              aria-hidden
-              className="absolute inset-y-2 left-0 w-0.5 origin-center scale-y-0 rounded-full bg-teal transition-transform duration-300 group-hover:scale-y-100 group-focus-visible:scale-y-100"
-            />
             <EntryIcon entry={entry} />
             <span className="truncate font-mono text-sm text-foreground">{entry.name}</span>
             <span className="label hidden text-right sm:block">{typeLabel(entry)}</span>
-            <span className="hidden text-right font-mono text-xs text-muted-foreground sm:block">
+            <span className="hidden text-right font-mono text-xs text-muted-foreground tabular-nums sm:block">
               {entry.type === 'file' ? formatBytes(entry.size) : '—'}
             </span>
             {entry.type === 'submodule' ? (
@@ -63,13 +44,13 @@ export function DirectoryList({ entries }: DirectoryListProps) {
               <PendingHint>
                 <ChevronRight
                   aria-hidden
-                  className="size-4 text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-teal"
+                  className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
                 />
               </PendingHint>
             )}
           </EntryLink>
-        </m.li>
+        </li>
       ))}
-    </m.ul>
+    </ul>
   );
 }

@@ -1,59 +1,46 @@
 import type { ReactNode } from 'react';
 
-import BorderGlow from '@/components/rb/BorderGlow';
 import { cn } from '@/lib/utils';
-
-import { Decrypt } from '../hero/decrypt';
 
 interface LiveTileProps {
   label: string;
   icon: ReactNode;
   /** Short state at the top right, e.g. "Now playing". */
   aside?: ReactNode;
-  /** Layer behind the content, clipped to the tile, e.g. blurred album art. */
-  backdrop?: ReactNode;
   className?: string;
   children: ReactNode;
 }
 
-/** Bento tile for the live section. The border glows toward the pointer (React Bits BorderGlow). */
-export function LiveTile({ label, icon, aside, backdrop, className, children }: LiveTileProps) {
+/** One cell of the live grid: a small labelled header and the provider's content. */
+export function LiveTile({ label, icon, aside, className, children }: LiveTileProps) {
   return (
-    <article data-tile className={cn('min-w-0 [transform-style:preserve-3d]', className)}>
-      <BorderGlow
-        backgroundColor="var(--surface)"
-        borderRadius={16}
-        glowColor="165 55 55"
-        colors={['#6fd8bd', '#3fbfa0', '#c6f6e6']}
-        glowRadius={24}
-        glowIntensity={0.6}
-        edgeSensitivity={25}
-        fillOpacity={0.25}
-        className="h-full w-full"
-      >
-        <div className="relative isolate flex h-full flex-col gap-3 overflow-hidden rounded-[15px] p-4">
-          {backdrop ? (
-            <div aria-hidden className="absolute inset-0 -z-10">
-              {backdrop}
-            </div>
-          ) : null}
-          <header className="flex items-center justify-between gap-3">
-            <h3 className="label flex items-center gap-2">
-              <span className="flex size-4 items-center justify-center text-muted-foreground">
-                {icon}
-              </span>
-              {label}
-            </h3>
-            {aside ? (
-              <span className="flex items-center gap-2 font-mono text-[0.65rem] text-muted-foreground tabular-nums">
-                {aside}
-              </span>
-            ) : null}
-          </header>
-          {children}
-        </div>
-      </BorderGlow>
+    <article className={cn('flex min-w-0 flex-col gap-4 bg-background p-5', className)}>
+      <header className="flex items-center justify-between gap-3">
+        <h3 className="label flex items-center gap-2">
+          <span className="flex size-4 items-center justify-center">{icon}</span>
+          {label}
+        </h3>
+        {aside ? (
+          <span className="flex items-center gap-2 font-mono text-xs text-muted-foreground tabular-nums">
+            {aside}
+          </span>
+        ) : null}
+      </header>
+      {children}
     </article>
+  );
+}
+
+/** Small teal dot marking something happening right now. Pulses gently unless motion is reduced. */
+export function LiveDot({ className }: { className?: string }) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        'size-2 shrink-0 animate-pulse rounded-full bg-teal motion-reduce:animate-none',
+        className
+      )}
+    />
   );
 }
 
@@ -61,13 +48,13 @@ export function LiveTile({ label, icon, aside, backdrop, className, children }: 
 export function TileUnavailable({ what }: { what: string }) {
   return (
     <div className="flex flex-col gap-1">
-      <p className="font-ui text-sm text-muted-foreground">Unavailable</p>
+      <p className="text-sm text-muted-foreground">Unavailable</p>
       <p className="text-xs text-muted-foreground/70">{what} is not reachable right now.</p>
     </div>
   );
 }
 
-/** Shimmering bars while the first poll is in flight. */
+/** Placeholder bars while the first poll is in flight. */
 export function TileSkeleton({ lines = 2 }: { lines?: number }) {
   return (
     <div aria-hidden className="flex flex-col gap-2.5 py-1">
@@ -80,9 +67,4 @@ export function TileSkeleton({ lines = 2 }: { lines?: number }) {
       ))}
     </div>
   );
-}
-
-/** Live value that scrambles into place on arrival and again whenever it changes. */
-export function Scramble({ text, className }: { text: string; className?: string }) {
-  return <Decrypt key={text} text={text} className={className} />;
 }

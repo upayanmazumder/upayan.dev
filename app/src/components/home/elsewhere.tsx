@@ -1,40 +1,31 @@
-import { Reveal } from '@/components/shell/reveal';
 import { Section } from '@/components/shell/section';
 import { BrandIcon } from '@/components/ui/brand-icon';
 import { otherSocials } from '@/data/profile';
 
 export function Elsewhere() {
   return (
-    <Section id="elsewhere" index="12" title="Elsewhere">
-      <Reveal
-        as="ul"
-        stagger={0.04}
-        className="grid grid-cols-1 gap-2 min-[440px]:grid-cols-2 sm:grid-cols-3"
-      >
+    <Section id="elsewhere" title="Elsewhere">
+      <ul className="grid grid-cols-1 gap-x-8 min-[440px]:grid-cols-2 sm:grid-cols-3">
         {otherSocials.map(s => (
-          <li key={s.id} data-reveal>
+          <li key={s.id} className="border-b border-line">
             <a
               href={s.href}
               target="_blank"
               rel="noreferrer"
-              className="group flex items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3 transition-[transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-line-strong focus-visible:-translate-y-0.5 focus-visible:border-teal focus-visible:outline-none"
+              className="group flex items-center gap-3 py-3 text-sm transition-colors hover:text-teal focus-visible:text-teal"
             >
-              <BrandIcon
-                icon={s.icon}
-                name={s.label}
-                className="size-4 text-muted-foreground transition-colors group-hover:text-teal group-focus-visible:text-teal"
-              />
-              <span className="truncate font-ui text-sm">{s.label}</span>
+              <BrandIcon icon={s.icon} name={s.label} className="size-4 text-muted-foreground" />
+              <span className="truncate">{s.label}</span>
               <span
                 aria-hidden
-                className="ml-auto text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-teal group-focus-visible:translate-x-0.5 group-focus-visible:-translate-y-0.5"
+                className="ml-auto text-muted-foreground transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
               >
                 ↗
               </span>
             </a>
           </li>
         ))}
-      </Reveal>
+      </ul>
     </Section>
   );
 }

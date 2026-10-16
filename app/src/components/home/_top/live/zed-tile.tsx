@@ -1,9 +1,8 @@
 'use client';
 
-import Counter from '@/components/rb/Counter';
 import { BrandIcon } from '@/components/ui/brand-icon';
 
-import { LiveTile, Scramble, TileSkeleton, TileUnavailable } from './live-tile';
+import { LiveTile, TileSkeleton, TileUnavailable } from './live-tile';
 import type { LivePc } from './types';
 import { useNow } from './use-now';
 
@@ -32,17 +31,11 @@ export function ZedTile({ pc, loading, receivedAt, className }: ZedTileProps) {
       ) : !zed ? (
         <p className="text-sm text-muted-foreground">Not in the editor right now.</p>
       ) : (
-        <div className="mt-auto flex items-end justify-between gap-4">
+        <div className="flex items-end justify-between gap-4">
           <div className="flex min-w-0 flex-col gap-1">
-            <p className="flex min-w-0 items-center font-mono text-lg text-foreground">
-              <Scramble text={zed.file} className="truncate" />
-              <span
-                aria-hidden
-                className="ml-1 inline-block h-5 w-[2px] shrink-0 animate-pulse bg-teal motion-reduce:animate-none"
-              />
-            </p>
+            <p className="truncate font-mono text-base text-foreground">{zed.file}</p>
             <p className="truncate text-sm text-muted-foreground">
-              in <span className="text-foreground/85">{zed.workspace}</span>
+              in <span className="text-foreground">{zed.workspace}</span>
             </p>
           </div>
           <Session activeSeconds={zed.activeSeconds} lastSeen={pc.lastSeen} since={receivedAt} />
@@ -52,7 +45,7 @@ export function ZedTile({ pc, loading, receivedAt, className }: ZedTileProps) {
   );
 }
 
-/** Session timer with rolling digits (React Bits Counter), ticking every second. */
+/** Session timer, ticking every second. */
 function Session({
   activeSeconds,
   lastSeen,
@@ -68,24 +61,16 @@ function Session({
   const hours = Math.floor(total / 3600);
   const minutes = Math.floor((total % 3600) / 60);
   const seconds = total % 60;
-  const digits = { fontSize: 22, gap: 0, horizontalPadding: 0, gradientHeight: 0, fontWeight: 600 };
 
   return (
     <span
       role="timer"
       aria-label={`Session ${hours} hours ${minutes} minutes ${seconds} seconds`}
-      className="flex shrink-0 items-center font-mono text-teal tabular-nums"
+      className="shrink-0 font-mono text-sm text-muted-foreground tabular-nums"
     >
-      <span aria-hidden className="flex items-center">
-        {hours > 0 ? (
-          <>
-            <Counter value={hours} places={hours >= 10 ? [10, 1] : [1]} {...digits} />
-            <span className="px-0.5 text-lg text-muted-foreground">:</span>
-          </>
-        ) : null}
-        <Counter value={minutes} places={[10, 1]} {...digits} />
-        <span className="px-0.5 text-lg text-muted-foreground">:</span>
-        <Counter value={seconds} places={[10, 1]} {...digits} />
+      <span aria-hidden>
+        {hours > 0 ? `${hours}:` : ''}
+        {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
       </span>
     </span>
   );

@@ -6,9 +6,8 @@ import { profile } from '@/data/profile';
 import { useCopyEmail } from '@/hooks/use-copy-email';
 import { useLocalTime } from '@/hooks/use-local-time';
 
-const chip =
-  'inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 font-ui text-xs text-muted-foreground transition-colors';
-const action = `${chip} hover:border-line-strong hover:text-foreground focus-visible:border-line-strong focus-visible:text-foreground`;
+const action =
+  'inline-flex min-h-10 items-center gap-1.5 transition-colors hover:text-teal focus-visible:text-teal';
 
 /** Location with live IST clock, copy-email and resume actions. */
 export function HeroMeta() {
@@ -16,11 +15,11 @@ export function HeroMeta() {
   const copyEmail = useCopyEmail();
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className={chip}>
+    <div className="flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-xs text-muted-foreground">
+      <span className="inline-flex min-h-10 items-center gap-1.5">
         <MapPin aria-hidden className="size-3.5" />
         {profile.location}
-        <span className="font-mono text-foreground tabular-nums" suppressHydrationWarning>
+        <span className="text-foreground tabular-nums" suppressHydrationWarning>
           {time ? `${time} IST` : 'IST'}
         </span>
       </span>

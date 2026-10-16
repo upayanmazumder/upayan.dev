@@ -18,7 +18,7 @@ export function Unavailable({ reason, path }: UnavailableProps) {
         <CloudOff aria-hidden className="size-5 text-muted-foreground" />
       </span>
       <div className="flex flex-col gap-1.5">
-        <p className="font-ui font-semibold">The file browser is unavailable right now.</p>
+        <p className="font-semibold">The file browser is unavailable right now.</p>
         <p className="max-w-sm text-sm text-muted-foreground">
           {reason === 'config'
             ? 'This copy of the site is not connected to the repository.'

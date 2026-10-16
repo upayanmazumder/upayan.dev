@@ -2,22 +2,18 @@
 
 import { useEffect, type RefObject } from 'react';
 
-import { useLenis } from '@/components/shell/smooth-scroll';
-
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 /**
- * While `active`: stops Lenis, locks page scroll, makes everything outside `root` inert, and keeps Tab inside `trap`.
- * The trap is separate from the root so the menu can trap the panel plus its edge tab, and the palette only itself.
+ * While `active`: locks page scroll, makes everything outside `root` inert, and keeps Tab inside `trap`.
+ * The trap is separate from the root so the menu can trap the header plus its sheet, and the palette only itself.
  */
 export function useOverlayLock(
   active: boolean,
   root: RefObject<HTMLElement | null>,
   trap: RefObject<HTMLElement | null>
 ) {
-  const lenis = useLenis();
-
   useEffect(() => {
     if (!active) return;
     const html = document.documentElement;
@@ -25,7 +21,6 @@ export function useOverlayLock(
     const scrollbar = window.innerWidth - html.clientWidth;
     const previous = { overflow: html.style.overflow, paddingRight: body.style.paddingRight };
 
-    lenis?.stop();
     html.style.setProperty('overflow', 'hidden');
     if (scrollbar > 0) body.style.setProperty('padding-right', `${scrollbar}px`);
 
@@ -75,7 +70,6 @@ export function useOverlayLock(
       for (const el of inerted) el.removeAttribute('inert');
       html.style.setProperty('overflow', previous.overflow);
       body.style.setProperty('padding-right', previous.paddingRight);
-      lenis?.start();
     };
-  }, [active, lenis, root, trap]);
+  }, [active, root, trap]);
 }

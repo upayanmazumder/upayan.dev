@@ -8,10 +8,10 @@ import { useLenis } from './smooth-scroll';
 import { TRAIL_MIN_WIDTH } from './trail/roadmap-trail';
 
 /**
- * Proximity snapping on wide screens: a scroll that ends near a trail section settles it in the
- * middle of the viewport, with the trail entering above and leaving below. A section taller than
- * the viewport (an expanded grid) is left free so its content can still be read. Off with reduced
- * motion, because Lenis is off then.
+ * Proximity snapping on wide screens with Lenis' own snap module: once a scroll settles near a trail
+ * section, the section glides to the middle of the viewport with the trail entering above and
+ * leaving below. A section taller than the viewport (an expanded grid) is left free so it can still
+ * be read. Off with reduced motion, because Lenis is off then.
  */
 export function SectionSnap() {
   const lenis = useLenis();
@@ -19,33 +19,40 @@ export function SectionSnap() {
 
   useEffect(() => {
     if (!lenis) return;
-    const snap = new Snap(lenis, { type: 'proximity', distanceThreshold: '25%', debounce: 220 });
-    let removers: (() => void)[] = [];
-    let frame = 0;
+    const snap = new Snap(lenis, {
+      type: 'proximity',
+      distanceThreshold: '20%',
+      debounce: 260,
+      duration: 0.7,
+      easing: t => 1 - (1 - t) ** 3,
+    });
+    const registered = new Map<HTMLElement, () => void>();
+    let timer = 0;
 
-    const register = () => {
-      for (const remove of removers) remove();
-      removers = [];
-      if (window.innerWidth < TRAIL_MIN_WIDTH) return;
-      const hero = document.getElementById('hero');
-      if (hero) removers.push(snap.addElement(hero, { align: 'start' }));
+    // Re-check which sections fit whenever the layout settles; Snap measures registered ones itself.
+    const sync = () => {
+      const wide = window.innerWidth >= TRAIL_MIN_WIDTH;
       for (const el of document.querySelectorAll<HTMLElement>('main section[data-trail-side]')) {
-        if (el.offsetHeight <= window.innerHeight) {
-          removers.push(snap.addElement(el, { align: 'center' }));
+        const fits = wide && el.offsetHeight <= window.innerHeight;
+        const remove = registered.get(el);
+        if (fits && !remove) registered.set(el, snap.addElement(el, { align: 'center' }));
+        if (!fits && remove) {
+          remove();
+          registered.delete(el);
         }
       }
     };
     const schedule = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(register);
+      window.clearTimeout(timer);
+      timer = window.setTimeout(sync, 300);
     };
 
-    register();
+    sync();
     const observer = new ResizeObserver(schedule);
     observer.observe(document.body);
     return () => {
       observer.disconnect();
-      cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
       snap.destroy();
     };
   }, [lenis, pathname]);

@@ -42,12 +42,12 @@ export default function HomePage() {
       />
       <Hero />
       {/* Each aside fills the margin opposite the roadmap trail beside its section. */}
-      <About aside={{ caption: 'Now playing', content: <LiveSlot tile="spotify" /> }} />
-      <Stack aside={{ caption: 'GitHub activity', content: <GitHubTile /> }} />
-      <FeaturedProjects aside={{ caption: 'In the editor', content: <LiveSlot tile="zed" /> }} />
-      <OpenSource aside={{ caption: 'Presence', content: <LiveSlot tile="discord" /> }} />
-      <MoreProjects aside={{ caption: 'My machine', content: <LiveSlot tile="machine" /> }} />
-      <Work aside={{ caption: 'Supported by', content: <SponsorsTile /> }} />
+      <About aside={<LiveSlot tile="spotify" />} />
+      <Stack aside={<LiveSlot tile="machine" />} />
+      <FeaturedProjects aside={<LiveSlot tile="zed" />} />
+      <OpenSource aside={<GitHubTile />} />
+      <MoreProjects aside={<LiveSlot tile="discord" />} />
+      <Work aside={<SponsorsTile />} />
       <Communities />
       <Elsewhere />
     </>

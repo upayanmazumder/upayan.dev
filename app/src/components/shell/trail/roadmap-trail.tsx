@@ -7,7 +7,7 @@ import { gsap, prefersReducedMotion } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
 
 import { useLenis } from '../smooth-scroll';
-import { buildTrail, type TrailGeometry, type TrailSection } from './geometry';
+import { buildTrail, LANE_GAP, type TrailGeometry, type TrailSection } from './geometry';
 
 /** Below this the margins are too thin for a lane, so the trail stays off. */
 export const TRAIL_MIN_WIDTH = 1024;
@@ -45,23 +45,25 @@ export function RoadmapTrail() {
     const measure = () => {
       const width = document.documentElement.clientWidth;
       const main = document.querySelector('main');
-      const column = main?.querySelector('section[data-trail-side] .column');
       const elements = main
         ? [...main.querySelectorAll<HTMLElement>('section[data-trail-side]')]
         : [];
-      if (!main || !column || elements.length === 0 || width < TRAIL_MIN_WIDTH) {
+      if (!main || elements.length === 0 || width < TRAIL_MIN_WIDTH) {
         setGeometry(previous => (previous === null ? previous : null));
         return;
       }
 
-      const sections: TrailSection[] = elements.map(el => ({
-        id: el.id,
-        top: documentTop(el),
-        side: el.dataset.trailSide === 'right' ? 'right' : 'left',
-      }));
+      // Columns shift toward the trail when a section has a margin tile, so each lane hugs its own column.
+      const sections: TrailSection[] = elements.map(el => {
+        const column = (el.querySelector('.column') ?? el).getBoundingClientRect();
+        return {
+          id: el.id,
+          top: documentTop(el),
+          x: el.dataset.trailSide === 'right' ? column.right + LANE_GAP : column.left - LANE_GAP,
+        };
+      });
       const next = buildTrail({
         width,
-        columnWidth: column.getBoundingClientRect().width,
         startY: Math.max(documentTop(main), sections[0]!.top - LEAD),
         endY: documentTop(main) + main.getBoundingClientRect().height,
         sections,

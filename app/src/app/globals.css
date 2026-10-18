@@ -80,6 +80,8 @@
 
   --column: 48rem;
   --gutter: 1.5rem;
+  /* How far a section column moves toward the trail to make room for its margin tile. */
+  --shift: clamp(0rem, (100vw - var(--column)) / 2 - 20rem, 7rem);
 }
 
 @layer base {

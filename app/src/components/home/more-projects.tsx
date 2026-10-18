@@ -5,7 +5,7 @@ import { projects } from '@/data/projects';
 
 export function MoreProjects({ aside }: { aside?: SectionAside }) {
   return (
-    <Section id="more" index="05" title="More things I built" aside={aside}>
+    <Section id="more" index="05" title="More builds" aside={aside}>
       <ExpandableGrid
         initial={6}
         items={projects.map(project => ({

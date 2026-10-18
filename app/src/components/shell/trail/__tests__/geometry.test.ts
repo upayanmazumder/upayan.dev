@@ -1,60 +1,53 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildTrail, EDGE_GAP, LANE_GAP, roundedPath, type TrailInput } from '../geometry';
+import { buildTrail, EDGE_GAP, roundedPath, type TrailInput } from '../geometry';
 
 const input: TrailInput = {
   width: 1600,
-  columnWidth: 768,
   startY: 800,
   endY: 5000,
   sections: [
-    { id: 'about', top: 1000, side: 'left' },
-    { id: 'stack', top: 2000, side: 'right' },
-    { id: 'work', top: 3000, side: 'left' },
+    { id: 'about', top: 1000, x: 300 },
+    { id: 'stack', top: 2000, x: 1250 },
+    { id: 'work', top: 3000, x: 360 },
   ],
 };
 
-const columnLeft = (input.width - input.columnWidth) / 2;
-const leftLane = columnLeft - LANE_GAP;
-const rightLane = columnLeft + input.columnWidth + LANE_GAP;
-
 describe('buildTrail', () => {
-  it('puts each stop in its section lane, beside the column', () => {
-    const { stops } = buildTrail(input);
-
-    expect(stops.map(stop => [stop.id, stop.x, stop.top])).toEqual([
-      ['about', leftLane, 1000],
-      ['stack', rightLane, 2000],
-      ['work', leftLane, 3000],
-    ]);
-  });
-
-  it('starts at the centre under the hero and ends at the foot of the content', () => {
+  it('runs from the centre under the hero through every lane to the foot of the content', () => {
     const { d, height } = buildTrail(input);
 
-    expect(d.startsWith(`M ${input.width / 2} ${input.startY}`)).toBe(true);
-    expect(d.endsWith(`${leftLane} ${input.endY}`)).toBe(true);
+    expect(d).toBe(
+      'M 800 800 L 800 978 Q 800 1000 778 1000 L 322 1000 Q 300 1000 300 1022 ' +
+        'L 300 1978 Q 300 2000 322 2000 L 1228 2000 Q 1250 2000 1250 2022 ' +
+        'L 1250 2978 Q 1250 3000 1228 3000 L 382 3000 Q 360 3000 360 3022 L 360 5000'
+    );
     expect(height).toBeGreaterThan(input.endY);
   });
 
-  it('stays in one lane when consecutive sections share a side', () => {
+  it('goes straight down when consecutive sections share a lane', () => {
     const { d } = buildTrail({
       ...input,
       sections: [
-        { id: 'a', top: 1000, side: 'left' },
-        { id: 'b', top: 2000, side: 'left' },
+        { id: 'a', top: 1000, x: 300 },
+        { id: 'b', top: 2000, x: 300 },
       ],
     });
 
-    expect(d).not.toContain(` ${rightLane} `);
     expect(d).not.toContain(' 2000 Q');
+    expect(d.endsWith('L 300 5000')).toBe(true);
   });
 
-  it('keeps lanes inside the viewport when the margins are thin', () => {
-    const { stops } = buildTrail({ ...input, width: 800 });
+  it('clamps lanes into the viewport', () => {
+    const { stops } = buildTrail({
+      ...input,
+      sections: [
+        { id: 'a', top: 1000, x: -20 },
+        { id: 'b', top: 2000, x: 1700 },
+      ],
+    });
 
-    expect(stops[0]!.x).toBe(EDGE_GAP);
-    expect(stops[1]!.x).toBe(800 - EDGE_GAP);
+    expect(stops.map(stop => stop.x)).toEqual([EDGE_GAP, input.width - EDGE_GAP]);
   });
 
   it('drops sections that start above the trail', () => {
@@ -67,7 +60,7 @@ describe('buildTrail', () => {
 });
 
 describe('roundedPath', () => {
-  it('turns corners with a quadratic curve limited by the shorter leg', () => {
+  it('limits the corner radius to half the shorter leg', () => {
     const d = roundedPath(
       [
         { x: 0, y: 0 },

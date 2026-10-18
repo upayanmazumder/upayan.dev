@@ -79,12 +79,6 @@ export const communities: Organization[] = [
     href: 'https://www.codechefvit.com',
     roles: [
       {
-        title: 'Projects Lead',
-        start: '2026-07',
-        end: '2026-09',
-        points: ['Set the technical direction for every software project in the chapter.'],
-      },
-      {
         title: 'Senior Core Member',
         start: '2026-01',
         end: '2026-07',

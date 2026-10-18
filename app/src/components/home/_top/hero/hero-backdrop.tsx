@@ -62,7 +62,7 @@ export function HeroBackdrop() {
             maskComposite: 'intersect',
           }}
         >
-          <Aurora base="#0a1716" sheen="#5fd4b4" paused={!active} className="h-full w-full" />
+          <Aurora base="#091510" sheen="#66ff99" paused={!active} className="h-full w-full" />
         </div>
       )}
     </div>

@@ -8,7 +8,7 @@ const OG_COLORS = {
   line: 'rgba(255,255,255,0.08)',
   foreground: '#eef0f1',
   muted: '#9aa3a8',
-  teal: '#5fd4b4',
+  teal: '#66ff99',
 } as const;
 
 /** Fetches a TTF from Google Fonts. Satori needs TTF/OTF; css2 serves TTF when no browser UA is sent. */

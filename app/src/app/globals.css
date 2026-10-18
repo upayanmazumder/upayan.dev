@@ -47,7 +47,7 @@
   --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
 }
 
-/* Dark only. One accent: muted teal. */
+/* Dark only. Teal token now carries #66ff99 green; accent token carries #66ccff blue. */
 :root {
   color-scheme: dark;
 
@@ -57,8 +57,8 @@
   --surface-2: oklch(0.2 0.006 240);
   --line: oklch(1 0 0 / 0.07);
   --line-strong: oklch(1 0 0 / 0.14);
-  --teal: oklch(0.78 0.11 172);
-  --teal-dim: oklch(0.78 0.11 172 / 0.14);
+  --teal: oklch(0.894 0.192 151.4);
+  --teal-dim: oklch(0.894 0.192 151.4 / 0.14);
 
   --card: var(--surface);
   --card-foreground: var(--foreground);
@@ -70,8 +70,8 @@
   --secondary-foreground: var(--foreground);
   --muted: var(--surface-2);
   --muted-foreground: oklch(0.68 0.008 240);
-  --accent: var(--teal-dim);
-  --accent-foreground: var(--teal);
+  --accent: oklch(0.804 0.119 232.7 / 0.14);
+  --accent-foreground: oklch(0.804 0.119 232.7);
   --destructive: oklch(0.7 0.17 25);
   --border: var(--line-strong);
   --input: var(--line-strong);

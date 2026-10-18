@@ -24,7 +24,7 @@ export function LiveTile({ label, icon, aside, backdrop, className, children }: 
         backgroundColor="var(--surface)"
         borderRadius={16}
         glowColor="165 55 55"
-        colors={['#6fd8bd', '#3fbfa0', '#c6f6e6']}
+        colors={['#6fd8a6', '#3fbf82', '#c6f6df']}
         glowRadius={20}
         glowIntensity={0.4}
         edgeSensitivity={25}

@@ -67,7 +67,7 @@ export function CertificatesGallery() {
               {selected ? (
                 <m.span
                   layoutId="cert-chip"
-                  className="absolute inset-0 rounded-full bg-teal"
+                  className="absolute inset-0 rounded-full bg-accent-foreground"
                   transition={{ duration: 0.25, ease: 'easeOut' }}
                 />
               ) : null}

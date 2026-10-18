@@ -1,4 +1,4 @@
-import { Section } from '@/components/shell/section';
+import { Section, type SectionAside } from '@/components/shell/section';
 import { profile } from '@/data/profile';
 
 import { ScrubWords } from './_top/scrub-words';
@@ -6,9 +6,9 @@ import { ScrubWords } from './_top/scrub-words';
 // Figures like "134K+" or "30K+" carry the point of each line, so they render in full foreground weight.
 const FIGURE = /(\d[\d.,]*[KMB]?\+)/;
 
-export function About() {
+export function About({ aside }: { aside?: SectionAside }) {
   return (
-    <Section id="about" index="01" title="About">
+    <Section id="about" index="01" title="About" aside={aside}>
       <ScrubWords className="flex max-w-prose flex-col gap-5 text-lg leading-relaxed text-foreground/85 md:text-xl">
         {profile.about.map(line => (
           <p key={line}>

@@ -1,6 +1,6 @@
 import LogoLoop from '@/components/rb/LogoLoop';
 import { Reveal } from '@/components/shell/reveal';
-import { Section } from '@/components/shell/section';
+import { Section, type SectionAside } from '@/components/shell/section';
 import { BrandIcon } from '@/components/ui/brand-icon';
 import { stack } from '@/data/stack';
 
@@ -22,15 +22,16 @@ const marquee = [
   title: item.name,
 }));
 
-export function Stack() {
+export function Stack({ aside }: { aside?: SectionAside }) {
   return (
     <Section
       id="stack"
-      index="04"
+      index="02"
+      aside={aside}
       title="Stack"
       lead="Languages, frameworks, and infrastructure I use in production."
     >
-      <div aria-hidden className="mb-10">
+      <div aria-hidden className="mb-10 lg:mb-8">
         <LogoLoop
           logos={marquee}
           speed={28}
@@ -42,7 +43,7 @@ export function Stack() {
           ariaLabel="Stack logos"
         />
       </div>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-6">
         {stack.map(group => (
           <Reveal key={group.label} stagger={0.035} className="flex flex-col gap-3">
             <h3 data-reveal className="label">

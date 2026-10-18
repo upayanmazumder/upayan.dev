@@ -1,14 +1,14 @@
-import { LiveAside } from '@/components/home/_top/live/live-aside';
+import { LiveSlot } from '@/components/home/_top/live/live-slot';
 import { About } from '@/components/home/about';
 import { Communities } from '@/components/home/communities';
-import { Contributions } from '@/components/home/contributions';
 import { Elsewhere } from '@/components/home/elsewhere';
 import { FeaturedProjects } from '@/components/home/featured-projects';
+import { GitHubTile } from '@/components/home/github-tile';
 import { Hero } from '@/components/home/hero';
 import { MoreProjects } from '@/components/home/more-projects';
 import { OpenSource } from '@/components/home/open-source';
+import { SponsorsTile } from '@/components/home/sponsors-tile';
 import { Stack } from '@/components/home/stack';
-import { SupportedBy } from '@/components/home/supported-by';
 import { Work } from '@/components/home/work';
 import { communities, work } from '@/data/experience';
 import { otherSocials, primarySocials, profile } from '@/data/profile';
@@ -41,18 +41,13 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, '\\u003c') }}
       />
       <Hero />
-      <About />
-      <LiveAside tile="spotify" side="left" />
-      <SupportedBy />
-      <Contributions />
-      <LiveAside tile="machine" side="left" />
-      <LiveAside tile="discord" side="right" />
-      <Stack />
-      <LiveAside tile="zed" side="left" />
-      <FeaturedProjects />
-      <OpenSource />
-      <MoreProjects />
-      <Work />
+      {/* Each aside fills the margin opposite the roadmap trail beside its section. */}
+      <About aside={{ caption: 'Now playing', content: <LiveSlot tile="spotify" /> }} />
+      <Stack aside={{ caption: 'GitHub activity', content: <GitHubTile /> }} />
+      <FeaturedProjects aside={{ caption: 'In the editor', content: <LiveSlot tile="zed" /> }} />
+      <OpenSource aside={{ caption: 'Presence', content: <LiveSlot tile="discord" /> }} />
+      <MoreProjects aside={{ caption: 'My machine', content: <LiveSlot tile="machine" /> }} />
+      <Work aside={{ caption: 'Supported by', content: <SponsorsTile /> }} />
       <Communities />
       <Elsewhere />
     </>

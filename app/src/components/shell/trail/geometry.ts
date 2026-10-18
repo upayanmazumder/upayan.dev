@@ -7,16 +7,14 @@ export const CORNER = 22;
 
 export interface TrailSection {
   id: string;
-  label: string;
-  /** Document Y of the section's top divider. */
+  /** Document Y where the section starts; the trail changes lanes here. */
   top: number;
+  /** Lane the trail runs in beside this section. */
+  side: 'left' | 'right';
 }
 
 export interface TrailStop extends TrailSection {
   x: number;
-  side: 'left' | 'right';
-  /** 0–1 position along the trail, used for the dot state. */
-  at: number;
 }
 
 export interface TrailInput {
@@ -54,20 +52,20 @@ function lanes(width: number, columnWidth: number) {
 }
 
 /**
- * Waypoints of the trail: it drops from the centre under the hero, turns into the left lane at the
- * first section divider, and swaps lanes at every divider after that. Horizontal runs sit exactly on
- * a divider hairline, so the trail only ever crosses the column where the page already draws a line.
+ * Waypoints of the trail: it drops from the centre under the hero, then runs in each section's lane
+ * and turns across at the section's top edge whenever the next lane is on the other side. The
+ * crossing is the boundary between two sections, so the line doubles as the section divider.
  */
 function waypoints(input: TrailInput, sections: TrailSection[]): Point[] {
   const { left, right } = lanes(input.width, input.columnWidth);
   const points: Point[] = [{ x: input.width / 2, y: input.startY }];
 
-  sections.forEach((section, index) => {
-    const lane = index % 2 === 0 ? left : right;
+  for (const section of sections) {
+    const lane = section.side === 'left' ? left : right;
     const previous = points[points.length - 1]!;
     if (section.top > previous.y) points.push({ x: previous.x, y: section.top });
     if (lane !== previous.x) points.push({ x: lane, y: section.top });
-  });
+  }
 
   const last = points[points.length - 1]!;
   if (input.endY > last.y) points.push({ x: last.x, y: input.endY });
@@ -108,13 +106,9 @@ export function buildTrail(input: TrailInput): TrailGeometry {
   // A section above the start would send the trail backwards; it belongs to the hero, not the trail.
   const sections = input.sections.filter(section => section.top > input.startY);
   const { left, right } = lanes(input.width, input.columnWidth);
-  const span = Math.max(1, input.endY - input.startY);
-
-  const stops: TrailStop[] = sections.map((section, index) => ({
+  const stops: TrailStop[] = sections.map(section => ({
     ...section,
-    x: index % 2 === 0 ? left : right,
-    side: index % 2 === 0 ? 'left' : 'right',
-    at: Math.min(1, Math.max(0, (section.top - input.startY) / span)),
+    x: section.side === 'left' ? left : right,
   }));
 
   return { d: roundedPath(waypoints(input, sections)), stops, height: input.endY + CORNER };

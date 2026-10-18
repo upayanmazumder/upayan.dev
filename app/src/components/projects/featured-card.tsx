@@ -27,7 +27,6 @@ export function FeaturedCard({ project, index, className }: FeaturedCardProps) {
 
   return (
     <article
-      data-stack-card
       className={cn(
         'group relative flex origin-top flex-col overflow-hidden rounded-xl border border-line bg-surface transition-colors duration-300 hover:border-line-strong',
         className
@@ -84,12 +83,6 @@ export function FeaturedCard({ project, index, className }: FeaturedCardProps) {
           </Link>
         </div>
       </div>
-
-      <div
-        data-stack-dim
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-background opacity-0"
-      />
     </article>
   );
 }

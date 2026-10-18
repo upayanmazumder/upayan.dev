@@ -25,7 +25,7 @@ function orgSpan(roles: Role[]): { start: string; end: string | null } {
  * Organizations with a vertical role timeline. The rail draws on scroll and the nodes pop in.
  * Without JS every role and its points stay visible.
  */
-export function OrgTimeline({ orgs }: { orgs: Organization[] }) {
+export function OrgTimeline({ orgs, className }: { orgs: Organization[]; className?: string }) {
   const ref = useRef<HTMLOListElement>(null);
 
   useGSAP(
@@ -68,7 +68,7 @@ export function OrgTimeline({ orgs }: { orgs: Organization[] }) {
   );
 
   return (
-    <ol ref={ref} className="flex flex-col gap-12">
+    <ol ref={ref} className={cn('flex flex-col gap-12', className)}>
       {orgs.map(org => {
         const span = org.roles.length > 1 ? orgSpan(org.roles) : null;
         return (

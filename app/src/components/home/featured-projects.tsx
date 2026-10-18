@@ -1,16 +1,17 @@
-import { FeaturedStack } from '@/components/projects/featured-stack';
-import { Section } from '@/components/shell/section';
+import { FeaturedSwitcher } from '@/components/projects/featured-switcher';
+import { Section, type SectionAside } from '@/components/shell/section';
 import { featuredProjects } from '@/data/projects';
 
-export function FeaturedProjects() {
+export function FeaturedProjects({ aside }: { aside?: SectionAside }) {
   return (
     <Section
       id="projects"
-      index="05"
+      index="03"
+      aside={aside}
       title="Selected work"
       lead="Three projects I am most proud of."
     >
-      <FeaturedStack projects={featuredProjects} />
+      <FeaturedSwitcher projects={featuredProjects} />
     </Section>
   );
 }

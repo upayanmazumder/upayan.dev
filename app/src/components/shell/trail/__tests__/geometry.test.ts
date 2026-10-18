@@ -8,36 +8,46 @@ const input: TrailInput = {
   startY: 800,
   endY: 5000,
   sections: [
-    { id: 'about', label: 'About', top: 1000 },
-    { id: 'stack', label: 'Stack', top: 2000 },
-    { id: 'work', label: 'Work', top: 3000 },
+    { id: 'about', top: 1000, side: 'left' },
+    { id: 'stack', top: 2000, side: 'right' },
+    { id: 'work', top: 3000, side: 'left' },
   ],
 };
 
 const columnLeft = (input.width - input.columnWidth) / 2;
+const leftLane = columnLeft - LANE_GAP;
+const rightLane = columnLeft + input.columnWidth + LANE_GAP;
 
 describe('buildTrail', () => {
-  it('alternates lanes and keeps them beside the column', () => {
+  it('puts each stop in its section lane, beside the column', () => {
     const { stops } = buildTrail(input);
 
-    expect(stops.map(stop => stop.side)).toEqual(['left', 'right', 'left']);
-    expect(stops[0]!.x).toBe(columnLeft - LANE_GAP);
-    expect(stops[1]!.x).toBe(columnLeft + input.columnWidth + LANE_GAP);
-  });
-
-  it('places each stop on its section divider', () => {
-    const { stops } = buildTrail(input);
-
-    expect(stops.map(stop => stop.top)).toEqual([1000, 2000, 3000]);
-    expect(stops.map(stop => Number(stop.at.toFixed(4)))).toEqual([0.0476, 0.2857, 0.5238]);
+    expect(stops.map(stop => [stop.id, stop.x, stop.top])).toEqual([
+      ['about', leftLane, 1000],
+      ['stack', rightLane, 2000],
+      ['work', leftLane, 3000],
+    ]);
   });
 
   it('starts at the centre under the hero and ends at the foot of the content', () => {
     const { d, height } = buildTrail(input);
 
     expect(d.startsWith(`M ${input.width / 2} ${input.startY}`)).toBe(true);
-    expect(d.endsWith(`${columnLeft - LANE_GAP} ${input.endY}`)).toBe(true);
+    expect(d.endsWith(`${leftLane} ${input.endY}`)).toBe(true);
     expect(height).toBeGreaterThan(input.endY);
+  });
+
+  it('stays in one lane when consecutive sections share a side', () => {
+    const { d } = buildTrail({
+      ...input,
+      sections: [
+        { id: 'a', top: 1000, side: 'left' },
+        { id: 'b', top: 2000, side: 'left' },
+      ],
+    });
+
+    expect(d).not.toContain(` ${rightLane} `);
+    expect(d).not.toContain(' 2000 Q');
   });
 
   it('keeps lanes inside the viewport when the margins are thin', () => {
@@ -47,10 +57,12 @@ describe('buildTrail', () => {
     expect(stops[1]!.x).toBe(800 - EDGE_GAP);
   });
 
-  it('skips sections that sit above the start of the trail', () => {
-    const { d } = buildTrail({ ...input, startY: 2500 });
+  it('drops sections that start above the trail', () => {
+    const { d, stops } = buildTrail({ ...input, startY: 2500 });
 
+    expect(stops.map(stop => stop.id)).toEqual(['work']);
     expect(d).not.toContain(' 1000');
+    expect(d).not.toContain(' 2000');
   });
 });
 

@@ -12,8 +12,6 @@ export const stack: StackGroup[] = [
       { name: 'Go', icon: 'siGo' },
       { name: 'Rust', icon: 'siRust' },
       { name: 'Python', icon: 'siPython' },
-      { name: 'Java', icon: 'siOpenjdk' },
-      { name: 'C++', icon: 'siCplusplus' },
       { name: 'SQL', icon: 'siPostgresql' },
     ],
   },
@@ -26,7 +24,6 @@ export const stack: StackGroup[] = [
       { name: 'GSAP', icon: 'siGsap' },
       { name: 'Express', icon: 'siExpress' },
       { name: 'FastAPI', icon: 'siFastapi' },
-      { name: 'Flask', icon: 'siFlask' },
     ],
   },
   {
@@ -45,14 +42,10 @@ export const stack: StackGroup[] = [
     items: [
       { name: 'Docker', icon: 'siDocker' },
       { name: 'Kubernetes', icon: 'siKubernetes' },
-      { name: 'Helm', icon: 'siHelm' },
       { name: 'Argo CD', icon: 'siArgo' },
-      { name: 'KEDA' },
       { name: 'Traefik', icon: 'siTraefikproxy' },
       { name: 'Terraform', icon: 'siTerraform' },
       { name: 'Cloudflare', icon: 'siCloudflare' },
-      { name: 'GitHub Actions', icon: 'siGithubactions' },
-      { name: 'Linux', icon: 'siLinux' },
     ],
   },
   {

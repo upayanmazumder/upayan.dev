@@ -220,3 +220,45 @@
     transform: translateY(10px);
   }
 }
+
+/* Space decorations: the trail probe, stop sonar, tile UFO and CTA hands. */
+@keyframes probe-bob {
+  50% {
+    transform: translateY(-1.5px) rotate(-4deg);
+  }
+}
+
+@keyframes thrust {
+  50% {
+    transform: scaleX(0.55);
+  }
+}
+
+@keyframes sonar {
+  from {
+    opacity: 0.9;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 0;
+    transform: scale(4);
+  }
+}
+
+@keyframes ufo-wobble {
+  25% {
+    transform: translateX(-1.5px) rotate(-5deg);
+  }
+  75% {
+    transform: translateX(1.5px) rotate(5deg);
+  }
+}
+
+@keyframes hand-wave {
+  25% {
+    transform: rotate(-14deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+}

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
+import { Probe } from '@/components/space';
 import { gsap, prefersReducedMotion } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
 
@@ -35,6 +36,7 @@ const documentTop = (el: Element) => el.getBoundingClientRect().top + window.scr
 export function RoadmapTrail() {
   const lenis = useLenis();
   const pathname = usePathname();
+  const rootRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<SVGPathElement>(null);
   const headRef = useRef<SVGGElement>(null);
   const [geometry, setGeometry] = useState<TrailGeometry | null>(null);
@@ -82,9 +84,10 @@ export function RoadmapTrail() {
   }, [pathname]);
 
   useEffect(() => {
+    const root = rootRef.current;
     const path = progressRef.current;
     const head = headRef.current;
-    if (!geometry || !path || !head) return;
+    if (!geometry || !root || !path || !head) return;
 
     const reduced = prefersReducedMotion();
     const total = path.getTotalLength();
@@ -98,10 +101,22 @@ export function RoadmapTrail() {
     path.style.strokeDasharray = `${total}`;
     path.style.strokeDashoffset = `${total}`;
 
+    // The probe faces along the path tangent and fires its thruster while the head is still gliding.
+    let angle = 90;
+    let rest = 0;
     const draw = (length: number) => {
       path.style.strokeDashoffset = `${total - length}`;
       const point = path.getPointAtLength(length);
-      head.setAttribute('transform', `translate(${point.x} ${point.y})`);
+      const ahead = path.getPointAtLength(Math.min(total, length + 2));
+      if (Math.hypot(ahead.x - point.x, ahead.y - point.y) > 0.5) {
+        angle = (Math.atan2(ahead.y - point.y, ahead.x - point.x) * 180) / Math.PI;
+      }
+      head.setAttribute('transform', `translate(${point.x} ${point.y}) rotate(${angle})`);
+      root.dataset.moving = 'true';
+      window.clearTimeout(rest);
+      rest = window.setTimeout(() => {
+        root.dataset.moving = 'false';
+      }, 260);
     };
 
     const state = { length: 0 };
@@ -142,6 +157,7 @@ export function RoadmapTrail() {
       else window.removeEventListener('scroll', update);
       if (current) document.getElementById(current)?.removeAttribute('data-current');
       gsap.killTweensOf(state);
+      window.clearTimeout(rest);
     };
   }, [geometry, lenis]);
 
@@ -154,8 +170,10 @@ export function RoadmapTrail() {
 
   return (
     <div
+      ref={rootRef}
       aria-hidden
-      className="pointer-events-none absolute top-0 left-0 z-20 w-full max-lg:hidden"
+      data-moving="false"
+      className="group/trail pointer-events-none absolute top-0 left-0 z-20 w-full max-lg:hidden"
       style={{ height: geometry.height }}
     >
       {/* No viewBox: one user unit is one CSS pixel, so the path uses document coordinates directly. */}
@@ -176,13 +194,7 @@ export function RoadmapTrail() {
           className="[filter:drop-shadow(0_0_6px_color-mix(in_oklab,var(--teal)_55%,transparent))]"
         />
         <g ref={headRef}>
-          <circle
-            r={9}
-            stroke="var(--teal)"
-            strokeWidth={1}
-            className="[transform-origin:center] animate-ping opacity-50 [animation-duration:2.4s] [transform-box:fill-box] motion-reduce:hidden"
-          />
-          <circle r={3.5} fill="var(--teal)" />
+          <Probe />
         </g>
       </svg>
 
@@ -196,6 +208,13 @@ export function RoadmapTrail() {
           className="group/stop pointer-events-auto absolute flex size-6 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center"
         >
           <span className="absolute size-2.5 rounded-full bg-background" />
+          {stop.id === active ? (
+            // Keyed by stop so the ping replays each time the probe reaches a new section.
+            <span
+              key={stop.id}
+              className="absolute size-2 animate-[sonar_1.4s_var(--ease-out-expo)_both] rounded-full border border-teal motion-reduce:hidden"
+            />
+          ) : null}
           <span
             className={cn(
               'relative size-1.5 rounded-full transition-[background-color,scale] duration-300 group-hover/stop:scale-150',

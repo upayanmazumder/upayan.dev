@@ -2,6 +2,7 @@
 
 import { ArrowUpRight, Copy, MapPin } from 'lucide-react';
 
+import { AlienHands } from '@/components/space';
 import { profile } from '@/data/profile';
 import { useCopyEmail } from '@/hooks/use-copy-email';
 import { useLocalTime } from '@/hooks/use-local-time';
@@ -33,10 +34,18 @@ export function HeroMeta() {
         <Copy aria-hidden className="size-3.5" />
         {profile.email}
       </button>
-      <a href={profile.resume} target="_blank" rel="noreferrer" className={action}>
-        Resume
-        <ArrowUpRight aria-hidden className="size-3.5" />
-      </a>
+      <AlienHands>
+        {/* Opaque so the hands are hidden behind the chip until they rise. */}
+        <a
+          href={profile.resume}
+          target="_blank"
+          rel="noreferrer"
+          className={`${action} bg-background`}
+        >
+          Resume
+          <ArrowUpRight aria-hidden className="size-3.5" />
+        </a>
+      </AlienHands>
     </div>
   );
 }

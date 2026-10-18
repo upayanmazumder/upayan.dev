@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import type { TrailSide } from '@/components/nav/sections';
+import { Ufo } from '@/components/space';
 import { cn } from '@/lib/utils';
 
 import { Reveal } from './reveal';
@@ -28,7 +29,8 @@ export function MarginTile({ side, children }: MarginTileProps) {
           : 'min-[87.5rem]:left-[calc(100%+2.5rem)]'
       )}
     >
-      <Reveal className="@container relative">
+      <Reveal className="@container relative isolate">
+        <Ufo />
         {children}
         <span
           aria-hidden

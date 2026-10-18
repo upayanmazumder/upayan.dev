@@ -1,7 +1,6 @@
 import {
   siArgo,
   siCloudflare,
-  siCplusplus,
   siDiscord,
   siDocker,
   siExpress,
@@ -20,7 +19,6 @@ import {
   siMinio,
   siMongodb,
   siNextdotjs,
-  siOpenjdk,
   siOpentelemetry,
   siPostgresql,
   siPrometheus,
@@ -41,7 +39,6 @@ import {
 const simple = {
   siArgo,
   siCloudflare,
-  siCplusplus,
   siDiscord,
   siDocker,
   siExpress,
@@ -59,8 +56,6 @@ const simple = {
   siLeetcode,
   siMinio,
   siMongodb,
-  siNextdotjs,
-  siOpenjdk,
   siOpentelemetry,
   siPostgresql,
   siPrometheus,

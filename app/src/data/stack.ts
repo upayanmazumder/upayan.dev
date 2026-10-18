@@ -12,8 +12,6 @@ export const stack: StackGroup[] = [
       { name: 'Go', icon: 'siGo' },
       { name: 'Rust', icon: 'siRust' },
       { name: 'Python', icon: 'siPython' },
-      { name: 'Java', icon: 'siOpenjdk' },
-      { name: 'C++', icon: 'siCplusplus' },
       { name: 'SQL', icon: 'siPostgresql' },
     ],
   },

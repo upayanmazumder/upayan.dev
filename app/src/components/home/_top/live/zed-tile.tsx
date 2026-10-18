@@ -34,7 +34,7 @@ export function ZedTile({ pc, loading, receivedAt, active, className }: ZedTileP
       ) : !zed ? (
         <p className="text-sm text-muted-foreground">Not in the editor right now.</p>
       ) : (
-        <div className="mt-auto flex items-end justify-between gap-4">
+        <div className="mt-auto flex flex-col gap-2 @xl:flex-row @xl:items-end @xl:justify-between @xl:gap-4">
           <div className="flex min-w-0 flex-col gap-1">
             <p className="flex min-w-0 items-center font-mono text-lg text-foreground">
               <Scramble text={zed.file} className="truncate" />

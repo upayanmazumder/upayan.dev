@@ -7,7 +7,7 @@ import { openSource } from '@/data/projects';
 
 export function OpenSource() {
   return (
-    <Section id="open-source" index="07" title="Open source">
+    <Section id="open-source" index="06" title="Open source">
       <Reveal as="ul" className="border-t border-line">
         {openSource.map(item => (
           <li key={item.href} data-reveal className="border-b border-line">

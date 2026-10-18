@@ -26,7 +26,7 @@ export function Stack() {
   return (
     <Section
       id="stack"
-      index="05"
+      index="04"
       title="Stack"
       lead="Languages, frameworks, and infrastructure I use in production."
     >

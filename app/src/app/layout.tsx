@@ -10,8 +10,8 @@ import { MotionProvider } from '@/components/motion';
 import { SiteNav } from '@/components/nav/site-nav';
 import { QueryProvider } from '@/components/providers';
 import { Backdrop } from '@/components/shell/backdrop';
-import { ScrollRail } from '@/components/shell/scroll-rail';
 import { SmoothScroll } from '@/components/shell/smooth-scroll';
+import { RoadmapTrail } from '@/components/shell/trail/roadmap-trail';
 import { Toaster } from '@/components/ui/sonner';
 import { profile } from '@/data/profile';
 import { env } from '@/env';
@@ -49,8 +49,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <SmoothScroll>
                 <Backdrop />
                 <SiteNav />
-                <ScrollRail />
-                <main id="main">{children}</main>
+                <RoadmapTrail />
+                {/* Margin sections position against this box. */}
+                <main id="main" className="relative">
+                  {children}
+                </main>
                 <SiteFooter />
               </SmoothScroll>
             </MotionProvider>

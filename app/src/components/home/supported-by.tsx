@@ -2,8 +2,8 @@ import Image from 'next/image';
 import { ArrowUpRight, Heart } from 'lucide-react';
 
 import type { PixelCardProps } from '@/components/rb/PixelCard';
+import { MarginSection } from '@/components/shell/margin-section';
 import { Reveal } from '@/components/shell/reveal';
-import { Section } from '@/components/shell/section';
 import { profile } from '@/data/profile';
 import { sponsors } from '@/data/site';
 
@@ -22,12 +22,12 @@ const PIXELS = {
   className: 'w-full border border-line',
 } satisfies PixelCardProps;
 
-/** Section highlighting financial sponsors with interactive cards and GitHub sponsorship link. */
+/** Financial sponsors, in a page margin on wide screens. Cards light up under the pointer. */
 export function SupportedBy() {
   return (
-    <Section id="supported-by" index="03" title="Supported by">
+    <MarginSection id="supported-by" index="02" side="right" title="Supported by">
       <Reveal className="flex flex-col gap-4">
-        <ul data-reveal className="grid gap-3 sm:grid-cols-2">
+        <ul data-reveal className="grid gap-3 @md:grid-cols-2">
           {sponsors.map(s => {
             const body = (
               <>
@@ -85,6 +85,6 @@ export function SupportedBy() {
           />
         </a>
       </Reveal>
-    </Section>
+    </MarginSection>
   );
 }

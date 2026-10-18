@@ -7,7 +7,7 @@ import { WorkTimeline } from './work-timeline';
 /** Work experience section displaying employment history and roles. */
 export function Work() {
   return (
-    <Section id="work" index="09" title="Work">
+    <Section id="work" index="08" title="Work">
       <WorkTimeline orgs={work} fallback={<WorkStatic orgs={work} />} />
     </Section>
   );

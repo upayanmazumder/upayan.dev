@@ -1,10 +1,10 @@
+import { LiveAside } from '@/components/home/_top/live/live-aside';
 import { About } from '@/components/home/about';
 import { Communities } from '@/components/home/communities';
 import { Contributions } from '@/components/home/contributions';
 import { Elsewhere } from '@/components/home/elsewhere';
 import { FeaturedProjects } from '@/components/home/featured-projects';
 import { Hero } from '@/components/home/hero';
-import { LiveNow } from '@/components/home/live-now';
 import { MoreProjects } from '@/components/home/more-projects';
 import { OpenSource } from '@/components/home/open-source';
 import { Stack } from '@/components/home/stack';
@@ -42,10 +42,13 @@ export default function HomePage() {
       />
       <Hero />
       <About />
-      <LiveNow />
+      <LiveAside tile="spotify" side="left" />
       <SupportedBy />
       <Contributions />
+      <LiveAside tile="machine" side="left" />
+      <LiveAside tile="discord" side="right" />
       <Stack />
+      <LiveAside tile="zed" side="left" />
       <FeaturedProjects />
       <OpenSource />
       <MoreProjects />

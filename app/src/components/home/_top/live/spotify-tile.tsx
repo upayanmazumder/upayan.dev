@@ -50,9 +50,9 @@ export function SpotifyTile({ data, loading, receivedAt, active, className }: Sp
       ) : !track ? (
         <p className="text-sm text-muted-foreground">Nothing playing right now.</p>
       ) : (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 @xl:gap-4">
           {track.art ? (
-            <div className="relative size-20 shrink-0 sm:size-24">
+            <div className="relative size-16 shrink-0 @xl:size-24">
               <TiltedCard
                 imageSrc={track.art}
                 altText={track.album ? `${track.album} cover` : ''}
@@ -73,17 +73,19 @@ export function SpotifyTile({ data, loading, receivedAt, active, className }: Sp
                 href={track.url}
                 target="_blank"
                 rel="noreferrer"
-                className="truncate font-display text-xl leading-tight font-semibold underline-offset-4 hover:text-teal hover:underline focus-visible:text-teal"
+                className="truncate font-display text-base leading-tight font-semibold underline-offset-4 hover:text-teal hover:underline focus-visible:text-teal @xl:text-xl"
               >
                 <Scramble text={track.title} />
               </a>
             ) : (
               <Scramble
                 text={track.title}
-                className="truncate font-display text-xl leading-tight font-semibold"
+                className="truncate font-display text-base leading-tight font-semibold @xl:text-xl"
               />
             )}
-            <p className="truncate text-muted-foreground">{track.artists.join(', ')}</p>
+            <p className="truncate text-sm text-muted-foreground @xl:text-base">
+              {track.artists.join(', ')}
+            </p>
             {track.album ? (
               <p className="truncate font-mono text-[0.7rem] text-muted-foreground/70">
                 {track.album}

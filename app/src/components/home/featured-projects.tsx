@@ -6,7 +6,7 @@ export function FeaturedProjects() {
   return (
     <Section
       id="projects"
-      index="06"
+      index="05"
       title="Selected work"
       lead="Three projects I am most proud of."
     >

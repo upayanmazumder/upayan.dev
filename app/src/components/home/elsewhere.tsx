@@ -5,7 +5,7 @@ import { otherSocials } from '@/data/profile';
 
 export function Elsewhere() {
   return (
-    <Section id="elsewhere" index="11" title="Elsewhere">
+    <Section id="elsewhere" index="10" title="Elsewhere">
       <Reveal
         as="ul"
         stagger={0.04}

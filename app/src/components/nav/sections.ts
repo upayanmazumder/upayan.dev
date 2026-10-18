@@ -1,7 +1,6 @@
 /** Home section anchors, in page order. Ids match the `Section` ids rendered by `@/components/home/*`. */
 export const homeSections = [
   { id: 'about', label: 'About' },
-  { id: 'now', label: 'Live now' },
   { id: 'supported-by', label: 'Supported by' },
   { id: 'activity', label: 'GitHub activity' },
   { id: 'stack', label: 'Stack' },

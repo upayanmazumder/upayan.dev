@@ -64,7 +64,8 @@ export const communities: Organization[] = [
         start: '2025-04',
         end: '2026-03',
         points: [
-          'Built Kargo, the chapter’s recruitment portal, on a Kubernetes deployment platform.',
+          'Built Kargo, a Kubernetes deployment platform.',
+          'Built the chapter’s recruitment portal.',
           'Built The Memory Book, a map where people pin travel memories.',
         ],
       },

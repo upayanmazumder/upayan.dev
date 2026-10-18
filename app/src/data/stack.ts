@@ -44,14 +44,10 @@ export const stack: StackGroup[] = [
     items: [
       { name: 'Docker', icon: 'siDocker' },
       { name: 'Kubernetes', icon: 'siKubernetes' },
-      { name: 'Helm', icon: 'siHelm' },
       { name: 'Argo CD', icon: 'siArgo' },
-      { name: 'KEDA' },
       { name: 'Traefik', icon: 'siTraefikproxy' },
       { name: 'Terraform', icon: 'siTerraform' },
       { name: 'Cloudflare', icon: 'siCloudflare' },
-      { name: 'GitHub Actions', icon: 'siGithubactions' },
-      { name: 'Linux', icon: 'siLinux' },
     ],
   },
   {

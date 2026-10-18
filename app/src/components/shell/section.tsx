@@ -35,7 +35,7 @@ export function Section({ id, index, title, lead, className, children }: Section
               aria-label={`Jump to ${title} section`}
             >
               {index ? (
-                <span className="font-mono text-xs text-teal transition-transform group-hover/heading:-translate-x-0.5">
+                <span className="font-mono text-xs text-accent-foreground transition-transform group-hover/heading:-translate-x-0.5">
                   {index}
                 </span>
               ) : null}

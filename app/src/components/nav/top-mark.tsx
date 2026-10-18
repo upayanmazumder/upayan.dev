@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
-import { Search } from 'lucide-react';
+import { Home, Search } from 'lucide-react';
 
 import { profile } from '@/data/profile';
 import { gsap, prefersReducedMotion, useGSAP } from '@/lib/gsap';
@@ -101,12 +101,9 @@ export function TopMark({ paletteOpen, paletteId, covered }: TopMarkProps) {
         href="/"
         aria-label={`${profile.name}, home`}
         onClick={event => onLinkClick(event, '/')}
-        className={cn(
-          chip,
-          'w-9 justify-center font-display text-base font-semibold text-foreground hover:text-teal'
-        )}
+        className={cn(chip, 'w-9 justify-center text-foreground hover:text-teal')}
       >
-        U
+        <Home aria-hidden className="size-4" />
       </Link>
       <button
         ref={buttonRef}

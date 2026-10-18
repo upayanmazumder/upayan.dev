@@ -1,5 +1,4 @@
 import { About } from '@/components/home/about';
-import { CertificatesPreview } from '@/components/home/certificates-preview';
 import { Communities } from '@/components/home/communities';
 import { Contributions } from '@/components/home/contributions';
 import { Elsewhere } from '@/components/home/elsewhere';
@@ -52,7 +51,6 @@ export default function HomePage() {
       <MoreProjects />
       <Work />
       <Communities />
-      <CertificatesPreview />
       <Elsewhere />
     </>
   );

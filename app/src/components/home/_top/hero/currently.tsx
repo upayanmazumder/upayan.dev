@@ -32,7 +32,7 @@ export function Currently({ items }: { items: readonly string[] }) {
       ref={ref}
       className="flex flex-wrap items-baseline gap-x-2 text-sm text-muted-foreground md:text-base"
     >
-      <span className="label text-teal">Currently</span>
+      <span className="label text-accent-foreground!">Currently</span>
       <span className="sr-only">{items.join('; ')}</span>
       <AnimatePresence mode="wait" initial={false}>
         <m.span

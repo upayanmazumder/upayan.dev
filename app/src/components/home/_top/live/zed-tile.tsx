@@ -84,7 +84,7 @@ function Session({
     <span
       role="timer"
       aria-label={`Session ${hours} hours ${minutes} minutes ${seconds} seconds`}
-      className="flex shrink-0 items-center font-mono text-teal tabular-nums"
+      className="flex shrink-0 items-center font-mono text-accent-foreground tabular-nums"
     >
       <span aria-hidden className="flex items-center">
         {hours > 0 ? (

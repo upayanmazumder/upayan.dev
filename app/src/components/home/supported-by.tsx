@@ -9,10 +9,10 @@ import { sponsors } from '@/data/site';
 
 import { SponsorCard } from './sponsor-card';
 
-// Teal ramp from the design tokens; pixels light up under the pointer on hover.
+// Green ramp from the design tokens (#66ff99 family); pixels light up under the pointer on hover.
 const PIXELS = {
-  colors: ['#c6f6e6', '#6fd8bd', '#2f9e86'],
-  glowColor: '#3fbfa0',
+  colors: ['#c6f6df', '#6fd8a6', '#2f9e69'],
+  glowColor: '#3fbf82',
   gap: 5,
   speed: 30,
   shape: 'circle',

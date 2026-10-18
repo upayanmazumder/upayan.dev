@@ -21,12 +21,12 @@ interface CommandPaletteProps {
 }
 
 const itemClass =
-  'group/item flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors data-[selected=true]:bg-teal-dim data-[selected=true]:text-foreground';
+  'group/item flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors data-[selected=true]:bg-accent data-[selected=true]:text-foreground';
 
 function Row({ icon, label, hint }: { icon: ReactNode; label: string; hint: string }) {
   return (
     <>
-      <span className="grid size-4 shrink-0 place-items-center text-muted-foreground group-data-[selected=true]/item:text-teal">
+      <span className="grid size-4 shrink-0 place-items-center text-muted-foreground group-data-[selected=true]/item:text-accent-foreground">
         {icon}
       </span>
       <span className="min-w-0 flex-1 truncate font-ui text-foreground">{label}</span>

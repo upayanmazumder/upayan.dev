@@ -10,6 +10,5 @@ export const homeSections = [
   { id: 'more', label: 'More projects' },
   { id: 'work', label: 'Work' },
   { id: 'communities', label: 'Communities' },
-  { id: 'certificates', label: 'Certificates' },
   { id: 'elsewhere', label: 'Elsewhere' },
 ] as const;

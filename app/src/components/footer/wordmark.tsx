@@ -51,7 +51,7 @@ export function Wordmark() {
             </span>
             <span
               data-solid={reflection ? undefined : ''}
-              className="absolute inset-0 block bg-gradient-to-b from-foreground to-teal/70 bg-clip-text text-transparent"
+              className="absolute inset-0 block bg-gradient-to-b from-accent-foreground to-teal bg-clip-text text-transparent"
               style={{ clipPath: 'inset(0% 0% 0% 0%)' }}
             >
               {l}

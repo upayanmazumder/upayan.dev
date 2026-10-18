@@ -38,7 +38,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" suppressHydrationWarning className={cn('dark antialiased', fontVariables)}>
       <head>
-        {/* Marks JS as available before paint so `.reveal` content can wait for its animation. */}
+        {/* Marks JS as available before paint so `.reveal` content and the preloader can take over. */}
         <script
           dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
         />

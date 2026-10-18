@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 
 import { Probe } from '@/components/space';
 import { gsap, prefersReducedMotion } from '@/lib/gsap';
-import { cn } from '@/lib/utils';
 
 import { useLenis } from '../smooth-scroll';
 import { buildTrail, LANE_GAP, type TrailGeometry, type TrailSection } from './geometry';
@@ -40,7 +39,6 @@ export function RoadmapTrail() {
   const progressRef = useRef<SVGPathElement>(null);
   const headRef = useRef<SVGGElement>(null);
   const [geometry, setGeometry] = useState<TrailGeometry | null>(null);
-  const [active, setActive] = useState<string | null>(null);
 
   // Geometry only changes when the page reflows, so scrolling never re-measures and never re-renders.
   useEffect(() => {
@@ -146,7 +144,6 @@ export function RoadmapTrail() {
       if (current) document.getElementById(current)?.removeAttribute('data-current');
       if (next) document.getElementById(next)?.setAttribute('data-current', 'true');
       current = next;
-      setActive(next);
     };
 
     update();
@@ -162,11 +159,6 @@ export function RoadmapTrail() {
   }, [geometry, lenis]);
 
   if (!geometry) return null;
-
-  const scrollTo = (top: number) => {
-    if (lenis) lenis.scrollTo(top, { duration: 1.2 });
-    else window.scrollTo({ top, behavior: 'smooth' });
-  };
 
   return (
     <div
@@ -197,34 +189,6 @@ export function RoadmapTrail() {
           <Probe />
         </g>
       </svg>
-
-      {geometry.stops.map(stop => (
-        <button
-          key={stop.id}
-          type="button"
-          tabIndex={-1}
-          onPointerDown={() => scrollTo(stop.top)}
-          style={{ left: stop.x, top: stop.top }}
-          className="group/stop pointer-events-auto absolute flex size-6 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center"
-        >
-          <span className="absolute size-2.5 rounded-full bg-background" />
-          {stop.id === active ? (
-            // Keyed by stop so the ping replays each time the probe reaches a new section.
-            <span
-              key={stop.id}
-              className="absolute size-2 animate-[sonar_1.4s_var(--ease-out-expo)_both] rounded-full border border-teal motion-reduce:hidden"
-            />
-          ) : null}
-          <span
-            className={cn(
-              'relative size-1.5 rounded-full transition-[background-color,scale] duration-300 group-hover/stop:scale-150',
-              stop.id === active
-                ? 'scale-125 bg-teal shadow-[0_0_10px_var(--teal)]'
-                : 'bg-line-strong'
-            )}
-          />
-        </button>
-      ))}
     </div>
   );
 }

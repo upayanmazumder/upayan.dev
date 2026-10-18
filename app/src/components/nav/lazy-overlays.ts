@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 
-// The menu and palette are only needed after a user action, so their code (cmdk, brand icons, preview images)
+// The menu and palette are only needed after a user action, so their code (cmdk, brand icons, the hologram scene)
 // stays out of the initial bundle. Intent (hover or focus on a trigger) starts the fetch before the click lands.
 let menuRequested = false;
 let paletteRequested = false;

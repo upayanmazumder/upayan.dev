@@ -5,15 +5,15 @@ import { usePathname } from 'next/navigation';
 
 import { useUiStore, type Overlay } from '@/stores/ui-store';
 
-import { EdgeTab } from './edge-tab';
 import { CommandPalette, MenuPanel, preloadPalette } from './lazy-overlays';
 import { TopMark } from './top-mark';
+import { UfoTab } from './ufo-tab';
 import { useOverlayLock } from './use-overlay-lock';
 
 const MENU_ID = 'site-menu';
 const PALETTE_ID = 'command-palette';
 
-/** Site navigation: liquid edge tab with its full-screen menu, the top-left mark, and the Cmd/Ctrl+K palette. */
+/** Site navigation: the UFO menu button with its full-screen menu, the top-left mark, and the Cmd/Ctrl+K palette. */
 export function SiteNav() {
   const overlay = useUiStore(state => state.overlay);
   const toggle = useUiStore(state => state.toggle);
@@ -94,8 +94,8 @@ export function SiteNav() {
             onClosed={() => setMenuMounted(false)}
           />
         )}
-        <EdgeTab
-          ref={tabRef}
+        <UfoTab
+          buttonRef={tabRef}
           open={menuOpen}
           controls={menuMounted ? MENU_ID : undefined}
           onToggle={() => toggle('menu')}

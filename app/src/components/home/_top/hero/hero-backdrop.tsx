@@ -52,6 +52,7 @@ export function HeroBackdrop() {
       className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_28%,var(--teal-dim),transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(40%_35%_at_88%_12%,var(--accent),transparent_72%)]" />
       {reduced ? null : (
         <div
           ref={shaderRef}

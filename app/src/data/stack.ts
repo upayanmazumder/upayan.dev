@@ -20,6 +20,7 @@ export const stack: StackGroup[] = [
     items: [
       { name: 'React', icon: 'siReact' },
       { name: 'Next.js', icon: 'siNextdotjs' },
+      { name: 'Node.js', icon: 'siNodedotjs' },
       { name: 'Tailwind CSS', icon: 'siTailwindcss' },
       { name: 'GSAP', icon: 'siGsap' },
       { name: 'Express', icon: 'siExpress' },
@@ -40,21 +41,28 @@ export const stack: StackGroup[] = [
   {
     label: 'Infrastructure',
     items: [
+      { name: 'Git', icon: 'siGit' },
       { name: 'Docker', icon: 'siDocker' },
       { name: 'Kubernetes', icon: 'siKubernetes' },
+      { name: 'KEDA' },
       { name: 'Argo CD', icon: 'siArgo' },
       { name: 'Traefik', icon: 'siTraefikproxy' },
       { name: 'Terraform', icon: 'siTerraform' },
+      { name: 'Ansible', icon: 'siAnsible' },
+      { name: 'GitHub Actions', icon: 'siGithubactions' },
       { name: 'Cloudflare', icon: 'siCloudflare' },
+      { name: 'Linux', icon: 'siLinux' },
     ],
   },
   {
-    label: 'Observability',
+    label: 'Observability & Security',
     items: [
       { name: 'Prometheus', icon: 'siPrometheus' },
       { name: 'Grafana', icon: 'siGrafana' },
       { name: 'Loki' },
       { name: 'OpenTelemetry', icon: 'siOpentelemetry' },
+      { name: 'SOPS' },
+      { name: 'Restic' },
     ],
   },
 ];

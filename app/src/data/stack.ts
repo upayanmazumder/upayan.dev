@@ -26,7 +26,6 @@ export const stack: StackGroup[] = [
       { name: 'GSAP', icon: 'siGsap' },
       { name: 'Express', icon: 'siExpress' },
       { name: 'FastAPI', icon: 'siFastapi' },
-      { name: 'Flask', icon: 'siFlask' },
     ],
   },
   {

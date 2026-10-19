@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, type Ref } from 'react';
+import { useEffect, type Ref } from 'react';
 import { m, useMotionValue, useSpring, useTransform } from 'motion/react';
 
 import { cn } from '@/lib/utils';
@@ -29,15 +29,17 @@ interface EdgeTabProps {
   ref?: Ref<HTMLButtonElement>;
 }
 
-/** Curved tab glued to the right edge. It follows the cursor Y with a spring and swells as the cursor gets close. */
-export function EdgeTab({ open, controls, onToggle, ref }: EdgeTabProps) {
-  const height = useWindowHeight();
+/**
+ * Strip and button. Mounted only once the viewport height is known, so the springs start at rest:
+ * a motion component freezes its first-render style, and starting at 0 left the tab off-screen.
+ */
+function TabBody({ height, open, controls, onToggle, ref }: EdgeTabProps & { height: number }) {
   const compact = useMediaQuery('(max-width: 767px)');
   const finePointer = useMediaQuery('(hover: hover) and (pointer: fine)');
   const shape = compact ? SHAPES.compact : SHAPES.desktop;
   const restY = compact ? height - shape.inset - shape.half : height / 2;
 
-  const targetY = useMotionValue(0);
+  const targetY = useMotionValue(restY);
   const targetDepth = useMotionValue(shape.depth);
   const targetHalf = useMotionValue(shape.half);
   // The base lags behind the tip, which stretches the bulge toward the cursor like a drop of liquid.
@@ -52,21 +54,14 @@ export function EdgeTab({ open, controls, onToggle, ref }: EdgeTabProps) {
   const buttonY = useTransform(tipY, y => y - (compact ? 32 : 40));
   const iconX = useTransform(depth, dp => -(dp / 2 - 8));
 
-  const placed = useRef(false);
   useEffect(() => {
-    if (!height) return;
     targetY.set(restY);
     targetDepth.set(shape.depth);
     targetHalf.set(shape.half);
-    if (!placed.current) {
-      placed.current = true;
-      baseY.jump(restY);
-      tipY.jump(restY);
-    }
-  }, [height, restY, shape, targetY, targetDepth, targetHalf, baseY, tipY]);
+  }, [restY, shape, targetY, targetDepth, targetHalf]);
 
   useEffect(() => {
-    if (!height || compact || !finePointer || open) return;
+    if (compact || !finePointer || open) return;
     const margin = shape.half + shape.stretch + 16;
     // Far from the edge the targets sit at rest, so moves there return early and never wake the springs.
     // Starts unsettled so the first far move resets a bulge left over from before the menu opened.
@@ -105,23 +100,16 @@ export function EdgeTab({ open, controls, onToggle, ref }: EdgeTabProps) {
   };
 
   return (
-    <div
-      className={cn(
-        'pointer-events-none fixed inset-y-0 right-0 z-60 transition-opacity duration-300',
-        height ? 'opacity-100' : 'opacity-0'
-      )}
-      style={{ width: STRIP }}
-    >
-      {height > 0 && (
-        <svg
-          aria-hidden
-          className="absolute inset-0 h-full w-full overflow-visible drop-shadow-[0_0_8px_var(--teal-dim)]"
-          viewBox={`0 0 ${STRIP} ${height}`}
-          preserveAspectRatio="none"
-        >
-          <m.path d={d} className="fill-surface stroke-teal/45" strokeWidth={1} />
-        </svg>
-      )}
+    <>
+      <svg
+        aria-hidden
+        className="absolute inset-0 h-full w-full overflow-visible drop-shadow-[0_0_8px_var(--teal-dim)]"
+        viewBox={`0 0 ${STRIP} ${height}`}
+        preserveAspectRatio="none"
+      >
+        <m.path d={d} className="fill-surface stroke-teal/45" strokeWidth={1} />
+      </svg>
+
       <m.button
         ref={ref}
         type="button"
@@ -164,6 +152,22 @@ export function EdgeTab({ open, controls, onToggle, ref }: EdgeTabProps) {
           />
         </m.span>
       </m.button>
+    </>
+  );
+}
+
+/** Curved tab glued to the right edge. It follows the cursor Y with a spring and swells as the cursor gets close. */
+export function EdgeTab(props: EdgeTabProps) {
+  const height = useWindowHeight();
+  return (
+    <div
+      className={cn(
+        'pointer-events-none fixed inset-y-0 right-0 z-60 transition-opacity duration-300',
+        height ? 'opacity-100' : 'opacity-0'
+      )}
+      style={{ width: STRIP }}
+    >
+      {height > 0 && <TabBody height={height} {...props} />}
     </div>
   );
 }

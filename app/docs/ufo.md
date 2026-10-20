@@ -17,6 +17,7 @@ button, then the source of the hologram menu. This file describes the flow and w
 | Downloads         | `src/components/nav/preload-page.ts`    | Document, fonts, images, live data, and album art              |
 | Top-left chips    | `src/components/nav/top-mark.tsx`       | Home and palette chips; `use-top-mark-motion.ts` animates them |
 | Pointer behaviour | `src/components/nav/use-ufo-pointer.ts` | Lean, shooting, anger                                          |
+| Menu cues         | `src/components/nav/use-ufo-hint.ts`    | Landing hint, idle peeks, scroll nudge                         |
 | Menu scene        | `src/components/nav/menu-panel.tsx`     | Open and close timeline                                        |
 | Hologram          | `src/components/nav/menu-hologram.tsx`  | The beam and the page links                                    |
 | Ground            | `src/components/nav/menu-ground.tsx`    | Planet surface, aliens, contact and social blocks              |
@@ -92,6 +93,20 @@ from a fixed hash of its position, so server and client render the same crew.
 saucer (`liquid-path.ts`), the links rise in (`menu-links.tsx`), and the footer fades in
 (`menu-footer.tsx`). Closing reverses it at 1.6× speed.
 
+## Menu discovery cues (`use-ufo-hint.ts`)
+
+New visitors do not know the saucer is the menu, so it shows them until they open it once in the
+tab session (`sessionStorage` key `ufo-menu-seen`). The cues move a wrapper (`hintRef`) that no other
+animation touches, so they never fight the lean or the menu timeline.
+
+- **Landing hint.** 1.2 s after the reveal, the saucer drops 26 px into view. Its lights flare, a ring
+  pulses under it, and a "Menu's in here" bubble shows for 2.6 s. Then it rises back.
+- **Idle peek.** Every 12 s it dips 14 px, flares its lights, and pulses the ring.
+- **Scroll nudge.** The first scroll past 80% of the viewport earns one 22 px dip.
+
+Only one cue plays at a time. Nothing runs with reduced motion, while the menu shows, or while the
+tab is hidden.
+
 ## Pointer behaviour (`use-ufo-pointer.ts`)
 
 Active only with a fine pointer, with motion allowed, once the saucer is docked, and while the menu
@@ -125,17 +140,18 @@ The section the probe is in gets `data-current`, which lights up its sideways he
 
 ## Tuning
 
-| Setting                 | Where                                       | Value                           |
-| ----------------------- | ------------------------------------------- | ------------------------------- |
-| Preloader download cap  | `use-arrival.ts` `MAX_MS`                   | 9000 ms                         |
-| Act timing              | `arrival-scenes.ts`                         | `UPLINK_*`, `CLIMB_*`, `LIFT_*` |
-| Resume hands wave delay | `space/alien-hands.tsx`                     | 3000 ms after reveal            |
-| Lean zone               | `use-ufo-pointer.ts` `ZONE`                 | 0.15                            |
-| Shot timing             | `FIRST_SHOT_MS`, `FIRE_MIN_S`, `FIRE_MAX_S` | 6000 ms, 30 s, 45 s             |
-| Shot lock               | `LOCK_MS`                                   | 7000 ms                         |
-| Anger distances         | `NEAR_PX`, `FAR_PX`, `GRUDGE_MS`            | 70, 240, 3000                   |
-| Pellet speed            | `SPEED`                                     | 380 px/s                        |
-| Saucer dock offset      | `--ufo-top` in `globals.css`                | -0.5rem                         |
+| Setting                 | Where                                       | Value                            |
+| ----------------------- | ------------------------------------------- | -------------------------------- |
+| Preloader download cap  | `use-arrival.ts` `MAX_MS`                   | 9000 ms                          |
+| Act timing              | `arrival-scenes.ts`                         | `UPLINK_*`, `CLIMB_*`, `LIFT_*`  |
+| Resume hands wave delay | `space/alien-hands.tsx`                     | 3000 ms after reveal             |
+| Menu cue timing         | `use-ufo-hint.ts`                           | `HINT_DELAY_MS`, `PEEK_EVERY_MS` |
+| Lean zone               | `use-ufo-pointer.ts` `ZONE`                 | 0.15                             |
+| Shot timing             | `FIRST_SHOT_MS`, `FIRE_MIN_S`, `FIRE_MAX_S` | 6000 ms, 30 s, 45 s              |
+| Shot lock               | `LOCK_MS`                                   | 7000 ms                          |
+| Anger distances         | `NEAR_PX`, `FAR_PX`, `GRUDGE_MS`            | 70, 240, 3000                    |
+| Pellet speed            | `SPEED`                                     | 380 px/s                         |
+| Saucer dock offset      | `--ufo-top` in `globals.css`                | -0.5rem                          |
 
 ## Reduced motion and touch
 

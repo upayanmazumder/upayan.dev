@@ -44,11 +44,11 @@ export default function HomePage() {
       {/* Each aside fills the margin opposite the roadmap trail beside its section. */}
       <About aside={<LiveSlot tile="spotify" />} />
       <Stack aside={<LiveSlot tile="machine" />} />
-      <FeaturedProjects aside={<LiveSlot tile="zed" />} />
+      <FeaturedProjects />
       <OpenSource aside={<GitHubTile />} />
       <MoreProjects aside={<LiveSlot tile="discord" />} />
       <Work aside={<SponsorsTile />} />
-      <Communities />
+      <Communities aside={<LiveSlot tile="zed" />} />
       <Elsewhere />
     </>
   );

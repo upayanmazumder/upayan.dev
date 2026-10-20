@@ -35,7 +35,7 @@ export function FeaturedCard({ project, index, className }: FeaturedCardProps) {
       <Link
         href={href}
         aria-label={`Read the ${project.name} case study`}
-        className="group/cover relative block aspect-[16/9] overflow-hidden outline-none md:aspect-auto md:min-h-0 md:flex-1 [&_[data-cover-zoom]]:group-hover:scale-[1.03] [&_[data-cover-zoom]]:group-focus-visible/cover:scale-[1.03]"
+        className="group/cover relative block min-h-28 flex-1 overflow-hidden outline-none motion-reduce:aspect-[16/9] motion-reduce:flex-none [&_[data-cover-zoom]]:group-hover:scale-[1.03] [&_[data-cover-zoom]]:group-focus-visible/cover:scale-[1.03]"
         {...handlers}
       >
         <ProjectCover project={project} className="absolute inset-0" />

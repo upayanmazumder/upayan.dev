@@ -3,12 +3,12 @@
 import { useEffect, type RefObject } from 'react';
 
 import { gsap, prefersReducedMotion } from '@/lib/gsap';
-import { afterLoad, REVEALED_CLASS } from '@/lib/page-load';
+import { afterReveal, REVEALED_CLASS } from '@/lib/page-load';
 
 /** Share of the viewport height, from the top, where the saucer notices the cursor. */
 const ZONE = 0.15;
-/** First shot this long after the page has loaded, then one every 30–45 seconds. */
-const FIRST_SHOT_MS = 5000;
+/** First shot this long after the page is revealed, once the saucer has docked and settled. */
+const FIRST_SHOT_MS = 6000;
 const FIRE_MIN_S = 30;
 const FIRE_MAX_S = 45;
 /** Retry delay when a shot is due but the saucer has no target or is still arriving. */
@@ -65,7 +65,7 @@ function volley(layer: HTMLElement, from: DOMRect, toX: number, toY: number) {
 
 /**
  * The docked saucer watches the cursor. In the top 15% of the screen it drops further out and leans
- * toward the pointer. It fires a volley of pellets at the pointer five seconds after the page loads,
+ * toward the pointer. It fires a volley of pellets at the pointer six seconds after the reveal,
  * then every 30–45 seconds. Hovering on or right around it (clicking excepted) provokes it: it goes
  * red and jitters, and once the cursor backs off it fires at once, skipping the cooldown. Paused
  * while the menu is open, the tab is hidden, the pointer is coarse or gone, or motion is reduced.
@@ -83,9 +83,10 @@ export function useUfoPointer(
     if (!button || !body || !layer || open || prefersReducedMotion()) return;
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
-    const toX = gsap.quickTo(body, 'x', { duration: 0.6, ease: 'power3.out' });
-    const toY = gsap.quickTo(body, 'y', { duration: 0.5, ease: 'power3.out' });
-    const toTilt = gsap.quickTo(body, 'rotation', { duration: 0.6, ease: 'power3.out' });
+    // Long, soft follow-through so the lean drifts like something that floats, not a cursor clamp.
+    const toX = gsap.quickTo(body, 'x', { duration: 1.1, ease: 'power2.out' });
+    const toY = gsap.quickTo(body, 'y', { duration: 0.9, ease: 'power2.out' });
+    const toTilt = gsap.quickTo(body, 'rotation', { duration: 1.2, ease: 'power2.out' });
     let pointer: { x: number; y: number } | null = null;
     let timer = 0;
     // Poking at the saucer (hovering on or right around it, not clicking) makes it angry. When the
@@ -157,9 +158,9 @@ export function useUfoPointer(
       }
       fireAndReload();
     };
-    // The first volley counts from page load; later ones keep their schedule across menu toggles.
+    // The first volley counts from the reveal; later ones keep their schedule across menu toggles.
     let cancelFirst = () => {};
-    if (nextShotAt === 0) cancelFirst = afterLoad(FIRST_SHOT_MS, shoot);
+    if (nextShotAt === 0) cancelFirst = afterReveal(FIRST_SHOT_MS, shoot);
     else timer = window.setTimeout(shoot, Math.max(0, nextShotAt - performance.now()));
 
     window.addEventListener('pointermove', onMove, { passive: true });

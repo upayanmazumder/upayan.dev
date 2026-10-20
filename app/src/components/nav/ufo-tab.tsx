@@ -12,6 +12,8 @@ import { useUfoPointer } from './use-ufo-pointer';
 
 interface UfoTabProps {
   open: boolean;
+  /** True from the start of the open animation to the end of the close animation. */
+  menuShown: boolean;
   /** Id of the menu panel, while it is mounted. */
   controls?: string;
   onToggle: () => void;
@@ -24,12 +26,12 @@ interface UfoTabProps {
  * a cursor in the top of the screen, and now and then shoots at it. Opening the menu brings it down
  * to hover with its beam on, and the menu panel opens out of that beam.
  */
-export function UfoTab({ open, controls, onToggle, buttonRef }: UfoTabProps) {
+export function UfoTab({ open, menuShown, controls, onToggle, buttonRef }: UfoTabProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const leanRef = useRef<HTMLSpanElement>(null);
   const pelletsRef = useRef<HTMLDivElement>(null);
   useArrival(buttonRef, overlayRef);
-  useUfoPointer(buttonRef, leanRef, pelletsRef, open);
+  useUfoPointer(buttonRef, leanRef, pelletsRef, menuShown);
 
   return (
     <>
@@ -56,24 +58,25 @@ export function UfoTab({ open, controls, onToggle, buttonRef }: UfoTabProps) {
           <span
             data-ufo-body
             className={cn(
-              'relative block w-full transition-[translate] duration-500 ease-out-expo',
-              !open && 'group-hover/ufo:translate-y-2'
+              'relative block w-full transition-[translate] duration-700 ease-out-expo',
+              !menuShown && 'group-hover/ufo:translate-y-2'
             )}
           >
             <span className="block animate-[ufo-float_3.2s_ease-in-out_infinite] motion-reduce:animate-none">
               {/* Provoked: a red tint and a jitter until it fires back or is clicked. */}
               <span className="block transition-[filter] duration-300 group-data-[angry=true]/ufo:animate-[ufo-angry_0.16s_linear_infinite] group-data-[angry=true]/ufo:[filter:hue-rotate(210deg)_saturate(1.8)]">
-                <Saucer className="w-full drop-shadow-[0_0_10px_var(--teal-dim)] transition-[filter] group-hover/ufo:drop-shadow-[0_0_14px_var(--teal)]" />
+                <Saucer className="w-full drop-shadow-[0_0_10px_var(--teal-dim)] transition-[filter] duration-500 ease-out-expo group-hover/ufo:drop-shadow-[0_0_16px_var(--teal)]" />
               </span>
             </span>
             <span
               aria-hidden
               className={cn(
-                'absolute top-[70%] left-1/2 h-10 w-12 origin-top -translate-x-1/2 bg-linear-to-b from-teal/50 to-transparent transition-[scale,opacity] duration-300 [clip-path:polygon(35%_0,65%_0,100%_100%,0_100%)]',
-                // Open: the menu hologram is the beam, so this small cone steps aside for it.
-                open
-                  ? 'scale-y-0 opacity-0'
-                  : 'scale-y-0 opacity-0 group-hover/ufo:scale-y-50 group-hover/ufo:opacity-60'
+                'absolute top-[70%] left-1/2 h-10 w-12 origin-top -translate-x-1/2 scale-y-0 bg-linear-to-b from-teal/50 to-transparent opacity-0 transition-[scale,opacity] ease-out-expo [clip-path:polygon(35%_0,65%_0,100%_100%,0_100%)]',
+                // While the menu shows, its hologram is the beam. This small hover cone goes at once and
+                // stays away until the close animation has ended, so the two beams never overlap.
+                menuShown
+                  ? 'duration-0'
+                  : 'duration-500 group-hover/ufo:scale-y-50 group-hover/ufo:opacity-60'
               )}
             />
           </span>

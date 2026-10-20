@@ -5,15 +5,25 @@ import { usePathname } from 'next/navigation';
 
 import { useUiStore, type Overlay } from '@/stores/ui-store';
 
-import { CommandPalette, MenuPanel, preloadPalette } from './lazy-overlays';
+import {
+  CommandPalette,
+  MenuPanel,
+  MenuSheet,
+  PHONE_MENU_QUERY,
+  preloadPalette,
+} from './lazy-overlays';
 import { TopMark } from './top-mark';
 import { UfoTab } from './ufo-tab';
+import { useMediaQuery } from './use-media-query';
 import { useOverlayLock } from './use-overlay-lock';
 
 const MENU_ID = 'site-menu';
 const PALETTE_ID = 'command-palette';
 
-/** Site navigation: the UFO menu button with its full-screen menu, the top-left mark, and the Cmd/Ctrl+K palette. */
+/**
+ * Site navigation: the UFO menu button with its full-screen menu, the top-left mark, and the Cmd/Ctrl+K palette.
+ * Phones get a simple liquid sheet. Larger screens get the hologram scene.
+ */
 export function SiteNav() {
   const overlay = useUiStore(state => state.overlay);
   const toggle = useUiStore(state => state.toggle);
@@ -21,6 +31,8 @@ export function SiteNav() {
   const pathname = usePathname();
   const menuOpen = overlay === 'menu';
   const paletteOpen = overlay === 'palette';
+  const phone = useMediaQuery(PHONE_MENU_QUERY);
+  const Menu = phone ? MenuSheet : MenuPanel;
 
   // The menu stays mounted from open until its close animation reports back, then its whole subtree goes.
   const [menuMounted, setMenuMounted] = useState(menuOpen);
@@ -87,7 +99,7 @@ export function SiteNav() {
       <TopMark paletteOpen={paletteOpen} paletteId={PALETTE_ID} covered={menuOpen} />
       <div ref={menuRef}>
         {menuMounted && (
-          <MenuPanel
+          <Menu
             id={MENU_ID}
             open={menuOpen}
             tabRef={tabRef}
@@ -97,6 +109,7 @@ export function SiteNav() {
         <UfoTab
           buttonRef={tabRef}
           open={menuOpen}
+          menuShown={menuMounted}
           controls={menuMounted ? MENU_ID : undefined}
           onToggle={() => toggle('menu')}
         />

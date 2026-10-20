@@ -15,8 +15,9 @@ export type LiveTileName = 'spotify' | 'discord' | 'machine' | 'zed';
 
 /**
  * One live tile on its own. Every slot shares the `/api/live` query, so four slots still cost one
- * poll. The first poll waits for the hero intro; after that a slot polls only while it is within a
- * screen of the viewport, and its clocks and loops run only while it is on screen.
+ * poll. The preloader fetches the first snapshot on every full page load. Polling starts
+ * after the reveal; a slot polls only while it is within a screen of the viewport, and its clocks
+ * and loops run only while it is on screen.
  */
 export function LiveSlot({ tile }: { tile: LiveTileName }) {
   const started = useAfterIntro();

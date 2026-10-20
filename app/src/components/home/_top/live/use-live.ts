@@ -2,11 +2,9 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { api, isApiError } from '@/api';
+import { isApiError } from '@/api';
 
-import type { LiveResponse } from './types';
-
-const POLL_MS = 10_000;
+import { LIVE_POLL_MS, liveQuery } from './live-query';
 
 /**
  * Polls the same-origin `/api/live` proxy. Once `started`, the first fetch always runs; after
@@ -16,14 +14,12 @@ const POLL_MS = 10_000;
  */
 export function useLive(started: boolean, near: boolean) {
   return useQuery({
-    queryKey: ['live'],
-    queryFn: async ({ signal }) => (await api.get<LiveResponse>('/live', { signal })).data,
+    ...liveQuery,
     enabled: query => started && (near || query.state.data === undefined),
-    staleTime: POLL_MS,
     refetchInterval: query =>
       isApiError(query.state.error) && query.state.error.code === 'NOT_CONFIGURED'
         ? false
-        : POLL_MS,
+        : LIVE_POLL_MS,
     refetchIntervalInBackground: false,
     refetchOnWindowFocus: true,
     retry: (failures, error) =>

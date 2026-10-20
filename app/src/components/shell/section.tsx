@@ -1,60 +1,147 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
+import { trailSide } from '@/components/nav/sections';
 import { cn } from '@/lib/utils';
 
+import { MarginTile } from './margin-tile';
 import { Reveal } from './reveal';
+
+/** Margin widget content for a section; `Section` wraps it in a `MarginTile`. */
+export type SectionAside = ReactNode;
 
 interface SectionProps {
   id: string;
   /** Two-digit index shown beside the title, e.g. "03". */
   index?: string;
+  /** Short: from `lg` it is set sideways and must fit the section height. */
   title?: string;
   /** One short line under the title. */
   lead?: string;
+  /** Widget for the margin opposite the trail. */
+  aside?: SectionAside;
+  /**
+   * Screens of scroll the section spans. The column then sticks to the viewport for that whole
+   * distance, so a client scene can play inside it, with one snap stop per screen.
+   */
+  stage?: number;
+  /** Full-width layer behind the stuck column, e.g. a scene background. Only with `stage`. */
+  backdrop?: ReactNode;
   className?: string;
   children: ReactNode;
 }
 
 /**
- * Home-page section inside the rails. A hairline divider spans the full viewport width.
- * Small teal ticks mark where it crosses the rails.
+ * Home-page section on the roadmap trail. From `lg` the title turns 90° counter-clockwise and sits
+ * centred in the trail's margin, between the screen edge and the line; the trail marks the section
+ * in view with `data-current`, which lights the title up. With an aside, the column moves `--shift`
+ * toward the trail on wide screens so the tile on the other side sits nearer the middle. With
+ * `stage`, reduced motion falls back to a normal section that only takes the height it needs.
  */
-export function Section({ id, index, title, lead, className, children }: SectionProps) {
-  return (
-    <section id={id} className={cn('relative scroll-mt-16', className)}>
-      <div aria-hidden className="relative h-px w-full bg-line">
-        <span className="absolute top-1/2 left-1/2 size-1.5 -translate-x-[calc(var(--column)/2+3px)] -translate-y-1/2 rotate-45 bg-teal/70 max-[50rem]:hidden" />
-        <span className="absolute top-1/2 left-1/2 size-1.5 translate-x-[calc(var(--column)/2-3px)] -translate-y-1/2 rotate-45 bg-teal/70 max-[50rem]:hidden" />
-      </div>
-      <div className="column py-14 md:py-20">
-        {title ? (
-          <Reveal as="header" className="mb-8 flex flex-col gap-2 md:mb-10">
-            <a
-              href={`#${id}`}
-              className="group/heading inline-flex w-fit items-baseline gap-3 transition-colors hover:text-teal focus-visible:outline-none"
-              aria-label={`Jump to ${title} section`}
-            >
-              {index ? (
-                <span className="font-mono text-xs text-accent-foreground transition-transform group-hover/heading:-translate-x-0.5">
-                  {index}
-                </span>
-              ) : null}
-              <h2
-                data-reveal
-                className="text-2xl font-semibold transition-colors group-hover/heading:text-teal md:text-3xl"
-              >
-                {title}
-              </h2>
-            </a>
-            {lead ? (
-              <p data-reveal className="max-w-prose text-muted-foreground">
-                {lead}
-              </p>
+export function Section({
+  id,
+  index,
+  title,
+  lead,
+  aside,
+  stage,
+  backdrop,
+  className,
+  children,
+}: SectionProps) {
+  const side = trailSide(id);
+
+  const column = (
+    <div
+      className={cn(
+        'column relative',
+        stage
+          ? 'flex h-full flex-col pt-20 pb-8 motion-reduce:h-auto md:pt-24 lg:py-16'
+          : 'py-14 md:py-20 lg:py-16',
+        side === 'left' ? 'left-[calc(var(--s)*-1)]' : 'left-(--s)'
+      )}
+    >
+      {title ? (
+        <Reveal
+          as="header"
+          className={cn(
+            'flex flex-col gap-2',
+            stage ? 'mb-5 md:mb-6' : 'mb-8 md:mb-10',
+            !lead && 'lg:mb-0'
+          )}
+        >
+          <a
+            href={`#${id}`}
+            aria-label={`Jump to ${title} section`}
+            className={cn(
+              'group/heading inline-flex w-fit items-baseline gap-3 transition-colors hover:text-teal focus-visible:outline-none',
+              'lg:absolute lg:top-1/2 lg:-translate-y-1/2 lg:rotate-180 lg:items-center lg:[writing-mode:vertical-rl]',
+              side === 'left'
+                ? 'lg:left-[calc((var(--column)-100vw)/4+var(--s)/2-22px)] lg:-translate-x-1/2'
+                : 'lg:right-[calc((var(--column)-100vw)/4+var(--s)/2-22px)] lg:translate-x-1/2'
+            )}
+          >
+            {index ? (
+              <span className="font-mono text-xs text-accent-foreground transition-colors duration-500 lg:text-muted-foreground lg:group-data-[current=true]/section:text-teal">
+                {index}
+              </span>
             ) : null}
-          </Reveal>
-        ) : null}
-        {children}
-      </div>
+            <h2
+              data-reveal
+              className="text-2xl font-semibold transition-colors duration-500 group-hover/heading:text-teal md:text-3xl lg:tracking-wide lg:whitespace-nowrap lg:text-foreground/35 lg:group-data-[current=true]/section:text-foreground"
+            >
+              {title}
+            </h2>
+            <span
+              aria-hidden
+              className="hidden h-10 w-px origin-top scale-y-0 bg-linear-to-b from-teal to-transparent transition-transform duration-700 ease-out-expo lg:block lg:group-data-[current=true]/section:scale-y-100"
+            />
+          </a>
+          {lead ? (
+            <p data-reveal className="max-w-prose text-muted-foreground">
+              {lead}
+            </p>
+          ) : null}
+        </Reveal>
+      ) : null}
+      {children}
+      {aside ? <MarginTile side={side === 'left' ? 'right' : 'left'}>{aside}</MarginTile> : null}
+    </div>
+  );
+
+  return (
+    <section
+      id={id}
+      data-trail-side={side}
+      style={stage ? ({ '--stage': stage } as CSSProperties) : undefined}
+      className={cn(
+        'group/section relative scroll-mt-16 [--s:0px]',
+        aside ? 'min-[87.5rem]:[--s:var(--shift)]' : null,
+        stage && 'h-[calc(var(--stage)*100svh)] motion-reduce:h-auto',
+        className
+      )}
+    >
+      {stage ? (
+        <>
+          {Array.from({ length: stage }, (_, i) => (
+            <span
+              key={i}
+              aria-hidden
+              data-snap-stop
+              className="pointer-events-none absolute left-0 h-svh w-px motion-reduce:hidden"
+              style={{ top: `${i * 100}svh` }}
+            />
+          ))}
+          <div
+            data-stage
+            className="sticky top-0 h-svh overflow-hidden motion-reduce:static motion-reduce:h-auto motion-reduce:overflow-visible"
+          >
+            {backdrop}
+            {column}
+          </div>
+        </>
+      ) : (
+        column
+      )}
     </section>
   );
 }

@@ -1,38 +1,26 @@
-/** Edge tab bulge in px. `width` is the SVG width; the bulge grows leftward from its right edge. */
-export function tabPath(
-  width: number,
-  baseY: number,
-  tipY: number,
-  depth: number,
-  half: number
-): string {
-  const tip = width - depth;
+/**
+ * Full-screen flood in a 0–100 viewBox that pours down from the top edge. Every keyframe has the same
+ * command structure so GSAP can tween the numbers. The lower edge runs from (100, edge) through a tip
+ * at (cx, tip) to (0, edge). `spread` sets how wide the tip is.
+ */
+export function floodPath(edge: number, tip: number, cx: number, spread: number): string {
   return [
-    `M${width} ${baseY - half}`,
-    `C${width} ${baseY - half * 0.42} ${tip} ${tipY - half * 0.58} ${tip} ${tipY}`,
-    `C${tip} ${tipY + half * 0.58} ${width} ${baseY + half * 0.42} ${width} ${baseY + half}`,
+    `M0 0 L100 0 L100 ${edge}`,
+    `C${cx + spread} ${edge} ${cx + spread * 0.5} ${tip} ${cx} ${tip}`,
+    `C${cx - spread * 0.5} ${tip} ${cx - spread} ${edge} 0 ${edge}`,
     'Z',
   ].join(' ');
 }
 
 /**
- * Full-screen flood in a 0–100 viewBox. Every keyframe has the same command structure so GSAP can tween
- * the numbers: the left edge runs from (edge, 0) through a tip at (tip, cy) down to (edge, 100).
+ * Flood keyframes that start as a small drop under the saucer (all values in viewBox percent).
+ * `cx` is the saucer centre, `depth` is its lower edge, and `half` is half its width.
  */
-export function floodPath(edge: number, tip: number, cy: number, spread: number): string {
-  return [
-    `M100 0 L${edge} 0`,
-    `C${edge} ${cy - spread} ${tip} ${cy - spread * 0.5} ${tip} ${cy}`,
-    `C${tip} ${cy + spread * 0.5} ${edge} ${cy + spread} ${edge} 100`,
-    'L100 100 Z',
-  ].join(' ');
-}
-
-/** Flood keyframes that start from the tab bulge (all values in viewBox percent). */
-export function floodFrames(cy: number, depth: number, half: number) {
+export function floodFrames(cx: number, depth: number, half: number) {
   return {
-    closed: floodPath(100, 100 - depth, cy, half),
-    wave: floodPath(72, 18, cy, 38),
-    full: floodPath(0, 0, cy, 38),
+    closed: floodPath(0, depth, cx, half),
+    // The centre runs ahead of the sides, so the liquid looks like it pours out of the saucer.
+    wave: floodPath(22, 78, cx, 46),
+    full: floodPath(100, 100, cx, 46),
   };
 }

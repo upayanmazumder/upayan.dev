@@ -49,7 +49,8 @@ export function Hero() {
   return (
     <section id="hero" aria-label="Intro" className="relative isolate flex min-h-svh flex-col">
       <HeroBackdrop />
-      <div className="column flex flex-1 flex-col justify-center gap-6 pt-24 pb-28 sm:gap-7 md:pt-28 md:pb-36">
+      {/* The tall bottom pad from `lg` is the resting rocket's room between the socials and the scroll cue. */}
+      <div className="column flex flex-1 flex-col justify-center gap-6 pt-24 pb-28 sm:gap-7 md:pt-28 md:pb-36 lg:pb-44">
         <div className="flex items-center gap-5">
           <div className="intro-photo relative size-20 shrink-0 overflow-hidden rounded-2xl p-px md:size-24">
             <PortraitRing />

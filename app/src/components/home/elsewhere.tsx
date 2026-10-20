@@ -1,11 +1,11 @@
 import { Reveal } from '@/components/shell/reveal';
-import { Section } from '@/components/shell/section';
+import { Section, type SectionAside } from '@/components/shell/section';
 import { BrandIcon } from '@/components/ui/brand-icon';
 import { otherSocials } from '@/data/profile';
 
-export function Elsewhere() {
+export function Elsewhere({ aside }: { aside?: SectionAside }) {
   return (
-    <Section id="elsewhere" index="11" title="Elsewhere">
+    <Section id="elsewhere" index="08" title="Elsewhere" aside={aside}>
       <Reveal
         as="ul"
         stagger={0.04}

@@ -27,7 +27,6 @@ export function FeaturedCard({ project, index, className }: FeaturedCardProps) {
 
   return (
     <article
-      data-stack-card
       className={cn(
         'group relative flex origin-top flex-col overflow-hidden rounded-xl border border-line bg-surface transition-colors duration-300 hover:border-line-strong',
         className
@@ -36,7 +35,7 @@ export function FeaturedCard({ project, index, className }: FeaturedCardProps) {
       <Link
         href={href}
         aria-label={`Read the ${project.name} case study`}
-        className="group/cover relative block aspect-[16/9] overflow-hidden outline-none md:aspect-auto md:min-h-0 md:flex-1 [&_[data-cover-zoom]]:group-hover:scale-[1.03] [&_[data-cover-zoom]]:group-focus-visible/cover:scale-[1.03]"
+        className="group/cover relative block min-h-28 flex-1 overflow-hidden outline-none motion-reduce:aspect-[16/9] motion-reduce:flex-none [&_[data-cover-zoom]]:group-hover:scale-[1.03] [&_[data-cover-zoom]]:group-focus-visible/cover:scale-[1.03]"
         {...handlers}
       >
         <ProjectCover project={project} className="absolute inset-0" />
@@ -84,12 +83,6 @@ export function FeaturedCard({ project, index, className }: FeaturedCardProps) {
           </Link>
         </div>
       </div>
-
-      <div
-        data-stack-dim
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-background opacity-0"
-      />
     </article>
   );
 }

@@ -10,8 +10,9 @@ import { MotionProvider } from '@/components/motion';
 import { SiteNav } from '@/components/nav/site-nav';
 import { QueryProvider } from '@/components/providers';
 import { Backdrop } from '@/components/shell/backdrop';
-import { ScrollRail } from '@/components/shell/scroll-rail';
 import { SmoothScroll } from '@/components/shell/smooth-scroll';
+import { StageSnap } from '@/components/shell/stage-snap';
+import { RoadmapTrail } from '@/components/shell/trail/roadmap-trail';
 import { Toaster } from '@/components/ui/sonner';
 import { profile } from '@/data/profile';
 import { env } from '@/env';
@@ -37,7 +38,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" suppressHydrationWarning className={cn('dark antialiased', fontVariables)}>
       <head>
-        {/* Marks JS as available before paint so `.reveal` content can wait for its animation. */}
+        {/* Marks JS as available before paint so `.reveal` content and the preloader can take over. */}
         <script
           dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
         />
@@ -49,7 +50,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <SmoothScroll>
                 <Backdrop />
                 <SiteNav />
-                <ScrollRail />
+                <RoadmapTrail />
+                <StageSnap />
                 <main id="main">{children}</main>
                 <SiteFooter />
               </SmoothScroll>

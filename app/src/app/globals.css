@@ -80,6 +80,10 @@
 
   --column: 48rem;
   --gutter: 1.5rem;
+  /* How far a section column moves toward the trail to make room for its margin tile. */
+  --shift: clamp(0rem, (100vw - var(--column)) / 2 - 20rem, 7rem);
+  /* The UFO menu button peeks in from above the top-centre edge; its dome sits off-screen. */
+  --ufo-top: -0.5rem;
 }
 
 @layer base {
@@ -174,20 +178,52 @@
     }
   }
 
-  /* Hero intro: pure CSS on server-rendered markup, so it starts with the first paint. */
+  /* Hero intro: pure CSS on server-rendered markup, so it can start with the first paint. While
+     the UFO preloader plays, the animations wait paused (their delays do not count down either).
+     `.ufo-landed` arrives while the night sky is still lifting, so the intro plays as it shows. */
   .intro-photo {
-    animation: intro-photo 0.7s var(--ease-out-expo) both;
+    animation: intro-photo 0.9s var(--ease-out-expo) both;
   }
 
   .intro-char {
     display: inline-block;
-    animation: intro-char 0.7s var(--ease-out-expo) both;
-    animation-delay: calc(0.05s + var(--c, 0) * 18ms);
+    animation: intro-char 0.9s var(--ease-out-expo) both;
+    animation-delay: calc(0.08s + var(--c, 0) * 20ms);
   }
 
   .intro-item {
-    animation: intro-item 0.6s var(--ease-out-expo) both;
-    animation-delay: calc(0.3s + var(--i, 0) * 50ms);
+    animation: intro-item 0.8s var(--ease-out-expo) both;
+    animation-delay: calc(0.35s + var(--i, 0) * 70ms);
+  }
+
+  .js:not(.ufo-landed) :is(.intro-photo, .intro-char, .intro-item) {
+    animation-play-state: paused;
+  }
+
+  /* The preloader plays on every full page load with JS, never with reduced motion. The saucer
+     stays hidden until `useArrival` arms it; `.ufo-landed` marks the reveal of the page. */
+  .preloader {
+    display: none;
+  }
+
+  .js .preloader {
+    display: block;
+  }
+
+  .js:not(.ufo-landed) [data-ufo-tab]:not([data-armed]) {
+    z-index: 90;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .preloader {
+      display: none;
+    }
+
+    .js:not(.ufo-landed) [data-ufo-tab]:not([data-armed]) {
+      opacity: 1;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -216,5 +252,202 @@
   from {
     opacity: 0;
     transform: translateY(10px);
+  }
+}
+
+/* Uses `scale`, not `transform`, so GSAP can still lift the layer with a transform. */
+@keyframes preloader-stars {
+  from {
+    opacity: 0;
+    scale: 1.08;
+  }
+  to {
+    opacity: 0.7;
+  }
+}
+
+/* Space decorations: the trail probe, tile UFO and CTA hands. */
+@keyframes probe-bob {
+  50% {
+    transform: translateY(-1.5px) rotate(-4deg);
+  }
+}
+
+@keyframes thrust {
+  50% {
+    transform: scaleX(0.55);
+  }
+}
+
+@keyframes ufo-wobble {
+  25% {
+    transform: translateX(-1.5px) rotate(-5deg);
+  }
+  75% {
+    transform: translateX(1.5px) rotate(5deg);
+  }
+}
+
+@keyframes hand-wave {
+  25% {
+    transform: rotate(-14deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes ufo-float {
+  50% {
+    transform: translateY(-3px) rotate(-2deg);
+  }
+}
+
+@keyframes stars-drift {
+  to {
+    transform: translate(420px, -420px);
+  }
+}
+
+@keyframes meteor {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  6% {
+    opacity: 1;
+  }
+  38% {
+    opacity: 0;
+    transform: translateX(110vw);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(110vw);
+  }
+}
+
+@keyframes asteroid-drift {
+  50% {
+    transform: translate(18px, -14px) rotate(180deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
+}
+
+@keyframes astronaut-float {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-8deg);
+  }
+  50% {
+    transform: translate(10px, -16px) rotate(10deg);
+  }
+}
+
+@keyframes ufo-angry {
+  25% {
+    transform: translate(-1.5px, 0.5px) rotate(-3deg);
+  }
+  75% {
+    transform: translate(1.5px, -0.5px) rotate(3deg);
+  }
+}
+
+@keyframes holo-glint {
+  to {
+    transform: translateY(500%);
+  }
+}
+
+@keyframes holo-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  41% {
+    opacity: 0.82;
+  }
+  42% {
+    opacity: 1;
+  }
+  77% {
+    opacity: 0.9;
+  }
+  78% {
+    opacity: 1;
+  }
+}
+
+@keyframes alien-hop {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Menu crowd idle loops. Each loop rests most of its period, so the crowd moves only now and then. */
+@keyframes alien-idle-hop {
+  0%,
+  90%,
+  100% {
+    transform: translateY(0);
+  }
+  93% {
+    transform: translateY(-7px);
+  }
+  96% {
+    transform: translateY(0);
+  }
+  98% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes alien-sway {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes alien-blink {
+  0%,
+  94%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes alien-wiggle {
+  0%,
+  70%,
+  100% {
+    transform: rotate(0);
+  }
+  76% {
+    transform: rotate(-9deg);
+  }
+  82% {
+    transform: rotate(7deg);
+  }
+  88% {
+    transform: rotate(-4deg);
+  }
+}
+
+@keyframes alien-wave {
+  0%,
+  100% {
+    transform: rotate(-14deg);
+  }
+  50% {
+    transform: rotate(22deg);
   }
 }

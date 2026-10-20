@@ -1,14 +1,14 @@
+import { LiveSlot } from '@/components/home/_top/live/live-slot';
 import { About } from '@/components/home/about';
 import { Communities } from '@/components/home/communities';
-import { Contributions } from '@/components/home/contributions';
 import { Elsewhere } from '@/components/home/elsewhere';
 import { FeaturedProjects } from '@/components/home/featured-projects';
+import { GitHubTile } from '@/components/home/github-tile';
 import { Hero } from '@/components/home/hero';
-import { LiveNow } from '@/components/home/live-now';
 import { MoreProjects } from '@/components/home/more-projects';
 import { OpenSource } from '@/components/home/open-source';
+import { SponsorsTile } from '@/components/home/sponsors-tile';
 import { Stack } from '@/components/home/stack';
-import { SupportedBy } from '@/components/home/supported-by';
 import { Work } from '@/components/home/work';
 import { communities, work } from '@/data/experience';
 import { otherSocials, primarySocials, profile } from '@/data/profile';
@@ -41,16 +41,14 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, '\\u003c') }}
       />
       <Hero />
-      <About />
-      <LiveNow />
-      <SupportedBy />
-      <Contributions />
-      <Stack />
+      {/* Each aside fills the margin opposite the roadmap trail beside its section. */}
+      <About aside={<LiveSlot tile="spotify" />} />
+      <Stack aside={<LiveSlot tile="machine" />} />
       <FeaturedProjects />
-      <OpenSource />
-      <MoreProjects />
-      <Work />
-      <Communities />
+      <OpenSource aside={<GitHubTile />} />
+      <MoreProjects aside={<LiveSlot tile="discord" />} />
+      <Work aside={<SponsorsTile />} />
+      <Communities aside={<LiveSlot tile="zed" />} />
       <Elsewhere />
     </>
   );

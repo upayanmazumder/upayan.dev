@@ -1,13 +1,13 @@
 import { ArrowUpRight } from 'lucide-react';
 
 import { Reveal } from '@/components/shell/reveal';
-import { Section } from '@/components/shell/section';
+import { Section, type SectionAside } from '@/components/shell/section';
 import { Logo } from '@/components/ui/brand-icon';
 import { openSource } from '@/data/projects';
 
-export function OpenSource() {
+export function OpenSource({ aside }: { aside?: SectionAside }) {
   return (
-    <Section id="open-source" index="07" title="Open source">
+    <Section id="open-source" index="04" title="Open source" aside={aside}>
       <Reveal as="ul" className="border-t border-line">
         {openSource.map(item => (
           <li key={item.href} data-reveal className="border-b border-line">

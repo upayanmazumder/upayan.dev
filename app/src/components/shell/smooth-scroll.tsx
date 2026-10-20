@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useSyncExternalStore, type ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import Lenis from 'lenis';
 
 import { gsap, prefersReducedMotion, ScrollTrigger } from '@/lib/gsap';
@@ -29,39 +30,18 @@ export function useLenis() {
 }
 
 export function SmoothScroll({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+
   useEffect(() => {
     if (prefersReducedMotion()) return;
 
     const instance = new Lenis({ lerp: 0.11, wheelMultiplier: 0.9, anchors: { offset: -24 } });
     instance.on('scroll', ScrollTrigger.update);
-
-    // Lenis only needs frames while it animates. Ticking it off gsap.ticker on demand lets the ticker sleep
-    // when the page is idle instead of running a rAF loop for the page lifetime.
-    let ticking = false;
-    let fresh = false;
-    // Lenis' own clock: steps are capped so a frame after sleep or a stall doesn't jump to the target.
-    let clock = 0;
-    const tick = (_time: number, deltaTime: number) => {
-      clock += fresh ? 1000 / 60 : Math.min(deltaTime, 50);
-      fresh = false;
-      instance.raf(clock);
-      if (instance.isScrolling !== 'smooth') {
-        ticking = false;
-        gsap.ticker.remove(tick);
-      }
-    };
-    const wake = () => {
-      if (ticking) return;
-      ticking = true;
-      fresh = true;
-      gsap.ticker.add(tick);
-    };
-    // Every smooth scroll goes through scrollTo: wheel input, anchors, and programmatic calls alike.
-    const scrollTo = instance.scrollTo.bind(instance);
-    instance.scrollTo = (...args: Parameters<Lenis['scrollTo']>) => {
-      scrollTo(...args);
-      wake();
-    };
+    // The integration Lenis documents for GSAP: one clock drives both, so snaps, trail tweens and
+    // ScrollTrigger always agree on the frame.
+    const tick = (time: number) => instance.raf(time * 1000);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
     setCurrent(instance);
 
     return () => {
@@ -70,6 +50,15 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       setCurrent(null);
     };
   }, []);
+
+  // Router scrolls and hash jumps move the page natively; re-read the real position once they land so
+  // the next wheel tick does not glide from a stale target.
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      if (current && !current.isScrolling) current.resize();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [pathname]);
 
   return children;
 }

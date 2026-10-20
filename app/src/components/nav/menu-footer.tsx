@@ -12,7 +12,7 @@ import { useModKey } from './use-mod-key';
 
 const socials = [...primarySocials, ...otherSocials];
 
-/** Bottom row of the menu: socials, contact, palette hint, and local time. */
+/** Bottom row of the phone menu: socials, contact, palette hint, and local time. */
 export function MenuFooter() {
   const copyEmail = useCopyEmail();
   const time = useLocalTime();
@@ -20,7 +20,7 @@ export function MenuFooter() {
   const openOverlay = useUiStore(state => state.open);
 
   return (
-    <div className="flex flex-col gap-4 border-t border-line pt-4 md:gap-6 md:pt-6 lg:flex-row lg:items-end lg:justify-between">
+    <div className="flex flex-col gap-4 border-t border-line pt-4">
       <ul data-menu-fade className="flex flex-wrap gap-1" aria-label="Social links">
         {socials.map(social => (
           <li key={social.id}>
@@ -54,6 +54,7 @@ export function MenuFooter() {
           <Phone aria-hidden className="size-3.5" />
           {profile.phone}
         </a>
+        {/* Touch screens have no keyboard shortcut, so the hint only shows for fine pointers. */}
         <button
           type="button"
           onClick={() => openOverlay('palette')}

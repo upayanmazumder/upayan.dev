@@ -178,32 +178,32 @@
     }
   }
 
-  /* Hero intro: pure CSS on server-rendered markup, so it starts with the first paint. While the UFO
-     preloader plays, `--intro-delay` holds it back so it runs as the overlay lifts. */
+  /* Hero intro: pure CSS on server-rendered markup, so it can start with the first paint. While
+     the UFO preloader plays, the animations wait paused (their delays do not count down either).
+     `.ufo-landed` arrives while the night sky is still lifting, so the intro plays as it shows. */
   .intro-photo {
-    animation: intro-photo 0.7s var(--ease-out-expo) both;
-    animation-delay: var(--intro-delay, 0s);
+    animation: intro-photo 0.9s var(--ease-out-expo) both;
   }
 
   .intro-char {
     display: inline-block;
-    animation: intro-char 0.7s var(--ease-out-expo) both;
-    animation-delay: calc(var(--intro-delay, 0s) + 0.05s + var(--c, 0) * 18ms);
+    animation: intro-char 0.9s var(--ease-out-expo) both;
+    animation-delay: calc(0.08s + var(--c, 0) * 20ms);
   }
 
   .intro-item {
-    animation: intro-item 0.6s var(--ease-out-expo) both;
-    animation-delay: calc(var(--intro-delay, 0s) + 0.3s + var(--i, 0) * 50ms);
+    animation: intro-item 0.8s var(--ease-out-expo) both;
+    animation-delay: calc(0.35s + var(--i, 0) * 70ms);
+  }
+
+  .js:not(.ufo-landed) :is(.intro-photo, .intro-char, .intro-item) {
+    animation-play-state: paused;
   }
 
   /* The preloader plays on every full page load with JS, never with reduced motion. The saucer
-     starts big in the middle before React hydrates; `.ufo-landed` marks the end of the arrival. */
+     stays hidden until `useArrival` arms it; `.ufo-landed` marks the reveal of the page. */
   .preloader {
     display: none;
-  }
-
-  .js:not(.ufo-landed) {
-    --intro-delay: 3.9s;
   }
 
   .js .preloader {
@@ -217,10 +217,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .js:not(.ufo-landed) {
-      --intro-delay: 0s;
-    }
-
     .js .preloader {
       display: none;
     }
@@ -256,6 +252,17 @@
   from {
     opacity: 0;
     transform: translateY(10px);
+  }
+}
+
+/* Uses `scale`, not `transform`, so GSAP can still lift the layer with a transform. */
+@keyframes preloader-stars {
+  from {
+    opacity: 0;
+    scale: 1.08;
+  }
+  to {
+    opacity: 0.7;
   }
 }
 
@@ -376,5 +383,71 @@
 @keyframes alien-hop {
   50% {
     transform: translateY(-4px);
+  }
+}
+
+/* Menu crowd idle loops. Each loop rests most of its period, so the crowd moves only now and then. */
+@keyframes alien-idle-hop {
+  0%,
+  90%,
+  100% {
+    transform: translateY(0);
+  }
+  93% {
+    transform: translateY(-7px);
+  }
+  96% {
+    transform: translateY(0);
+  }
+  98% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes alien-sway {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes alien-blink {
+  0%,
+  94%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes alien-wiggle {
+  0%,
+  70%,
+  100% {
+    transform: rotate(0);
+  }
+  76% {
+    transform: rotate(-9deg);
+  }
+  82% {
+    transform: rotate(7deg);
+  }
+  88% {
+    transform: rotate(-4deg);
+  }
+}
+
+@keyframes alien-wave {
+  0%,
+  100% {
+    transform: rotate(-14deg);
+  }
+  50% {
+    transform: rotate(22deg);
   }
 }

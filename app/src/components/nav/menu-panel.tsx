@@ -6,6 +6,7 @@ import { gsap, prefersReducedMotion, useGSAP } from '@/lib/gsap';
 
 import { MenuGround } from './menu-ground';
 import { MenuHologram } from './menu-hologram';
+import { menuTimeline, SAUCER_DOWN } from './menu-timeline';
 
 interface MenuPanelProps {
   id: string;
@@ -31,8 +32,8 @@ export function MenuPanel({ id, open, tabRef, onClosed }: MenuPanelProps) {
       const content = root.querySelector('[data-menu-content]');
       const ground = root.querySelector('[data-ground]');
       const hologram = root.querySelector('[data-hologram]');
-      const links = root.querySelectorAll('[data-holo-link]');
-      const aliens = root.querySelectorAll('[data-alien]');
+      const links = gsap.utils.toArray<Element>('[data-holo-link]', root);
+      const aliens = gsap.utils.toArray<Element>('[data-alien]', root);
       const current = timeline.current;
       // The saucer sits in the menu button, outside this panel; it hovers lower while the menu shows.
       const tab = tabRef.current;
@@ -51,71 +52,54 @@ export function MenuPanel({ id, open, tabRef, onClosed }: MenuPanelProps) {
           gsap.set(root, { autoAlpha: 0 });
           onClosed();
         });
-        current.timeScale(1.7).reverse();
+        current.timeScale(1.6).reverse();
         return;
       }
 
-      // Re-opened mid-close: play forward from where it is.
+      const firstLink = root.querySelector<HTMLElement>('[data-holo-link] a');
+
+      // Re-opened mid-close: play forward from where it is. A link that still shows can take focus
+      // now. A hidden one takes it when the timeline passes its focus step again.
       if (current && current.reversed() && current.progress() > 0) {
         current.eventCallback('onReverseComplete', null);
         current.timeScale(1).play();
+        firstLink?.focus({ preventScroll: true });
         return;
       }
       current?.kill();
 
       gsap.set(root, { autoAlpha: 1 });
-      const firstLink = root.querySelector<HTMLElement>('[data-holo-link] a');
+
+      // Start the beam at the lowered saucer's disc centre, so its top sits behind the disc with no
+      // gap. The disc centre is 3px below the middle of the 28px-high saucer drawing.
+      const rect = tab?.getBoundingClientRect();
+      if (rect) {
+        const discY = rect.top + rect.height / 2 + SAUCER_DOWN.y + 3 * SAUCER_DOWN.scale;
+        gsap.set(root, { '--holo-top': `${discY}px` });
+      }
 
       if (prefersReducedMotion()) {
         timeline.current = null;
         gsap.set([backdrop, content, hologram, ...links, ...aliens], { autoAlpha: 1 });
-        if (saucer) gsap.set(saucer, { y: 48, scale: 1.5 });
+        if (saucer) gsap.set(saucer, SAUCER_DOWN);
         firstLink?.focus();
         return;
       }
 
       // Aim the beam's apex at the saucer.
-      const rect = tab?.getBoundingClientRect();
       gsap.set(hologram, { x: rect ? rect.left + rect.width / 2 - window.innerWidth / 2 : 0 });
+      gsap.set(content, { autoAlpha: 1 });
 
-      // Strictly in order, and reversed on close: sky, ground, saucer into place, beam on, pages,
-      // then the aliens. Closing therefore drops the aliens, then the pages, switches the beam off,
-      // and only then lets the saucer fly back up.
-      timeline.current = gsap
-        .timeline()
-        .set(content, { autoAlpha: 1 })
-        .fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, ease: 'power1.out' })
-        .fromTo(ground, { yPercent: 100 }, { yPercent: 0, duration: 0.5, ease: 'power3.out' })
-        .fromTo(
-          saucer,
-          { y: 0, scale: 1 },
-          { y: 48, scale: 1.5, duration: 0.55, ease: 'back.out(1.6)' }
-        )
-        .fromTo(
-          hologram,
-          { scaleY: 0, autoAlpha: 0 },
-          { scaleY: 1, autoAlpha: 1, duration: 0.45, ease: 'power2.out' }
-        )
-        // The projector catching: a few quick flickers before the image settles.
-        .to(hologram, { autoAlpha: 0.45, duration: 0.05, repeat: 3, yoyo: true, ease: 'none' })
-        .fromTo(
-          links,
-          { autoAlpha: 0, y: 14, filter: 'blur(6px)' },
-          {
-            autoAlpha: 1,
-            y: 0,
-            filter: 'blur(0px)',
-            duration: 0.4,
-            stagger: 0.06,
-            ease: 'power3.out',
-          }
-        )
-        .fromTo(
-          aliens,
-          { autoAlpha: 0, y: 46 },
-          { autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.03, ease: 'back.out(2.2)' }
-        );
-      firstLink?.focus({ preventScroll: true });
+      timeline.current = menuTimeline({
+        backdrop,
+        ground,
+        saucer,
+        hologram,
+        links,
+        aliens,
+        // A hidden link cannot take focus, so focus waits until the first page shows.
+        onLinksShown: () => firstLink?.focus({ preventScroll: true }),
+      });
     },
     { dependencies: [open], scope: rootRef }
   );

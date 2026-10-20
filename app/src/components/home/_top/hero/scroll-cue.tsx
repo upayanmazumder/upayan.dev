@@ -155,6 +155,7 @@ export function ScrollCue() {
       href="#about"
       onClick={onClick}
       aria-label="Scroll to About"
+      data-scroll-cue
       className="invisible absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 font-mono text-[0.7rem] tracking-[0.3em] text-muted-foreground/80 opacity-0 transition-colors hover:text-foreground focus-visible:text-foreground"
     >
       <span data-word>{TEXT}</span>

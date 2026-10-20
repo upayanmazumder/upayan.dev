@@ -10,8 +10,8 @@ import { MotionProvider } from '@/components/motion';
 import { SiteNav } from '@/components/nav/site-nav';
 import { QueryProvider } from '@/components/providers';
 import { Backdrop } from '@/components/shell/backdrop';
-import { SectionSnap } from '@/components/shell/section-snap';
 import { SmoothScroll } from '@/components/shell/smooth-scroll';
+import { StageSnap } from '@/components/shell/stage-snap';
 import { RoadmapTrail } from '@/components/shell/trail/roadmap-trail';
 import { Toaster } from '@/components/ui/sonner';
 import { profile } from '@/data/profile';
@@ -51,7 +51,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <Backdrop />
                 <SiteNav />
                 <RoadmapTrail />
-                <SectionSnap />
+                <StageSnap />
                 <main id="main">{children}</main>
                 <SiteFooter />
               </SmoothScroll>

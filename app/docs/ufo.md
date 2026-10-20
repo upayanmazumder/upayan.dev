@@ -5,24 +5,23 @@ button, then the source of the hologram menu. This file describes the flow and w
 
 ## Parts
 
-| Part              | File                                    | Job                                                            |
-| ----------------- | --------------------------------------- | -------------------------------------------------------------- |
-| Saucer drawing    | `src/components/space/saucer.tsx`       | Shared SVG: dome, disc, blinking lights                        |
-| Menu button       | `src/components/nav/ufo-tab.tsx`        | The docked saucer; renders the preloader and the pellet layer  |
-| Preloader overlay | `src/components/nav/preloader.tsx`      | Night sky, scenery, beam, uplink readout, lifting edge         |
-| Preloader scenery | `src/components/space/deep-space.tsx`   | Meteors, asteroids, astronauts                                 |
-| Arrival           | `src/components/nav/use-arrival.ts`     | Starts the downloads and the acts, and decides when to leave   |
-| Arrival acts      | `src/components/nav/arrival-scenes.ts`  | Intro, uplink, and departure timelines                         |
-| Uplink bar        | `src/components/nav/uplink-meter.ts`    | Bar and percentage from real progress and a minimum pace       |
-| Downloads         | `src/components/nav/preload-page.ts`    | Document, fonts, images, live data, and album art              |
-| Top-left chips    | `src/components/nav/top-mark.tsx`       | Home and palette chips; `use-top-mark-motion.ts` animates them |
-| Pointer behaviour | `src/components/nav/use-ufo-pointer.ts` | Lean, shooting, anger                                          |
-| Menu cues         | `src/components/nav/use-ufo-hint.ts`    | Landing hint, idle peeks, scroll nudge                         |
-| Menu scene        | `src/components/nav/menu-panel.tsx`     | Open and close timeline                                        |
-| Hologram          | `src/components/nav/menu-hologram.tsx`  | The beam and the page links                                    |
-| Ground            | `src/components/nav/menu-ground.tsx`    | Planet surface, aliens, contact and social blocks              |
-| Timing helpers    | `src/lib/page-load.ts`                  | `afterReveal`, reveal class and event                          |
-| Trail probe       | `src/components/space/probe.tsx`        | Rocket on the roadmap trail                                    |
+| Part              | File                                    | Job                                                           |
+| ----------------- | --------------------------------------- | ------------------------------------------------------------- |
+| Saucer drawing    | `src/components/space/saucer.tsx`       | Shared SVG: dome, disc, blinking lights                       |
+| Menu button       | `src/components/nav/ufo-tab.tsx`        | The docked saucer; renders the preloader and the pellet layer |
+| Preloader overlay | `src/components/nav/preloader.tsx`      | Night sky, scenery, beam, uplink readout, lifting edge        |
+| Preloader scenery | `src/components/space/deep-space.tsx`   | Meteors, asteroids, astronauts                                |
+| Arrival           | `src/components/nav/use-arrival.ts`     | Starts the downloads and the acts, and decides when to leave  |
+| Arrival acts      | `src/components/nav/arrival-scenes.ts`  | Intro, uplink, and departure timelines                        |
+| Uplink bar        | `src/components/nav/uplink-meter.ts`    | Bar and percentage from real progress and a minimum pace      |
+| Downloads         | `src/components/nav/preload-page.ts`    | Document, fonts, images, live data, and album art             |
+| Pointer behaviour | `src/components/nav/use-ufo-pointer.ts` | Lean, shooting, anger                                         |
+| Menu cues         | `src/components/nav/use-ufo-hint.ts`    | Landing hint, idle peeks, scroll nudge                        |
+| Menu scene        | `src/components/nav/menu-panel.tsx`     | Open and close timeline                                       |
+| Hologram          | `src/components/nav/menu-hologram.tsx`  | The beam and the page links                                   |
+| Ground            | `src/components/nav/menu-ground.tsx`    | Planet surface, aliens, contact and social blocks             |
+| Timing helpers    | `src/lib/page-load.ts`                  | `afterReveal`, reveal class and event                         |
+| Trail probe       | `src/components/space/probe.tsx`        | Rocket on the roadmap trail                                   |
 
 ## Flow
 
@@ -38,7 +37,6 @@ flowchart TD
   G --> H[Act two: beam drawn up, saucer winds up and climbs, night lifts with a lit edge]
   H --> I[reveal at about a quarter of the lift: .ufo-landed class and ufo-landed event]
   I --> J[Hero intro plays as it shows, saucer settles into its dock]
-  J --> K[Top-left chips enter 0.8 s after reveal, shortcut hint folds 2.6 s later]
   I --> L[3 s later: Resume hands wave once]
 ```
 
@@ -137,6 +135,35 @@ stateDiagram-v2
 `data-trail-side`. The line swaps sides at section boundaries, so it also acts as the divider. A
 probe rides the line: it faces along the path, fires its thruster while moving, and bobs at rest.
 The section the probe is in gets `data-current`, which lights up its sideways heading.
+
+### Staged section: Selected work
+
+`Section` with `stage={n}` spans `n` screens of scroll. Its column sticks to the viewport for that
+distance, and `SceneBackdrop` fills the stuck stage behind it. Selected work uses this.
+
+```mermaid
+sequenceDiagram
+  participant R as Rocket
+  participant S as Selected work
+  R->>S: section top reaches the focus line (55%)
+  S->>S: trail and rocket fade out (data-trail-hidden on html)
+  S->>S: one bright pulse grows from the rocket spot and settles to deep green
+  S->>S: section sticks, cards 01 to 03 slide up in turn, scrubbed to scroll
+  R->>S: section bottom reaches the focus line
+  S->>S: green shrinks into the rocket's exit spot
+  S->>R: trail and rocket return
+```
+
+- `use-scene-pulse.ts` runs the green in and out. It works the same way in both scroll directions:
+  the pulse always starts at the rocket's current spot.
+- `use-stack-scroll.ts` scrubs the cards. The card behind scales to 92% and dims with brightness, not
+  opacity, so it never shows through. Only the front card is not `inert`.
+- `StageSnap` registers each screen of the stage (`data-snap-stop`) at every width, so the stack
+  always settles on one project. It is the only snapping on the page.
+- The numbered row scrolls straight to any project.
+- Below 1024 px there is no rocket. The pulse starts at the centre of the focus line.
+- Reduced motion shows the three projects as a normal list and switches the green on and off with
+  no animation.
 
 ## Tuning
 

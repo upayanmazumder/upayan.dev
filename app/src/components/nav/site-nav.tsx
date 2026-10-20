@@ -12,7 +12,6 @@ import {
   PHONE_MENU_QUERY,
   preloadPalette,
 } from './lazy-overlays';
-import { TopMark } from './top-mark';
 import { UfoTab } from './ufo-tab';
 import { useMediaQuery } from './use-media-query';
 import { useOverlayLock } from './use-overlay-lock';
@@ -96,7 +95,6 @@ export function SiteNav() {
 
   return (
     <div ref={rootRef} data-site-nav>
-      <TopMark paletteOpen={paletteOpen} paletteId={PALETTE_ID} covered={menuOpen} />
       <div ref={menuRef}>
         {menuMounted && (
           <Menu

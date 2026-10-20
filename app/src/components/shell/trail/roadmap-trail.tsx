@@ -7,16 +7,20 @@ import { Probe } from '@/components/space';
 import { gsap, prefersReducedMotion } from '@/lib/gsap';
 
 import { useLenis } from '../smooth-scroll';
-import { buildTrail, LANE_GAP, type TrailGeometry, type TrailSection } from './geometry';
+import { buildTrail, CORNER, LANE_GAP, type TrailGeometry, type TrailSection } from './geometry';
 
 /** Below this the margins are too thin for a lane, so the trail stays off. */
 export const TRAIL_MIN_WIDTH = 1024;
 /** Spacing of the length/Y lookup table, in px of path length. */
 const SAMPLE = 16;
 /** Head of the trail sits this far down the viewport. */
-const FOCUS = 0.55;
+export const TRAIL_FOCUS = 0.55;
+/** Attribute on `<html>` that hides the trail and rocket, e.g. while a staged section plays. */
+export const TRAIL_HIDDEN_ATTR = 'data-trail-hidden';
 /** Run-up between the hero and the first section, so the first corner has room to curve. */
 const LEAD = 140;
+/** The resting probe, flame included, reaches 14px above its point and 18px below, so its middle sits 2px low. */
+const PROBE_CENTRE = -2;
 
 function sameGeometry(a: TrailGeometry | null, b: TrailGeometry | null) {
   if (!a || !b) return a === b;
@@ -25,6 +29,28 @@ function sameGeometry(a: TrailGeometry | null, b: TrailGeometry | null) {
 
 /** Document Y of an element's top edge. */
 const documentTop = (el: Element) => el.getBoundingClientRect().top + window.scrollY;
+
+/** Document Y of an element's layout box, ignoring transforms such as the hero's intro slide. */
+function layoutTop(el: HTMLElement): number {
+  let y = 0;
+  for (let node: HTMLElement | null = el; node; node = node.offsetParent as HTMLElement | null)
+    y += node.offsetTop;
+  return y;
+}
+
+/**
+ * Where the trail starts: midway between the hero's last row of content and its scroll cue, so the
+ * resting rocket keeps an even gap from both. Null off the home page or without a hero.
+ */
+function heroStart(): number | null {
+  const hero = document.getElementById('hero');
+  const content = hero?.querySelector<HTMLElement>('.column > :last-child');
+  if (!hero || !content) return null;
+  const above = layoutTop(content) + content.offsetHeight;
+  const cue = hero.querySelector<HTMLElement>('[data-scroll-cue]');
+  const below = cue ? layoutTop(cue) : layoutTop(hero) + hero.offsetHeight;
+  return (above + below) / 2 + PROBE_CENTRE;
+}
 
 /**
  * The page roadmap: one line from under the hero to the foot of the page. Each `Section` declares
@@ -64,7 +90,11 @@ export function RoadmapTrail() {
       });
       const next = buildTrail({
         width,
-        startY: Math.max(documentTop(main), sections[0]!.top - LEAD),
+        // Never so low that the first corner loses its curve.
+        startY: Math.min(
+          heroStart() ?? Math.max(documentTop(main), sections[0]!.top - LEAD),
+          sections[0]!.top - 2 * CORNER
+        ),
         endY: documentTop(main) + main.getBoundingClientRect().height,
         sections,
       });
@@ -126,7 +156,7 @@ export function RoadmapTrail() {
 
     let current: string | null = null;
     const update = () => {
-      const focus = window.scrollY + window.innerHeight * FOCUS;
+      const focus = window.scrollY + window.innerHeight * TRAIL_FOCUS;
       let low = 0;
       let high = steps;
       while (low < high) {
@@ -165,7 +195,7 @@ export function RoadmapTrail() {
       ref={rootRef}
       aria-hidden
       data-moving="false"
-      className="group/trail pointer-events-none absolute top-0 left-0 z-20 w-full max-lg:hidden"
+      className="group/trail pointer-events-none absolute top-0 left-0 z-20 w-full transition-opacity duration-500 ease-out-expo max-lg:hidden [html[data-trail-hidden]_&]:opacity-0"
       style={{ height: geometry.height }}
     >
       {/* No viewBox: one user unit is one CSS pixel, so the path uses document coordinates directly. */}

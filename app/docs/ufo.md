@@ -9,11 +9,11 @@ button, then the source of the hologram menu. This file describes the flow and w
 | ----------------- | --------------------------------------- | ------------------------------------------------------------- |
 | Saucer drawing    | `src/components/space/saucer.tsx`       | Shared SVG: dome, disc, blinking lights                       |
 | Menu button       | `src/components/nav/ufo-tab.tsx`        | The docked saucer; renders the preloader and the pellet layer |
-| Preloader overlay | `src/components/nav/preloader.tsx`      | Night sky, scenery, beam, uplink readout, lifting edge        |
+| Preloader overlay | `src/components/nav/preloader.tsx`      | Night sky, scenery, beam, loading bar, lifting edge           |
 | Preloader scenery | `src/components/space/deep-space.tsx`   | Meteors, asteroids, astronauts                                |
 | Arrival           | `src/components/nav/use-arrival.ts`     | Starts the downloads and the acts, and decides when to leave  |
 | Arrival acts      | `src/components/nav/arrival-scenes.ts`  | Intro, uplink, and departure timelines                        |
-| Uplink bar        | `src/components/nav/uplink-meter.ts`    | Bar and percentage from real progress and a minimum pace      |
+| Loading bar       | `src/components/nav/uplink-meter.ts`    | Real progress limited by a minimum pace                       |
 | Downloads         | `src/components/nav/preload-page.ts`    | Document, fonts, images, live data, and album art             |
 | Pointer behaviour | `src/components/nav/use-ufo-pointer.ts` | Lean, shooting, anger                                         |
 | Menu cues         | `src/components/nav/use-ufo-hint.ts`    | Landing hint, idle peeks, scroll nudge                        |
@@ -33,7 +33,7 @@ flowchart TD
   D --> E[Act one: scenery, saucer arrives and settles, beam on, uplink bar fills]
   E --> F{Act one done and downloads done or 9 s passed?}
   F -- no --> E
-  F -- yes --> G[Uplink established: bar completes, short hold]
+  F -- yes --> G[Loading bar completes without status text]
   G --> H[Act two: beam drawn up, saucer winds up and climbs, night lifts with a lit edge]
   H --> I[reveal at about a quarter of the lift: .ufo-landed class and ufo-landed event]
   I --> J[Hero intro plays as it shows, saucer settles into its dock]
@@ -46,8 +46,8 @@ is no preloader: the saucer docks at once and `reveal` runs immediately.
 ### Preloader rules
 
 - Act one runs about 2.8 s from hydration. The bar never fills faster than its pace (0.9 s), and it
-  never runs ahead of the real download progress. On a fast load the night starts to lift about
-  4.4 s after hydration, and `.ufo-landed` follows about 0.5 s later.
+  never runs ahead of real download progress. On a fast load, the night starts lifting about 4 s
+  after hydration.
 - The preloader downloads the document and stylesheets, the fonts, every image in the server markup
   (lazy images too), and the `/api/live` snapshot (Spotify, Discord, machine stats) with its album
   art. It does not load lazy component chunks: they still load near the viewport.

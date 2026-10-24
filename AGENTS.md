@@ -20,7 +20,7 @@ This repository contains a Rust stats API and the Next.js portfolio website. The
 - `api/client/`: Separate Linux reporter crate with its own `Cargo.lock`. It is not part of the API image or a Cargo workspace.
 - `app/src/app/`: App Router pages and root layout.
 - `app/src/api/`, `app/src/components/`, `app/src/lib/`, `app/src/stores/`: Frontend HTTP, UI, shared utilities, and client state.
-- `.github/workflows/`: Path-scoped API and frontend checks, and the API container build. Vercel builds the website. `.husky/` holds hooks for staged `app/` changes.
+- `.github/workflows/`: Every PR runs frontend and API checks. Only validated `main` API changes publish a container. Vercel builds the website. `.husky/` holds hooks for staged `app/` changes.
 
 ## Development Commands
 
@@ -70,7 +70,7 @@ pnpm build
 ## Runtime/Tooling Preferences
 
 - Use Rust 1.97 or later for both edition-2024 crates. Keep both Cargo lockfiles current. CI uses `cargo fmt`, tests, and Clippy with warnings denied.
-- Use Node 22 and pnpm 11.28.5 for `app/`. There is no root `package.json`. Next.js is 16.2.11.
+- Use Node 22 and pnpm 11.28.5 for `app/`. There is no root `package.json`. Check `app/package.json` for the current Next.js version.
 - `API_URL` (server only) is optional. `NEXT_PUBLIC_SITE_URL` defaults to `https://upayan.dev`. `SKIP_ENV_VALIDATION=true` is reserved for checks.
 - The React Compiler is on. Read zustand state with inline selectors, not `store.use.x()` helpers. Animate only transform, opacity, filter, and clip-path, and respect `prefers-reduced-motion`.
 - Keep `api/.env`, Spotify credentials, `SIGNING_KEY`, and GitHub tokens out of commits and browser bundles. Use `api/.env.example` for key names. Set `CORS_ORIGIN` only for direct browser requests.

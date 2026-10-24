@@ -2,7 +2,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/stargazers) [![Forks](https://img.shields.io/github/forks/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/network) [![Issues](https://img.shields.io/github/issues/upayanmazumder/upayan.dev?style=flat-square&logo=github)](https://github.com/upayanmazumder/upayan.dev/issues)[![License: MIT](https://img.shields.io/github/license/upayanmazumder/upayan.dev?style=flat-square&color=green)](LICENSE)
 
-[![Build & Push API](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml/badge.svg?branch=v5)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml)
+[![API checks](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml/badge.svg?branch=main)](https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml)
 
 [Visit on DeepWiki](https://deepwiki.com/upayanmazumder/upayan.dev)
 
@@ -45,6 +45,20 @@ It checks for a new tag each hour. If GitHub is unavailable, the footer reports
 that the release is unavailable instead of showing the package version as a tag.
 
 ---
+
+## Delivery checks
+
+Every pull request runs the `frontend` and `api-checks` jobs, including changes
+that only affect documentation. The frontend job audits all dependencies
+for high-severity advisories. `main` requires both jobs before merge. Direct
+pushes, force pushes, and branch deletion are blocked. A solo maintainer can
+merge after checks pass without a separate approval.
+
+On `main`, frontend changes run the frontend checks and Vercel deploys the site.
+API changes run Rust checks first. Only a successful check permits the API
+workflow to publish `api:latest` and an immutable commit tag to GHCR. ArgoCD
+then updates the `upayan-api` deployment from the `latest` digest. Pull
+requests never publish container images.
 
 ## Contributing
 

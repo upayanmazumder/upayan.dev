@@ -1,9 +1,10 @@
 name: Build & Push API
 
 on:
+  pull_request:
   push:
     branches:
-      - "**"
+      - main
     paths:
       - "api/**"
       - ".github/workflows/api.yml"
@@ -11,12 +12,14 @@ on:
 
 permissions:
   contents: read
-  packages: write
+
+concurrency:
+  group: api-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  build-and-push-api:
+  api-checks:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -29,6 +32,16 @@ jobs:
           cargo clippy --manifest-path api/Cargo.toml --locked --all-targets -- -D warnings
           cargo fmt --manifest-path api/client/Cargo.toml --check
           cargo clippy --manifest-path api/client/Cargo.toml --locked --all-targets -- -D warnings
+
+  publish-api:
+    needs: api-checks
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
         with:
@@ -36,25 +49,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Determine tags
-        id: tags
-        run: |
-          REPO_LOWER="${GITHUB_REPOSITORY,,}"
-          BRANCH_LOWER="${GITHUB_REF_NAME,,}"
-          # Docker tags cannot contain branch path separators.
-          BRANCH_TAG="${BRANCH_LOWER//\//-}"
-
-          if [ "$BRANCH_LOWER" = "main" ]; then
-            echo "TAGS=ghcr.io/$REPO_LOWER/api:latest,ghcr.io/$REPO_LOWER/api:$GITHUB_SHA" >> "$GITHUB_OUTPUT"
-          else
-            echo "TAGS=ghcr.io/$REPO_LOWER/api:$BRANCH_TAG,ghcr.io/$REPO_LOWER/api:$GITHUB_SHA" >> "$GITHUB_OUTPUT"
-          fi
-
       - uses: docker/build-push-action@v5
         with:
           context: ./api
           file: ./api/Dockerfile
           push: true
-          tags: ${{ steps.tags.outputs.TAGS }}
+          tags: |
+            ghcr.io/upayanmazumder/upayan.dev/api:latest
+            ghcr.io/upayanmazumder/upayan.dev/api:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

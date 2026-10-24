@@ -41,11 +41,13 @@ jobs:
         run: |
           REPO_LOWER="${GITHUB_REPOSITORY,,}"
           BRANCH_LOWER="${GITHUB_REF_NAME,,}"
+          # Docker tags cannot contain branch path separators.
+          BRANCH_TAG="${BRANCH_LOWER//\//-}"
 
           if [ "$BRANCH_LOWER" = "main" ]; then
             echo "TAGS=ghcr.io/$REPO_LOWER/api:latest,ghcr.io/$REPO_LOWER/api:$GITHUB_SHA" >> "$GITHUB_OUTPUT"
           else
-            echo "TAGS=ghcr.io/$REPO_LOWER/api:$BRANCH_LOWER,ghcr.io/$REPO_LOWER/api:$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+            echo "TAGS=ghcr.io/$REPO_LOWER/api:$BRANCH_TAG,ghcr.io/$REPO_LOWER/api:$GITHUB_SHA" >> "$GITHUB_OUTPUT"
           fi
 
       - uses: docker/build-push-action@v5

@@ -40,6 +40,10 @@ The website runs at `http://127.0.0.1:3000`. `API_URL` is optional and read only
 
 The home page keeps section text and links in server-rendered HTML. Interactive widgets load near the viewport. The GitHub calendar uses a canvas. Focus it and use arrow keys to inspect daily counts. The aurora waits for idle time before it starts WebGL.
 
+The footer reads the latest published GitHub release tag from GitHub's public API.
+It checks for a new tag each hour. If GitHub is unavailable, the footer reports
+that the release is unavailable instead of showing the package version as a tag.
+
 ---
 
 ## Contributing

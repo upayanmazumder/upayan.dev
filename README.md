@@ -54,6 +54,9 @@ for high-severity advisories. `main` requires both jobs before merge. Direct
 pushes, force pushes, and branch deletion are blocked. A solo maintainer can
 merge after checks pass without a separate approval.
 
+The `app/pnpm-workspace.yaml` overrides select patched transitive dependencies.
+Remove each override when its upstream dependency selects a safe version.
+
 On `main`, frontend changes run the frontend checks and Vercel deploys the site.
 API changes run Rust checks first. Only a successful check permits the API
 workflow to publish `api:latest` and an immutable commit tag to GHCR. ArgoCD

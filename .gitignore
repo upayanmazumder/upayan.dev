@@ -42,6 +42,3 @@ next-env.d.ts
 
 # API
 api/dist
-
-# Local agent skills
-/.agents/skills/ui-ux-pro-max/

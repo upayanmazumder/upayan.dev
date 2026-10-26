@@ -15,7 +15,10 @@ export interface ArrivalParts {
   scenery: NodeListOf<Element>;
   beam: Element | null;
   uplink: Element | null;
+  busy: Element | null;
+  done: Element | null;
   bar: Element | null;
+  percent: Element | null;
 }
 
 /** Viewport size and the hover offset from the dock, in px. */
@@ -42,7 +45,10 @@ export function findParts(ship: HTMLElement, layer: HTMLElement): ArrivalParts {
     scenery: layer.querySelectorAll('[data-scenery] > div > *'),
     beam: layer.querySelector('[data-beam]'),
     uplink: layer.querySelector('[data-uplink]'),
+    busy: layer.querySelector('[data-uplink-busy]'),
+    done: layer.querySelector('[data-uplink-done]'),
     bar: layer.querySelector('[data-bar]'),
+    percent: layer.querySelector('[data-percent]'),
   };
 }
 
@@ -56,8 +62,10 @@ const UPLINK_AT = 1.9;
 const UPLINK_FOR = 0.9;
 
 /**
- * Act one: the scenery comes into focus as the saucer approaches, settles, and lights its beam.
- * The loading bar then appears and fills.
+ * Act one, about 2.9 s from hydration: the stars have already faded in with CSS from the first
+ * paint. The far scenery comes into focus, and the saucer comes from far away at the top left. It
+ * moves across fast, drops in slowly, and grows as it nears. It sinks a little past its hover
+ * point, rises back, and switches on its beam. Then the uplink readout shows and the bar fills.
  */
 export function introScene(
   { ship, sceneryLayer, scenery, beam, uplink }: ArrivalParts,
@@ -148,17 +156,20 @@ export function introScene(
   return { timeline, loops };
 }
 
-/** Complete the loading bar before the saucer leaves. */
-export function uplinkScene({ bar }: ArrivalParts, meter: UplinkMeter) {
+/** The bar completes, the readout switches to "established", and the screen holds a beat to read it. */
+export function uplinkScene({ busy, done, bar }: ArrivalParts, meter: UplinkMeter) {
   return gsap
     .timeline()
     .add(meter.finish())
+    .to(busy, { autoAlpha: 0, y: -6, duration: 0.3, ease: 'power2.in' }, '-=0.05')
+    .fromTo(done, { y: 6 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' }, '-=0.1')
     .fromTo(
       bar,
       { filter: 'brightness(2)' },
       { filter: 'brightness(1)', duration: 0.6, ease: 'sine.out' },
       '<'
-    );
+    )
+    .to({}, { duration: 0.25 });
 }
 
 /** When the climb starts, and how long the night takes to lift. The saucer always leads the edge. */
@@ -168,8 +179,11 @@ const LIFT_AT = 0.6;
 const LIFT_FOR = 1.4;
 
 /**
- * Act two: the loading bar fades, the beam retracts, and the saucer docks.
- * The night lifts behind it, revealing the page.
+ * Act two, about 2.2 s: the readout fades, the beam is drawn back up, and the saucer dips and
+ * tilts to wind up. It then climbs to its dock and shrinks on the way. The night lifts behind it
+ * with a lit edge and with depth: the scenery rises faster than the stars. `onReveal` runs when
+ * about a quarter of the page shows, so the page's own intro plays as it comes into view. The
+ * saucer rises a little past the dock and settles into it.
  */
 export function departScene(
   { ship, layer, night, edge, stars, sceneryLayer, beam, uplink }: ArrivalParts,

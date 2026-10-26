@@ -20,10 +20,11 @@ function after(ms: number): Promise<void> {
 }
 
 /**
- * Plays the saucer arrival on every full page load.
- * The page loads its assets while the loading bar fills.
- * The saucer docks when the animation and assets finish, or the load reaches `MAX_MS`.
- * Reduced motion skips the animation and docks the saucer at once.
+ * Plays the arrival on every full page load (see `arrival-scenes.ts` for each act). While act one
+ * plays, the page downloads its assets and live data, and the uplink bar shows that progress. When
+ * act one has run and the downloads are done (or `MAX_MS` has passed), the bar completes, the
+ * saucer climbs to its dock, and the night lifts to reveal the page. Reduced motion skips the show
+ * and the downloads, and docks the saucer at once.
  */
 export function useArrival(
   saucer: RefObject<HTMLElement | null>,
@@ -56,7 +57,7 @@ export function useArrival(
     ship.setAttribute('data-arrival', 'true');
     // Not a button yet: no clicks, hover, or keyboard focus until it has docked.
     ship.setAttribute('inert', '');
-    const meter = uplinkMeter(parts.bar);
+    const meter = uplinkMeter(parts.bar, parts.percent);
     const intro = introScene(parts, geometry, meter);
     ship.setAttribute('data-armed', 'true');
 

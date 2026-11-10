@@ -133,7 +133,14 @@ Build the included Dockerfile from `api/` with `docker build -t upayan-stats-api
 
 ## Production
 
-The API runs in the `upayan-v5` namespace of the k3s cluster at `https://api.upayan.dev`. Manifests live in the `upayanmazumder/cluster` repository under `k8s/apps/upayan-v5`. ArgoCD deploys them. The image updater follows the `api:latest` digest that `.github/workflows/api.yml` publishes from `main`. Secrets live in that repository as SOPS-encrypted `secrets.sops.yaml`. The Deployment runs one replica without scale-to-zero, because the latest PC report and the caches live in memory. The website runs on Vercel at `https://upayan.dev` with `API_URL=https://api.upayan.dev`. Point the PC reporter at the same URL.
+The API runs as the `upayan-api` ArgoCD application in its own namespace at
+`https://api.upayan.dev`. Manifests live in `upayanmazumder/cluster` under
+`k8s/apps/upayan-api`. The image updater tracks the `api:latest` digest that
+`.github/workflows/api.yml` publishes from `main`. The website runs on Vercel at
+`https://upayan.dev` with `API_URL=https://api.upayan.dev`. The API keeps one
+replica because the latest PC report and provider caches live in memory.
+Point the PC reporter at the same API URL. The retired `upayan-v5` namespace
+does not serve the API.
 
 ## Provider access problems
 

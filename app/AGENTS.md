@@ -276,9 +276,10 @@ Scope is optional, lowercase, single word.
 
 The active workflows live at the repository root in `.github/workflows/`.
 
-| File                 | Trigger                        | Checks                                             |
-| -------------------- | ------------------------------ | -------------------------------------------------- |
-| `frontend-check.yml` | Push or PR that changes `app/` | Install, lint, format, type-check, test, and build |
+| File                 | Trigger                            | Checks                                             |
+| -------------------- | ---------------------------------- | -------------------------------------------------- |
+| `frontend-check.yml` | Every PR and app changes on `main` | Install, lint, format, type-check, test, and build |
+| `api.yml`            | Every PR and API changes on `main` | Rust checks, then publish only on `main`           |
 
 The root `.husky/pre-commit` hook formats staged frontend files. Other repository files do not use frontend hooks. CI uses `SKIP_ENV_VALIDATION=true` and does not install Husky hooks.
 

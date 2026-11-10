@@ -12,11 +12,10 @@ export interface UplinkMeter {
 }
 
 /**
- * The uplink bar and its percentage. The bar shows the smaller of two values: the real share of
- * downloaded assets and a pace that fills over a fixed time. A fast network therefore still gets
- * a visible fill, and a slow one waits at its real progress.
+ * The bar shows the smaller of real load progress and a paced fill.
+ * A fast network still shows the fill. A slow one waits for the assets.
  */
-export function uplinkMeter(bar: Element | null, percent: Element | null): UplinkMeter {
+export function uplinkMeter(bar: Element | null): UplinkMeter {
   const shown = { value: 0 };
   const pace = { value: 0 };
   let real = 0;
@@ -24,7 +23,6 @@ export function uplinkMeter(bar: Element | null, percent: Element | null): Uplin
 
   const paint = () => {
     gsap.set(bar, { scaleX: shown.value });
-    if (percent) percent.textContent = `${Math.round(shown.value * 100)}%`;
   };
   const glide = gsap.quickTo(shown, 'value', {
     duration: 0.6,

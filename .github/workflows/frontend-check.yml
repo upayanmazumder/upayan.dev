@@ -1,18 +1,21 @@
 name: Frontend checks
 
 on:
-  push:
-    paths:
-      - 'app/**'
-      - '.github/workflows/frontend-check.yml'
   pull_request:
+  push:
+    branches:
+      - main
     paths:
-      - 'app/**'
-      - '.github/workflows/frontend-check.yml'
+      - "app/**"
+      - ".github/workflows/frontend-check.yml"
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: frontend-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   frontend:
@@ -21,8 +24,8 @@ jobs:
       run:
         working-directory: app
     env:
-      HUSKY: '0'
-      SKIP_ENV_VALIDATION: 'true'
+      HUSKY: "0"
+      SKIP_ENV_VALIDATION: "true"
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -34,6 +37,7 @@ jobs:
           cache: pnpm
           cache-dependency-path: app/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --audit-level high
       - run: pnpm lint
       - run: pnpm format:check
       - run: pnpm type-check

@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { profile } from '@/data/profile';
 import { navItems } from '@/data/site';
 
-import pkg from '../../../package.json';
 import { CopyEmailButton } from './copy-email-button';
+import { fetchLatestTag } from './fetch-latest-tag';
 import { FooterClock } from './footer-clock';
 import { Wordmark } from './wordmark';
 
@@ -12,7 +12,8 @@ const sha = process.env.VERCEL_GIT_COMMIT_SHA;
 const linkClass =
   'transition-colors hover:text-teal focus-visible:text-teal focus-visible:outline-none';
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const latestTag = await fetchLatestTag();
   return (
     <footer className="relative mt-16">
       <div aria-hidden className="h-px w-full bg-line" />
@@ -61,7 +62,18 @@ export function SiteFooter() {
         <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-xs text-muted-foreground">
           <span>© 2026 {profile.name}</span>
           <span className="flex items-center gap-3">
-            <span>v{pkg.version}</span>
+            {latestTag ? (
+              <a
+                href={`${profile.repo}/releases/tag/${encodeURIComponent(latestTag)}`}
+                target="_blank"
+                rel="noreferrer"
+                className={linkClass}
+              >
+                {latestTag}
+              </a>
+            ) : (
+              <span>Latest release unavailable</span>
+            )}
             {sha ? (
               <a
                 href={`${profile.repo}/commit/${sha}`}

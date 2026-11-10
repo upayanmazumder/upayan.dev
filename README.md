@@ -1,17 +1,16 @@
 <a href="https://upayan.dev">
-  <img src="https://github.com/upayanmazumder.png" align="left" width="76" height="76" alt="Upayan Mazumder" style="border-radius: 50%" />
+  <img src="docs/avatar.png" align="left" width="80" height="80" alt="Upayan Mazumder" />
 </a>
 
-# [upayan.dev](https://upayan.dev)
-**Upayan Mazumder**
+# [upayan.dev](https://upayan.dev)<br><small>Upayan Mazumder</small>
+
+<br clear="left"/>
 
 <p>
   <a href="https://upayan.dev"><img src="https://img.shields.io/badge/website-upayan.dev-14b8a6?style=flat-square" alt="Website" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/upayanmazumder/upayan.dev?style=flat-square&color=gray" alt="License: MIT" /></a>
   <a href="https://github.com/upayanmazumder/upayan.dev/actions/workflows/api.yml"><img src="https://img.shields.io/github/actions/workflow/status/upayanmazumder/upayan.dev/api.yml?branch=main&label=api&style=flat-square" alt="API Status" /></a>
 </p>
-
-<br clear="left"/>
 
 ---
 

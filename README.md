@@ -1,10 +1,16 @@
-<a href="https://upayan.dev">
-  <img src="docs/avatar.png" align="left" width="80" height="80" alt="Upayan Mazumder" />
-</a>
-
-# [upayan.dev](https://upayan.dev)<br><small>Upayan Mazumder</small>
-
-<br clear="left"/>
+<table>
+  <tr>
+    <td width="76" align="center" valign="middle">
+      <a href="https://upayan.dev">
+        <img src="docs/avatar.png" width="72" height="72" alt="Upayan Mazumder" />
+      </a>
+    </td>
+    <td align="center" valign="middle">
+      <h1><a href="https://upayan.dev">upayan.dev</a></h1>
+      <p>Upayan Mazumder</p>
+    </td>
+  </tr>
+</table>
 
 <p>
   <a href="https://upayan.dev"><img src="https://img.shields.io/badge/website-upayan.dev-14b8a6?style=flat-square" alt="Website" /></a>

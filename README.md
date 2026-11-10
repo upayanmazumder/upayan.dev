@@ -1,6 +1,6 @@
-<table>
+<table width="100%">
   <tr>
-    <td width="76" align="center" valign="middle">
+    <td width="90" align="center" valign="middle">
       <a href="https://upayan.dev">
         <img src="docs/avatar.png" width="72" height="72" alt="Upayan Mazumder" />
       </a>

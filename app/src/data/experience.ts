@@ -82,7 +82,7 @@ export const communities: Organization[] = [
       {
         title: 'Senior Core Member',
         start: '2026-01',
-        end: '2026-07',
+        end: '2026-09',
         points: [
           'Built DevSoc ’26 end to end: landing page, participant portal, and backend.',
           'Led frontend and backend for Clueminati ’26 and CookOff 11.',

@@ -5,6 +5,7 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   reactCompiler: true,
   images: { formats: ['image/avif', 'image/webp'] },
+  experimental: { agentUpgrade: 'security' },
   // Routes from the previous site that no longer exist.
   async redirects() {
     return [
